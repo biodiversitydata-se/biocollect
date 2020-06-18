@@ -44,7 +44,10 @@ function initialise(roles, currentUserId, projectId) {
                     if (table.ajax.json().totalNbrOfAdmins == 1 && row.role == "admin") {
                         return '';
                     } else {
-                        return '<a class="btn btn-small tooltips href="" title="remove this user and role combination"><i class="icon-remove"></i></a>';
+                        var buttons = '<a class="btn btn-small tooltips href="" title="view this user\'s details"><i class="icon-eye"></i></a>' +
+                            '<a class="btn btn-small tooltips href="" title="edit this user and role combination"><i class="icon-edit"></i></a>' +
+                            '<a class="btn btn-small tooltips href="" title="remove this user and role combination"><i class="icon-remove"></i></a>';
+                        return buttons;
                     }
                 },
                 bSortable: false
