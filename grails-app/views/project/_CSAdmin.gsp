@@ -68,10 +68,17 @@
                 </g:if>
 
                 <div id="permissions" class="pill-pane">
-                    <h3>Members</h3>
+                    <h3>Members here</h3>
                     <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:project.projectId]"/>
                     <g:render template="/admin/permissionTablePaginated"/>
                 </div>
+                <g:if test="${hubConfig?.isSystematic}">
+                    <div id="permissions" class="pill-pane">
+                        <h3>Bookings</h3>
+                        <g:render template="/admin/addPermissions"/>
+                        <%-- <g:render template="booking"/> --%>
+                    </div>
+                </g:if>
 
                 <!--AUDIT-->
                 <g:if test="${fc.userInRole(role: grailsApplication.config.security.cas.alaAdminRole) || fc.userInRole(role: grailsApplication.config.security.cas.adminRole) || user.isAdmin}">
