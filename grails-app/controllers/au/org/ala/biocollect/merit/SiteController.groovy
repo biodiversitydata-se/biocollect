@@ -832,6 +832,8 @@ class SiteController {
                         name             : doc.name,
                         description      : doc.description,
                         numberOfPoi      : doc.poi?.size(),
+                        numberOfTransectParts: doc.transectParts?.size(),
+                        isBooked         : doc.isBooked,
                         numberOfProjects : doc.projects?.size(),
                         lastUpdated      : doc.lastUpdated,
                         type             : doc.type,
