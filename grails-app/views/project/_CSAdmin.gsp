@@ -18,6 +18,9 @@
                 </g:if>
 
                 <li><a href="#permissions" id="permissions-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Members</a></li>
+                <g:if test="${hubConfig?.isSystematic}">
+                    <li><a href="#bookings" id="bookings-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Site booking</a></li>
+                </g:if>
                 <g:if test="${fc.userInRole(role: grailsApplication.config.security.cas.alaAdminRole) || fc.userInRole(role: grailsApplication.config.security.cas.adminRole) || user.isAdmin}">
                     <g:if test="${grailsApplication.config.notification.enabled?.toBoolean()}">
                     <li><a href="#project-notification" id="project-notification-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="notification.tabTitle"/></a></li>
@@ -68,17 +71,14 @@
                 </g:if>
 
                 <div id="permissions" class="pill-pane">
-                    <h3>Members here</h3>
+                    <h3>Members</h3>
                     <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:project.projectId]"/>
                     <g:render template="/admin/permissionTablePaginated"/>
                 </div>
-                <g:if test="${hubConfig?.isSystematic}">
-                    <div id="permissions" class="pill-pane">
-                        <h3>Bookings</h3>
-                        <g:render template="/admin/addPermissions"/>
-                        <%-- <g:render template="booking"/> --%>
-                    </div>
-                </g:if>
+                <div id="bookings" class="pill-pane">
+                    <h3>Site booking</h3>
+                    <g:render template="/projectActivity/siteBooking" model="[projectActivities:projectActivities]"/>
+                </div>
 
                 <!--AUDIT-->
                 <g:if test="${fc.userInRole(role: grailsApplication.config.security.cas.alaAdminRole) || fc.userInRole(role: grailsApplication.config.security.cas.adminRole) || user.isAdmin}">
