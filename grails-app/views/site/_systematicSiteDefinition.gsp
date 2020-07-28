@@ -37,7 +37,7 @@
 <script type="text/html" id="poi">
 <div class="drawLocationDiv row-fluid">
     <div class="span12">
-    <!-- This error message should only come up if no features are drawn on map -->
+    <!-- TODO This error message should only come up if no features are drawn on map -->
         <div class="row-fluid alert" style="box-sizing:border-box;" data-bind="visible:false">
             <g:message code="site.transect.transectPart.tip"/>
         </div>
