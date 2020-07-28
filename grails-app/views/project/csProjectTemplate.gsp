@@ -27,6 +27,7 @@
         siteDeleteUrl: "${createLink(controller: 'site', action: 'ajaxDeleteSiteFromProject', id:project.projectId)}",
         siteViewUrl: "${createLink(controller: 'site', action: 'index')}",
         siteEditUrl: "${createLink(controller: 'site', action: 'edit')}",
+        ajaxBookSiteUrl: "${createLink(controller: 'site', action: 'ajaxBookSite', id: '')}",
         removeSiteUrl: "${createLink(controller: 'site', action: '')}",
         activityBulkDeleteUrl: "${createLink(controller: 'bioActivity', action: 'bulkDelete')}",
         activityBulkEmbargoUrl: "${createLink(controller: 'bioActivity', action: 'bulkEmbargo')}",
