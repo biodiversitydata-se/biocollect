@@ -18,6 +18,7 @@
                 </g:if>
 
                 <li><a href="#permissions" id="permissions-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Members</a></li>
+                <%-- TODO change the flag? not all systematic sites will require booking--%>
                 <g:if test="${hubConfig?.isSystematic}">
                     <li><a href="#bookings" id="bookings-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Site booking</a></li>
                 </g:if>
