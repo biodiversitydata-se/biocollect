@@ -422,3 +422,60 @@ var TransectPart = function (data) {
         return js;
     };
 };
+
+var SiteBookingViewModel = function (pActivitiesVM){
+    var self = $.extend(this, pActivitiesVM);
+
+    self.plotGeoJson = function(){
+
+        var siteList = self.sites; 
+        map.clearMarkers();
+        map.clearLayers();
+
+        siteList.forEach(function (site) {
+            var feature = site.extent
+            if (feature && feature.source != 'none' && feature.geometry) {
+                var lng, lat, geometry, options;
+                try {
+
+                    if (feature.geometry.centre && feature.geometry.centre.length) {
+                        lng = parseFloat(feature.geometry.centre[0]);
+                        lat = parseFloat(feature.geometry.centre[1]);
+                        if (!feature.geometry.coordinates ) {
+                            feature.geometry.coordinates = [lng, lat];
+                            if (feature.geometry.aream2 > 0){
+                                //ONLY apply on site list which show a marker instead of polygon
+                                //Change from Polygon to Point for geojson validation
+                                feature.geometry.type = 'Point'
+                            }
+                        }
+
+                        geometry = Biocollect.MapUtilities.featureToValidGeoJson(feature.geometry);
+                        geometry.properties.isBooked = site.isBooked;
+                        var options = {
+                            markerLocation: [lat, lng],
+                            popup: $('#popup' + site.siteId).html()
+                        }   
+                        // TODO find a way to distinguish between systematic sites and non-syst
+                        // if (site.transectParts != null) {
+                        if (feature.geometry.type == 'Point') {
+                            map.setCentroidGeoJSON(geometry, options, site.siteId, site.name, site.isBooked);
+                        } 
+                        // TODO this is needed - commented now because polygon would show and cover circle markers
+                        // else {
+                        //     options.markerWithMouseOver = true
+                        //     map.setGeoJSON(geometry, options);
+                        // }
+                    }
+                } catch (exception){
+                    console.log("Site:"+site.siteId +" reports exception: " + exception)
+                }
+            }
+        });
+    }
+
+    self.bookSite = function(){
+
+    }
+
+};
