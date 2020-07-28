@@ -224,7 +224,12 @@
             var pActivitiesVM = new ProjectActivitiesViewModel(params, projectViewModel);
             initialiseProjectActivitiesList(pActivitiesVM);
             initialiseData('project');
-            <g:if test="${projectContent.admin.visible}">initialiseProjectActivitiesSettings(pActivitiesVM);</g:if>
+            <g:if test="${projectContent.admin.visible}">
+                initialiseProjectActivitiesSettings(pActivitiesVM);
+                <g:if test="${hubConfig?.isSystematic}">
+                    initialiseProjectActivitiesSiteBooking(pActivitiesVM);
+                </g:if>
+            </g:if>
         </g:if>
         <g:if test="${projectContent.admin.visible}">
             <g:if test="${!project.isExternal}">

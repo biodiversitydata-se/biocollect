@@ -162,12 +162,21 @@
                             }
 
                             geometry = Biocollect.MapUtilities.featureToValidGeoJson(feature.geometry);
+                            geometry.properties.isBooked = site.isBooked();
                             var options = {
-                                markerWithMouseOver: true,
-                                markerLocation: [lat, lng],
+                                // markerLocation: [lat, lng],
                                 popup: $('#popup' + site.siteId()).html()
-                            };
-                            map.setGeoJSON(geometry, options);
+                            }    
+                            // TODO find a way to distinguish between systematic sites and non-syst
+                            // if (site.transectParts != null) {
+                            if (feature.geometry.type == 'Point') {
+                                map.setCentroidGeoJSON(geometry, options, site.siteId(), site.name(), site.isBooked());
+                            } 
+                            // TODO this is needed - commented now because polygon would show and cover circle markers
+                            // else {
+                            //     options.markerWithMouseOver = true
+                            //     map.setGeoJSON(geometry, options);
+                            // }
                         }
                     }catch(exception){
                         console.log("Site:"+site.siteId() +" reports exception: " + exception)

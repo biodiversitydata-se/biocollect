@@ -1,25 +1,17 @@
 <m:map id="${id}"></m:map>
 <div class="hide">
     <!-- ko foreach: sites -->
-    <div class="margin-left-20" data-bind="attr:{id: 'popup'+siteId()}">
-        <div><i class="icon-map-marker"></i> <a
-                href="" data-bind="attr:{href: getSiteUrl()}, text: name"></a></div>
-
-        <div data-bind="visible: type"><span><i class="icon-star-empty"></i> Site type:</span> <span data-bind="text: type"></span></div>
-
-        <div data-bind="visible: numberOfPoi() != undefined"><span><i class="icon-star-empty"></i> Number of POI:</span> <span
-                data-bind="text: numberOfPoi"></span><br></div>
+    <div class="margin-left-20" data-bind="attr:{id: 'popup'+siteId}">
+        <div><i class="icon-map-marker"></i> <a href="" data-bind="text: name"></a></div>
+        <!-- TODO the flag here should be on the level of survey or project - eg. isSiteBookingMandatory-->
         <g:if test="${hubConfig?.isSystematic}">
-            <div data-bind="visible: numberOfTransectParts() != undefined"><span><i class="icon-star-empty"></i> Number of transect parts:</span> <span
-                data-bind="text: numberOfTransectParts"></span><br></div>
-            <div data-bind="visible: isBooked() != undefined"><span><i class="icon-star-empty"></i> Booked:</span> <span
+            <div data-bind="visible: isBooked != undefined"><span><i class="icon-star-empty"></i> Booked:</span> <span
                 data-bind="text: isBooked"></span><br></div>
         </g:if>
-        <div data-bind="visible: numberOfProjects() != undefined"><i class="icon-star-empty"></i> Number of associated projects: <span
-                data-bind="text: numberOfProjects"></span></div>
     </div>
     <!-- /ko -->
 </div>
+
 <script>
     function initMap(params, id) {
         var overlayLayersMapControlConfig = Biocollect.MapUtilities.getOverlayConfig();
@@ -41,14 +33,12 @@
             markerOrShapeNotBoth: false,
             trackWindowHeight: true,
             baseLayer: baseLayersAndOverlays.baseLayer,
-            otherLayers: baseLayersAndOverlays.otherLayers,
-            overlays: baseLayersAndOverlays.overlays,
             overlayLayersSelectedByDefault: baseLayersAndOverlays.overlayLayersSelectedByDefault,
             wmsFeatureUrl: overlayLayersMapControlConfig.wmsFeatureUrl,
             wmsLayerUrl: overlayLayersMapControlConfig.wmsLayerUrl
         }, params);
 
-        var map = new ALA.Map('map', mapOptions);
+        var map = new ALA.Map('leafletMap', mapOptions);
 
         L.Icon.Default.imagePath = $('#' + id).attr('data-leaflet-img');
 
@@ -56,4 +46,5 @@
 
         return map;
     }
+
 </script>
