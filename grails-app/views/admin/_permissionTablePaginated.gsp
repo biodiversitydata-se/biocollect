@@ -5,6 +5,8 @@
             <th>User Id</th>
             <th>User Name</th>
             <th>Role</th>
+            <th>Sites</th>
+            <th>Registered online</th>
             <th width="5%"></th>
             </thead>
             <tbody>

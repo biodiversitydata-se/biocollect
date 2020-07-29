@@ -11,7 +11,7 @@ function initialise(roles, currentUserId, projectId) {
             data: 'userId',
             name: 'userId',
             bSortable: false
-        },
+            },
             {
                 data: 'displayName',
                 name: 'displayName',
@@ -39,15 +39,25 @@ function initialise(roles, currentUserId, projectId) {
                 bSortable: false
             },
             {
+                data: null, // can be null or undefined
+                defaultContent: "<i>02764</i>",
+                bSortable: false
+            },
+            {
+                data: null, // can be null or undefined
+                defaultContent: "<i>Yes</i>",
+                bSortable: false
+
+            },
+            {
                 render: function (data, type, row) {
                     // cannot delete the last admin
                     if (table.ajax.json().totalNbrOfAdmins == 1 && row.role == "admin") {
                         return '';
                     } else {
-                        var buttons = '<a class="btn btn-small tooltips href="" title="view this user\'s details"><i class="icon-eye"></i></a>' +
-                            '<a class="btn btn-small tooltips href="" title="edit this user and role combination"><i class="icon-edit"></i></a>' +
-                            '<a class="btn btn-small tooltips href="" title="remove this user and role combination"><i class="icon-remove"></i></a>';
-                        return buttons;
+                        return '<div class="pull-right margin-right-20">' + '<a class="margin-left-10" href="" title="view this user\'s details"><i class="fa fa-eye"></i></a>' +
+                        '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' +
+                        '<a class="margin-left-10" href="" title="remove this user and role combination"><i class="fa fa-remove"></i></a></div>';
                     }
                 },
                 bSortable: false
