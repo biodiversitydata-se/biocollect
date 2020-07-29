@@ -2,6 +2,8 @@
 
 <div id="pActivitySiteBooking" class="well">
 
+
+
     <%-- Start of site booking form  --%>
     <bs:form action="update" inline="true" class="form-horizontal">
         <div class="control-group">
