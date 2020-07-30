@@ -72,6 +72,11 @@ class UrlMappings {
                         action = [GET: "get", POST: "upload", PUT: "upload", DELETE: "delete"]
                 }
 
+                "/person/"(controller: 'person') {
+
+                        action = [GET: "get", POST: "create", PUT: "upload", DELETE: "delete"]
+                }
+
                 "/$hub/"(controller: 'home', action: 'index') {
                         constraints {
                                 hub validator: {val, obj -> isHubValid( val)}
