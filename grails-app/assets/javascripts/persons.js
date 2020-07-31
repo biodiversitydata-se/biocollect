@@ -1,0 +1,136 @@
+/**
+ * Render project members and their roles, support pagination.
+ */
+function initialise(projectId) {
+    console.log("initialized")
+    console.log(fcConfig.getPersonsForProjectIdPaginatedUrl, projectId)
+    var table = $('#person-list').DataTable({
+        "bFilter": false,
+        "processing": true,
+        "serverSide": true,
+        "ajax": fcConfig.getPersonsForProjectIdPaginatedUrl + "/" + projectId,
+        "columns": [{
+                data: 'personId',
+                name: 'personId',
+                bSortable: false
+            },
+            {
+                data: 'firstName',
+                name: 'firstName',
+                bSortable: false
+            },
+            {
+                data: 'lastName',
+                name: 'lastName',
+                bSortable: false
+            },
+            {
+                data: null, // can be null or undefined
+                defaultContent: "<i>02764</i>",
+                bSortable: false
+            },
+            {
+                data: null, // can be null or undefined
+                defaultContent: "<i>Yes</i>",
+                bSortable: false
+
+            },
+            {
+                render: function (data, type, row) {
+                    // cannot delete the last admin
+                    if (table.ajax.json().totalNbrOfAdmins == 1 && row.role == "admin") {
+                        return '';
+                    } else {
+                        return '<div class="pull-right margin-right-20">' + '<a class="margin-left-10" href="" title="view this user\'s details"><i class="fa fa-eye"></i></a>' +
+                        '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' +
+                        '<a class="margin-left-10" href="" title="remove this user and role combination"><i class="fa fa-remove"></i></a></div>';
+                    }
+                },
+                bSortable: false
+            }]
+    });
+
+//     $('#member-list').on("change", "tbody td:nth-child(3) select", function (e) {
+//         e.preventDefault();
+
+//         var role = $(this).val();
+//         var row = this.parentElement.parentElement;
+//         var data = table.row(row).data();
+//         var currentRole = data.role;
+//         var userId = data.userId;
+
+//         var message;
+//         if (userId == currentUserId) {
+//             message = "<span class='label label-important'>Important</span><p><b>If you modify your access level you may need assistance to get it back.</b></p><p>Are you sure you want to change your access to this project from " + currentRole + " to " + decodeCamelCase(role) + "?</p>";
+//         }
+//         else {
+//             message = "Are you sure you want to change this user's access from " + decodeCamelCase(currentRole) + " to " + decodeCamelCase(role) + "?";
+//         }
+
+//         bootbox.confirm(message, function (result) {
+//             if (result) {
+//                 addUserWithRole(userId, role, projectId);
+
+//             } else {
+//                 reloadMembers(); // reload table
+//             }
+//         });
+//     });
+
+//     $('#member-list').on("click", "tbody td:nth-child(4) a", function (e) {
+//         e.preventDefault();
+
+//         var row = this.parentElement.parentElement;
+//         var data = table.row(row).data();
+//         var userId = data.userId;
+//         var role = data.role;
+
+//         var message;
+//         if (userId == currentUserId) {
+//             message = "<span class='label label-important'>Important</span><p><b>If you proceed you may need assistance to get your access back.</b></p><p>Are you sure you want to remove your access to this project?</p>";
+//         }
+//         else {
+//             message = "Are you sure you want to remove this user's access?";
+//         }
+//         bootbox.confirm(message, function (result) {
+//             if (result) {
+//                 if (userId && role) {
+//                     removeUserRole(userId, role);
+//                 } else {
+//                     alert("Error: required params not provided: userId & role");
+//                 }
+//             }
+//         });
+//     });
+
+//     function updateStatusMessage2(msg) {
+//         $('#formStatus span').text(''); // clear previous message
+//         $('#formStatus span').text(msg).parent().fadeIn();
+//     }
+
+//     function removeUserRole(userId, role) {
+//         $.ajax({
+//             url: fcConfig.removeUserRoleUrl,
+//             data: {
+//                 userId: userId,
+//                 role: role,
+//                 entityId: projectId
+//             }
+//         })
+//             .done(function (result) {
+//                     updateStatusMessage2("user was removed.");
+//                 }
+//             )
+//             .fail(function (jqXHR, textStatus, errorThrown) {
+//                     alert(jqXHR.responseText);
+//                 }
+//             )
+//             .always(function (result) {
+//                 reloadMembers(); // reload table
+//             });
+//     }
+}
+
+function reloadMembers() {
+    $('#person-list').DataTable().ajax.reload();
+}
