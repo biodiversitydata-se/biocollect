@@ -35,21 +35,15 @@
     <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Oswald:300"/>
     <asset:script type="text/javascript">
     var fcConfig = {
-        <%-- sitePageUrl : "${createLink(action: 'index', id: site?.siteId)}",
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
-        ajaxUpdateUrl: "${createLink(action: 'ajaxUpdate', id: site?.siteId)}",
-        mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
-        returnTo: "${createLink(controller: 'project', action: 'index', id: project?.projectId)}"
-        }, --%>
+        <%-- ajaxUpdateUrl: "${createLink(action: 'ajaxUpdate', id: person?.personId)}" --%>
+        ajaxCreateUrl: "${createLink(action: 'ajaxCreate')}"
+        }
         here = window.location.href;
 
     </asset:script>
-    <%-- <asset:stylesheet src="sites-manifest.css"/> --%>
-    <%-- <asset:stylesheet src="leaflet-manifest.css"/> --%>
+
     <asset:javascript src="common.js"/>
-    <%-- <asset:javascript src="leaflet-manifest.js"/> --%>
-    <%-- <asset:javascript src="sites-manifest.js"/> --%>
-    <%-- <script src="${grailsApplication.config.google.maps.url}" async defer></script> --%>
 </head>
 <body>
     <%-- <div class="container-fluid validationEngineContainer" id="validation-container"> --%>
@@ -86,74 +80,55 @@
         </div>
     </div>
     </g:if> --%>
-<%-- 
+
 <asset:script type="text/javascript">
     $(function(){
 
-        $('#validation-container').validationEngine('attach', {scroll: false});
+        <%-- $('#validation-container').validationEngine('attach', {scroll: false});
 
-        $('.helphover').popover({animation: true, trigger:'hover'});
+        $('.helphover').popover({animation: true, trigger:'hover'}); --%>
 
-        var siteViewModel = initSiteViewModel(true, ${!userCanEdit});
+        <%-- var personViewModel = initPersonViewModel(true, ${!userCanEdit}); --%>
+
         $('#cancel').click(function () {
-            if(siteViewModel.saved()){
+            <%-- if(siteViewModel.saved()){
                 document.location.href = fcConfig.sitePageUrl;
             } if(fcConfig.projectUrl){
                 document.location.href = fcConfig.projectUrl;
             }else {
                 document.location.href = fcConfig.homePageUrl;
-            }
+            } --%>
         });
 
         $('#save').click(function () {
-            if ($('#validation-container').validationEngine('validate')) {
-                var json = siteViewModel.toJS();
-                //validate  if extent.geometry.pid, then update extent.source to pid, extent.geometry.type to pid
-                if (json.extent.geometry.pid){
-                    json.extent.source = 'pid';
-                    json.extent.geometry.type = 'pid'
-                }
+            <%-- if ($('#validation-container').validationEngine('validate')) { --%>
+                <%-- var json = personViewModel.toJS(); --%>
                 var data = {
-                    site: json
-                    <g:if test="${project?.projectId}">
-                        ,
-                        projectId: '${project?.projectId.encodeAsHTML()}'
-                    </g:if>
-
-                    <g:if test="${pActivityId}">
-                        ,
-                        pActivityId: '${pActivityId.encodeAsHTML()}'
-                    </g:if>
-                };
+                    firstName: "John",
+                    lastName: "Doe",
+                    personCode: "xxx"
+                }
 
                 $.ajax({
-                    url: fcConfig.ajaxUpdateUrl,
+                    url: fcConfig.ajaxCreateUrl,
                     type: 'POST',
                     data: JSON.stringify(data),
                     contentType: 'application/json',
                     success: function (data) {
                         if(data.status == 'created'){
-                        <g:if test="${project}">
-                            document.location.href = fcConfig.projectUrl;
-                        </g:if>
-                        <g:else>
-                            document.location.href = fcConfig.sitePageUrl + '/' + data.id;
-                        </g:else>
-                        } else if(data.status == 'updated'){
-                            document.location.href = fcConfig.sitePageUrl;
-                        } else {
-                            bootbox.alert('There was a problem saving this site', function() {location.reload();});
+                           console.log("person created")
                         }
+                        
                     },
                     error: function (data) {
-                        var errorMessage = data.responseText || 'There was a problem saving this site'
+                        var errorMessage = data.responseText || 'There was a problem saving this person'
                         bootbox.alert(errorMessage);
                     }
                 });
-            }
+            <%-- } --%>
         });
     });
-</asset:script> --%>
+</asset:script>
 
 </body>
 </html>

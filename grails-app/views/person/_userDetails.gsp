@@ -4,9 +4,9 @@
 </ul>
 <div class="tab-content">
     <div class="tab-pane" id="personal">
-        <g:render template="/user/personal"></g:render>
+        <g:render template="personal"></g:render>
     </div>
     <div class="tab-pane" id="sites">
-        <g:render template="/user/sites"></g:render>
+        <g:render template="sites"></g:render>
     </div>
 </div>

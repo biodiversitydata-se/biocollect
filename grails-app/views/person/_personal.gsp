@@ -3,38 +3,38 @@
 
         <div class="span6">
             <label for=""><g:message code=""/>First name<g:message code=""/></label>
-           <input data-bind="" id="" type="text" class="span12"/>
+           <input data-bind=""  type="text" class="span12"/>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Last name<g:message code=""/></label>
-           <input data-bind="" id="" type="text" class="span12"/>
+           <input data-bind=""  type="text" class="span12"/>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Email address<g:message code=""/></label>
-           <input data-bind="" id="" type="text" class="span12"/>
+           <input data-bind=""  type="text" class="span12"/>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Registered online<g:message code=""/></label>
-           <input data-bind="" id="" type="text" class="span12"/>
+           <input data-bind=""  type="text" class="span12"/>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Home number<g:message code=""/></label>
-           <input data-bind="" id="" type="text" class="span12"/>
+           <input data-bind=""  type="text" class="span12"/>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Mobile number<g:message code=""/></label>
-           <input data-bind="" id="" type="text" class="span12"/>
+           <input data-bind=""  type="text" class="span12"/>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Postcode<g:message code=""/></label>
-           <input data-bind="" id="" type="text" class="span12"/>
+           <input data-bind=""  type="text" class="span12"/>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Address<g:message code=""/></label>
-           <input data-bind="" id="" type="text" class="span12"/>
+           <input data-bind=""  type="text" class="span12"/>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>User code<g:message code=""/></label>
-           <input data-bind="" id="" type="text" class="span12"/>
+           <input data-bind=""  type="text" class="span12"/>
         </div>
 </div>
