@@ -108,6 +108,7 @@
         getProjectMembersURL: "${createLink(controller: 'project', action: 'getMembersForProjectIdPaginated')}/${project.projectId}",
         removeUserRoleUrl:"${createLink(controller:'user', action:'removeUserWithRoleFromProject')}",
         getPersonsForProjectIdPaginatedUrl: "${createLink(controller: 'person', action: 'getPersonsForProjectIdPaginated')}",
+        createPersonUrl: "${createLink(controller: 'person', action: 'create')}",
         absenceIconUrl:"${asset.assetPath(src: 'triangle.png')}",
         projectNotificationUrl: "${createLink(controller: 'project', action: 'sendEmailToMembers', params: [id: project.projectId])}",
         projectTestNotificationUrl: "${createLink(controller: 'project', action: 'sendTestEmail', params: [id: project.projectId])}",
