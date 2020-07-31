@@ -12,6 +12,11 @@ class PersonController {
     UserService userService
     ProjectService projectService
 
+
+    def create() {
+        render view: 'create', model: [create:true]
+    }
+
     def ajaxCreate() {
 
         def values = request.JSON
@@ -49,18 +54,16 @@ class PersonController {
     }
 
     def getPersonsForProjectIdPaginated() {
-        log.debug "inside getPersonsForProjectIdPaginated params are" + params
         String projectId = params.id
         log.debug "Project ID " + projectId
         def adminUserId = userService.getCurrentUserId()
 
         if (projectId && adminUserId) {
-            log.debug "you are admin"
             if (projectService.isUserAdminForProject(adminUserId, projectId) || projectService.isUserCaseManagerForProject(adminUserId, projectId)) {
                 def results = personService.getPersonsForProjectPerPage(projectId)
-                log.debug "results " + results
+                
                 asJson results
-
+                log.debug "results " + results
             } else {
                 response.sendError(SC_FORBIDDEN, 'Permission denied')
             }
@@ -73,14 +76,13 @@ class PersonController {
         }
     }
 
-    def create() {
-        render view: 'create', model: [create:true]
-
-    }
     def list() {
         log.debug "list in person service"
     }
 
+    def asJson(json) {
+        render(contentType: 'application/json', text: json as JSON)
+    }
     // def edit(String id) {
     // }
 
