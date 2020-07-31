@@ -27,6 +27,7 @@
 //= require output-targets.js
 //= require emitter/emitter.js
 //= require permissionTable.js
+//= require persons.js
 
 // attachDocuments
 //= require document.js
