@@ -2,6 +2,7 @@
  * Render project members and their roles, support pagination.
  */
 function initialise(roles, currentUserId, projectId) {
+    console.log("permissions table js")
     var table = $('#member-list').DataTable({
         "bFilter": false,
         "processing": true,
