@@ -36,7 +36,6 @@
     <asset:script type="text/javascript">
     var fcConfig = {
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
-        <%-- ajaxUpdateUrl: "${createLink(action: 'ajaxUpdate', id: person?.personId)}" --%>
         ajaxCreateUrl: "${createLink(action: 'ajaxCreate')}"
         }
         here = window.location.href;
@@ -103,10 +102,16 @@
         $('#save').click(function () {
             <%-- if ($('#validation-container').validationEngine('validate')) { --%>
                 <%-- var json = personViewModel.toJS(); --%>
+                var firstName = document.getElementById("firstName").value,
+                lastName = document.getElementById("lastName").value,
+                personCode = document.getElementById("personCode").value
+
+<%-- This works to get values from front-end, using test data now  --%>
+                <%-- var data = {
+firstName: firstName, lastName: lastName, personCode: personCode, projects: ["e0a99b52-c9fb-4b81-ae39-4436d11050c6"]
+                } --%>
                 var data = {
-                    firstName: "John",
-                    lastName: "Doe",
-                    personCode: "xxx"
+firstName: "Jane", lastName: "Doe", personCode: "shadjh", projects: ["e0a99b52-c9fb-4b81-ae39-4436d11050c6"], personId: "7489237894"
                 }
 
                 $.ajax({
