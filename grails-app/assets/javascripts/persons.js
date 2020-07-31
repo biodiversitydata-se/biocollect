@@ -1,15 +1,15 @@
 /**
  * Render project members and their roles, support pagination.
  */
-function initialise(projectId) {
-    console.log("initialized")
-    console.log(fcConfig.getPersonsForProjectIdPaginatedUrl, projectId)
+function initialisePersonsTable(projectId) {
+
     var table = $('#person-list').DataTable({
         "bFilter": false,
         "processing": true,
         "serverSide": true,
         "ajax": fcConfig.getPersonsForProjectIdPaginatedUrl + "/" + projectId,
-        "columns": [{
+        "columns": [
+            {
                 data: 'personId',
                 name: 'personId',
                 bSortable: false
@@ -34,20 +34,22 @@ function initialise(projectId) {
                 defaultContent: "<i>Yes</i>",
                 bSortable: false
 
-            },
-            {
-                render: function (data, type, row) {
-                    // cannot delete the last admin
-                    if (table.ajax.json().totalNbrOfAdmins == 1 && row.role == "admin") {
-                        return '';
-                    } else {
-                        return '<div class="pull-right margin-right-20">' + '<a class="margin-left-10" href="" title="view this user\'s details"><i class="fa fa-eye"></i></a>' +
-                        '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' +
-                        '<a class="margin-left-10" href="" title="remove this user and role combination"><i class="fa fa-remove"></i></a></div>';
-                    }
-                },
-                bSortable: false
-            }]
+            }
+            // ,
+            // {
+            //     render: function (data, type, row) {
+            //         // cannot delete the last admin
+            //         if (table.ajax.json().totalNbrOfAdmins == 1 && row.role == "admin") {
+            //             return '';
+            //         } else {
+            //             return '<div class="pull-right margin-right-20">' + '<a class="margin-left-10" href="" title="view this user\'s details"><i class="fa fa-eye"></i></a>' +
+            //             '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' +
+            //             '<a class="margin-left-10" href="" title="remove this user and role combination"><i class="fa fa-remove"></i></a></div>';
+            //         }
+            //     },
+            //     bSortable: false
+            // }
+        ]
     });
 
 //     $('#member-list').on("change", "tbody td:nth-child(3) select", function (e) {
@@ -134,3 +136,7 @@ function initialise(projectId) {
 function reloadMembers() {
     $('#person-list').DataTable().ajax.reload();
 }
+
+var createPerson = function() {
+    window.location.href = fcConfig.createPersonUrl;
+};
