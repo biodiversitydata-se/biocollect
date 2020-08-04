@@ -69,10 +69,20 @@
 
                 <div id="permissions" class="pill-pane">
                     <h3>Members</h3>
-                    <%-- TODO temporarily blocked permissions so that it's not called when testing --%>
-                    <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:project.projectId]"/>
-                    <%-- <g:render template="/admin/permissionTablePaginated"/> --%>
-                    <g:render template="/person/tablePaginated"/>
+                    <ul class="nav nav-tabs" id="members-tab">
+                        <li><a href="#user-permissions" id="user-permissions-tab" data-toggle="tab">Registered users</a></li>
+                        <li><a href="#persons" id="persons-tab" data-toggle="tab">Observers</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane" id="user-permissions">
+                            <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:project.projectId]"/>
+                            <g:render template="/admin/permissionTablePaginated"/>
+                        </div>
+                        <div class="tab-pane" id="persons">
+                            <g:render template="/person/tablePaginated"/>
+                        </div>
+                    </div>
+                    
                 </div>
 
                 <!--AUDIT-->
@@ -97,5 +107,6 @@
 <asset:script type="text/javascript">
     function initialiseInternalCSAdmin() {
         new RestoreTab('ul-cs-internal-project-admin', 'project-settings-tab');
+        new RestoreTab('members-tab', 'user-permissions-tab')
     }
 </asset:script>
