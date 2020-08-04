@@ -3,18 +3,8 @@
 <html>
 <head>
   <meta name="layout" content="${hubConfig.skin}"/>
-  <title> ${create ? 'New' : ('Edit | ' + person?.firstName?.encodeAsHTML() + person?.lastName?.encodeAsHTML())} | Users </title>
-    <g:if test="${project}">
-        <meta name="breadcrumb" content="Create new user for ${project?.name?.encodeAsHTML()}"/>
-    </g:if>
-    <g:elseif test="${create}">
-        <meta name="breadcrumb" content="Create"/>
-    </g:elseif>
-    <g:else>
-        <meta name="breadcrumbParent3"
-              content="${createLink(controller: 'site', action: 'index')}/${person?.personId}"/>
-        <meta name="breadcrumb" content="Edit"/>
-    </g:else>
+  <%-- <title> ${create ? 'New' : ('Edit | ' + person?.firstName?.encodeAsHTML() + person?.lastName?.encodeAsHTML())} | Users </title> --%>
+    <title> ${create ? 'New' : 'Edit | '}</title>
 
     <style type="text/css">
     legend {
@@ -38,7 +28,8 @@
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
         ajaxCreateUrl: "${createLink(action: 'ajaxCreate')}",
         <%-- createPersonUrl: "${createLink(action: 'create')}", --%>
-        deletePersonUrl: "${createLink(action:'delete', id: "teststring")}"
+        deletePersonUrl: "${createLink(action:'delete', id: "teststring")}",
+        getPersonByIdUrl: "${createLink(action:'get', id: "7489237894")}"
         };
         here = window.location.href;
 
@@ -54,7 +45,7 @@
         <div id="person">
         <bs:form action="update" inline="true">
             
-            <g:render template="personDetails" model="${[showLine: true]}"/>
+            <g:render template="personDefinition"/>
 
             <div class="row-fluid">
                 <div class="form-actions span12">
@@ -67,32 +58,37 @@
         </div>
     </div>
 
-    <%-- <g:if env="development">
-    <div class="container-fluid">
-        <div class="expandable-debug">
-            <hr />
-            <h3>Debug</h3>
-            <div>
-                <h4>KO model</h4>
-                <pre data-bind="text:ko.toJSON($root,null,2)"></pre>
-                <h4>Activities</h4>
-                <pre>${site?.activities?.encodeAsHTML()}</pre>
-                <h4>Site</h4>
-                <pre>${site?.encodeAsHTML()}</pre>
-                <h4>Projects</h4>
-                <pre>${projects?.encodeAsHTML()}</pre>
-                <h4>Features</h4>
-                <pre>${mapFeatures}</pre>
-            </div>
-        </div>
-    </div>
-    </g:if> --%>
-
 <asset:script type="text/javascript">
+
+    function initPersonViewModel() {
+        var savedPersonDetails = {
+            personId: "${person?.personId}",
+            firstName: "${person?.firstName}",
+            lastName:  "${person?.lastName}",
+            email:"${person?.email}",
+            address1: "${person?.address1}",
+            address2: "${person?.address2}",
+            postCode: "${person?.postCode}",
+            town: "${person?.town}",
+            phoneNum: "${person?.phoneNum}",
+            mobileNum: "${person?.mobileNum}",
+            gender: "${person?.gender}",
+            birthYear: "${person?.birthYear}",
+            extra: "${person?.extra}",
+            modTyp: "${person?.modTyp}",
+            eProt: "${person?.eProt}",
+            projects: "${person?.projects}"
+        }
+        console.log(savedPersonDetails);
+
+        var personViewModel = new PersonViewModel(savedPersonDetails);
+        return personViewModel;
+    }
     $(function(){
-        var personViewModel = new PersonViewModel();
+        var personViewModel = initPersonViewModel();
         ko.applyBindings(personViewModel, document.getElementById('person'));
      }); 
+
 </asset:script>
 
 </body>
