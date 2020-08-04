@@ -59,41 +59,66 @@ function reloadMembers() {
 
 var createPersonforProject = function() {
     window.location.href = fcConfig.createPersonUrl;
-}; 
+};
+var editPerson = function(){
+    window.location.href = fcConfig.updatePersonUrl;
+} 
 
-function PersonViewModel() {
+function PersonViewModel(savedPerson) {
     var self = this;
 
-    self.personId = ko.observable();
-    self.firstName = ko.observable();
-    self.lastName = ko.observable();
-    self.email = ko.observable();
-    self.address1 = ko.observable();
-    self.address2 = ko.observable();
-    self.postCode = ko.observable();
-    self.town = ko.observable();
-    self.phoneNum = ko.observable();
-    self.mobileNum = ko.observable();
-    self.gender = ko.observable();
-    self.birthYear = ko.observable();
-    self.extra = ko.observable();
-    self.modTyp = ko.observable();
-    self.eProt = ko.observable();
+    self.person = ko.observable({
+        personId : ko.observable(),
+        firstName : ko.observable(),
+        lastName : ko.observable(),
+        email : ko.observable(),
+        address1 : ko.observable(),
+        address2 : ko.observable(),
+        postCode : ko.observable(),
+        town : ko.observable(),
+        phoneNum : ko.observable(),
+        mobileNum : ko.observable(),
+        gender : ko.observable(),
+        birthYear : ko.observable(),
+        extra : ko.observable(),
+        modTyp : ko.observable(),
+        eProt : ko.observable(),
+        projects : ["e0a99b52-c9fb-4b81-ae39-4436d11050c6"]
+    })
 
     // TODO - should not be hard-coded
-    self.projects = ["e0a99b52-c9fb-4b81-ae39-4436d11050c6"]
 
     self.loadPerson = function (person){
-        var personModel = null;
+        var personModel = self.person();
+
+        personModel.firstName(exists(person, "firstName"));
+        personModel.lastName(exists(person, "lastName"));
+        personModel.email(exists(person, "email"));
+        personModel.personId(exists(person, "personId"));
+        personModel.address1(exists(person, "address1"));
+        personModel.address2(exists(person, "address2"));
+        personModel.postCode(exists(person, "postCode"));
+        personModel.town(exists(person, "town"));
+        personModel.phoneNum(exists(person, "phoneNum"));
+        personModel.mobileNum(exists(person, "mobileNum"));
+        personModel.gender(exists(person, "gender"));
+        personModel.birthYear(exists(person, "birthYear"));
+        personModel.extra(exists(person, "extra"));
+        personModel.modTyp(exists(person, "modTyp"));
+        personModel.eProt(exists(person, "eProt"));
+        // personModel.projects(exists(person, "projects"));
+        
+
+        console.log("personModel", personModel)
+        console.log(typeof personModel);
     }
+    self.loadPerson(savedPerson)
 
     self.save = function (){
         console.log("saving")
         // if ($('#validation-container').validationEngine('validate')) {
 
-        var data = self.modelAsJSON(self);
-        console.log(data);
-
+        var data = self.modelAsJSON(self.person());
             // TODO remove temp values for testing
             // var data = {
             //     firstName: "John", lastName: "Doe", projects: ["e0a99b52-c9fb-4b81-ae39-4436d11050c6"], personId: "7489237894"
@@ -118,6 +143,26 @@ function PersonViewModel() {
     
     // }
     }
+
+    self.editPerson = function(){
+        $.ajax({
+            url: fcConfig.getPersonByIdUrl,
+            type: 'GET',
+            data: id,
+            contentType: 'application/json',
+            success: function (data) {
+                if(data.status == 'created'){
+                   console.log("got person")
+                }  
+            },
+            error: function (data) {
+                var errorMessage = data.responseText || 'There was a problem saving this person'
+                bootbox.alert(errorMessage);
+            }
+        });
+    }
+
+    // self.loadPerson(person)
 
     self.cancel = function (){
         console.log("cancel")
@@ -153,7 +198,7 @@ function PersonViewModel() {
     };
 
     self.toJS = function() {
-        var js = ko.toJS(self);
+        var js = ko.toJS(self.person());
         return js;
     };
 
@@ -163,10 +208,10 @@ function PersonViewModel() {
 
 }
 
-function PersonsListViewModel(){
+// function PersonsListViewModel(){
 
-    // get persons for project
-    self.listAll = function(){
+//     // get persons for project
+//     self.listAll = function(){
 
-    }
-}
+//     }
+// }
