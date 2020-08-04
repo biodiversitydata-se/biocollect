@@ -35,108 +35,138 @@ function initialisePersonsTable(projectId) {
                 bSortable: false
 
             }
-            // ,
-            // {
-            //     render: function (data, type, row) {
-            //         // cannot delete the last admin
-            //         if (table.ajax.json().totalNbrOfAdmins == 1 && row.role == "admin") {
-            //             return '';
-            //         } else {
-            //             return '<div class="pull-right margin-right-20">' + '<a class="margin-left-10" href="" title="view this user\'s details"><i class="fa fa-eye"></i></a>' +
-            //             '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' +
-            //             '<a class="margin-left-10" href="" title="remove this user and role combination"><i class="fa fa-remove"></i></a></div>';
-            //         }
-            //     },
-            //     bSortable: false
-            // }
+            ,
+            {
+                render: function (data, type, row) {
+                    // cannot delete the last admin
+                    if (table.ajax.json().totalNbrOfAdmins == 1 && row.role == "admin") {
+                        return '';
+                    } else {
+                        return '<div class="pull-right margin-right-20">' + '<a class="margin-left-10" href="" title="view this user\'s details"><i class="fa fa-eye"></i></a>' +
+                        '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' +
+                        '<a class="margin-left-10" href=""  title="remove this user and role combination"><i class="fa fa-remove"></i></a></div>';
+                    }
+                },
+                bSortable: false
+            }
         ]
     });
-
-//     $('#member-list').on("change", "tbody td:nth-child(3) select", function (e) {
-//         e.preventDefault();
-
-//         var role = $(this).val();
-//         var row = this.parentElement.parentElement;
-//         var data = table.row(row).data();
-//         var currentRole = data.role;
-//         var userId = data.userId;
-
-//         var message;
-//         if (userId == currentUserId) {
-//             message = "<span class='label label-important'>Important</span><p><b>If you modify your access level you may need assistance to get it back.</b></p><p>Are you sure you want to change your access to this project from " + currentRole + " to " + decodeCamelCase(role) + "?</p>";
-//         }
-//         else {
-//             message = "Are you sure you want to change this user's access from " + decodeCamelCase(currentRole) + " to " + decodeCamelCase(role) + "?";
-//         }
-
-//         bootbox.confirm(message, function (result) {
-//             if (result) {
-//                 addUserWithRole(userId, role, projectId);
-
-//             } else {
-//                 reloadMembers(); // reload table
-//             }
-//         });
-//     });
-
-//     $('#member-list').on("click", "tbody td:nth-child(4) a", function (e) {
-//         e.preventDefault();
-
-//         var row = this.parentElement.parentElement;
-//         var data = table.row(row).data();
-//         var userId = data.userId;
-//         var role = data.role;
-
-//         var message;
-//         if (userId == currentUserId) {
-//             message = "<span class='label label-important'>Important</span><p><b>If you proceed you may need assistance to get your access back.</b></p><p>Are you sure you want to remove your access to this project?</p>";
-//         }
-//         else {
-//             message = "Are you sure you want to remove this user's access?";
-//         }
-//         bootbox.confirm(message, function (result) {
-//             if (result) {
-//                 if (userId && role) {
-//                     removeUserRole(userId, role);
-//                 } else {
-//                     alert("Error: required params not provided: userId & role");
-//                 }
-//             }
-//         });
-//     });
-
-//     function updateStatusMessage2(msg) {
-//         $('#formStatus span').text(''); // clear previous message
-//         $('#formStatus span').text(msg).parent().fadeIn();
-//     }
-
-//     function removeUserRole(userId, role) {
-//         $.ajax({
-//             url: fcConfig.removeUserRoleUrl,
-//             data: {
-//                 userId: userId,
-//                 role: role,
-//                 entityId: projectId
-//             }
-//         })
-//             .done(function (result) {
-//                     updateStatusMessage2("user was removed.");
-//                 }
-//             )
-//             .fail(function (jqXHR, textStatus, errorThrown) {
-//                     alert(jqXHR.responseText);
-//                 }
-//             )
-//             .always(function (result) {
-//                 reloadMembers(); // reload table
-//             });
-//     }
 }
 
 function reloadMembers() {
     $('#person-list').DataTable().ajax.reload();
 }
 
-var createPerson = function() {
+var createPersonforProject = function() {
     window.location.href = fcConfig.createPersonUrl;
-};
+}; 
+
+function PersonViewModel() {
+    var self = this;
+
+    self.personId = ko.observable();
+    self.firstName = ko.observable();
+    self.lastName = ko.observable();
+    self.email = ko.observable();
+    self.address1 = ko.observable();
+    self.address2 = ko.observable();
+    self.postCode = ko.observable();
+    self.town = ko.observable();
+    self.phoneNum = ko.observable();
+    self.mobileNum = ko.observable();
+    self.gender = ko.observable();
+    self.birthYear = ko.observable();
+    self.extra = ko.observable();
+    self.modTyp = ko.observable();
+    self.eProt = ko.observable();
+
+    // TODO - should not be hard-coded
+    self.projects = ["e0a99b52-c9fb-4b81-ae39-4436d11050c6"]
+
+    self.loadPerson = function (person){
+        var personModel = null;
+    }
+
+    self.save = function (){
+        console.log("saving")
+        // if ($('#validation-container').validationEngine('validate')) {
+
+        var data = self.modelAsJSON(self);
+        console.log(data);
+
+            // TODO remove temp values for testing
+            // var data = {
+            //     firstName: "John", lastName: "Doe", projects: ["e0a99b52-c9fb-4b81-ae39-4436d11050c6"], personId: "7489237894"
+            // };
+
+            $.ajax({
+                url: fcConfig.ajaxCreateUrl,
+                type: 'POST',
+                data: data,
+                contentType: 'application/json',
+                success: function (data) {
+                    if(data.status == 'created'){
+                       console.log("person created")
+                    }
+                    
+                },
+                error: function (data) {
+                    var errorMessage = data.responseText || 'There was a problem saving this person'
+                    bootbox.alert(errorMessage);
+                }
+            });
+    
+    // }
+    }
+
+    self.cancel = function (){
+        console.log("cancel")
+    }
+
+    self.deletePerson = function () {
+        console.log("delete func");
+        var message = "<span class='label label-important'>Important</span><p><b>This cannot be undone</b></p><p>Are you sure you want to delete this person?</p>";
+        bootbox.confirm(message, function (result) {
+            if (result) {
+                $.ajax({
+                    url: fcConfig.deletePersonUrl,
+                    type: 'DELETE',
+                    success: function (data) {
+                        if (data.error) {
+                            alert(data.error)
+                            // showAlert(data.error, "alert-error", self.transients.resultsHolder);
+                        } else {
+                            alert("succesfully deleted")
+                            // showAlert("Successfully deleted. Indexing is in process, search result will be updated in few minutes. Redirecting to search page...", "alert-success", self.transients.resultsHolder);
+                            // setTimeout(function () {
+                            //     window.location.href = fcConfig.homePagePath;
+                            // }, 3000);
+                        }
+                    },
+                    error: function (data) {
+                        alert("another error")
+                        // showAlert("Error: Unhandled error", "alert-error", self.transients.resultsHolder);
+                    }
+                });
+            }
+        });
+    };
+
+    self.toJS = function() {
+        var js = ko.toJS(self);
+        return js;
+    };
+
+    self.modelAsJSON = function () {
+        return JSON.stringify(self.toJS());
+    };
+
+}
+
+function PersonsListViewModel(){
+
+    // get persons for project
+    self.listAll = function(){
+
+    }
+}
