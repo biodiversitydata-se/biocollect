@@ -12,7 +12,6 @@ class PersonController {
     UserService userService
     ProjectService projectService
 
-
     def create() {
         render view: 'create', model: [create:true]
     }
@@ -30,29 +29,6 @@ class PersonController {
         }
     }
 
-    def ajaxList(String id) {
-//         if(params.entityType == "projectActivity") {
-            def pActivity = projectActivityService.get(id, 'all')
-    //    def sites = siteService.getSitesFromIdList(pActivity.sites, BRIEF)
-//             if (!pActivity) {
-//                 response.sendError(404, "Couldn't find project activity $id")
-//                 return
-//             }
-//             log.info("sites for activity" + pActivity.sites.toString())
-//             render pActivity.sites as JSON
-
-//         } else if (params.entityType == "project") {
-//             def project = projectService.get(id, "all")
-//             if (!project) {
-//                 response.sendError(404, "Couldn't find project $id")
-//                 return
-//             }
-
-//             render project?.sites  as JSON
-//         }
-
-    }
-
     def getPersonsForProjectIdPaginated() {
         String projectId = params.id
         log.debug "Project ID " + projectId
@@ -63,7 +39,6 @@ class PersonController {
                 def results = personService.getPersonsForProjectPerPage(projectId)
                 
                 asJson results
-                log.debug "results " + results
             } else {
                 response.sendError(SC_FORBIDDEN, 'Permission denied')
             }
@@ -74,6 +49,30 @@ class PersonController {
         } else {
             response.sendError(SC_INTERNAL_SERVER_ERROR, 'Unexpected error')
         }
+    }
+
+    // @PreAuthorise(accessLevel = 'admin')
+    def update(String id){
+        log.debug "updating person ${id}"
+        
+        // check if user is admin
+
+
+        def resp = personService.update(id, params)    
+    }
+
+
+    // @PreAuthorise(accessLevel = 'admin')
+    def delete(String id) {
+        def resp = personService.delete(id)
+        // if(resp == HttpStatus.SC_OK){
+        //     flash.message = 'Successfully deleted'
+        //     render status:resp, text: flash.message
+        // } else {
+        //     response.status = resp
+        //     flash.errorMessage = 'Error deleting the person, please try again later.'
+        //     render status:resp, error: flash.errorMessage
+        // }
     }
 
     def list() {
