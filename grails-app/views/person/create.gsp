@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta name="layout" content="${hubConfig.skin}"/>
-  <%-- <title> ${create ? 'New' : ('Edit | ' + site?.name?.encodeAsHTML())} | Users </title>
+  <title> ${create ? 'New' : ('Edit | ' + person?.firstName?.encodeAsHTML() + person?.lastName?.encodeAsHTML())} | Users </title>
     <g:if test="${project}">
         <meta name="breadcrumb" content="Create new user for ${project?.name?.encodeAsHTML()}"/>
     </g:if>
@@ -12,9 +12,9 @@
     </g:elseif>
     <g:else>
         <meta name="breadcrumbParent3"
-              content="${createLink(controller: 'site', action: 'index')}/${site?.siteId},${site?.name?.encodeAsHTML()}"/>
+              content="${createLink(controller: 'site', action: 'index')}/${person?.personId}"/>
         <meta name="breadcrumb" content="Edit"/>
-    </g:else> --%>
+    </g:else>
 
     <style type="text/css">
     legend {
@@ -36,29 +36,37 @@
     <asset:script type="text/javascript">
     var fcConfig = {
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
-        ajaxCreateUrl: "${createLink(action: 'ajaxCreate')}"
-        }
+        ajaxCreateUrl: "${createLink(action: 'ajaxCreate')}",
+        <%-- createPersonUrl: "${createLink(action: 'create')}", --%>
+        deletePersonUrl: "${createLink(action:'delete', id: "teststring")}"
+        };
         here = window.location.href;
 
     </asset:script>
 
     <asset:javascript src="common.js"/>
+    <asset:javascript src="persons.js"/>
+
 </head>
 <body>
     <%-- <div class="container-fluid validationEngineContainer" id="validation-container"> --%>
     <div class="container-fluid validationEngineContainer">
+        <div id="person">
         <bs:form action="update" inline="true">
             
-            <g:render template="userDetails" model="${[showLine: true]}"/>
+            <g:render template="personDetails" model="${[showLine: true]}"/>
 
             <div class="row-fluid">
                 <div class="form-actions span12">
-                    <button type="button" id="save" class="btn btn-primary">Save changes</button>
+                    <button type="button" id="save" class="btn btn-primary" data-bind="click: save">Save changes</button>
                     <button type="button" id="cancel" class="btn">Cancel</button>
+                    <button type="button" id="delete" class="btn btn-danger" data-bind="click: deletePerson">Delete person</button>
                 </div>
             </div>
         </bs:form>
+        </div>
     </div>
+
     <%-- <g:if env="development">
     <div class="container-fluid">
         <div class="expandable-debug">
@@ -82,57 +90,9 @@
 
 <asset:script type="text/javascript">
     $(function(){
-
-        <%-- $('#validation-container').validationEngine('attach', {scroll: false});
-
-        $('.helphover').popover({animation: true, trigger:'hover'}); --%>
-
-        <%-- var personViewModel = initPersonViewModel(true, ${!userCanEdit}); --%>
-
-        $('#cancel').click(function () {
-            <%-- if(siteViewModel.saved()){
-                document.location.href = fcConfig.sitePageUrl;
-            } if(fcConfig.projectUrl){
-                document.location.href = fcConfig.projectUrl;
-            }else {
-                document.location.href = fcConfig.homePageUrl;
-            } --%>
-        });
-
-        $('#save').click(function () {
-            <%-- if ($('#validation-container').validationEngine('validate')) { --%>
-                <%-- var json = personViewModel.toJS(); --%>
-                var firstName = document.getElementById("firstName").value,
-                lastName = document.getElementById("lastName").value,
-                personCode = document.getElementById("personCode").value
-
-<%-- This works to get values from front-end, using test data now  --%>
-                <%-- var data = {
-firstName: firstName, lastName: lastName, personCode: personCode, projects: ["e0a99b52-c9fb-4b81-ae39-4436d11050c6"]
-                } --%>
-                var data = {
-firstName: "Jane", lastName: "Doe", personCode: "shadjh", projects: ["e0a99b52-c9fb-4b81-ae39-4436d11050c6"], personId: "7489237894"
-                }
-
-                $.ajax({
-                    url: fcConfig.ajaxCreateUrl,
-                    type: 'POST',
-                    data: JSON.stringify(data),
-                    contentType: 'application/json',
-                    success: function (data) {
-                        if(data.status == 'created'){
-                           console.log("person created")
-                        }
-                        
-                    },
-                    error: function (data) {
-                        var errorMessage = data.responseText || 'There was a problem saving this person'
-                        bootbox.alert(errorMessage);
-                    }
-                });
-            <%-- } --%>
-        });
-    });
+        var personViewModel = new PersonViewModel();
+        ko.applyBindings(personViewModel, document.getElementById('person'));
+     }); 
 </asset:script>
 
 </body>
