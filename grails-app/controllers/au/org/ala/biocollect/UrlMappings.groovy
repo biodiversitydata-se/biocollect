@@ -74,7 +74,7 @@ class UrlMappings {
 
                 "/person/"(controller: 'person') {
 
-                        action = [GET: "get", POST: "create", DELETE: "delete"]
+                        action = [GET: "list", POST: "create"]
                 }
 
                 "/$hub/"(controller: 'home', action: 'index') {
