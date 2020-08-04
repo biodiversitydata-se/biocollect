@@ -9,12 +9,16 @@ class PersonService {
         webService.doPost(grailsApplication.config.ecodata.baseURL + '/person/', body) 
     }
 
+    def get(String id){
+        webService.getJson(grailsApplication.config.ecodata.baseURL + '/person/' + id)
+    }
+
     def update(String id){
         log.debug params
     }
 
     def getPersonsForProjectPerPage(String projectId){
-        def url = grailsApplication.config.ecodata.baseURL + "/person/get/${projectId}"
+        def url = grailsApplication.config.ecodata.baseURL + "/person/list/${projectId}"
         def result = webService.getJson(url)
         return result
     }
