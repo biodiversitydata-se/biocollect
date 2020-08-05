@@ -3,7 +3,7 @@
 
         <div class="span6">
             <label for=""><g:message code=""/>Personal code<g:message code=""/></label>
-           <input data-bind="value: person().personId()" id="personId" type="text" class="span12"/>
+           <input data-bind="value: person().personId" id="personId" type="text" class="span12"/>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>First name<g:message code=""/></label>
@@ -11,7 +11,7 @@
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Last name<g:message code=""/></label>
-           <input data-bind="value: person().lastName()" id="lastName" type="text" class="span12"/>
+           <input data-bind="value: person().lastName" id="lastName" type="text" class="span12"/>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Email address<g:message code=""/></label>
