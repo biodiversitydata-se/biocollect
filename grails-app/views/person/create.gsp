@@ -77,7 +77,7 @@
             extra: "${person?.extra}",
             modTyp: "${person?.modTyp}",
             eProt: "${person?.eProt}",
-            projects: "${person?.projects}"
+            projects: ${person?.projects}
         }
         console.log(savedPersonDetails);
 
