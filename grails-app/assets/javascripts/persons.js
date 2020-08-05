@@ -181,12 +181,12 @@ function PersonsListViewModel(projectId){
                     bSortable: true
                 },
                 {
-                    data: 'email', // can be null or undefined
+                    data: 'email',
                     name: 'email',
                     bSortable: false
                 },
                 {
-                    data: 'registeredOnline', // can be null or undefined
+                    data: 'registeredOnline',
                     name: 'registeredOnline',
                     bSortable: false
     
@@ -204,8 +204,6 @@ function PersonsListViewModel(projectId){
 
         $('#person-list').on("click", "tbody td:nth-child(1)", function (e) {
             e.preventDefault();
-            console.log("clicked", $(this));
-
             var row = this.parentElement;
             console.log("row", row);
             var data = table.row(row).data();
