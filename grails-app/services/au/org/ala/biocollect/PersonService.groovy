@@ -6,11 +6,11 @@ class PersonService {
     PersonService personService
 
     def create(body){
-        webService.doPost(grailsApplication.config.ecodata.baseURL + '/person/', body) 
+        webService.doPost(grailsApplication.config.ecodata.service.url + '/person/', body) 
     }
 
     def get(String id){
-        webService.getJson(grailsApplication.config.ecodata.baseURL + '/person/' + id)
+        webService.getJson(grailsApplication.config.ecodata.service.url + '/person/' + id)
     }
 
     def update(String id){
@@ -18,14 +18,14 @@ class PersonService {
     }
 
     def getPersonsForProjectPerPage(String projectId){
-        def url = grailsApplication.config.ecodata.baseURL + "/person/list/${projectId}"
+        def url = grailsApplication.config.ecodata.service.url + "/person/list/${projectId}"
         def result = webService.getJson(url)
         return result
     }
 
     def delete(String personId){
         log.debug "delete person - serv"
-        def response = webService.doDelete(grailsApplication.config.ecodata.baseURL + '/person/' + personId)
+        def response = webService.doDelete(grailsApplication.config.ecodata.service.url + '/person/' + personId)
 
         // TODO should someone be notified when a person is deleted?
         // String personName = get(id, "brief")?.lastName
