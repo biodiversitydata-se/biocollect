@@ -10,10 +10,10 @@
     <div class="row well well-small" id="project-person-list">
         <table style="width: 95%;" class="table table-striped table-bordered table-hover" id="person-list">
             <thead>
-            <th>Volunteer code</th>
+            <th id="personId">Volunteer code</th>
             <th>First Name</th>
             <th>Last Name</th>
-            <th>Sites</th>
+            <th>Email</th>
             <th>Registered online</th>
             <th width="5%"></th>
             </thead>

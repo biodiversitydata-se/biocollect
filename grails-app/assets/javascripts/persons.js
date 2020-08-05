@@ -28,7 +28,7 @@ function PersonViewModel(savedPerson) {
         extra : ko.observable(),
         modTyp : ko.observable(),
         eProt : ko.observable(),
-        projects : ["e0a99b52-c9fb-4b81-ae39-4436d11050c6"]
+        projects : "e0a99b52-c9fb-4b81-ae39-4436d11050c6"
     })
 
     // TODO - should not be hard-coded
@@ -168,8 +168,7 @@ function PersonsListViewModel(projectId){
             "columns": [
                 {
                     data: 'personId',
-                    name: 'personId',
-                    bSortable: false
+                    name: 'personId'
                 },
                 {
                     data: 'firstName',
@@ -179,39 +178,73 @@ function PersonsListViewModel(projectId){
                 {
                     data: 'lastName',
                     name: 'lastName',
+                    bSortable: true
+                },
+                {
+                    data: 'email', // can be null or undefined
+                    name: 'email',
                     bSortable: false
                 },
                 {
-                    data: null, // can be null or undefined
-                    defaultContent: "<i>02764</i>",
-                    bSortable: false
-                },
-                {
-                    data: null, // can be null or undefined
-                    defaultContent: "<i>Yes</i>",
+                    data: 'registeredOnline', // can be null or undefined
+                    name: 'registeredOnline',
                     bSortable: false
     
-                }
-                ,
+                },
                 {
                     render: function (data, type, row) {
-                        // cannot delete the last admin
-                        if (table.ajax.json().totalNbrOfAdmins == 1 && row.role == "admin") {
-                            return '';
-                        } else {
-                            return '<div class="pull-right margin-right-20">' + '<a class="margin-left-10" href="" title="view this user\'s details"><i class="fa fa-eye"></i></a>' +
-                            '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' +
-                            '<a class="margin-left-10" href=""  title="remove this user and role combination"><i class="fa fa-remove"></i></a></div>';
-                        }
+                        return '<div class="pull-right margin-right-20">' + '<a class="margin-left-10" href="" title="view this user\'s details"><i class="fa fa-eye"></i></a>' +
+                        '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' +
+                        '<a class="margin-left-10" href=""  title="remove this user and role combination"><i class="fa fa-remove"></i></a></div>';
                     },
                     bSortable: false
                 }
             ]
         });
+
+        $('#person-list').on("click", "tbody td:nth-child(1)", function (e) {
+            e.preventDefault();
+            console.log("clicked", $(this));
+
+            var row = this.parentElement;
+            console.log("row", row);
+            var data = table.row(row).data();
+            console.log(this.parentElement);
+            var personId = data.personId;
+            console.log("personId ", personId);
+            editPerson(personId);
+        });
+    
+        // function updateStatusMessage2(msg) {
+        //     $('#formStatus span').text(''); // clear previous message
+        //     $('#formStatus span').text(msg).parent().fadeIn();
+        // }
+    
+        // function removeUserRole(userId, role) {
+        //     $.ajax({
+        //         url: fcConfig.removeUserRoleUrl,
+        //         data: {
+        //             userId: userId,
+        //             role: role,
+        //             entityId: projectId
+        //         }
+        //     })
+        //         .done(function (result) {
+        //                 updateStatusMessage2("user was removed.");
+        //             }
+        //         )
+        //         .fail(function (jqXHR, textStatus, errorThrown) {
+        //                 alert(jqXHR.responseText);
+        //             }
+        //         )
+        //         .always(function (result) {
+        //             reloadMembers(); // reload table
+        //         });
+        // }
     }
 
-    this.editPerson = function (person) {
-        var url = fcConfig.updatePersonUrl + '/' + person.personId  // + '?returnTo=' + encodeURIComponent(fcConfig.returnTo);
+    var editPerson = function (personId) {
+        var url = fcConfig.updatePersonUrl + '/' + personId  // + '?returnTo=' + encodeURIComponent(fcConfig.returnTo);
         document.location.href = url;
     }
 
