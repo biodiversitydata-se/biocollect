@@ -2,12 +2,9 @@ function reloadMembers() {
     $('#person-list').DataTable().ajax.reload();
 }
 
-var createPersonforProject = function() {
+var createPersonForProject = function() {
     window.location.href = fcConfig.createPersonUrl;
 };
-var editPerson = function(){
-    window.location.href = fcConfig.updatePersonUrl;
-} 
 
 function PersonViewModel(savedPerson) {
     var self = this;
@@ -31,8 +28,6 @@ function PersonViewModel(savedPerson) {
         projects : "e0a99b52-c9fb-4b81-ae39-4436d11050c6"
     })
 
-    // TODO - should not be hard-coded
-
     self.loadPerson = function (person){
         var personModel = self.person();
 
@@ -55,22 +50,30 @@ function PersonViewModel(savedPerson) {
         }
     self.loadPerson(savedPerson)
 
+    // TODO depending on create or edit - update person
     self.save = function (){
         console.log("saving")
         // if ($('#validation-container').validationEngine('validate')) {
+        var personId = self.person().personId();
 
         var data = self.modelAsJSON(self.person());
-
+        var url = fcConfig.ajaxCreateUrl; 
+        var create = true;
+        // TODO create should come from model
+        // if (!create) {
+        //     url = fcConfig.ajaxCreateUrl + '/' + personId;
+        // } else {
+        //     url = fcConfig.ajaxCreateUrl; 
+        // }
             $.ajax({
-                url: fcConfig.ajaxCreateUrl,
+                url: url,
                 type: 'POST',
                 data: data,
                 contentType: 'application/json',
                 success: function (data) {
                     if(data.status == 'created'){
                        console.log("person created")
-                    }
-                    
+                    }                  
                 },
                 error: function (data) {
                     var errorMessage = data.responseText || 'There was a problem saving this person'
@@ -81,23 +84,6 @@ function PersonViewModel(savedPerson) {
     // }
     }
 
-    self.editPerson = function(){
-        $.ajax({
-            url: fcConfig.getPersonByIdUrl,
-            type: 'GET',
-            data: id,
-            contentType: 'application/json',
-            success: function (data) {
-                if(data.status == 'created'){
-                   console.log("got person")
-                }  
-            },
-            error: function (data) {
-                var errorMessage = data.responseText || 'There was a problem saving this person'
-                bootbox.alert(errorMessage);
-            }
-        });
-    }
 
     // self.loadPerson(person)
 
@@ -207,7 +193,7 @@ function PersonsListViewModel(projectId){
     }
 
     var getPerson = function (personId) {
-        var url = fcConfig.updatePersonUrl + '/' + personId;  // + '?returnTo=' + encodeURIComponent(fcConfig.returnTo);
+        var url = fcConfig.getPersonUrl + '/' + personId; 
         document.location.href = url;
     }
 
