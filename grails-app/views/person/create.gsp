@@ -28,8 +28,7 @@
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
         ajaxCreateUrl: "${createLink(action: 'ajaxCreate')}",
         <%-- createPersonUrl: "${createLink(action: 'create')}", --%>
-        deletePersonUrl: "${createLink(action:'delete', id: "teststring")}",
-        getPersonByIdUrl: "${createLink(action:'get', id: "7489237894")}"
+        deletePersonUrl: "${createLink(action:'delete')}"
         };
         here = window.location.href;
 
@@ -76,10 +75,9 @@
             birthYear: "${person?.birthYear}",
             extra: "${person?.extra}",
             modTyp: "${person?.modTyp}",
-            eProt: "${person?.eProt}",
-            projects: ${person?.projects}
+            eProt: "${person?.eProt}"
+            <%-- projects: ${person?.projects} --%>
         }
-        console.log(savedPersonDetails);
 
         var personViewModel = new PersonViewModel(savedPersonDetails);
         return personViewModel;
