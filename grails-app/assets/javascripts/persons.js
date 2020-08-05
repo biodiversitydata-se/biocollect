@@ -1,58 +1,3 @@
-/**
- * Render project members and their roles, support pagination.
- */
-function initialisePersonsTable(projectId) {
-
-    var table = $('#person-list').DataTable({
-        "bFilter": false,
-        "processing": true,
-        "serverSide": true,
-        "ajax": fcConfig.getPersonsForProjectIdPaginatedUrl + "/" + projectId,
-        "columns": [
-            {
-                data: 'personId',
-                name: 'personId',
-                bSortable: false
-            },
-            {
-                data: 'firstName',
-                name: 'firstName',
-                bSortable: false
-            },
-            {
-                data: 'lastName',
-                name: 'lastName',
-                bSortable: false
-            },
-            {
-                data: null, // can be null or undefined
-                defaultContent: "<i>02764</i>",
-                bSortable: false
-            },
-            {
-                data: null, // can be null or undefined
-                defaultContent: "<i>Yes</i>",
-                bSortable: false
-
-            }
-            ,
-            {
-                render: function (data, type, row) {
-                    // cannot delete the last admin
-                    if (table.ajax.json().totalNbrOfAdmins == 1 && row.role == "admin") {
-                        return '';
-                    } else {
-                        return '<div class="pull-right margin-right-20">' + '<a class="margin-left-10" href="" title="view this user\'s details"><i class="fa fa-eye"></i></a>' +
-                        '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' +
-                        '<a class="margin-left-10" href=""  title="remove this user and role combination"><i class="fa fa-remove"></i></a></div>';
-                    }
-                },
-                bSortable: false
-            }
-        ]
-    });
-}
-
 function reloadMembers() {
     $('#person-list').DataTable().ajax.reload();
 }
@@ -208,10 +153,67 @@ function PersonViewModel(savedPerson) {
 
 }
 
-// function PersonsListViewModel(){
 
-//     // get persons for project
-//     self.listAll = function(){
+// * This view model lists all observers registered for this project, it displays links on each name so that person can be viewed in detail and edited  *//
+function PersonsListViewModel(projectId){
+    var self = this;
 
-//     }
-// }
+    // list persons for project
+    self.listPersonsForProject = function(){
+        var table = $('#person-list').DataTable({
+            "bFilter": false,
+            "processing": true,
+            "serverSide": true,
+            "ajax": fcConfig.getPersonsForProjectIdPaginatedUrl + "/" + projectId,
+            "columns": [
+                {
+                    data: 'personId',
+                    name: 'personId',
+                    bSortable: false
+                },
+                {
+                    data: 'firstName',
+                    name: 'firstName',
+                    bSortable: false
+                },
+                {
+                    data: 'lastName',
+                    name: 'lastName',
+                    bSortable: false
+                },
+                {
+                    data: null, // can be null or undefined
+                    defaultContent: "<i>02764</i>",
+                    bSortable: false
+                },
+                {
+                    data: null, // can be null or undefined
+                    defaultContent: "<i>Yes</i>",
+                    bSortable: false
+    
+                }
+                ,
+                {
+                    render: function (data, type, row) {
+                        // cannot delete the last admin
+                        if (table.ajax.json().totalNbrOfAdmins == 1 && row.role == "admin") {
+                            return '';
+                        } else {
+                            return '<div class="pull-right margin-right-20">' + '<a class="margin-left-10" href="" title="view this user\'s details"><i class="fa fa-eye"></i></a>' +
+                            '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' +
+                            '<a class="margin-left-10" href=""  title="remove this user and role combination"><i class="fa fa-remove"></i></a></div>';
+                        }
+                    },
+                    bSortable: false
+                }
+            ]
+        });
+    }
+
+    this.editPerson = function (person) {
+        var url = fcConfig.updatePersonUrl + '/' + person.personId  // + '?returnTo=' + encodeURIComponent(fcConfig.returnTo);
+        document.location.href = url;
+    }
+
+    self.listPersonsForProject();
+}
