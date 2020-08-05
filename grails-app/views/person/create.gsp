@@ -27,7 +27,6 @@
     var fcConfig = {
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
         ajaxCreateUrl: "${createLink(action: 'ajaxCreate')}",
-        <%-- createPersonUrl: "${createLink(action: 'create')}", --%>
         deletePersonUrl: "${createLink(action:'delete')}"
         };
         here = window.location.href;
