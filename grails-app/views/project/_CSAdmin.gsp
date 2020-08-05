@@ -79,7 +79,7 @@
                             <g:render template="/admin/permissionTablePaginated"/>
                         </div>
                         <div class="tab-pane" id="persons">
-                            <g:render template="/person/tablePaginated"/>
+                            <g:render template="/person/tablePaginated" model="[projectId: project.projectId]"/>
                         </div>
                     </div>
                     
