@@ -214,33 +214,6 @@ function PersonsListViewModel(projectId){
             console.log("personId ", personId);
             editPerson(personId);
         });
-    
-        // function updateStatusMessage2(msg) {
-        //     $('#formStatus span').text(''); // clear previous message
-        //     $('#formStatus span').text(msg).parent().fadeIn();
-        // }
-    
-        // function removeUserRole(userId, role) {
-        //     $.ajax({
-        //         url: fcConfig.removeUserRoleUrl,
-        //         data: {
-        //             userId: userId,
-        //             role: role,
-        //             entityId: projectId
-        //         }
-        //     })
-        //         .done(function (result) {
-        //                 updateStatusMessage2("user was removed.");
-        //             }
-        //         )
-        //         .fail(function (jqXHR, textStatus, errorThrown) {
-        //                 alert(jqXHR.responseText);
-        //             }
-        //         )
-        //         .always(function (result) {
-        //             reloadMembers(); // reload table
-        //         });
-        // }
     }
 
     var editPerson = function (personId) {
