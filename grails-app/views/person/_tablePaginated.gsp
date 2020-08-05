@@ -2,7 +2,6 @@
 
 <%-- TODO Pass a value of create:true to edit view --%>
 <button class="btn btn-primary btn-small" data-bind="click: createPersonforProject">Add a person</button>
-<button class="btn btn-primary btn-small" data-bind="click: editPerson">Edit a person</button>
 
 <asset:javascript src="persons.js"/>
 
