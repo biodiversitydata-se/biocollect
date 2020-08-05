@@ -4,7 +4,6 @@
 <button class="btn btn-primary btn-small" data-bind="click: createPersonforProject">Add a person</button>
 <button class="btn btn-primary btn-small" data-bind="click: editPerson">Edit a person</button>
 
-<%-- TODO when clicked on a name, pass a value of create:false to edit view --%>
 <asset:javascript src="persons.js"/>
 
     <%-- <g:render template="/shared/pagination"/> --%>
@@ -19,6 +18,9 @@
             <th width="5%"></th>
             </thead>
             <tbody>
+            <%-- TODO when clicked on a name, pass a value of create:false to edit view 
+            --%>
+
             </tbody>
         </table>
     </div>
@@ -30,12 +32,9 @@
     </div>
 </div>
 <asset:script type="text/javascript">
-    $(window).load(function () {
-        initialisePersonsTable("${project.projectId}");
-     })
-    <%-- $(document).ready(function () {
-        var personsListViewModel = new PersonsListViewModel();
+    $(document).ready(function () {
+        var personsListViewModel = new PersonsListViewModel("${project.projectId}");
         ko.applyBindings(personsListViewModel, document.getElementById("project-person-list"))
-    }) --%>
+    })
 
 </asset:script>
