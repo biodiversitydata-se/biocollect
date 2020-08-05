@@ -52,11 +52,7 @@ function PersonViewModel(savedPerson) {
         personModel.modTyp(exists(person, "modTyp"));
         personModel.eProt(exists(person, "eProt"));
         // personModel.projects(exists(person, "projects"));
-        
-
-        console.log("personModel", personModel)
-        console.log(typeof personModel);
-    }
+        }
     self.loadPerson(savedPerson)
 
     self.save = function (){
@@ -64,10 +60,6 @@ function PersonViewModel(savedPerson) {
         // if ($('#validation-container').validationEngine('validate')) {
 
         var data = self.modelAsJSON(self.person());
-            // TODO remove temp values for testing
-            // var data = {
-            //     firstName: "John", lastName: "Doe", projects: ["e0a99b52-c9fb-4b81-ae39-4436d11050c6"], personId: "7489237894"
-            // };
 
             $.ajax({
                 url: fcConfig.ajaxCreateUrl,
@@ -114,12 +106,13 @@ function PersonViewModel(savedPerson) {
     }
 
     self.deletePerson = function () {
-        console.log("delete func");
+        var personId = self.person().personId();
+        console.log("delete ", personId);
         var message = "<span class='label label-important'>Important</span><p><b>This cannot be undone</b></p><p>Are you sure you want to delete this person?</p>";
         bootbox.confirm(message, function (result) {
             if (result) {
                 $.ajax({
-                    url: fcConfig.deletePersonUrl,
+                    url: fcConfig.deletePersonUrl + '/' + personId,
                     type: 'DELETE',
                     success: function (data) {
                         if (data.error) {
@@ -209,13 +202,12 @@ function PersonsListViewModel(projectId){
             var data = table.row(row).data();
             console.log(this.parentElement);
             var personId = data.personId;
-            console.log("personId ", personId);
-            editPerson(personId);
+            getPerson(personId);
         });
     }
 
-    var editPerson = function (personId) {
-        var url = fcConfig.updatePersonUrl + '/' + personId  // + '?returnTo=' + encodeURIComponent(fcConfig.returnTo);
+    var getPerson = function (personId) {
+        var url = fcConfig.updatePersonUrl + '/' + personId;  // + '?returnTo=' + encodeURIComponent(fcConfig.returnTo);
         document.location.href = url;
     }
 
