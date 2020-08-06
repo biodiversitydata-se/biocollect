@@ -108,7 +108,7 @@
         getProjectMembersURL: "${createLink(controller: 'project', action: 'getMembersForProjectIdPaginated')}/${project.projectId}",
         removeUserRoleUrl:"${createLink(controller:'user', action:'removeUserWithRoleFromProject')}",
         getPersonsForProjectIdPaginatedUrl: "${createLink(controller: 'person', action: 'getPersonsForProjectIdPaginated')}",
-        createPersonUrl: "${createLink(controller: 'person', action: 'create')}",
+        createPersonUrl: "${createLink(controller: 'person', action: 'create', params: [id: project.projectId])}",
         getPersonUrl: "${createLink(controller: 'person', action: 'get')}",
         editPersonUrl: "${createLink(controller: 'person', action: 'update')}",
         absenceIconUrl:"${asset.assetPath(src: 'triangle.png')}",
