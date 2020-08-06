@@ -14,11 +14,12 @@ class PersonController {
 
     def get(String id) {
         def person = personService.get(id)
-        render view: 'create', model:[person: person] 
+        render view: 'create', model:[create: false, person: person] 
     }
     
     def create() {
-        render view: 'create', model:[create:true]
+        log.debug "params.id" + params.id
+        render view: 'create', model:[create:true, projectId: params.id]
     }
 
     def ajaxCreate() {
