@@ -14,8 +14,8 @@ class PersonService {
         return result
     }
 
-    def update(String id){
-        log.debug params
+    def update(String id, Map body){
+        webService.doPost(grailsApplication.config.ecodata.service.url + "/person/update/${id}", body)
     }
 
     def getPersonsForProjectPerPage(String projectId){

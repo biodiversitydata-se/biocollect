@@ -22,7 +22,7 @@ class PersonController {
         render view: 'create', model:[create:true, projectId: params.id]
     }
 
-    def ajaxCreate() {
+    def save() {
 
         def values = request.JSON
         Map result = personService.create(values)
@@ -60,11 +60,15 @@ class PersonController {
     // @PreAuthorise(accessLevel = 'admin')
     def update(String id){
         log.debug "updating person ${id}"
-        
-        // check if user is admin
-
-
-        def resp = personService.update(id, params)    
+        def values = request.JSON
+        // TODO check if user is admin
+        log.debug "values to send: " + values
+        def resp = personService.update(id, values)  
+        if (resp.error) {
+            resp.status = 500
+        } else {
+            render resp
+        }
     }
 
 
