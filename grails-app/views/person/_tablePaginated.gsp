@@ -7,7 +7,7 @@
 
     <%-- <g:render template="/shared/pagination"/> --%>
     <div class="row well well-small" id="project-person-list">
-        <table style="width: 95%;" class="table table-striped table-bordered table-hover" id="person-list">
+        <table style="width: 95%;margin:30px" class="table table-striped table-bordered table-hover" id="person-list">
             <thead>
             <th id="personId">Volunteer code</th>
             <th>First Name</th>

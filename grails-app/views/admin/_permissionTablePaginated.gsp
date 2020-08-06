@@ -1,6 +1,6 @@
 <div class="pill-pane">
     <div class="row well well-small" id="project-member-list">
-        <table style="width: 95%;" class="table table-striped table-bordered table-hover" id="member-list">
+        <table style="width: 95%;margin:30px" class="table table-striped table-bordered table-hover" id="member-list">
             <thead>
             <th>User Id</th>
             <th>User Name</th>
