@@ -47,7 +47,7 @@
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Year of birth<g:message code=""/></label>
-           <input data-bind="value: person().birthYear"  type="text" class="span12"/>
+           <input data-bind="value: person().birthDate"  type="text" class="span12"/>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Additional info<g:message code=""/></label>

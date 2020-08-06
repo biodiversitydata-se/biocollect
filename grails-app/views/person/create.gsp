@@ -4,7 +4,7 @@
 <head>
   <meta name="layout" content="${hubConfig.skin}"/>
   <%-- <title> ${create ? 'New' : ('Edit | ' + person?.firstName?.encodeAsHTML() + person?.lastName?.encodeAsHTML())} | Users </title> --%>
-    <title> ${create ? 'New' : 'Edit | '}</title>
+    <title> ${create ? 'New' : ('Edit | ' + person?.firstName.encodeAsHTML() + ' ' + person?.lastName.encodeAsHTML())}</title>
 
     <style type="text/css">
     legend {
@@ -26,7 +26,8 @@
     <asset:script type="text/javascript">
     var fcConfig = {
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
-        ajaxCreateUrl: "${createLink(action: 'ajaxCreate')}",
+        saveNewPersonUrl: "${createLink(action: 'save')}",
+        updatePersonUrl: "${createLink(action: 'update')}",
         deletePersonUrl: "${createLink(action:'delete')}"
         };
         here = window.location.href;
@@ -71,14 +72,15 @@
             phoneNum: "${person?.phoneNum}",
             mobileNum: "${person?.mobileNum}",
             gender: "${person?.gender}",
-            birthYear: "${person?.birthYear}",
+            birthDate: "${person?.birthDate}",
             extra: "${person?.extra}",
             modTyp: "${person?.modTyp}",
-            eProt: "${person?.eProt}"
-            <%-- projects: ${person?.projects} --%>
+            eProt: "${person?.eProt}",
+            projects: ${person?.projects}
         }
+        console.log(savedPersonDetails);
 
-        var personViewModel = new PersonViewModel(savedPersonDetails);
+        var personViewModel = new PersonViewModel(savedPersonDetails, ${create}, "${projectId}");
         return personViewModel;
     }
     $(function(){
