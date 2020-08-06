@@ -2,12 +2,15 @@ function reloadMembers() {
     $('#person-list').DataTable().ajax.reload();
 }
 
+    // TODO - this should contain projectId that will be saved in person.projects - 
+// projectId is available in personlistview - move this function there
 var createPersonForProject = function() {
     window.location.href = fcConfig.createPersonUrl;
 };
 
-function PersonViewModel(savedPerson) {
+function PersonViewModel(savedPerson, create, projectId) {
     var self = this;
+    console.log("create is ", create)
 
     self.person = ko.observable({
         personId : ko.observable(),
@@ -21,11 +24,11 @@ function PersonViewModel(savedPerson) {
         phoneNum : ko.observable(),
         mobileNum : ko.observable(),
         gender : ko.observable(),
-        birthYear : ko.observable(),
+        birthDate : ko.observable(),
         extra : ko.observable(),
         modTyp : ko.observable(),
         eProt : ko.observable(),
-        projects : "e0a99b52-c9fb-4b81-ae39-4436d11050c6"
+        projects : ko.observableArray([projectId])
     })
 
     self.loadPerson = function (person){
@@ -42,29 +45,32 @@ function PersonViewModel(savedPerson) {
         personModel.phoneNum(exists(person, "phoneNum"));
         personModel.mobileNum(exists(person, "mobileNum"));
         personModel.gender(exists(person, "gender"));
-        personModel.birthYear(exists(person, "birthYear"));
+        personModel.birthDate(exists(person, "birthDate"));
         personModel.extra(exists(person, "extra"));
         personModel.modTyp(exists(person, "modTyp"));
         personModel.eProt(exists(person, "eProt"));
-        // personModel.projects(exists(person, "projects"));
+        personModel.projects(person.projects, []);
         }
-    self.loadPerson(savedPerson)
+
+    if (!create){
+        console.log("loading person");
+        self.loadPerson(savedPerson);
+    }
 
     // TODO depending on create or edit - update person
     self.save = function (){
-        console.log("saving")
+        console.log("saving create is ", create)
         // if ($('#validation-container').validationEngine('validate')) {
         var personId = self.person().personId();
 
         var data = self.modelAsJSON(self.person());
         var url = fcConfig.ajaxCreateUrl; 
-        var create = true;
-        // TODO create should come from model
-        // if (!create) {
-        //     url = fcConfig.ajaxCreateUrl + '/' + personId;
-        // } else {
-        //     url = fcConfig.ajaxCreateUrl; 
-        // }
+        
+        if (create) {
+            url = fcConfig.saveNewPersonUrl; 
+        } else {
+            url = fcConfig.updatePersonUrl + '/' + personId;
+        }
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -184,17 +190,14 @@ function PersonsListViewModel(projectId){
         $('#person-list').on("click", "tbody td:nth-child(1)", function (e) {
             e.preventDefault();
             var row = this.parentElement;
-            console.log("row", row);
             var data = table.row(row).data();
-            console.log(this.parentElement);
             var personId = data.personId;
-            getPerson(personId);
+            self.getPerson(personId);
         });
     }
 
-    var getPerson = function (personId) {
-        var url = fcConfig.getPersonUrl + '/' + personId; 
-        document.location.href = url;
+    self.getPerson = function (personId) {
+        document.location.href = fcConfig.getPersonUrl + '/' + personId; 
     }
 
     self.listPersonsForProject();
