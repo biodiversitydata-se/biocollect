@@ -76,6 +76,10 @@ class UrlMappings {
 
                         action = [GET: "list", POST: "create"]
                 }
+                "/person/$id"(controller: 'person') {
+
+                        action = [GET: "get", POST: "update"]
+                }
 
                 "/$hub/"(controller: 'home', action: 'index') {
                         constraints {
