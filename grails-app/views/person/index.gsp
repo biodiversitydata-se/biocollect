@@ -3,8 +3,7 @@
 <html>
 <head>
   <meta name="layout" content="${hubConfig.skin}"/>
-  <%-- <title> ${create ? 'New' : ('Edit | ' + person?.firstName?.encodeAsHTML() + person?.lastName?.encodeAsHTML())} | Users </title> --%>
-    <title> ${create ? 'New' : ('Edit | ' + person?.firstName.encodeAsHTML() + ' ' + person?.lastName.encodeAsHTML())}</title>
+    <title> ${person?.firstName.encodeAsHTML() + ' ' + person?.lastName.encodeAsHTML())}</title>
 
     <style type="text/css">
     legend {
@@ -28,7 +27,8 @@
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
         saveNewPersonUrl: "${createLink(action: 'save')}",
         updatePersonUrl: "${createLink(action: 'update')}",
-        deletePersonUrl: "${createLink(action:'delete')}"
+        deletePersonUrl: "${createLink(action:'delete')}",
+        returnToUrl: "${createLink(controller: 'project', action:'index')}"
         };
         here = window.location.href;
 
@@ -42,6 +42,8 @@
     <%-- <div class="container-fluid validationEngineContainer" id="validation-container"> --%>
     <div class="container-fluid validationEngineContainer">
         <div id="person">
+         <g:link action="edit" id="${person.personId}" class="btn btn-small"><i
+                    class="icon-edit"></i> Edit person</g:link>
         <bs:form action="update" inline="true">
             
             <g:render template="personDefinition"/>
@@ -76,7 +78,7 @@
             extra: "${person?.extra}",
             modTyp: "${person?.modTyp}",
             eProt: "${person?.eProt}",
-            projects: ${person?.projects}
+            projects: ${person?.projects ?: '[]'}
         }
         console.log(savedPersonDetails);
 
