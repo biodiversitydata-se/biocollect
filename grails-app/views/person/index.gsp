@@ -25,7 +25,7 @@
     <asset:script type="text/javascript">
     var fcConfig = {
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
-        saveNewPersonUrl: "${createLink(action: 'save')}",
+        personSaveUrl: "${createLink(action: 'save')}",
         updatePersonUrl: "${createLink(action: 'update')}",
         deletePersonUrl: "${createLink(action:'delete')}",
         returnToProjectUrl: "${createLink(controller: 'project', action:'index')}"

@@ -13,17 +13,38 @@ class PersonController {
     ProjectService projectService
 
     def index(String id) {
-        def person = personService.get(id)
-        render view: 'create', model:[create: false, person: person] 
+        def result = personService.get(id)
+        if (params.format == 'json')
+            render result as JSON
+        else
+            result
+    }
+    def create(){
+        log.debug "params.id is project id? " + params.id
+        render view: 'edit', model:[create:true, projectId: params.id]  
     }
     
-    def create() {
+    def edit(String id) {
         log.debug "params.id" + params.id
-        render view: 'create', model:[create:true, projectId: params.id]
+        def person = personService.get(id)
+        render view: 'edit', model:[create:false, person: person]
+    }
+
+    // @PreAuthorise(accessLevel = 'admin')
+    def update(String id){
+        log.debug "updating person ${id}"
+        def values = request.JSON
+        // TODO check if user is admin
+        log.debug "values to send: " + values
+        def resp = personService.update(id, values)  
+        if (resp.error) {
+            resp.status = 500
+        } else {
+            render resp
+        }
     }
 
     def save() {
-
         def values = request.JSON
         Map result = personService.create(values)
         log.debug "result of person service call " + result
@@ -57,19 +78,7 @@ class PersonController {
         }
     }
 
-    // @PreAuthorise(accessLevel = 'admin')
-    def edit(String id){
-        log.debug "updating person ${id}"
-        def values = request.JSON
-        // TODO check if user is admin
-        log.debug "values to send: " + values
-        def resp = personService.update(id, values)  
-        if (resp.error) {
-            resp.status = 500
-        } else {
-            render resp
-        }
-    }
+
 
 
     // @PreAuthorise(accessLevel = 'admin')
