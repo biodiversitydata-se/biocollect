@@ -5,7 +5,7 @@ function reloadMembers() {
     // TODO - this should contain projectId that will be saved in person.projects - 
 // projectId is available in personlistview - move this function there
 var createPersonForProject = function() {
-    window.location.href = fcConfig.createPersonUrl;
+    window.location.href = fcConfig.personCreateUrl;
 };
 
 function PersonViewModel(savedPerson, create, projectId) {
@@ -65,12 +65,11 @@ function PersonViewModel(savedPerson, create, projectId) {
         var personId = self.person().personId();
 
         var data = self.modelAsJSON(self.person());
-        var url = fcConfig.ajaxCreateUrl; 
         
         if (create) {
             url = fcConfig.saveNewPersonUrl; 
         } else {
-            url = fcConfig.updatePersonUrl + '/' + personId;
+            url = fcConfig.personEditUrl + '/' + personId;
         }
             $.ajax({
                 url: url,
@@ -199,7 +198,7 @@ function PersonsListViewModel(projectId){
     }
 
     self.getPerson = function (personId) {
-        document.location.href = fcConfig.getPersonUrl + '/' + personId; 
+        document.location.href = fcConfig.personViewUrl + '/' + personId; 
     }
 
     self.listPersonsForProject();

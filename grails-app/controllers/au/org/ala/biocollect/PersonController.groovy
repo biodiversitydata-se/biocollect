@@ -12,7 +12,8 @@ class PersonController {
     UserService userService
     ProjectService projectService
 
-    def get(String id) {
+    def index(String id) {
+        log.debug "index"
         def person = personService.get(id)
         render view: 'create', model:[create: false, person: person] 
     }
@@ -58,7 +59,7 @@ class PersonController {
     }
 
     // @PreAuthorise(accessLevel = 'admin')
-    def update(String id){
+    def edit(String id){
         log.debug "updating person ${id}"
         def values = request.JSON
         // TODO check if user is admin

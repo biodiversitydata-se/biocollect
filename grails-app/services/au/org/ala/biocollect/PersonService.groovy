@@ -11,7 +11,6 @@ class PersonService {
 
     def get(String id){
         def result = webService.getJson(grailsApplication.config.ecodata.service.url + '/person/get/' + id)
-        return result
     }
 
     def update(String id, Map body){
