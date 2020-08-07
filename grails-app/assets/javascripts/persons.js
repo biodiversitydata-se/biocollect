@@ -56,8 +56,8 @@ function PersonViewModel(savedPerson, create, projectId) {
         self.loadPerson(savedPerson);
     }
 
-    self.returnToProjectUrl = fcConfig.returnToUrl +'/' + projectId;
-
+    // self.returnToProjectUrl = fcConfig.returnToProjectUrl +'/' + projectId;
+    self.returnToProjectUrl = fcConfig.returnToProjectUrl + '/' + "dab767a5-929e-4733-b8eb-c9113194201f"
     // TODO depending on create or edit - update person
     self.save = function (){
         console.log("saving create is ", create)
@@ -67,9 +67,9 @@ function PersonViewModel(savedPerson, create, projectId) {
         var data = self.modelAsJSON(self.person());
         
         if (create) {
-            url = fcConfig.saveNewPersonUrl; 
+            url = fcConfig.personSaveUrl; 
         } else {
-            url = fcConfig.personEditUrl + '/' + personId;
+            url = fcConfig.personUpdateUrl + '/' + personId;
         }
             $.ajax({
                 url: url,
@@ -78,11 +78,11 @@ function PersonViewModel(savedPerson, create, projectId) {
                 contentType: 'application/json',
                 success: function (data) {
                     if(data.status == 'created'){
-                       console.log(data)
+                        alert("Person updated success!");
                        document.location.href = self.returnToProjectUrl;
                     }    
                     else {
-                        alert("Person created", data);
+                        alert("Person updated ok");
                         document.location.href = self.returnToProjectUrl;
                     }              
                 },
@@ -193,11 +193,11 @@ function PersonsListViewModel(projectId){
             var row = this.parentElement;
             var data = table.row(row).data();
             var personId = data.personId;
-            self.getPerson(personId);
+            self.viewPerson(personId);
         });
     }
 
-    self.getPerson = function (personId) {
+    self.viewPerson = function (personId) {
         document.location.href = fcConfig.personViewUrl + '/' + personId; 
     }
 
