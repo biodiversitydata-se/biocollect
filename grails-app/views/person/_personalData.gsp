@@ -1,5 +1,5 @@
 <div class="row-fluid">
-        <h2><g:message code=""/>User details</h2>
+        <h2><g:message code=""/>Person details</h2>
 
         <div class="span6">
             <label for=""><g:message code=""/>Personal code<g:message code=""/></label>
