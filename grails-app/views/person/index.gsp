@@ -166,22 +166,22 @@
                     success: function (data) {
                         console.log(data);
                         alert("Successfully deleted. Indexing is in process, search result will be updated in few minutes. Redirecting to search page...", "alert-success");
-                        window.location.href = self.returnToProjectUrl + '/' + "dab767a5-929e-4733-b8eb-c9113194201f"
+                        window.location.href = fcConfig.returnToProjectUrl + '/' + "dab767a5-929e-4733-b8eb-c9113194201f"
                     },
                     error: function () {
                         console.log(data);
 
                         alert("Error deleting person")
-                        document.location.href = self.returnToProjectUrl + '/' + "dab767a5-929e-4733-b8eb-c9113194201f";
+                        document.location.href = fcConfig.returnToProjectUrl + '/' + "dab767a5-929e-4733-b8eb-c9113194201f";
                     }
                 });
             }
         });
     });
 
-    $ajax('#cancel').on("click", function (){
+    $('#cancel').on("click", function (){
         console.log("go to project")
-        document.location.href = self.returnToProjectUrl + '/' + "dab767a5-929e-4733-b8eb-c9113194201f";
+        document.location.href = fcConfig.returnToProjectUrl + '/' + "dab767a5-929e-4733-b8eb-c9113194201f";
 
     })
     </asset:script>
