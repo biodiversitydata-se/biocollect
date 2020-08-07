@@ -13,7 +13,6 @@ class PersonController {
     ProjectService projectService
 
     def index(String id) {
-        log.debug "index"
         def person = personService.get(id)
         render view: 'create', model:[create: false, person: person] 
     }
@@ -76,31 +75,10 @@ class PersonController {
     // @PreAuthorise(accessLevel = 'admin')
     def delete(String id) {
         def resp = personService.delete(id)
-        // if(resp == HttpStatus.SC_OK){
-        //     flash.message = 'Successfully deleted'
-        //     render status:resp, text: flash.message
-        // } else {
-        //     response.status = resp
-        //     flash.errorMessage = 'Error deleting the person, please try again later.'
-        //     render status:resp, error: flash.errorMessage
-        // }
-    }
-
-    def list() {
-        log.debug "list in person service"
     }
 
     def asJson(json) {
         render(contentType: 'application/json', text: json as JSON)
     }
-    // def edit(String id) {
-    // }
-
-    // def delete(String id) {
-    // }
-
-    // def listSites(){
-
-    // }
 
 }
