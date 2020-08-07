@@ -49,13 +49,14 @@ function PersonViewModel(savedPerson, create, projectId) {
         personModel.extra(exists(person, "extra"));
         personModel.modTyp(exists(person, "modTyp"));
         personModel.eProt(exists(person, "eProt"));
-        personModel.projects(person.projects, []);
+        personModel.projects(person.projects || []);
         }
 
     if (!create){
-        console.log("loading person");
         self.loadPerson(savedPerson);
     }
+
+    self.returnToProjectUrl = fcConfig.returnToUrl +'/' + projectId;
 
     // TODO depending on create or edit - update person
     self.save = function (){
@@ -78,12 +79,18 @@ function PersonViewModel(savedPerson, create, projectId) {
                 contentType: 'application/json',
                 success: function (data) {
                     if(data.status == 'created'){
-                       console.log("person created")
-                    }                  
+                       console.log(data)
+                       document.location.href = self.returnToProjectUrl;
+                    }    
+                    else {
+                        alert("Person created", data);
+                        document.location.href = self.returnToProjectUrl;
+                    }              
                 },
                 error: function (data) {
                     var errorMessage = data.responseText || 'There was a problem saving this person'
                     bootbox.alert(errorMessage);
+                    document.location.href = self.returnToProjectUrl;
                 }
             });
     
@@ -95,11 +102,11 @@ function PersonViewModel(savedPerson, create, projectId) {
 
     self.cancel = function (){
         console.log("cancel")
+        document.location.href = self.returnToProjectUrl;
     }
 
     self.deletePerson = function () {
         var personId = self.person().personId();
-        console.log("delete ", personId);
         var message = "<span class='label label-important'>Important</span><p><b>This cannot be undone</b></p><p>Are you sure you want to delete this person?</p>";
         bootbox.confirm(message, function (result) {
             if (result) {
@@ -107,20 +114,15 @@ function PersonViewModel(savedPerson, create, projectId) {
                     url: fcConfig.deletePersonUrl + '/' + personId,
                     type: 'DELETE',
                     success: function (data) {
-                        if (data.error) {
-                            alert(data.error)
-                            // showAlert(data.error, "alert-error", self.transients.resultsHolder);
-                        } else {
-                            alert("succesfully deleted")
-                            // showAlert("Successfully deleted. Indexing is in process, search result will be updated in few minutes. Redirecting to search page...", "alert-success", self.transients.resultsHolder);
-                            // setTimeout(function () {
-                            //     window.location.href = fcConfig.homePagePath;
-                            // }, 3000);
-                        }
+                        console.log(data);
+                        alert("Successfully deleted. Indexing is in process, search result will be updated in few minutes. Redirecting to search page...", "alert-success");
+                        window.location.href = self.returnToProjectUrl;
                     },
-                    error: function (data) {
-                        alert("another error")
-                        // showAlert("Error: Unhandled error", "alert-error", self.transients.resultsHolder);
+                    error: function () {
+                        console.log(data);
+
+                        alert("Error deleting person")
+                        document.location.href = self.returnToProjectUrl;
                     }
                 });
             }
