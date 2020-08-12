@@ -1,6 +1,5 @@
 package au.org.ala.biocollect.merit
 
-import au.org.ala.biocollect.*
 import au.org.ala.biocollect.merit.PersonService
 import au.org.ala.biocollect.merit.UserService
 import au.org.ala.biocollect.merit.ProjectService

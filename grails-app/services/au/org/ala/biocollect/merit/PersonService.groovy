@@ -1,4 +1,4 @@
-package au.org.ala.biocollect
+package au.org.ala.biocollect.merit
 
 class PersonService {
 
