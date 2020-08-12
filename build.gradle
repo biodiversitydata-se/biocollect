@@ -18,6 +18,7 @@ plugins {
 }
 
 version "5.1-SNAPSHOT"
+group "au.org.ala"
 
 apply plugin:"eclipse"
 apply plugin:"idea"
@@ -47,7 +48,7 @@ def httpmimeVersion = "4.2.1"
 def jtsVersion = "1.8"
 def geoToolsVersion = "11.1"
 // Set to true it needed only for development
-boolean inplace = false
+boolean inplace = true
 
 
 dependencies {
@@ -132,7 +133,7 @@ dependencies {
     compile "org.grails.plugins:ala-admin-plugin:2.1"
     if (!inplace) {
         compile "org.grails.plugins:ala-map-plugin:3.0"
-        compile "org.grails.plugins:ecodata-client-plugin:3.0.2"
+        compile "org.grails.plugins:ecodata-client-plugin:3.0"
     }
 }
 
