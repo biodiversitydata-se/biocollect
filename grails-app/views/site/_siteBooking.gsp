@@ -7,23 +7,28 @@
     <%-- Start of site booking form  --%>
     <bs:form action="update" inline="true" class="form-horizontal">
         <div class="control-group">
-            <label class="control-label" for="emailAddress1">User's email address</label>
+            <label class="control-label" for="bookedById">Code of the person who is booking</label>
             <div class="controls">
-                <input class="input-xlarge validate[required,custom[email]]" id="emailAddress1" placeholder="enter a user's email address" type="text"/>
+                <%-- This value will update the site object's field 'bookedBy'  --%>
+                <input class="input-xlarge" id="bookedById" data-bind="value: bookedBy" placeholder="enter personal code" type="text"/>
             </div>
-        </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="bookedByEmail">Email address</label>
+                <div class="controls">
+                    <input class="input-xlarge" id="bookedByEmail" placeholder="email address" type="text"/>
+                </div>
+            </div>
         <div class="control-group">
             <label class="control-label" for="">Site name</label>
             <div class="controls">
-                <input class="input-xlarge" disabled id="siteName" data-bind="value: name"/>
-                <input class="input-xlarge" disabled hidden id="siteId" data-bind="value: siteId"/>
-                <input id="isBooked" data-bind="value: isBooked"/>
-
+                <input class="input-xlarge" disabled id="siteName"/>
+                <g:hiddenField name="siteId" id="siteId" data-bind="value: siteId"/>
             </div>
         </div>
         <div class="control-group">
             <div class="controls">
-                <button id="save" class="btn btn-primary btn-small">Book</button>
+                <button id="save" class="btn btn-primary btn-small" data-bind="click: bookSite">Book</button>
                 <g:img uri="${asset.assetPath(src:'spinner.gif')}" id="spinner1" class="hide spinner" alt="spinner icon"/>
             </div>
         </div>
@@ -69,7 +74,7 @@
 
     <%-- Start of map --%>
     </br>
-        <g:render template="/projectActivity/siteBookingMap" model="${[id: 'leafletMap']}"></g:render>
+        <g:render template="/site/siteBookingMap" model="${[id: 'leafletMap']}"></g:render>
     </br>
     <%-- End of map --%>
 
@@ -80,38 +85,9 @@
 <asset:script type="text/javascript">
     var map = initMap({}, 'leafletMap'); 
 
-    function initialiseProjectActivitiesSiteBooking(pActivitiesVM) {
-        <%-- var pActivitiesSiteBookingVM = new ProjectActivitiesSiteBookingViewModel(pActivitiesVM); --%>
+    function initialiseSiteBooking(pActivitiesVM) {
         var pActivitiesSiteBookingVM = new SiteBookingViewModel(pActivitiesVM);
         ko.applyBindings(pActivitiesSiteBookingVM, document.getElementById('pActivitySiteBooking'));
         pActivitiesSiteBookingVM.plotGeoJson();
     };
-
-    $('#save').click(function () {
-
-        <%-- TODO Validate - does the email address exist?  --%>
-
-            var data = { site: {
-                isBooked: document.getElementById("isBooked").value,
-                projectId: 'dab767a5-929e-4733-b8eb-c9113194201f',
-                projects: ['dab767a5-929e-4733-b8eb-c9113194201f']
-                 }};
-
-            var siteId = document.getElementById("siteId").value;
-
-            $.ajax({
-                url: fcConfig.ajaxBookSiteUrl + siteId,
-                type: 'POST',
-                data: JSON.stringify(data),
-                contentType: 'application/json',
-                success: function (data) {
-                    <%-- TODO change the url to something like back to project admin tab --%>
-                    document.location.href = fcConfig.homePagePath;
-                },
-                error: function (data) {
-                    var errorMessage = data.responseText || 'There was a problem saving this site'
-                    bootbox.alert(errorMessage);
-                }
-            });
-    });
 </asset:script>

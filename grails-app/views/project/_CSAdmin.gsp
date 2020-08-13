@@ -76,11 +76,12 @@
                     <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:project.projectId]"/>
                     <g:render template="/admin/permissionTablePaginated"/>
                 </div>
+                <g:if test="${project?.isSystematicMonitoring}">
                 <div id="bookings" class="pill-pane">
                     <h3>Site booking</h3>
-                    <g:render template="/projectActivity/siteBooking" model="[projectActivities:projectActivities]"/>
+                    <g:render template="/site/siteBooking" model="[projectActivities:projectActivities]"/>
                 </div>
-
+                </g:if>    
                 <!--AUDIT-->
                 <g:if test="${fc.userInRole(role: grailsApplication.config.security.cas.alaAdminRole) || fc.userInRole(role: grailsApplication.config.security.cas.adminRole) || user.isAdmin}">
                     <div id="project-audit" class="pill-pane">

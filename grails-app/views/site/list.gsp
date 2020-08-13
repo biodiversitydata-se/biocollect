@@ -162,7 +162,7 @@
                             }
 
                             geometry = Biocollect.MapUtilities.featureToValidGeoJson(feature.geometry);
-                            geometry.properties.isBooked = site.isBooked();
+                            geometry.properties.isBooked = site.bookedBy() != undefined ? 'Yes' : 'No';
                             var options = {
                                 // markerLocation: [lat, lng],
                                 popup: $('#popup' + site.siteId()).html()

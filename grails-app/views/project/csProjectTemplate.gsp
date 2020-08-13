@@ -227,8 +227,8 @@
             initialiseData('project');
             <g:if test="${projectContent.admin.visible}">
                 initialiseProjectActivitiesSettings(pActivitiesVM);
-                <g:if test="${hubConfig?.isSystematic}">
-                    initialiseProjectActivitiesSiteBooking(pActivitiesVM);
+                <g:if test="${project.isSystematicMonitoring}">
+                    initialiseSiteBooking(pActivitiesVM);
                 </g:if>
             </g:if>
         </g:if>

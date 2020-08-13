@@ -425,7 +425,9 @@ var TransectPart = function (data) {
 
 var SiteBookingViewModel = function (pActivitiesVM){
     var self = $.extend(this, pActivitiesVM);
+    self.bookedBy = ko.observable();
 
+    // In Project ADMIN tab show on a map which sites are booked
     self.plotGeoJson = function(){
 
         var siteList = self.sites; 
@@ -433,9 +435,11 @@ var SiteBookingViewModel = function (pActivitiesVM){
         map.clearLayers();
 
         siteList.forEach(function (site) {
+
             var feature = site.extent
             if (feature && feature.source != 'none' && feature.geometry) {
-                var lng, lat, geometry, options;
+                var lng, lat, geoJson;
+
                 try {
 
                     if (feature.geometry.centre && feature.geometry.centre.length) {
@@ -445,21 +449,37 @@ var SiteBookingViewModel = function (pActivitiesVM){
                             feature.geometry.coordinates = [lng, lat];
                             if (feature.geometry.aream2 > 0){
                                 //ONLY apply on site list which show a marker instead of polygon
-                                //Change from Polygon to Point for geojson validation
+                                //Change from Polygon to Poin'dab767a5-929e-4733-b8eb-c9113194201f't for geojson validation
                                 feature.geometry.type = 'Point'
                             }
                         }
 
-                        geometry = Biocollect.MapUtilities.featureToValidGeoJson(feature.geometry);
-                        geometry.properties.isBooked = site.isBooked;
-                        var options = {
+                        geoJson = Biocollect.MapUtilities.featureToValidGeoJson(feature.geometry);
+                        geoJson.properties.isBooked = (site.bookedBy != undefined && site.bookedBy != '') ? true : false;
+
+                        var markerOptions = {
                             markerLocation: [lat, lng],
                             popup: $('#popup' + site.siteId).html()
-                        }   
+                        };
+
+                        // display name and fetch the id (hidden field) of selected site
+                        var displaySiteDetails = function(){
+                            self.selectedSiteId = site.siteId;
+                            $("#siteName").val(site.name);
+                        };
+
+                        var siteAttributes = {
+                            id: site.siteId, 
+                            name: site.name, 
+                            bookedBy: site.bookedBy,
+                            displaySiteDetails: displaySiteDetails,
+                            layerOptions: markerOptions
+                        }
+
                         // TODO find a way to distinguish between systematic sites and non-syst
                         // if (site.transectParts != null) {
                         if (feature.geometry.type == 'Point') {
-                            map.setCentroidGeoJSON(geometry, options, site.siteId, site.name, site.isBooked);
+                            map.setCentroidGeoJSON(geoJson, siteAttributes);
                         } 
                         // TODO this is needed - commented now because polygon would show and cover circle markers
                         // else {
@@ -468,14 +488,36 @@ var SiteBookingViewModel = function (pActivitiesVM){
                         // }
                     }
                 } catch (exception){
-                    console.log("Site:"+site.siteId +" reports exception: " + exception)
+                    console.log("Site:"+site.siteId +" reports exceptioptions, on: " + exception)
                 }
             }
         });
     }
 
+    // save site booking
     self.bookSite = function(){
 
+        var data = { site: {
+            bookedBy: self.bookedBy(),
+            projectId: self.projectId(),
+            projects: [self.projectId()]
+                }};
+
+        var siteId = self.selectedSiteId;
+        $.ajax({
+            url: fcConfig.ajaxBookSiteUrl + siteId,
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (data) {
+                bootbox.alert("Booking successful");
+                document.location.href = fcConfig.projectIndexUrl + '/' + self.projectId();
+            },
+            error: function (data) {
+                var errorMessage = data.responseText || 'There was a problem saving this site'
+                bootbox.alert(errorMessage);
+            }
+        });
     }
 
 };

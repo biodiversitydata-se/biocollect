@@ -256,7 +256,7 @@ function SiteListViewModel(prop) {
     self.numberOfProjects = ko.observable(prop.numberOfProjects);
     self.numberOfPoi = ko.observable(prop.numberOfPoi);
     self.numberOfTransectParts = ko.observable(prop.numberOfTransectParts);
-    self.isBooked = ko.observable(prop.isBooked);
+    self.bookedBy = ko.observable(prop.bookedBy);
     self.type = ko.observable(prop.type);
     self.canEdit = ko.observable(prop.canEdit);
     self.canDelete = ko.observable(prop.canDelete);

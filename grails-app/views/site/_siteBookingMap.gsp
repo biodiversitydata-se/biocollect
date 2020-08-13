@@ -3,11 +3,6 @@
     <!-- ko foreach: sites -->
     <div class="margin-left-20" data-bind="attr:{id: 'popup'+siteId}">
         <div><i class="icon-map-marker"></i> <a href="" data-bind="text: name"></a></div>
-        <!-- TODO the flag here should be on the level of survey or project - eg. isSiteBookingMandatory-->
-        <g:if test="${hubConfig?.isSystematic}">
-            <div data-bind="visible: isBooked != undefined"><span><i class="icon-star-empty"></i> Booked:</span> <span
-                data-bind="text: isBooked"></span><br></div>
-        </g:if>
     </div>
     <!-- /ko -->
 </div>
