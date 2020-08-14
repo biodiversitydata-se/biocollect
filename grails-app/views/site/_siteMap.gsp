@@ -9,12 +9,7 @@
 
         <div data-bind="visible: numberOfPoi() != undefined"><span><i class="icon-star-empty"></i> Number of POI:</span> <span
                 data-bind="text: numberOfPoi"></span><br></div>
-        <g:if test="${hubConfig?.isSystematic}">
-            <div data-bind="visible: numberOfTransectParts() != undefined"><span><i class="icon-star-empty"></i> Number of transect parts:</span> <span
-                data-bind="text: numberOfTransectParts"></span><br></div>
-            <%-- <div data-bind="visible: bookedBy() != undefined"><span><i class="icon-star-empty"></i> Booked:</span> <span
-                data-bind="text: bookedBy"></span><br></div> --%>
-        </g:if>
+
         <div data-bind="visible: numberOfProjects() != undefined"><i class="icon-star-empty"></i> Number of associated projects: <span
                 data-bind="text: numberOfProjects"></span></div>
     </div>
