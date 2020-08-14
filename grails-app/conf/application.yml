@@ -147,6 +147,16 @@ lists:
   baseURL: "https://lists.bioatlas.se" 
   commonFields: ['rawScientificName', 'matchedName', 'commonName']
 
+# mdba:
+#   baseUrl: "http://mdba-test.ala.org.au"
+#   searchUrl: "/occurrences/search?fq=data_hub_uid:dh10#tab_mapView"
+
+# mobile:
+#   auth:
+#     check:
+#       url:  "https://m.ala.org.au/mobileauth/mobileKey/checkKey"
+
+
 pdfgen:
   baseURL: "https://pdfgen.ala.org.au/"
 

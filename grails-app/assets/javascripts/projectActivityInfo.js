@@ -173,6 +173,15 @@ var pActivityInfo = function(o, selected, startDate, organisationName){
         }
     });
 
+
+    /**
+     * create a new systematic monitoring site for this survey - this enables both admins and volunteers to create a site
+     * @param 
+     */
+    self.redirectToCreateSystematic = function(){
+        window.location.href = fcConfig.siteCreateSystematicUrl + '&pActivityId=' + self.projectActivityId();
+    };
+
     /**
      * get sites with data for a given survey/project activity
      * @param obj

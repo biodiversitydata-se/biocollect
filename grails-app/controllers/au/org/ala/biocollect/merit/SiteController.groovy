@@ -52,6 +52,20 @@ class SiteController {
     def create(){
         render view: 'edit', model: [create:true, documents:[]]
     }
+    def createSystematic(){
+        def project = projectService.getRich(params.projectId)
+        // permissions check
+        def userCanEditSite = projectService.canUserEditSitesForProject(userService.getCurrentUserId(), params.projectId)
+        if (!userCanEditSite) {
+            flash.message = "Access denied: User is not en editor or is not allowed to manage sites for projectId ${params.projectId}"
+            redirect(controller:'project', action:'index', id: params.projectId)
+        }
+
+        project.sites?.sort {it.name}
+        project.projectSite = project.sites?.find{it.siteId == project.projectSiteId}
+        render view: 'editSystematic', model: [create:true, project:project, documents:[], projectSite:project.projectSite,
+                                     pActivityId: params?.pActivityId, userCanEdit: userCanEditSite]
+    }
 
 
     def createForProject(){
@@ -106,6 +120,23 @@ class SiteController {
     }
 
     def edit(String id) {
+        def result = siteService.getRaw(id)
+        if (!result.site) {
+            render 'no such site'
+        } else if (!isUserMemberOfSiteProjects(result.site) && !userService.userIsAlaAdmin()) {
+            // check user has permissions to edit - user must have edit access to
+            // ALL linked projects to proceed.
+            flash.message = "Access denied: User does not have <b>editor</b> permission to edit site: ${id}"
+            redirect(controller:'home', action:'index')
+        } else {
+            String projectIds = result.site.projects.toList().join(',')
+            String userId = authService.getUserId()
+            result.userCanEdit = projectService.isUserEditorForProjects(userId, projectIds)
+            result
+        }
+    }
+
+    def editSystematic(String id) {
         def result = siteService.getRaw(id)
         if (!result.site) {
             render 'no such site'
@@ -538,6 +569,56 @@ class SiteController {
         }
     }
 
+     @PreAuthorise(accessLevel = "editSite")
+    def ajaxBookSite(String id) {
+        def result = [:]
+        String userId = userService.getCurrentUserId(request)
+
+        def postBody = request.JSON
+        Boolean isCreateSiteRequest = !id
+        log.debug "Body: " + postBody
+        log.debug "Params:"
+        params.each { println it }
+        //todo: need to detect 'cleared' values which will be missing from the params - implement _destroy
+        def values = [:]
+        postBody.site?.each { k, v ->
+            if (!(k in ignore)) {
+                values[k] = v //reMarshallRepeatingObjects(v);
+            }
+        }
+
+        //Compatible with previous records without visibility field
+        boolean privateSite = values['visibility'] ? (values['visibility'] == 'private' ? true : false) : false
+
+
+        if(privateSite){
+            //Do not check permission if site is private
+            //This design is specially for sightings
+            result = siteService.updateRaw(id, values,userId)
+        }
+        else {
+            result = siteService.updateRaw(id, values, userId)
+            String siteId = result.id
+            if(siteId) {
+                if(isCreateSiteRequest){
+                    log.debug "isCreateSiteRequest is true"
+                    String projectId = postBody?.projectId
+                        siteService.addSitesToSiteWhiteListInWorksProjects([siteId], [projectId], true);
+                }
+            } else {
+                result.status = 'error';
+                result.message = 'Could not save site';
+            }
+        }
+
+
+        if (result.status == 'error') {
+            render status: HttpStatus.SC_INTERNAL_SERVER_ERROR, text: "${result.message}"
+        } else {
+            render status: HttpStatus.SC_OK, text: result as JSON, contentType: "application/json"
+        }
+    }
+
     def checkSiteName(String id) {
         log.debug "Name: ${params.name}"
         def result = siteService.isSiteNameUnique(id, params.entityType, params.name)
@@ -801,6 +882,9 @@ class SiteController {
                         name             : doc.name,
                         description      : doc.description,
                         numberOfPoi      : doc.poi?.size(),
+                        numberOfTransectParts: doc.transectParts?.size(),
+                        bookedBy         : doc.bookedBy,
+                        projects         : doc.projects,
                         numberOfProjects : doc.projects?.size(),
                         lastUpdated      : doc.lastUpdated,
                         type             : doc.type,

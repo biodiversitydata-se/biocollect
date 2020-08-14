@@ -241,7 +241,6 @@ var SiteViewModel = function (mapContainerId, site, mapOptions) {
     };
 
     function initialiseViewModel() {
-        var overlayLayersMapControlConfig = Biocollect.MapUtilities.getOverlayConfig();
         var baseLayersAndOverlays = Biocollect.MapUtilities.getBaseLayerAndOverlayFromMapConfiguration(fcConfig.mapLayersConfig);
         var options =  {
             autoZIndex: false,
@@ -731,4 +730,3 @@ var SitesViewModel =  function(sites, map, mapFeatures, isUserEditor, projectId,
 
     self.displaySites();
 };
-

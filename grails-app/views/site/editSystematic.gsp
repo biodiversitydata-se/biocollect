@@ -4,7 +4,7 @@
 <html>
 <head>
   <meta name="layout" content="${hubConfig.skin}"/>
-  <title> ${create ? 'New' : ('Edit | ' + site?.name?.encodeAsHTML())} | Sites | Field Capture</title>
+  <title> ${create ? 'New' : ('Edit | ' + site?.name?.encodeAsHTML())} | Sites | BioCollect</title>
     <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},Home"/>
     <meta name="breadcrumbParent2"
           content="${createLink(controller: 'site', action: 'list')},Sites"/>
@@ -80,10 +80,15 @@
 <body>
     <div class="container-fluid validationEngineContainer" id="validation-container">
         <bs:form action="update" inline="true">
-            <g:render template="siteDetails" model="${[showLine: true]}"/>
+            <g:if test="${hubConfig?.isSystematic}">
+                <g:render template="systematicSiteDetails" model="${[showLine: true]}"/>
+            </g:if>
+            <g:else>
+                <g:render template="siteDetails" model="${[showLine: true]}"/>
+            </g:else>
             <div class="row-fluid">
                 <div class="form-actions span12">
-                    <button type="button" id="save" class="btn btn-primary"><g:message code="g.save"/></button>
+                    <button type="button" id="save" class="btn btn-primary"  data-bind="visible: transectParts().length < 0"><g:message code="g.save"/></button>
                     <button type="button" id="cancel" class="btn"><g:message code="g.cancel" /></button>
                 </div>
             </div>
@@ -117,9 +122,9 @@
 
         $('.helphover').popover({animation: true, trigger:'hover'});
 
-        var siteViewModel = initSiteViewModel(true, ${!userCanEdit});
+        var systematicSiteViewModel = initSiteViewModel(true, ${!userCanEdit});
         $('#cancel').click(function () {
-            if(siteViewModel.saved()){
+            if(systematicSiteViewModel.saved()){
                 document.location.href = fcConfig.sitePageUrl;
             } if(fcConfig.projectUrl){
                 document.location.href = fcConfig.projectUrl;
@@ -130,7 +135,7 @@
 
         $('#save').click(function () {
             if ($('#validation-container').validationEngine('validate')) {
-                var json = siteViewModel.toJS();
+                var json = systematicSiteViewModel.toJS();
                 //validate  if extent.geometry.pid, then update extent.source to pid, extent.geometry.type to pid
                 if (json.extent.geometry.pid){
                     json.extent.source = 'pid';

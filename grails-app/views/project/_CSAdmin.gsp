@@ -18,6 +18,10 @@
                 </g:if>
 
                 <li><a href="#permissions" id="permissions-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Members</a></li>
+                <%-- TODO change the flag? not all systematic sites will require booking--%>
+                <g:if test="${project?.isSystematicMonitoring}">
+                    <li><a href="#bookings" id="bookings-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Site booking</a></li>
+                </g:if>
                 <g:if test="${fc.userInRole(role: grailsApplication.config.security.cas.alaAdminRole) || fc.userInRole(role: grailsApplication.config.security.cas.adminRole) || user.isAdmin}">
                     <g:if test="${grailsApplication.config.notification.enabled?.toBoolean()}">
                     <li><a href="#project-notification" id="project-notification-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="notification.tabTitle"/></a></li>
@@ -68,7 +72,7 @@
                 </g:if>
 
                 <div id="permissions" class="pill-pane">
-                    <h3>Members</h3>
+                    <h3>Volunteers</h3>
                     <ul class="nav nav-tabs" id="members-tab">
                         <li><a href="#user-permissions" id="user-permissions-tab" data-toggle="tab">Users</a></li>
                         <li><a href="#persons" id="persons-tab" data-toggle="tab">Persons</a></li>
@@ -84,7 +88,12 @@
                     </div>
                     
                 </div>
-
+                <g:if test="${project?.isSystematicMonitoring}">
+                <div id="bookings" class="pill-pane">
+                    <h3>Site booking</h3>
+                    <g:render template="/site/siteBooking" model="[projectActivities:projectActivities]"/>
+                </div>
+                </g:if>    
                 <!--AUDIT-->
                 <g:if test="${fc.userInRole(role: grailsApplication.config.security.cas.alaAdminRole) || fc.userInRole(role: grailsApplication.config.security.cas.adminRole) || user.isAdmin}">
                     <div id="project-audit" class="pill-pane">

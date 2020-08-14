@@ -27,6 +27,7 @@
         siteDeleteUrl: "${createLink(controller: 'site', action: 'ajaxDeleteSiteFromProject', id:project.projectId)}",
         siteViewUrl: "${createLink(controller: 'site', action: 'index')}",
         siteEditUrl: "${createLink(controller: 'site', action: 'edit')}",
+        ajaxBookSiteUrl: "${createLink(controller: 'site', action: 'ajaxBookSite', id: '')}",
         removeSiteUrl: "${createLink(controller: 'site', action: '')}",
         activityBulkDeleteUrl: "${createLink(controller: 'bioActivity', action: 'bulkDelete')}",
         activityBulkEmbargoUrl: "${createLink(controller: 'bioActivity', action: 'bulkEmbargo')}",
@@ -44,6 +45,7 @@
         downloadProjectDataUrl: "${createLink(controller: 'bioActivity', action: 'downloadProjectData',params: [projectId:project.projectId])}",
         getRecordsForMapping: "${createLink(controller: 'bioActivity', action: 'getProjectActivitiesRecordsForMapping', params:[version: params.version])}",
         siteCreateUrl: "${createLink(controller: 'site', action: 'createForProject', params: [projectId:project.projectId])}",
+        siteCreateSystematicUrl: "${createLink(controller: 'site', action: 'createSystematic', params: [projectId:project.projectId])}",
         siteSelectUrl: "${createLink(controller: 'site', action: 'select', params:[projectId:project.projectId])}&returnTo=${createLink(controller: 'project', action: 'index', id: project.projectId)}",
         siteUploadUrl: "${createLink(controller: 'site', action: 'uploadShapeFile', params:[projectId:project.projectId])}&returnTo=${createLink(controller: 'project', action: 'index', id: project.projectId)}",
         starProjectUrl: "${createLink(controller: 'project', action: 'starProject')}",
@@ -228,7 +230,12 @@
             var pActivitiesVM = new ProjectActivitiesViewModel(params, projectViewModel);
             initialiseProjectActivitiesList(pActivitiesVM);
             initialiseData('project');
-            <g:if test="${projectContent.admin.visible}">initialiseProjectActivitiesSettings(pActivitiesVM);</g:if>
+            <g:if test="${projectContent.admin.visible}">
+                initialiseProjectActivitiesSettings(pActivitiesVM);
+                <g:if test="${project.isSystematicMonitoring}">
+                    initialiseSiteBooking(pActivitiesVM);
+                </g:if>
+            </g:if>
         </g:if>
         <g:if test="${projectContent.admin.visible}">
             <g:if test="${!project.isExternal}">
