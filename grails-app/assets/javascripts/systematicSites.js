@@ -479,7 +479,7 @@ var SiteBookingViewModel = function (pActivitiesVM){
                         // TODO find a way to distinguish between systematic sites and non-syst
                         // if (site.transectParts != null) {
                         if (feature.geometry.type == 'Point') {
-                            map.setCentroidGeoJSON(geoJson, siteAttributes);
+                            map.setGeoJSONAsCircleMarker(geoJson, siteAttributes);
                         } 
                         // TODO this is needed - commented now because polygon would show and cover circle markers
                         // else {
