@@ -34,4 +34,8 @@ class PersonService {
         // emailService.sendEmail(subject, emailBody, ["${grailsApplication.config.biocollect.support.email.address}"])
         response
     }
+
+    def linkUserToPerson(String id, Map body){
+        webService.doPost(grailsApplication.config.ecodata.service.url + "/person/linkUserToPerson/${id}", body) 
+    }
 }

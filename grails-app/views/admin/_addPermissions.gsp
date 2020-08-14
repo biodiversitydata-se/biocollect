@@ -64,6 +64,7 @@
                     $.get("${g.createLink(controller:'user',action:'checkEmailExists')}?email=" + email, function(data) {
                         if (data && /^\d+$/.test(data)) {
                             addUserWithRole( data, role, entityId);
+                            displayUserId(data);
                         } else {
                             var $clone = $('.bbAlert1').clone();
                             bootbox.alert($clone.show());
@@ -97,6 +98,18 @@
             alert("Required fields are: userId and role.");
             $('.spinner').hide();
         }
+    }
+
+    /**
+     * Get user id to link to person id
+     *
+     * @param userId
+     */
+    function displayUserId(userId) {
+        $('#linkingPersonId').val("person id");
+        $('#linkingUserId').val(userId);
+        $('#linkingUserId').html(userId);
+
     }
 
     function updateStatusMessage(msg) {

@@ -17,7 +17,7 @@
                     </g:if>
                 </g:if>
 
-                <li><a href="#permissions" id="permissions-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Members</a></li>
+                <li><a href="#permissions" id="permissions-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Volunteers</a></li>
                 <%-- TODO change the flag? not all systematic sites will require booking--%>
                 <g:if test="${project?.isSystematicMonitoring}">
                     <li><a href="#bookings" id="bookings-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Site booking</a></li>
@@ -80,6 +80,9 @@
                     <div class="tab-content">
                         <div class="tab-pane" id="user-permissions">
                             <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:project.projectId]"/>
+                            <g:if test="${project?.isSystematicMonitoring}">
+                                <g:render template="/person/linkUserToPerson" model="[linkUserToPersonUrl:g.createLink(controller:'person', action:'linkUserToPerson')]"/>
+                            </g:if>
                             <g:render template="/admin/permissionTablePaginated"/>
                         </div>
                         <div class="tab-pane" id="persons">

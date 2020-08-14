@@ -12,7 +12,6 @@ out/
 .classpath
 .asscache
 grails-app/assets/components/compile/biocollect-templates.js
-grails-app/conf/application.groovy
 .gitignore
 grails-app/assets/components/compile/*
 .vscode/

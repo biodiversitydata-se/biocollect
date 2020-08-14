@@ -78,12 +78,23 @@ class PersonController {
         }
     }
 
-
-
-
     // @PreAuthorise(accessLevel = 'admin')
     def delete(String id) {
         def resp = personService.delete(id)
+    }
+
+    def linkUserToPerson(String id){
+        String userId = params.userId
+        String personId = params.personId
+        Map values = [userId : userId, personId: personId]
+        log.debug "values: " + values
+        log.debug "assigning user id to person " + personId
+        if (personId) {
+            render personService.linkUserToPerson(personId, values)
+        } else {
+            render status:400, text: 'Required param not provided: person ID'
+        }
+
     }
 
     def asJson(json) {

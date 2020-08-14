@@ -28,7 +28,7 @@
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
-            <th>Registered online</th>
+            <th>Town</th>
             <th width="5%"></th>
             </thead>
             <tbody>

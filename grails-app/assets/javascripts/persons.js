@@ -10,7 +10,6 @@ var createPersonForProject = function() {
 
 function PersonViewModel(savedPerson, create, projectId) {
     var self = this;
-    console.log("create is ", create)
 
     self.person = ko.observable({
         personId : ko.observable(),
@@ -56,11 +55,10 @@ function PersonViewModel(savedPerson, create, projectId) {
         self.loadPerson(savedPerson);
     }
 
-    // self.returnToProjectUrl = fcConfig.returnToProjectUrl +'/' + projectId;
-    self.returnToProjectUrl = fcConfig.returnToProjectUrl + '/' + "dab767a5-929e-4733-b8eb-c9113194201f"
+    self.returnToProjectUrl = fcConfig.returnToProjectUrl +'/' + projectId;
     // TODO depending on create or edit - update person
     self.save = function (){
-        console.log("saving create is ", create)
+
         // if ($('#validation-container').validationEngine('validate')) {
         var personId = self.person().personId();
 
@@ -222,8 +220,8 @@ function PersonsListViewModel(projectId){
                     bSortable: false
                 },
                 {
-                    data: 'registeredOnline',
-                    name: 'registeredOnline',
+                    data: 'town',
+                    name: 'town',
                     bSortable: false
     
                 },
