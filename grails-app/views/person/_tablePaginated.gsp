@@ -6,7 +6,22 @@
 <asset:javascript src="persons.js"/>
 
     <%-- <g:render template="/shared/pagination"/> --%>
-    <div class="row well well-small" id="project-person-list">
+    <div style="padding:40px" class="row well well-small" id="project-person-list">
+
+        <form class="form-horizontal" id="personSearch">
+        <div class="control-group">
+            <label class="control-label" for="emailSearchFld">Search by name or code</label>
+            <div class="controls">
+                <input class="input-xlarge" id="emailSearchFld" placeholder="search for a person" type="text"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button id="searchPerson" class="btn btn-primary btn-small"><g:message code="g.search" /></button>
+                <g:img uri="${asset.assetPath(src:'spinner.gif')}" id="spinner1" class="hide spinner" alt="spinner icon"/>
+            </div>
+        </div>
+        </form>
         <table style="width: 95%;margin:30px" class="table table-striped table-bordered table-hover" id="person-list">
             <thead>
             <th id="personId">Volunteer code</th>

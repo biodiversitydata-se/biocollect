@@ -70,8 +70,8 @@
                 <div id="permissions" class="pill-pane">
                     <h3>Members</h3>
                     <ul class="nav nav-tabs" id="members-tab">
-                        <li><a href="#user-permissions" id="user-permissions-tab" data-toggle="tab">Registered users</a></li>
-                        <li><a href="#persons" id="persons-tab" data-toggle="tab">Observers</a></li>
+                        <li><a href="#user-permissions" id="user-permissions-tab" data-toggle="tab">Users</a></li>
+                        <li><a href="#persons" id="persons-tab" data-toggle="tab">Persons</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane" id="user-permissions">
