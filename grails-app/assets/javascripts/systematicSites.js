@@ -466,6 +466,18 @@ var SiteBookingViewModel = function (pActivitiesVM){
                         var displaySiteDetails = function(){
                             self.selectedSiteId = site.siteId;
                             $("#siteName").val(site.name);
+                            if (site.bookedBy != undefined && site.bookedBy != ''){
+                                $('#bookedByLink').html("")
+                                $('#bookedByLink').append(
+                                    $(document.createElement('a')).prop({
+                                    target: '_blank',
+                                    href:'/person/index/' + site.bookedBy,
+                                    innerText: 'See who booked this site'
+                                    })
+                                )
+                            } else {
+                                $('#bookedByLink').html("Site is not booked. Type in the personal ID in the field below") 
+                            }
                         };
 
                         var siteAttributes = {

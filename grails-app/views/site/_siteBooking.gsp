@@ -6,21 +6,16 @@
 
     <%-- Start of site booking form  --%>
     <bs:form action="update" inline="true" class="form-horizontal">
+    <h4>Click on the site on the map to see its status</h4>
+    <label id="bookedByLink"></label>
         <div class="control-group">
-            <label class="control-label" for="bookedById">Code of the person who is booking</label>
             <div class="controls">
                 <%-- This value will update the site object's field 'bookedBy'  --%>
-                <input class="input-xlarge" id="bookedById" data-bind="value: bookedBy" placeholder="enter personal code" type="text"/>
+                <input class="input-xlarge" data-bind="value: bookedBy" placeholder="enter personal code" type="text"/>
             </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="bookedByEmail">Email address</label>
-                <div class="controls">
-                    <input class="input-xlarge" id="bookedByEmail" placeholder="email address" type="text"/>
-                </div>
             </div>
         <div class="control-group">
-            <label class="control-label" for="">Site name</label>
+            <label class="control-label" for="siteName">Site name</label>
             <div class="controls">
                 <input class="input-xlarge" disabled id="siteName"/>
                 <g:hiddenField name="siteId" id="siteId" data-bind="value: siteId"/>
