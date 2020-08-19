@@ -35,4 +35,8 @@ class OutputService {
     def getOutputSpeciesId() {
         webService.getJson(grailsApplication.config.ecodata.service.url + "/output/getOutputSpeciesUUID")
     }
+
+    def getOutputCountForPerson(id){
+        webService.getJson(grailsApplication.config.ecodata.service.url + "/output/getAllForPerson/" + id)
+    }
 }

@@ -32,9 +32,6 @@
             <th width="5%"></th>
             </thead>
             <tbody>
-            <%-- TODO when clicked on a name, pass a value of create:false to edit view 
-            --%>
-
             </tbody>
         </table>
     </div>

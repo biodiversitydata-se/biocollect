@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta name="layout" content="${hubConfig.skin}"/>
-    <title> ${firstName.encodeAsHTML() + ' ' + lastName}</title>
+    <title> ${person.firstName.encodeAsHTML() + ' ' + person.lastName}</title>
 
     <style type="text/css">
     legend {
@@ -42,13 +42,13 @@
     <%-- <div class="container-fluid validationEngineContainer" id="validation-container"> --%>
     <div class="container-fluid validationEngineContainer">
         <div id="person">
-         <g:link action="edit" id="${personId}" class="btn btn-small"><i
+         <g:link action="edit" id="${person.personId}" class="btn btn-small"><i
                     class="icon-edit"></i> Edit person</g:link>
         <bs:form action="update" inline="true">
             
     <ul class="nav nav-tabs" id="personDetailsTab">
         <li><a href="#personal" id="personal-tab" data-toggle="tab">Personal info</a></li>
-        <li><a href="#sites" id="sites-tab" data-toggle="tab">Sites</a></li>
+        <li><a href="#surveys" id="surveys-tab" data-toggle="tab">Surveys</a></li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane" id="personal">
@@ -57,85 +57,85 @@
 
         <div class="span6">
             <label for=""><g:message code=""/>Personal code<g:message code=""/></label>
-            <p>${personId}</p>
+            <p>${person.personId}</p>
            <%-- <input data-bind="value: '${personId}'" id="personId" type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>First name<g:message code=""/></label>
-                        <p>${firstName}</p>
+                        <p>${person.firstName}</p>
            <%-- <input data-bind="text: firstName" id="firstName" type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Last name<g:message code=""/></label>
-                        <p>${lastName}</p>
+                        <p>${person.lastName}</p>
 
            <%-- <input data-bind="text: lastName" id="lastName" type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Email address<g:message code=""/></label>
-            <p>${email}</p>
+            <p>${person.email}</p>
            <%-- <input data-bind="text: email" id="email" type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Address 1<g:message code=""/></label>
-            <p>${address1}</p>
+            <p>${person.address1}</p>
            <%-- <input data-bind="text: address1"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Address 2<g:message code=""/></label>
-            <p>${address2}</p>
+            <p>${person.address2}</p>
            <%-- <input data-bind="text: address2"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Postcode<g:message code=""/></label>
-            <p>${postCode}</p>
+            <p>${person.postCode}</p>
            <%-- <input data-bind="text: postCode"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Town<g:message code=""/></label>
-            <p>${town}</p>
+            <p>${person.town}</p>
            <%-- <input data-bind="text: town"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Phone number<g:message code=""/></label>
-            <p>${phoneNum}</p>
+            <p>${person.phoneNum}</p>
            <%-- <input data-bind="text: phoneNum"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Mobile number<g:message code=""/></label>
-            <p>${mobileNum}</p>
+            <p>${person.mobileNum}</p>
            <%-- <input data-bind="text: mobileNum"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Gender<g:message code=""/></label>
-            <p>${gender}</p>
+            <p>${person.gender}</p>
            <%-- <input data-bind="text: gender"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Year of birth<g:message code=""/></label>
-            <p>${birthDate}</p>
+            <p>${person.birthDate}</p>
            <%-- <input data-bind="text: birthDate"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Additional info<g:message code=""/></label>
-            <p>${extra}</p>
+            <p>${person.extra}</p>
            <%-- <input data-bind="text: extra"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>modTyp<g:message code=""/></label>
-            <p>${modTyp}</p>
+            <p>${person.modTyp}</p>
            <%-- <input data-bind="text: modTyp"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>eProt<g:message code=""/></label>
-            <p>${eProt}</p>
+            <p>${person.eProt}</p>
            <%-- <input data-bind="text: eProt"  type="text" class="span12"/> --%>
         </div>
 </div>
 
         </div>
-        <div class="tab-pane" id="sites">
-            <g:render template="sitesSurveyed"></g:render>
+        <div class="tab-pane" id="surveys">
+            <g:render template="personSurveys"></g:render>
         </div>
     </div>
 

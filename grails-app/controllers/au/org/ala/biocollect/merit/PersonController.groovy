@@ -3,6 +3,7 @@ package au.org.ala.biocollect.merit
 import au.org.ala.biocollect.merit.PersonService
 import au.org.ala.biocollect.merit.UserService
 import au.org.ala.biocollect.merit.ProjectService
+import au.org.ala.biocollect.merit.OutputService
 
 import grails.converters.JSON
 
@@ -11,14 +12,22 @@ class PersonController {
     PersonService personService 
     UserService userService
     ProjectService projectService
+    OutputService outputService
 
     def index(String id) {
-        def result = personService.get(id)
+        def person = personService.get(id)
+        def outputs = outputService.getOutputCountForPerson(id)
+        log.debug "outputs" + outputs
+        
+        def result = [person: person,
+            outputs: outputs]
+
         if (params.format == 'json')
             render result as JSON
         else
             result
     }
+    
     def create(){
         log.debug "params.id is project id? " + params.id
         render view: 'edit', model:[create:true, projectId: params.id]  

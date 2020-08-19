@@ -4,7 +4,7 @@
 <head>
   <meta name="layout" content="${hubConfig.skin}"/>
   <%-- <title> ${create ? 'New' : ('Edit | ' + person?.firstName?.encodeAsHTML() + person?.lastName?.encodeAsHTML())} | Users </title> --%>
-    <title> ${create ? 'New' : ('Edit | ' + person?.firstName.encodeAsHTML() + ' ' + person?.lastName.encodeAsHTML())}</title>
+    <title> ${create ? 'New' : ('Edit | ' + person.person?.firstName.encodeAsHTML() + ' ' + person.person?.lastName.encodeAsHTML())}</title>
 
     <style type="text/css">
     legend {

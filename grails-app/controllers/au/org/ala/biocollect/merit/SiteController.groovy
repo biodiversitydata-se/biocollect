@@ -883,7 +883,7 @@ class SiteController {
                         description      : doc.description,
                         numberOfPoi      : doc.poi?.size(),
                         numberOfTransectParts: doc.transectParts?.size(),
-                        bookedBy         : doc.bookedBy?,
+                        bookedBy         : doc.bookedBy,
                         projects         : doc.projects,
                         numberOfProjects : doc.projects?.size(),
                         lastUpdated      : doc.lastUpdated,

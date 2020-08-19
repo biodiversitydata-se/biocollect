@@ -37,6 +37,8 @@ class UrlMappings {
 
                 "/project/getAuditMessagesForProject/$id"(controller: "project", action: 'getAuditMessagesForProject')
 
+                "/output/getOutputCountForPerson/$id"(controller: "output", action: 'getOutputCountForPerson')
+
                 "/activity/$entityId/comment"(controller: "comment"){
                         action = [GET: 'list', POST: 'create']
                         entityType = 'au.org.ala.ecodata.Activity'
