@@ -227,9 +227,9 @@ function PersonsListViewModel(projectId){
                 },
                 {
                     render: function (data, type, row) {
-                        return '<div class="pull-right margin-right-20">' + '<a class="margin-left-10" href="" title="view this user\'s details"><i class="fa fa-eye"></i></a>' +
-                        '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' +
-                        '<a class="margin-left-10" href=""  title="remove this user and role combination"><i class="fa fa-remove"></i></a></div>';
+                        return '<div class="pull-right margin-right-20">' + 
+                        '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' 
+                        + '</div>';
                     },
                     bSortable: false
                 }
@@ -244,12 +244,23 @@ function PersonsListViewModel(projectId){
             self.viewPerson(personId);
         });
 
+        $('#person-list').on("click", "tbody td:nth-child(6)", function (e) {
+            e.preventDefault();
+            var row = this.parentElement;
+            var data = table.row(row).data();
+            var personId = data.personId;
+            self.editPerson(personId);
+        });
         // END of temporary list
 
     }
 
     self.viewPerson = function (personId) {
         document.location.href = fcConfig.personViewUrl + '/' + personId; 
+    }
+
+    self.editPerson = function(personId) {
+        document.location.href = fcConfig.personEditUrl + '/' + personId; 
     }
 
     self.loadPersons();
