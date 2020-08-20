@@ -28,7 +28,9 @@
         personSaveUrl: "${createLink(action: 'save')}",
         updatePersonUrl: "${createLink(action: 'update')}",
         deletePersonUrl: "${createLink(action:'delete')}",
-        returnToProjectUrl: "${createLink(controller: 'project', action:'index')}"
+        activityViewUrl: "${createLink(controller: 'bioActivity', action: 'index')}",
+        returnToProjectUrl: "${createLink(controller: 'project', action:'index')}",
+        getOutputForPersonBySurveyNameUrl: "${createLink(controller: 'output', action:'getOutputForPersonBySurveyName')}"
         };
         here = window.location.href;
 
@@ -36,6 +38,7 @@
 
     <asset:javascript src="common.js"/>
     <asset:javascript src="persons.js"/>
+    <asset:javascript src="projects-manifest.js"/>
 
 </head>
 <body>

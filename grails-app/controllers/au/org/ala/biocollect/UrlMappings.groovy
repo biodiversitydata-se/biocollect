@@ -38,6 +38,7 @@ class UrlMappings {
                 "/project/getAuditMessagesForProject/$id"(controller: "project", action: 'getAuditMessagesForProject')
 
                 "/output/getOutputCountForPerson/$id"(controller: "output", action: 'getOutputCountForPerson')
+                "/output/getOutputForPersonBySurveyName/$id"(controller: "output", action: 'getOutputForPersonBySurveyName')
 
                 "/activity/$entityId/comment"(controller: "comment"){
                         action = [GET: 'list', POST: 'create']

@@ -37,6 +37,16 @@ class OutputService {
     }
 
     def getOutputCountForPerson(id){
-        webService.getJson(grailsApplication.config.ecodata.service.url + "/output/getAllForPerson/" + id)
+        webService.getJson(grailsApplication.config.ecodata.service.url + "/output/countAllForPerson/" + id)
+    }
+
+    def getOutputForPersonBySurveyName(id, params){
+        def surveyName = java.net.URLEncoder.encode(params.name, "UTF-8")
+
+        def urlParams = '?'
+        urlParams += "surveyName=${surveyName}"
+        def url = grailsApplication.config.ecodata.service.url + "/output/getAllForPersonBySurveyName/" + id + urlParams
+        log.debug "url with survey name and person id " + url
+        webService.getJson(url)
     }
 }

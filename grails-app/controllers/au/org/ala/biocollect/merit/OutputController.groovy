@@ -159,4 +159,13 @@ class OutputController {
         }
     }
 
+    def getOutputForPersonBySurveyName(){
+        log.debug "params" + params
+        def id = params.id
+
+        def result = outputService.getOutputForPersonBySurveyName(id, params)
+        log.debug "result" + result
+        render result as JSON
+    }
+
 }
