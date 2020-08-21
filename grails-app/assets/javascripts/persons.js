@@ -27,8 +27,19 @@ function PersonViewModel(savedPerson, create, projectId) {
         extra : ko.observable(),
         modTyp : ko.observable(),
         eProt : ko.observable(),
-        projects : ko.observableArray([projectId])
+        projects : ko.observableArray([projectId]),
+        bookedSites: ko.observableArray()
     })
+
+    self.splitBookedSitesStr = function () {
+        if (typeof self.person().bookedSites() == 'string'){
+            var array = self.person().bookedSites().split(",");
+            var siteNames = array.map(function(name){ return name.trim() })
+            self.person().bookedSites(siteNames);
+        }
+        console.log(self.person().bookedSites());
+        return self.person().bookedSites();
+    }
 
     self.loadPerson = function (person){
         var personModel = self.person();
@@ -48,7 +59,8 @@ function PersonViewModel(savedPerson, create, projectId) {
         personModel.extra(exists(person, "extra"));
         personModel.modTyp(exists(person, "modTyp"));
         personModel.eProt(exists(person, "eProt"));
-        personModel.projects(person.projects || []);
+        personModel.projects(exists(person.projects || []));
+        personModel.bookedSites(exists(person, "bookedSites"));
         }
 
     if (!create){
@@ -98,7 +110,6 @@ function PersonViewModel(savedPerson, create, projectId) {
     // self.loadPerson(person)
 
     self.cancel = function (){
-        console.log("cancel")
         document.location.href = self.returnToProjectUrl;
     }
 
@@ -125,6 +136,29 @@ function PersonViewModel(savedPerson, create, projectId) {
             }
         });
     };
+
+     // save site booking
+     self.bookSite = function(){
+
+        var data = {
+            siteNames: self.person().bookedSites(),
+            personId: self.person().personId(),
+            };
+            console.log(data);
+        $.ajax({
+            url: fcConfig.bookSiteForPersonUrl,
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (data) {
+                bootbox.alert("Sites booked successfully");
+            },
+            error: function (data) {
+                var errorMessage = data.responseText || 'There was a problem saving this site'
+                bootbox.alert(errorMessage);
+            }
+        });
+    }
 
     self.toJS = function() {
         var js = ko.toJS(self.person());

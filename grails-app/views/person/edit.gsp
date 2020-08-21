@@ -3,9 +3,9 @@
 <html>
 <head>
   <meta name="layout" content="${hubConfig.skin}"/>
-  <%-- <title> ${create ? 'New' : ('Edit | ' + person?.firstName?.encodeAsHTML() + person?.lastName?.encodeAsHTML())} | Users </title> --%>
-    <title> ${create ? 'New' : ('Edit | ' + person.person?.firstName.encodeAsHTML() + ' ' + person.person?.lastName.encodeAsHTML())}</title>
-
+    <title> ${create ? 'New' : ('Edit | ' + person?.firstName + ' ' + person?.lastName)}</title>
+    <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},Home"/>
+    <meta name="breadcrumb" content="${project?.name}"/>
     <style type="text/css">
     legend {
         border: none;
@@ -29,6 +29,7 @@
         personSaveUrl: "${createLink(action: 'save')}",
         personUpdateUrl: "${createLink(action: 'update')}",
         deletePersonUrl: "${createLink(action:'delete')}",
+        bookSiteForPersonUrl: "${createLink(controller: 'site', action:'bookSites')}",
         returnToProjectUrl: "${createLink(controller: 'project', action:'index')}"
         };
         here = window.location.href;
@@ -40,20 +41,10 @@
 
 </head>
 <body>
-    <%-- <div class="container-fluid validationEngineContainer" id="validation-container"> --%>
     <div class="container-fluid validationEngineContainer">
         <div id="person">
         <bs:form action="update" inline="true">
-            
             <g:render template="personDefinition"/>
-
-            <div class="row-fluid">
-                <div class="form-actions span12">
-                    <button type="button" id="save" class="btn btn-primary" data-bind="click: save">Save changes</button>
-                    <button type="button" id="cancel" class="btn">Cancel</button>
-                    <button type="button" id="delete" class="btn btn-danger" data-bind="click: deletePerson">Delete person</button>
-                </div>
-            </div>
         </bs:form>
         </div>
     </div>

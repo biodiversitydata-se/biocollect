@@ -619,6 +619,12 @@ class SiteController {
         }
     }
 
+    def bookSites(){
+        def values = request.JSON
+        def result = siteService.bookSites(values)
+        render result as JSON 
+    }
+
     def checkSiteName(String id) {
         log.debug "Name: ${params.name}"
         def result = siteService.isSiteNameUnique(id, params.entityType, params.name)

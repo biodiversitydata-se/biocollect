@@ -619,6 +619,11 @@ class SiteService {
         return response.value
     }
 
+    def bookSites(body) {
+        def response = webService.doPost(grailsApplication.config.ecodata.service.url + '/site/bookSites/', body)
+        return response
+    }
+
     def enc(String value) {
         URLEncoder.encode(value, 'UTF-8')
     }

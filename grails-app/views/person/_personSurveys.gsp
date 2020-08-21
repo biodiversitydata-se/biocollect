@@ -1,4 +1,6 @@
 <div id="persons-surveys-form">
+
+<g:if test="${outputs.size() != 0}">
     <table class="table table-striped table-bordered table-hover" id="persons-surveys">
         <thead>
         <th>Survey name</th>
@@ -14,12 +16,16 @@
         </tr>
         </g:each>
     </table>
+</g:if>
+<g:else>
+   This person has not submitted any records.
+</g:else>
 
     <div id="survey-list" hidden>
         <table class="table table-striped table-bordered table-hover" id="survey-list-table">
             <thead>
             <th>Date</th>
-            <th>Status</th>
+            <th>Status / (Site?)</th>
             </thead>
 
         </table>

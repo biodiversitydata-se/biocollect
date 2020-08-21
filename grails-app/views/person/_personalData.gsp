@@ -61,4 +61,12 @@
             <label for=""><g:message code=""/>eProt<g:message code=""/></label>
            <input data-bind="value: person().eProt"  type="text" class="span12"/>
         </div>
+
+        <div class="row-fluid">
+                <div class="form-actions span12">
+                    <button type="button" id="save" class="btn btn-primary" data-bind="click: save">Save changes</button>
+                    <button type="button" id="cancel" class="btn">Cancel</button>
+                    <button type="button" id="delete" class="btn btn-danger" data-bind="click: deletePerson">Delete person</button>
+                </div>
+        </div>
 </div>
