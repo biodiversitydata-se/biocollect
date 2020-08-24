@@ -38,4 +38,10 @@ class PersonService {
     def linkUserToPerson(String id, Map body){
         webService.doPost(grailsApplication.config.ecodata.service.url + "/person/linkUserToPerson/${id}", body) 
     }
+
+    def searchPerson(String searchTerm){
+        searchTerm = java.net.URLEncoder.encode(searchTerm, "UTF-8")
+        def url = grailsApplication.config.ecodata.service.url + "/person/searchPerson/?search=" + searchTerm
+        webService.getJson(url)
+    }
 }

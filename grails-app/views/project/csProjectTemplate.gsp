@@ -113,7 +113,7 @@
         personCreateUrl: "${createLink(controller: 'person', action: 'create', params: [id: project.projectId])}",
         personViewUrl: "${createLink(controller: 'person', action: 'index')}",
         personEditUrl: "${createLink(controller: 'person', action: 'edit')}",
-        personSearchUrl: "${createLink(controller: 'person', action: 'elasticsearch')}",
+        personSearchUrl: "${createLink(controller: 'person', action: 'searchPerson')}",
         absenceIconUrl:"${asset.assetPath(src: 'triangle.png')}",
         projectNotificationUrl: "${createLink(controller: 'project', action: 'sendEmailToMembers', params: [id: project.projectId])}",
         projectTestNotificationUrl: "${createLink(controller: 'project', action: 'sendTestEmail', params: [id: project.projectId])}",
