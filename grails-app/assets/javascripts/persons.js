@@ -175,55 +175,9 @@ function PersonViewModel(savedPerson, create, projectId) {
 // * This view model lists all observers registered for this project, it displays links on each name so that person can be viewed in detail and edited  *//
 function PersonsListViewModel(projectId){
     var self = this;
-    self.searchTerm = ko.observable('');
-
-    // /**
-    //  * creates an object what will be sent as parameters
-    //  * @param tOffset
-    //  * @returns {{max: *, offset: *, query: *, fq: *}}
-    //  */
-    // self.constructQueryParams = function(tOffset){
-    //     var offset
-
-    //     if(tOffset != undefined || tOffset != null){
-    //         offset = tOffset
-    //     } else {
-    //         offset = self.pagination.calculatePageOffset(self.pagination.currentPage()+1);
-    //     }
-
-    //     var params = {
-    //         max: self.pagination.resultsPerPage(),
-    //         offset: offset,
-    //         query: self.searchTerm(),
-    //         fq: $.map(self.selectedFacets(), function(fq){
-    //             return fq.getQueryText();
-    //         }),
-    //         myFavourites:fcConfig.myFavourites
-    //     }
-    //     return params;
-    // }
 
     // list persons for project
     self.loadPersons = function(){
-
-         // TODO elasticsearch search 
-        // var params = self.constructQueryParams(5);
-        // console.log("params",params);
-        // $.ajax({
-        //     url: fcConfig.personSearchUrl,
-        //     data: params,
-        //     traditional:true,
-        //     success: function (data) {
-        //         if(data){
-        //         console.log("person found")
-        //         }
-
-        //     },
-        //     error: function (xhr) {
-        //         self.error(xhr.responseText);
-        //         self.sitesLoaded(true);
-        //     }
-        // })
 
 
         // START of temporary list 
