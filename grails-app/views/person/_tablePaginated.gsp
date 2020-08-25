@@ -60,6 +60,11 @@ $(document).ready(function () {
     var personsListViewModel = new PersonsListViewModel("${project.projectId}");
     ko.applyBindings(personsListViewModel, document.getElementById("project-person-list"))
 
+
+    self.viewPerson = function (personId) {
+        document.location.href = fcConfig.personViewUrl + '/' + personId; 
+    }
+    
     var tableSearchResults;
     $('#searchPersonBtn').click(function(){
         var searchTerm = document.getElementById("searchTerm").value;
@@ -76,7 +81,7 @@ $(document).ready(function () {
                 "bFilter": false,
                 "processing": true,
                 "serverSide": true,
-                "pagination": false,
+                "paging": false,
                 "columns": [
                     {
                         data: 'personId',
@@ -104,7 +109,7 @@ $(document).ready(function () {
     
             $('#person-search-table').on("click", "tr", function (e) {
                 e.preventDefault();
-                var rowData = table.row(this).data();
+                var rowData = tableSearchResults.row(this).data();
                 console.log(rowData)
                 var personId = rowData['personId'];
                 console.log(personId)

@@ -1,7 +1,3 @@
-function reloadMembers() {
-    $('#person-list').DataTable().ajax.reload();
-}
-
     // TODO - this should contain projectId that will be saved in person.projects - 
 // projectId is available in personlistview - move this function there
 var createPersonForProject = function() {
@@ -10,6 +6,8 @@ var createPersonForProject = function() {
 
 function PersonViewModel(savedPerson, create, projectId) {
     var self = this;
+    self.returnToProjectUrl = fcConfig.returnToProjectUrl +'/' + projectId;
+
 
     self.person = ko.observable({
         personId : ko.observable(),
@@ -35,6 +33,7 @@ function PersonViewModel(savedPerson, create, projectId) {
         if (typeof self.person().bookedSites() == 'string'){
             var array = self.person().bookedSites().split(",");
             var siteNames = array.map(function(name){ return name.trim() })
+            // TODO push names so that saved names aren't errased 
             self.person().bookedSites(siteNames);
         }
         console.log(self.person().bookedSites());
@@ -67,8 +66,6 @@ function PersonViewModel(savedPerson, create, projectId) {
         self.loadPerson(savedPerson);
     }
 
-    self.returnToProjectUrl = fcConfig.returnToProjectUrl +'/' + projectId;
-    // TODO depending on create or edit - update person
     self.save = function (){
 
         // if ($('#validation-container').validationEngine('validate')) {
@@ -105,7 +102,6 @@ function PersonViewModel(savedPerson, create, projectId) {
     
     // }
     }
-
 
     // self.loadPerson(person)
 
@@ -172,13 +168,13 @@ function PersonViewModel(savedPerson, create, projectId) {
 }
 
 
-// * This view model lists all observers registered for this project, it displays links on each name so that person can be viewed in detail and edited  *//
+/* This view model lists all observers registered for this project, 
+ it displays links on each name so that person can be viewed in detail and edited  */
 function PersonsListViewModel(projectId){
     var self = this;
 
     // list persons for project
     self.loadPersons = function(){
-
 
         // START of temporary list 
 
@@ -186,6 +182,7 @@ function PersonsListViewModel(projectId){
             "bFilter": false,
             "processing": true,
             "serverSide": true,
+            "paging": false,
             "ajax": fcConfig.getPersonsForProjectIdPaginatedUrl + "/" + projectId,
             "columns": [
                 {

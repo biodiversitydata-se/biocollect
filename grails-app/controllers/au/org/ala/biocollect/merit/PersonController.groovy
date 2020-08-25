@@ -66,11 +66,10 @@ class PersonController {
     }
 
     def searchPerson(){
-        log.debug "request" + request.JSON //is null
         log.debug "params"+params
         def searchTerm = params.searchTerm
         log.debug "searchTerm" + searchTerm
-        def result= personService.searchPerson(searchTerm)
+        def result = personService.searchPerson(searchTerm)
         log.debug "result" + result                                                                                                                                                                                                                                                                                                                 
         render result as JSON
     }
