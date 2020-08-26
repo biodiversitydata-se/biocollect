@@ -25,15 +25,13 @@
     <asset:script type="text/javascript">
     var fcConfig = {
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
-        personSaveUrl: "${createLink(action: 'save')}",
-        updatePersonUrl: "${createLink(action: 'update')}",
-        deletePersonUrl: "${createLink(action:'delete')}",
+        personEditUrl: "${createLink(action: 'edit', params: [id: person.personId, projectId: params.projectId])}",
+        deletePersonUrl: "${createLink(action:'delete', params: [id: person.personId])}",
         activityViewUrl: "${createLink(controller: 'bioActivity', action: 'index')}",
-        returnToProjectUrl: "${createLink(controller: 'project', action:'index')}",
+        returnToProjectUrl: "${createLink(controller: 'project', action:'index', params: [id: params.projectId])}",
         getOutputForPersonBySurveyNameUrl: "${createLink(controller: 'output', action:'getOutputForPersonBySurveyName')}"
         };
         here = window.location.href;
-
     </asset:script>
 
     <asset:javascript src="common.js"/>
@@ -45,9 +43,8 @@
     <%-- <div class="container-fluid validationEngineContainer" id="validation-container"> --%>
     <div class="container-fluid validationEngineContainer">
         <div id="person">
-         <g:link action="edit" id="${person.personId}" class="btn btn-small"><i
-                    class="icon-edit"></i> Edit person</g:link>
-        <bs:form action="update" inline="true">
+        <button class="btn btn-small" id="edit"><i class="icon-edit"></i>Edit</button>
+        <bs:form action="" inline="true">
             
     <ul class="nav nav-tabs" id="personDetailsTab">
         <li><a href="#personal" id="personal-tab" data-toggle="tab">Personal info</a></li>
@@ -144,6 +141,7 @@
 
             <div class="row-fluid">
                 <div class="form-actions span12">
+                    <%-- <a id="cancel" class="btn" href="javascript:history.go(-1)">Cancel</a> --%>
                     <button type="button" id="cancel" class="btn">Cancel</button>
                     <button type="button" id="delete" class="btn btn-danger" data-bind="">Delete person</button> 
                 </div>
@@ -164,28 +162,30 @@
         bootbox.confirm(message, function (result) {
             if (result) {
                 $.ajax({
-                    url: fcConfig.deletePersonUrl + '/' + personId,
+                    url: fcConfig.deletePersonUrl,
                     type: 'DELETE',
                     success: function (data) {
                         console.log(data);
                         alert("Successfully deleted. Indexing is in process, search result will be updated in few minutes. Redirecting to search page...", "alert-success");
-                        window.location.href = fcConfig.returnToProjectUrl + '/' + "dab767a5-929e-4733-b8eb-c9113194201f"
+                        window.location.href = fcConfig.returnToProjectUrl;
                     },
                     error: function () {
                         console.log(data);
 
                         alert("Error deleting person")
-                        document.location.href = fcConfig.returnToProjectUrl + '/' + "dab767a5-929e-4733-b8eb-c9113194201f";
+                        document.location.href = fcConfig.returnToProjectUrl;
                     }
                 });
             }
         });
     });
 
-    $('#cancel').on("click", function (){
-        console.log("go to project")
-        document.location.href = fcConfig.returnToProjectUrl + '/' + "dab767a5-929e-4733-b8eb-c9113194201f";
+    $('#edit').on("click", function (){
+        document.location.href = fcConfig.personEditUrl;
+    })
 
+    $('#cancel').on("click", function (){
+        document.location.href = fcConfig.returnToProjectUrl;
     })
     </asset:script>
 </html>
