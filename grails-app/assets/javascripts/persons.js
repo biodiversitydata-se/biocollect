@@ -6,8 +6,6 @@ var createPersonForProject = function() {
 
 function PersonViewModel(savedPerson, create, projectId) {
     var self = this;
-    self.returnToProjectUrl = fcConfig.returnToProjectUrl +'/' + projectId;
-
 
     self.person = ko.observable({
         personId : ko.observable(),
@@ -26,8 +24,9 @@ function PersonViewModel(savedPerson, create, projectId) {
         modTyp : ko.observable(),
         eProt : ko.observable(),
         projects : ko.observableArray([projectId]),
-        bookedSites: ko.observableArray()
-    })
+        bookedSites: ko.observableArray([])
+    });
+    
 
     self.splitBookedSitesStr = function () {
         if (typeof self.person().bookedSites() == 'string'){
@@ -59,7 +58,7 @@ function PersonViewModel(savedPerson, create, projectId) {
         personModel.modTyp(exists(person, "modTyp"));
         personModel.eProt(exists(person, "eProt"));
         personModel.projects(exists(person.projects || []));
-        personModel.bookedSites(exists(person, "bookedSites"));
+        personModel.bookedSites(exists(person.bookedSites || []));
         }
 
     if (!create){
@@ -68,15 +67,22 @@ function PersonViewModel(savedPerson, create, projectId) {
 
     self.save = function (){
 
-        // if ($('#validation-container').validationEngine('validate')) {
-        var personId = self.person().personId();
+        if ($('#personal-details-form').validationEngine('validate')) {
+        var id = self.person().personId();
 
+        // var data = {};
+        // for (const [key, value] of Object.entries(self.person())){
+        //     if (value != '' && value != null){
+        //         data.key = value;
+        //     }
+        // }
+        // data = self.modelAsJSON(data);
         var data = self.modelAsJSON(self.person());
         
         if (create) {
             url = fcConfig.personSaveUrl; 
         } else {
-            url = fcConfig.personUpdateUrl + '/' + personId;
+            url = fcConfig.personUpdateUrl + '/' + id;
         }
             $.ajax({
                 url: url,
@@ -84,29 +90,23 @@ function PersonViewModel(savedPerson, create, projectId) {
                 data: data,
                 contentType: 'application/json',
                 success: function (data) {
-                    if(data.status == 'created'){
-                        alert("Person updated success!");
-                       document.location.href = self.returnToProjectUrl;
+                    if(data.statusCode == 200){
+                        bootbox.alert(data.resp.personName + " successfully saved");
+                        document.location.href = fcConfig.returnToProjectUrl;
                     }    
                     else {
-                        alert("Person updated ok");
-                        document.location.href = self.returnToProjectUrl;
+                        bootbox.alert("Person saved", data);
+                        document.location.href = fcConfig.returnToProjectUrl;
                     }              
                 },
                 error: function (data) {
-                    var errorMessage = data.responseText || 'There was a problem saving this person'
+                    var errorMessage = data.resp.error|| 'There was a problem saving this person'
                     bootbox.alert(errorMessage);
-                    document.location.href = self.returnToProjectUrl;
+                    document.location.href = fcConfig.returnToProjectUrl;
                 }
             });
     
-    // }
-    }
-
-    // self.loadPerson(person)
-
-    self.cancel = function (){
-        document.location.href = self.returnToProjectUrl;
+        }
     }
 
     self.deletePerson = function () {
@@ -120,13 +120,13 @@ function PersonViewModel(savedPerson, create, projectId) {
                     success: function (data) {
                         console.log(data);
                         alert("Successfully deleted. Indexing is in process, search result will be updated in few minutes. Redirecting to search page...", "alert-success");
-                        window.location.href = self.returnToProjectUrl;
+                        window.location.href = fcConfig.returnToProjectUrl;
                     },
                     error: function () {
                         console.log(data);
 
                         alert("Error deleting person")
-                        document.location.href = self.returnToProjectUrl;
+                        document.location.href = fcConfig.returnToProjectUrl;
                     }
                 });
             }
@@ -234,6 +234,7 @@ function PersonsListViewModel(projectId){
             var row = this.parentElement;
             var data = table.row(row).data();
             var personId = data.personId;
+            console.log(personId)
             self.editPerson(personId);
         });
         // END of temporary list
@@ -241,11 +242,11 @@ function PersonsListViewModel(projectId){
     }
 
     self.viewPerson = function (personId) {
-        document.location.href = fcConfig.personViewUrl + '/' + personId; 
+        document.location.href = fcConfig.personViewUrl + '&id=' + personId; 
     }
 
     self.editPerson = function(personId) {
-        document.location.href = fcConfig.personEditUrl + '/' + personId; 
+        document.location.href = fcConfig.personEditUrl + '&id=' + personId; 
     }
 
     self.loadPersons();
