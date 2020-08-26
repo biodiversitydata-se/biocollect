@@ -114,6 +114,7 @@ class UrlMappings {
                 }
 
                 "/site/bookSites"(controller: "site", action: "bookSites")
+                "/site/getSitesForUser"(controller: "site", action: "getSitesForUser")
                 "/download/file"(controller: "download", action: [GET: "file"])
                 "/download/$id"(controller: "download", action: [GET: "downloadProjectDataFile"])
                 "500"(controller:'error', action:'response500')
