@@ -5,7 +5,6 @@
   <meta name="layout" content="${hubConfig.skin}"/>
     <title> ${create ? 'New' : ('Edit | ' + person?.firstName + ' ' + person?.lastName)}</title>
     <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},Home"/>
-    <meta name="breadcrumb" content="${project?.name}"/>
     <style type="text/css">
     legend {
         border: none;
@@ -30,7 +29,7 @@
         personUpdateUrl: "${createLink(action: 'update')}",
         deletePersonUrl: "${createLink(action:'delete')}",
         bookSiteForPersonUrl: "${createLink(controller: 'site', action:'bookSites')}",
-        returnToProjectUrl: "${createLink(controller: 'project', action:'index')}"
+        returnToProjectUrl: "${createLink(controller: 'project', action:'index', params:[id: params.projectId])}"
         };
         here = window.location.href;
 
@@ -41,15 +40,17 @@
 
 </head>
 <body>
-    <div class="container-fluid validationEngineContainer">
+    <div id="personDefinition" class="container-fluid validationEngineContainer">
         <div id="person">
-        <bs:form action="update" inline="true">
+        <bs:form action="" inline="true">
             <g:render template="personDefinition"/>
         </bs:form>
         </div>
     </div>
 
 <asset:script type="text/javascript">
+
+    $('#personal-details-form').validationEngine();
 
     function initPersonViewModel() {
         var savedPersonDetails = {
@@ -68,9 +69,9 @@
             extra: "${person?.extra}",
             modTyp: "${person?.modTyp}",
             eProt: "${person?.eProt}",
-            projects: ${person?.projects ?: '[]'}
+            projects: "${person?.projects}",
+            bookedSites: ${person?.bookedSites ?: []}
         }
-        console.log(savedPersonDetails);
 
         var personViewModel = new PersonViewModel(savedPersonDetails, ${create}, "${projectId}");
         return personViewModel;
@@ -79,6 +80,10 @@
         var personViewModel = initPersonViewModel();
         ko.applyBindings(personViewModel, document.getElementById('person'));
      }); 
+
+     $("#cancel").click(function (){
+         document.location.href = fcConfig.returnToProjectUrl;
+     })
 
 </asset:script>
 
