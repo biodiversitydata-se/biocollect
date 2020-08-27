@@ -23,8 +23,8 @@ function PersonViewModel(savedPerson, create, projectId) {
         extra : ko.observable(),
         modTyp : ko.observable(),
         eProt : ko.observable(),
-        projects : ko.observableArray([projectId]),
-        bookedSites: ko.observableArray([])
+        projects : ko.observable(),
+        bookedSites: ko.observableArray()
     });
     
 
@@ -41,7 +41,6 @@ function PersonViewModel(savedPerson, create, projectId) {
 
     self.loadPerson = function (person){
         var personModel = self.person();
-
         personModel.firstName(exists(person, "firstName"));
         personModel.lastName(exists(person, "lastName"));
         personModel.email(exists(person, "email"));
@@ -57,9 +56,9 @@ function PersonViewModel(savedPerson, create, projectId) {
         personModel.extra(exists(person, "extra"));
         personModel.modTyp(exists(person, "modTyp"));
         personModel.eProt(exists(person, "eProt"));
-        personModel.projects(exists(person.projects || []));
-        personModel.bookedSites(exists(person.bookedSites || []));
-        }
+        personModel.projects(exists(person, "projects"));
+        personModel.bookedSites(exists(person, "bookedSites"));
+    }
 
     if (!create){
         self.loadPerson(savedPerson);
