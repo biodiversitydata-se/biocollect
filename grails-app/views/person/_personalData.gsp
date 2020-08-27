@@ -1,5 +1,5 @@
-<div class="row-fluid">
-        <h2><g:message code=""/>Person details</h2>
+<div class="row-fluid validationEngineContainer" id="personal-details-form">
+        <h2><g:message code=""/>Personal details</h2>
 
         <div class="span6">
             <label for=""><g:message code=""/>Personal code<g:message code=""/></label>
@@ -61,8 +61,7 @@
             <label for=""><g:message code=""/>eProt<g:message code=""/></label>
            <input data-bind="value: person().eProt"  type="text" class="span12"/>
         </div>
-
-        <div class="row-fluid">
+         <div class="row-fluid">
                 <div class="form-actions span12">
                     <button type="button" id="save" class="btn btn-primary" data-bind="click: save">Save changes</button>
                     <button type="button" id="cancel" class="btn">Cancel</button>
