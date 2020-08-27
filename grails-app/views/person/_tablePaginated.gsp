@@ -26,15 +26,16 @@
         <div id="person-search" hidden>
             <table class="table table-striped table-bordered table-hover" id="person-search-table">
                 <thead>
-                <th>Personal code</th>
-                <th>First name</th>
                 <th>Last name</th>
+                <th>First name</th>
+                <th>Personal code</th>
                 <th>Town</th>
+                <th width="3%">Edit</th>
                 </thead>
             </table>
         </div>
 
-        <table style="width: 95%;margin:30px" class="table table-striped table-bordered table-hover" id="person-list">
+        <%-- <table style="width: 95%;margin:30px" class="table table-striped table-bordered table-hover" id="person-list">
             <thead>
             <th id="personId">Volunteer code</th>
             <th>First Name</th>
@@ -45,7 +46,7 @@
             </thead>
             <tbody>
             </tbody>
-        </table>
+        </table> --%>
     </div>
     <div class="span5">
         <div id="formStatus" class="hide alert alert-success">
@@ -57,12 +58,15 @@
 <asset:script type="text/javascript">
 
 $(document).ready(function () {
-    var personsListViewModel = new PersonsListViewModel("${project.projectId}");
-    ko.applyBindings(personsListViewModel, document.getElementById("project-person-list"))
+    <%-- var personsListViewModel = new PersonsListViewModel("${project.projectId}"); --%>
+    <%-- ko.applyBindings(personsListViewModel, document.getElementById("project-person-list")) --%>
 
 
-    self.viewPerson = function (personId) {
-        document.location.href = fcConfig.personViewUrl + '/' + personId; 
+    var viewPerson = function (personId) {
+        document.location.href = fcConfig.personViewUrl + '&id=' + personId; 
+    }
+    var editPerson = function(personId) {
+        document.location.href = fcConfig.personEditUrl + '&id=' + personId; 
     }
     
     var tableSearchResults;
@@ -84,22 +88,30 @@ $(document).ready(function () {
                 "paging": false,
                 "columns": [
                     {
-                        data: 'personId',
-                        name: 'personId'
+                        data: 'lastName',
+                        name: 'lastName',
+                        bSortable: true
                     },
                     {
                         data: 'firstName',
                         name: 'firstName'
                     },
                     {
-                        data: 'lastName',
-                        name: 'lastName',
-                        bSortable: false
+                        data: 'personId',
+                        name: 'personId'
                     },
                     {
                         data: 'town',
                         name: 'town',
                         bSortable: false
+                    },
+                    {
+                    render: function (data, type, row) {
+                        return '<div class="pull-right margin-right-20">' + 
+                        '<a class="margin-left-10" href="" title="Edit details or book sites"><i class="fa fa-edit"></i></a>' 
+                        + '</div>';
+                        },
+                    bSortable: false
                     }
                     ]
                 });
@@ -107,16 +119,21 @@ $(document).ready(function () {
                 tableSearchResults.ajax.url(url).load()
             } 
     
-            $('#person-search-table').on("click", "tr", function (e) {
+            $('#person-search-table').on("click", "tbody td:nth-child(-n+4)", function (e) {
                 e.preventDefault();
-                var rowData = tableSearchResults.row(this).data();
-                console.log(rowData)
-                var personId = rowData['personId'];
-                console.log(personId)
+                var row = this.parentElement;
+                var data = tableSearchResults.row(row).data();
+                var personId = data.personId;
                 viewPerson(personId);
             });
 
-
+            $('#person-search-table').on("click", "tbody td:nth-child(5)", function (e) {
+                e.preventDefault();
+                var row = this.parentElement;
+                var data = tableSearchResults.row(row).data();
+                var personId = data.personId;
+                editPerson(personId);
+            });
     });
 });
 
