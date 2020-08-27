@@ -624,6 +624,11 @@ class SiteService {
         return response
     }
 
+    def getSitesForUser(String id){
+        def result = webService.getJson(grailsApplication.config.ecodata.service.url + "/site/getSitesForUser/${id}")
+        return result
+    }
+
     def enc(String value) {
         URLEncoder.encode(value, 'UTF-8')
     }
