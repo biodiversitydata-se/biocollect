@@ -6,7 +6,8 @@ class PersonService {
     PersonService personService
 
     def create(body){
-        webService.doPost(grailsApplication.config.ecodata.service.url + '/person/', body) 
+        def result = webService.doPost(grailsApplication.config.ecodata.service.url + '/person/', body) 
+        result
     }
 
     def get(String id){
@@ -14,7 +15,8 @@ class PersonService {
     }
 
     def update(String id, Map body){
-        webService.doPost(grailsApplication.config.ecodata.service.url + "/person/update/${id}", body)
+        def result = webService.doPost(grailsApplication.config.ecodata.service.url + "/person/update/${id}", body)
+        result
     }
 
     def getPersonsForProjectPerPage(String projectId){

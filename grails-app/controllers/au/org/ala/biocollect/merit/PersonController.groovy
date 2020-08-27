@@ -4,6 +4,7 @@ import au.org.ala.biocollect.merit.PersonService
 import au.org.ala.biocollect.merit.UserService
 import au.org.ala.biocollect.merit.ProjectService
 import au.org.ala.biocollect.merit.OutputService
+import au.org.ala.biocollect.merit.SiteService
 
 import grails.converters.JSON
 
@@ -13,6 +14,15 @@ class PersonController {
     UserService userService
     ProjectService projectService
     OutputService outputService
+    SiteService siteService
+
+    def home(){
+        def userName = userService.currentUserDisplayName
+        String userId = userService.currentUserId
+        // String userId = "19850000-1"
+        def result = siteService.getSitesForUser(userId)
+        render view: 'home', model: [userName: userName, sites: result?.sites, message: result?.message]
+    }
 
     def index(String id) {
         def person = personService.get(id)
@@ -29,14 +39,14 @@ class PersonController {
     }
     
     def create(){
-        log.debug "params.id is project id? " + params.id
-        render view: 'edit', model:[create:true, projectId: params.id]  
+        log.debug "params " + params
+        render view: 'edit', model:[create:true, projectId: params.projectId]  
     }
     
     def edit(String id) {
-        log.debug "params.id" + params.id
+        log.debug "params " + params
         def person = personService.get(id)
-        render view: 'edit', model:[create:false, person: person]
+        render view: 'edit', model:[create:false, person: person, projectId: params.projectId]
     }
 
     // @PreAuthorise(accessLevel = 'admin')
@@ -49,7 +59,7 @@ class PersonController {
         if (resp.error) {
             resp.status = 500
         } else {
-            render resp
+            render resp as JSON
         }
     }
 
@@ -66,7 +76,6 @@ class PersonController {
     }
 
     def searchPerson(){
-        log.debug "params"+params
         def searchTerm = params.searchTerm
         log.debug "searchTerm" + searchTerm
         def result = personService.searchPerson(searchTerm)
