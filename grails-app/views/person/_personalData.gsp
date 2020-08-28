@@ -2,8 +2,12 @@
         <h2><g:message code=""/>Personal details</h2>
 
         <div class="span6">
+            <label for=""><g:message code=""/>Person ID<g:message code=""/></label>
+           <input disabled data-bind="value: person().personId" id="personId" type="text" class="span12"/>
+        </div>
+        <div class="span6">
             <label for=""><g:message code=""/>Personal code<g:message code=""/></label>
-           <input data-bind="value: person().personId" id="personId" type="text" class="span12"/>
+           <input data-bind="value: person().personCode" id="personCode" type="text" class="span12"/>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>First name<g:message code=""/></label>

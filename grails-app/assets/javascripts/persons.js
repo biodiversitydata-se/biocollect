@@ -9,6 +9,7 @@ function PersonViewModel(savedPerson, create, projectId) {
 
     self.person = ko.observable({
         personId : ko.observable(),
+        personCode: ko.observable(),
         firstName : ko.observable(),
         lastName : ko.observable(),
         email : ko.observable(),
@@ -41,6 +42,7 @@ function PersonViewModel(savedPerson, create, projectId) {
 
     self.loadPerson = function (person){
         var personModel = self.person();
+        personModel.personCode(exists(person, "personCode"))
         personModel.firstName(exists(person, "firstName"));
         personModel.lastName(exists(person, "lastName"));
         personModel.email(exists(person, "email"));
@@ -146,7 +148,8 @@ function PersonViewModel(savedPerson, create, projectId) {
             data: JSON.stringify(data),
             contentType: 'application/json',
             success: function (data) {
-                bootbox.alert("Sites booked successfully");
+                bootbox.alert(data.resp.message);
+                $("#bookingMessage ul").html(data.resp.message).parent().fadeIn()
             },
             error: function (data) {
                 var errorMessage = data.responseText || 'There was a problem saving this site'

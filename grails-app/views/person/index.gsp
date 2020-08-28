@@ -56,8 +56,13 @@
         <h2><g:message code=""/>Person details</h2>
 
         <div class="span6">
-            <label for=""><g:message code=""/>Personal code<g:message code=""/></label>
+            <label for=""><g:message code=""/>Person ID<g:message code=""/></label>
             <p>${person.personId}</p>
+           <%-- <input data-bind="value: '${personId}'" id="personId" type="text" class="span12"/> --%>
+        </div>
+        <div class="span6">
+            <label for=""><g:message code=""/>Personal code<g:message code=""/></label>
+            <p>${person.personCode}</p>
            <%-- <input data-bind="value: '${personId}'" id="personId" type="text" class="span12"/> --%>
         </div>
         <div class="span6">

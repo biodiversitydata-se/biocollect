@@ -55,6 +55,7 @@
     function initPersonViewModel() {
         var savedPersonDetails = {
             personId: "${person?.personId}",
+            personCode: "${person?.personCode}",
             firstName: "${person?.firstName}",
             lastName:  "${person?.lastName}",
             email:"${person?.email}",
@@ -83,7 +84,11 @@
 
      $("#cancel").click(function (){
          document.location.href = fcConfig.returnToProjectUrl;
-     })
+     });
+    
+    $('#goBack').on("click", function (){
+        document.location.href = fcConfig.returnToProjectUrl;
+    })
 
 </asset:script>
 
