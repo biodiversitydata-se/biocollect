@@ -46,9 +46,9 @@ environments:
            #port: 80
            serverURL: https://biocollect.bioatlas.se
 
-#            security:
-#              cas:
-#                 appServerName: 'http://biocollect.ala.org.au'
+           security:
+             cas:
+                appServerName: 'https://auth.bioatlas.se'
         biocollect:
            system:
               email:
