@@ -16,9 +16,9 @@ environments:
         server:
            port: 8087
            serverURL: http://localhost:8087
-#        security:
-#          cas:
-#             appServerName: 'http://canmove-dev.ekol.lu.se:8087'
+      #  security:
+      #    cas:
+      #       appServerName: 'http://canmove-dev.ekol.lu.se:8087'
         biocollect:
           system:
             email:
@@ -44,7 +44,7 @@ environments:
             #system level config
         server:
            #port: 80
-           serverURL: http://localhost:8087
+           serverURL: https://biocollect.bioatlas.se
 
 #            security:
 #              cas:
@@ -58,7 +58,7 @@ environments:
 
 app:
   default:
-    hub: "ala"
+    hub: "lusm"
   view:
     nocache: false
   http:
