@@ -26,27 +26,13 @@
         <div id="person-search" hidden>
             <table class="table table-striped table-bordered table-hover" id="person-search-table">
                 <thead>
-                <th>Last name</th>
-                <th>First name</th>
+                <th>Name</th>
                 <th>Personal code</th>
                 <th>Town</th>
                 <th width="3%">Edit</th>
                 </thead>
             </table>
         </div>
-
-        <%-- <table style="width: 95%;margin:30px" class="table table-striped table-bordered table-hover" id="person-list">
-            <thead>
-            <th id="personId">Volunteer code</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Town</th>
-            <th width="5%"></th>
-            </thead>
-            <tbody>
-            </tbody>
-        </table> --%>
     </div>
     <div class="span5">
         <div id="formStatus" class="hide alert alert-success">
@@ -88,13 +74,13 @@ $(document).ready(function () {
                 "paging": false,
                 "columns": [
                     {
-                        data: 'lastName',
-                        name: 'lastName',
-                        bSortable: true
-                    },
-                    {
-                        data: 'firstName',
-                        name: 'firstName'
+                    mData: function (data, type, row) {
+                        return '<div>' + 
+                        '<a class="margin-left-10" href="#" title="Edit personal details or book sites">' 
+                        + data.firstName + ' ' + data.lastName +
+                        '</a></div>'; 
+                        },
+                    bSortable: false
                     },
                     {
                         data: 'personId',
@@ -108,7 +94,7 @@ $(document).ready(function () {
                     {
                     render: function (data, type, row) {
                         return '<div class="pull-right margin-right-20">' + 
-                        '<a class="margin-left-10" href="" title="Edit details or book sites"><i class="fa fa-edit"></i></a>' 
+                        '<a class="margin-left-10" href="" title="Edit personal details or book sites"><i class="fa fa-edit"></i></a>' 
                         + '</div>';
                         },
                     bSortable: false
@@ -119,7 +105,7 @@ $(document).ready(function () {
                 tableSearchResults.ajax.url(url).load()
             } 
     
-            $('#person-search-table').on("click", "tbody td:nth-child(-n+4)", function (e) {
+            $('#person-search-table').on("click", "tbody td:nth-child(-n+2)", function (e) {
                 e.preventDefault();
                 var row = this.parentElement;
                 var data = tableSearchResults.row(row).data();
@@ -127,7 +113,7 @@ $(document).ready(function () {
                 viewPerson(personId);
             });
 
-            $('#person-search-table').on("click", "tbody td:nth-child(5)", function (e) {
+            $('#person-search-table').on("click", "tbody td:nth-child(4)", function (e) {
                 e.preventDefault();
                 var row = this.parentElement;
                 var data = tableSearchResults.row(row).data();
