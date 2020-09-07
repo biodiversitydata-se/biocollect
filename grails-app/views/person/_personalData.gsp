@@ -57,14 +57,6 @@
             <label for=""><g:message code=""/>Additional info<g:message code=""/></label>
            <input data-bind="value: person().extra"  type="text" class="span12"/>
         </div>
-        <div class="span6">
-            <label for=""><g:message code=""/>modTyp<g:message code=""/></label>
-           <input data-bind="value: person().modTyp"  type="text" class="span12"/>
-        </div>
-        <div class="span6">
-            <label for=""><g:message code=""/>eProt<g:message code=""/></label>
-           <input data-bind="value: person().eProt"  type="text" class="span12"/>
-        </div>
          <div class="row-fluid">
                 <div class="form-actions span12">
                     <button type="button" id="save" class="btn btn-primary" data-bind="click: save">Save changes</button>

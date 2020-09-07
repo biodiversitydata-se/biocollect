@@ -22,8 +22,6 @@ function PersonViewModel(savedPerson, create, projectId) {
         gender : ko.observable(),
         birthDate : ko.observable(),
         extra : ko.observable(),
-        modTyp : ko.observable(),
-        eProt : ko.observable(),
         projects : ko.observable(),
         bookedSites: ko.observableArray()
     });
@@ -56,8 +54,6 @@ function PersonViewModel(savedPerson, create, projectId) {
         personModel.gender(exists(person, "gender"));
         personModel.birthDate(exists(person, "birthDate"));
         personModel.extra(exists(person, "extra"));
-        personModel.modTyp(exists(person, "modTyp"));
-        personModel.eProt(exists(person, "eProt"));
         personModel.projects(exists(person, "projects"));
         personModel.bookedSites(exists(person, "bookedSites"));
     }

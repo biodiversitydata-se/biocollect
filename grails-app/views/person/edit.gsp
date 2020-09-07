@@ -68,8 +68,6 @@
             gender: "${person?.gender}",
             birthDate: "${person?.birthDate}",
             extra: "${person?.extra}",
-            modTyp: "${person?.modTyp}",
-            eProt: "${person?.eProt}",
             projects: "${person?.projects}",
             bookedSites: ${person?.bookedSites ?: []}
         }

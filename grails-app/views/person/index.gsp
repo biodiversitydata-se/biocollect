@@ -126,16 +126,6 @@
             <p>${person.extra}</p>
            <%-- <input data-bind="text: extra"  type="text" class="span12"/> --%>
         </div>
-        <div class="span6">
-            <label for=""><g:message code=""/>modTyp<g:message code=""/></label>
-            <p>${person.modTyp}</p>
-           <%-- <input data-bind="text: modTyp"  type="text" class="span12"/> --%>
-        </div>
-        <div class="span6">
-            <label for=""><g:message code=""/>eProt<g:message code=""/></label>
-            <p>${person.eProt}</p>
-           <%-- <input data-bind="text: eProt"  type="text" class="span12"/> --%>
-        </div>
 </div>
 
         </div>
