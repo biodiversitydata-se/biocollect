@@ -25,7 +25,9 @@
         <table class="table table-striped table-bordered table-hover" id="survey-list-table">
             <thead>
             <th>Date</th>
-            <th>Status / (Site?)</th>
+            <th>Site name</th>
+            <th>Site code</th>
+            <th>Period</th>
             </thead>
 
         </table>
@@ -52,15 +54,31 @@
             "bFilter": false,
             "processing": true,
             "serverSide": true,
-            "pagination": false,
+            "paging": false,
             "columns": [
                 {
                     data: 'dateCreated',
-                    name: 'dateCreated'
+                    name: 'dateCreated',
+                    render: function (data, type, row) {
+                        return '<div>' + 
+                        '<a class="margin-left-10" href="#" title="See full form">' 
+                        + data +
+                        '</a></div>';
+                    }
                 },
                 {
-                    data: 'status',
-                    name: 'status',
+                    data: 'siteName',
+                    name: 'siteName',
+                    bSortable: false
+                },
+                {
+                    data: 'siteCode',
+                    name: 'siteCode',
+                    bSortable: false
+                },
+                {
+                    data: 'period',
+                    name: 'period',
                     bSortable: false
                 }
                 ]
@@ -74,14 +92,12 @@
             var rowData = table.row(this).data();
             console.log(rowData)
             var activityId = rowData['activityId'];
-            console.log(activityId)
             viewBioActivity(activityId);
         });
 
         var viewBioActivity = function (activityId){
             document.location.href = fcConfig.activityViewUrl + '/' + activityId; 
-        }
-        
+        }    
     }
 
 </asset:script>
