@@ -1,7 +1,7 @@
 <div class="pill-pane">
 
 <%-- TODO Pass a value of create:true to edit view --%>
-<button class="btn btn-primary btn-small" data-bind="click: createPersonForProject">Add a person</button>
+<button class="btn btn-primary btn-small" data-bind="click: createPersonForProject"><g:message code="project.admin.members.addNew" /></button>
 
 <asset:javascript src="persons.js"/>
 
@@ -10,7 +10,7 @@
 
         <%-- <form class="form-horizontal" id=""> --%>
             <div class="control-group">
-                <label class="control-label" for="emailSearchFld">Search for a person by email address</label>
+                <label class="control-label" for="emailSearchFld"><g:message code="project.admin.members.searchLabel"/></label>
                 <div class="controls">
                     <input class="input-xlarge" id="searchTerm"/>
                 </div>
@@ -26,10 +26,10 @@
         <div id="person-search" hidden>
             <table class="table table-striped table-bordered table-hover" id="person-search-table">
                 <thead>
-                <th>Name</th>
-                <th>Personal code</th>
-                <th>Town</th>
-                <th width="3%">Edit</th>
+                <th><g:message code="site.metadata.name"/></th>
+                <th><g:message code="project.admin.members.code"/></th>
+                <th><g:message code="project.admin.members.town"/></th>
+                <th width="3%"><g:message code="g.edit"/></th>
                 </thead>
             </table>
         </div>
