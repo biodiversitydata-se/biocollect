@@ -136,8 +136,13 @@ function PersonViewModel(savedPerson, create, projectId) {
             data: JSON.stringify(data),
             contentType: 'application/json',
             success: function (data) {
-                bootbox.alert(data.resp.message);
-                $("#bookingMessage ul").html(data.resp.message).parent().fadeIn()
+                if (data.resp.message[0] != ""){
+                    $("#messageSuccess ul").html(data.resp.message[0]).parent().fadeIn()
+                }
+                if (data.resp.message[1] != ""){
+                    $("#messageFail ul").html(data.resp.message[1]).parent().fadeIn()
+                }
+                $("#bookedSitesInput").html("");
             },
             error: function (data) {
                 var errorMessage = data.responseText || 'There was a problem saving this site'
