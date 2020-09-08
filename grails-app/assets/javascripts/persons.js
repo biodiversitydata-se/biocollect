@@ -66,14 +66,6 @@ function PersonViewModel(savedPerson, create, projectId) {
 
         if ($('#personal-details-form').validationEngine('validate')) {
         var id = self.person().personId();
-
-        // var data = {};
-        // for (const [key, value] of Object.entries(self.person())){
-        //     if (value != '' && value != null){
-        //         data.key = value;
-        //     }
-        // }
-        // data = self.modelAsJSON(data);
         var data = self.modelAsJSON(self.person());
         
         if (create) {
