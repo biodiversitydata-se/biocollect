@@ -159,10 +159,13 @@ class OutputController {
         }
     }
 
+    /**
+     * Get a list of output dates and sites where they were conducted 
+     *
+     * @return 
+     */
     def getOutputForPersonBySurveyName(){
-        log.debug "params" + params
         def id = params.id
-
         def result = outputService.getOutputForPersonBySurveyName(id, params)
         log.debug "result" + result
         render result as JSON

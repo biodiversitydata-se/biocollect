@@ -19,11 +19,11 @@ class PersonService {
         result
     }
 
-    def getPersonsForProjectPerPage(String projectId){
-        def url = grailsApplication.config.ecodata.service.url + "/person/list/${projectId}"
-        def result = webService.getJson(url)
-        return result
-    }
+    // def getPersonsForProjectPerPage(String projectId){
+    //     def url = grailsApplication.config.ecodata.service.url + "/person/list?${projectId}&offset=${pageStart}&max=${pageSize}"
+    //     def result = webService.getJson(url)
+    //     return result
+    // }
 
     def delete(String personId){
         log.debug "delete person - serv"
