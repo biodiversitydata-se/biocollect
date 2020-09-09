@@ -3,21 +3,21 @@
     <div class="row-fluid">
         <div class="span2 large-space-before">
             <ul id="ul-cs-internal-project-admin" class="nav nav-tabs nav-stacked ">
-                <li><a href="#project-settings" id="project-settings-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Project info</a></li>
-                <li><a href="#editProjectBlog" id="editProjectBlog-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Edit Blog</a></li>
-                <li><a href="#edit-documents" id="edit-documents-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Resources</a></li>
+                <li><a href="#project-settings" id="project-settings-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.information"/></a></li>
+                <li><a href="#editProjectBlog" id="editProjectBlog-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.blog"/></a></li>
+                <li><a href="#edit-documents" id="edit-documents-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.resources"/></a></li>
 
                 <g:if test="${!project.isExternal}">
-                    <li><a href="#project-activity" id="project-activity-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Survey settings</a></li>
+                    <li><a href="#project-activity" id="project-activity-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.settings"/></a></li>
                     <g:if test="${hasLegacyNewsAndEvents}">
-                        <li><a href="#edit-news-and-events" id="editnewsandevents-tab" data-toggle="tab"><i class="icon-chevron-right"></i> News and events</a></li>
+                        <li><a href="#edit-news-and-events" id="editnewsandevents-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.news"/></a></li>
                     </g:if>
                     <g:if test="${hasLegacyProjectStories}">
-                        <li><a href="#edit-project-stories" id="editprojectstories-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Project stories</a></li>
+                        <li><a href="#edit-project-stories" id="editprojectstories-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.stories"/></a></li>
                     </g:if>
                 </g:if>
 
-                <li><a href="#permissions" id="permissions-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Members</a></li>
+                <li><a href="#permissions" id="permissions-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.members"/></a></li>
                 <%-- TODO change the flag? not all systematic sites will require booking--%>
                 <g:if test="${project?.isSystematicMonitoring}">
                     <li><a href="#bookings" id="bookings-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Site booking</a></li>
@@ -26,7 +26,7 @@
                     <g:if test="${grailsApplication.config.notification.enabled?.toBoolean()}">
                     <li><a href="#project-notification" id="project-notification-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="notification.tabTitle"/></a></li>
                     </g:if>
-                    <li><a href="#project-audit" id="project-audit-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Audit</a></li>
+                    <li><a href="#project-audit" id="project-audit-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.audit"/></a></li>
                 </g:if>
             </ul>
         </div>
@@ -38,13 +38,13 @@
                     <g:render template="editOrDeleteProject"/>
                 </div>
                 <div id="editProjectBlog" class="pill-pane">
-                    <h3>Edit Project Blog</h3>
+                    <h3><g:message code="project.admin.editblog"/></h3>
                     <g:render template="/blog/blogSummary" model="${[blog:project.blog?:[]]}"/>
                 </div>
 
                 <!-- DOCUMENTS -->
                 <div id="edit-documents" class="pill-pane">
-                    <h3>Project Resources</h3>
+                    <h3><g:message code="project.admin.projectresources"/></h3>
                     <div class="row-fluid">
                         <div class="span10">
                             <g:render template="/shared/editDocuments"
@@ -53,17 +53,17 @@
                     </div>
 
                     <div class="row-fluid attachDocumentModal">
-                        <button class="btn btn-small btn-primary" id="doAttach" data-bind="click:attachDocument"><i class="icon-white icon-plus"></i> Attach Document</button>
+                        <button class="btn btn-small btn-primary" id="doAttach" data-bind="click:attachDocument"><i class="icon-white icon-plus"></i> <g:message code="project.admin.attachdoc"/></button>
                     </div>
                 </div>
 
                 <g:if test="${!project.isExternal}">
                     <div id="edit-news-and-events" class="pill-pane">
-                        <g:render template="editProjectContent" model="${[attributeName:'newsAndEvents', header:'News and events']}"/>
+                        <g:render template="editProjectContent" model="${[attributeName:'newsAndEvents', header: message(code: 'project.admin.news')]}"/>
                     </div>
 
                     <div id="edit-project-stories" class="pill-pane">
-                        <g:render template="editProjectContent" model="${[attributeName:'projectStories', header:'Project stories']}"/>
+                        <g:render template="editProjectContent" model="${[attributeName:'projectStories', header: message(code:'project.admin.stories')]}"/>
                     </div>
 
                     <div id="project-activity" class="pill-pane">

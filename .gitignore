@@ -16,3 +16,4 @@ grails-app/assets/components/compile/biocollect-templates.js
 grails-app/assets/components/compile/*
 .vscode/
 addSystematicSite.code-workspace
+grails-app/assets/components/compile/*

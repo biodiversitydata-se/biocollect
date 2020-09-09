@@ -1,5 +1,6 @@
 package au.org.ala.biocollect.merit
 
+import au.org.ala.biocollect.GeometryUtils
 import au.org.ala.biocollect.ProjectActivityService
 import com.vividsolutions.jts.geom.Geometry
 import com.vividsolutions.jts.geom.Point
@@ -35,7 +36,7 @@ class SiteService {
      */
     def siteExtentFromPoint(lat, lon) {
 
-        def extent = [:].withDefault{[:]}
+        def extent = [:].withDefault { [:] }
         extent.source = 'point'
         extent.geometry.type = 'Point'
         extent.geometry.decimalLatitude = lat
@@ -106,15 +107,15 @@ class SiteService {
     }
 
     def getRaw(id) {
-        def site = get(id, [raw:'true'])
+        def site = get(id, [raw: 'true'])
         if (!site || site.error) return [:]
 
         if (site.shapePid && !(site.shapePid instanceof JSONArray)) {
             log.debug "converting to array"
             site.shapePid = [site.shapePid] as JSONArray
         }
-        def documents = documentService.getDocumentsForSite(site.siteId).resp?.documents?:[]
-        [site: site, documents:documents as JSON, meta: metaModel()]
+        def documents = documentService.getDocumentsForSite(site.siteId).resp?.documents ?: []
+        [site: site, documents: documents as JSON, meta: metaModel()]
     }
 
     def updateRaw(id, values, userId = "") {
@@ -124,23 +125,23 @@ class SiteService {
 
         if (id) {
             def result = update(id, values)
-            if(result.error){
+            if (result.error) {
                 resp = [status: 'error', message: result.detail]
             } else {
-                resp = [status: 'updated', id:id]
+                resp = [status: 'updated', id: id]
             }
         } else {
             def result = create(values)
-            if(result.error){
-               resp = [status: 'error', message: result.detail]
+            if (result.error) {
+                resp = [status: 'error', message: result.detail]
             } else {
-                resp = [status: 'created', id:result.resp.siteId]
+                resp = [status: 'created', id: result.resp.siteId]
             }
         }
         return resp
     }
 
-    def create(body){
+    def create(body) {
         webService.doPost(grailsApplication.config.ecodata.service.url + '/site/', body)
     }
 
@@ -172,8 +173,9 @@ class SiteService {
      * @param description the description for the site
      * @param projectId the project the site should be associated with.
      * @param forceAddToWhiteList update project's map configuration with site so that it appears in whitelist
+     * @return error message
      */
-    def createSiteFromUploadedShapefile(shapeFileId, siteId, externalId, name, description, projectId, forceAddToWhiteList) {
+    String createSiteFromUploadedShapefile(shapeFileId, siteId, externalId, name, description, projectId, forceAddToWhiteList) {
         def baseUrl = "${grailsApplication.config.spatial.layersUrl}/shape/upload/shp"
         def userId = userService.getUser().userId
 
@@ -182,15 +184,24 @@ class SiteService {
         def url = "${baseUrl}/${shapeFileId}/${siteId}"
 
         def result = webService.doPost(url, site)
-        if (!result.error) {
-            def id = result.resp.id
 
+        String error
+        if (!result?.resp?.id) {
+            error = "Error retrieving spatial portal site Id. Try exporting shape file using QGIS. (${result})"
+            log.error(error)
+        } else if (!result.error) {
+            def id = result.resp.id
             Point centriod = calculateSiteCentroid(id)
             Map data = createSite(projectId, name, description, externalId, id, centriod.getY(), centriod.getX())
             if (!data.error && data.resp?.siteId) {
                 addSitesToSiteWhiteListInWorksProjects([data.resp?.siteId], [projectId], forceAddToWhiteList)
             }
+        } else {
+            error = "Error uploading site, please check the shape file and try again. (${result})"
+            log.error(error)
         }
+
+        return error
     }
 
     /**
@@ -202,7 +213,7 @@ class SiteService {
      * @param lon longitude of the site centroid.
      */
     def createSiteFromPoint(projectId, name, description, lat, lon) {
-        def site = [name:name, description:description, projects:[projectId]]
+        def site = [name: name, description: description, projects: [projectId]]
         site.extent = siteExtentFromPoint(lat, lon)
 
         create(site)
@@ -256,8 +267,7 @@ class SiteService {
         features.each { SimpleFeature feature ->
             if (feature.getDefaultGeometry()) {
                 placemarks << feature
-            }
-            else {
+            } else {
                 extractPlacemarks(feature.getAttribute('Feature'), placemarks)
             }
         }
@@ -270,14 +280,14 @@ class SiteService {
         def getWktUrl = "${grailsApplication.config.spatial.baseURL}/ws/shape/wkt"
         def wkt = webService.get("${getWktUrl}/${spatialPortalSiteId}")
         Geometry geom = new WKTReader().read(wkt)
-        return geom.getCentroid()
+        return geom?.getCentroid()
     }
 
     def createSite(projectId, name, description, externalId, geometryPid, centroidLat, centroidLong) {
         def metadata = metadataService.getLocationMetadataForPoint(centroidLat, centroidLong)
-        def strLat =  "" + centroidLat + ""
+        def strLat = "" + centroidLat + ""
         def strLon = "" + centroidLong + ""
-        def values = [extent: [source: 'pid', geometry: [pid: geometryPid, type: 'pid', state: metadata.state, nrm: metadata.nrm, lga: metadata.lga, locality: metadata.locality, mvg: metadata.mvg, mvs: metadata.mvs, centre: [strLon, strLat]]], projects: [projectId], name: name, description: description, externalId:externalId]
+        def values = [extent: [source: 'pid', geometry: [pid: geometryPid, type: 'pid', state: metadata.state, nrm: metadata.nrm, lga: metadata.lga, locality: metadata.locality, mvg: metadata.mvg, mvs: metadata.mvs, centre: [strLon, strLat]]], projects: [projectId], name: name, description: description, externalId: externalId]
         return create(values)
     }
 
@@ -285,7 +295,7 @@ class SiteService {
         webService.doDelete(grailsApplication.config.ecodata.service.url + '/site/' + id)
     }
 
-    def deleteSitesFromProject(projectId){
+    def deleteSitesFromProject(projectId) {
         webService.doDelete(grailsApplication.config.ecodata.service.url + '/project/deleteSites/' + projectId)
     }
 
@@ -306,7 +316,7 @@ class SiteService {
             case 'pid':
                 featuresMap.features << site.extent.geometry
                 break
-            case 'drawn' :
+            case 'drawn':
                 featuresMap.features << site.extent.geometry
                 break
             default:
@@ -333,16 +343,16 @@ class SiteService {
     /**
      * Get images for a list of sites. Number of images returned can be limited by max and offset parameters.
      */
-    List getImages( GrailsParameterMap params) throws SocketTimeoutException, Exception{
+    List getImages(GrailsParameterMap params) throws SocketTimeoutException, Exception {
         String url = grailsApplication.config.ecodata.service.url + '/site/getImages';
         Map response = webService.doGet(url, params);
-        if(response.resp){
+        if (response.resp) {
             return response.resp;
-        } else  if(response.error){
-            if(response.error.contains('Timed out')){
+        } else if (response.error) {
+            if (response.error.contains('Timed out')) {
                 throw new SocketTimeoutException(response.error)
             } else {
-                throw  new Exception(response.error);
+                throw new Exception(response.error);
             }
         }
     }
@@ -351,91 +361,91 @@ class SiteService {
     /**
      * Get images for a point of interest id. Number of images returned can be limited by max and offset parameters.
      */
-    Map getPoiImages( GrailsParameterMap params) throws SocketTimeoutException, Exception{
+    Map getPoiImages(GrailsParameterMap params) throws SocketTimeoutException, Exception {
         String url = grailsApplication.config.ecodata.service.url + '/site/getPoiImages';
         Map response = webService.doGet(url, params);
-        if(response.resp){
+        if (response.resp) {
             return response.resp;
-        } else  if(response.error){
-            if(response.error.contains('Timed out')){
+        } else if (response.error) {
+            if (response.error.contains('Timed out')) {
                 throw new SocketTimeoutException(response.error)
             } else {
-                throw  new Exception(response.error);
+                throw new Exception(response.error);
             }
         }
     }
 
     static metaModel() {
         return [domain: 'site',
-                model: [
-                        [name:'siteName', type:'text', immutable:true],
-                        [name:'externalId', type:'text'],
-                        [name:'type', type:'text'],
-                        [name:'area', type:'text'],
-                        [name:'description', type:'text'],
-                        [name:'notes', type:'text'],
-                        [name:'extent', type:'Location', itemModel: [
-                                [name:'name', type: 'text'],
-                                [name:'type', type:'list', itemType:'text', listValues:[
-                                        'locationTypeNone','locationTypePoint','locationTypePid','locationTypeUpload',
+                model : [
+                        [name: 'siteName', type: 'text', immutable: true],
+                        [name: 'externalId', type: 'text'],
+                        [name: 'type', type: 'text'],
+                        [name: 'area', type: 'text'],
+                        [name: 'description', type: 'text'],
+                        [name: 'notes', type: 'text'],
+                        [name: 'extent', type: 'Location', itemModel: [
+                                [name: 'name', type: 'text'],
+                                [name: 'type', type: 'list', itemType: 'text', listValues: [
+                                        'locationTypeNone', 'locationTypePoint', 'locationTypePid', 'locationTypeUpload',
                                 ]],
-                                [name:'geometry', type:'list', itemType:[
-                                        [name:'NoneLocation', type:'null'],
-                                        [name:'PointLocation', type:'list', itemType:[
-                                                [name:'decimalLatitude', type:'latLng'],
-                                                [name:'decimalLongitude', type:'latLng'],
-                                                [name:'uncertainty', type:'text'],
-                                                [name:'precision', type:'text'],
-                                                [name:'datum', type:'text']
+                                [name: 'geometry', type: 'list', itemType: [
+                                        [name: 'NoneLocation', type: 'null'],
+                                        [name: 'PointLocation', type: 'list', itemType: [
+                                                [name: 'decimalLatitude', type: 'latLng'],
+                                                [name: 'decimalLongitude', type: 'latLng'],
+                                                [name: 'uncertainty', type: 'text'],
+                                                [name: 'precision', type: 'text'],
+                                                [name: 'datum', type: 'text']
                                         ]],
-                                        [name:'PidLocation', type:'list', itemType:[
-                                                [name:'pid', type: 'text']
+                                        [name: 'PidLocation', type: 'list', itemType: [
+                                                [name: 'pid', type: 'text']
                                         ]],
-                                        [name:'UploadLocation', type:'list', itemType:[
-                                                [name:'shape', type: 'text'],
-                                                [name:'pid', type: 'text']
+                                        [name: 'UploadLocation', type: 'list', itemType: [
+                                                [name: 'shape', type: 'text'],
+                                                [name: 'pid', type: 'text']
                                         ]],
-                                        [name:'DrawnLocation', type:'list', itemType:[
-                                                [name:'decimalLatitude', type:'latLng'],
-                                                [name:'decimalLongitude', type:'latLng'],
-                                                [name:'radius', type:'text'],
-                                                [name:'wkt', type:'text']
+                                        [name: 'DrawnLocation', type: 'list', itemType: [
+                                                [name: 'decimalLatitude', type: 'latLng'],
+                                                [name: 'decimalLongitude', type: 'latLng'],
+                                                [name: 'radius', type: 'text'],
+                                                [name: 'wkt', type: 'text']
                                         ]]
                                 ]]
-                            ]
+                        ]
                         ],
-                        [name:'location', type:'list', itemType: 'Location', itemModel: [
-                                [name:'name', type: 'text'],
-                                [name:'type', type:'list', itemType:'text', listValues:[
-                                        'locationTypeNone','locationTypePoint','locationTypePid','locationTypeUpload',
+                        [name: 'location', type: 'list', itemType: 'Location', itemModel: [
+                                [name: 'name', type: 'text'],
+                                [name: 'type', type: 'list', itemType: 'text', listValues: [
+                                        'locationTypeNone', 'locationTypePoint', 'locationTypePid', 'locationTypeUpload',
                                 ]],
-                                [name:'data', type:'list', itemType:[
-                                        [name:'NoneLocation', type:'null'],
-                                        [name:'PointLocation', type:'list', itemType:[
-                                                [name:'decimalLatitude', type:'latLng'],
-                                                [name:'decimalLongitude', type:'latLng'],
-                                                [name:'uncertainty', type:'text'],
-                                                [name:'precision', type:'text'],
-                                                [name:'datum', type:'text']
+                                [name: 'data', type: 'list', itemType: [
+                                        [name: 'NoneLocation', type: 'null'],
+                                        [name: 'PointLocation', type: 'list', itemType: [
+                                                [name: 'decimalLatitude', type: 'latLng'],
+                                                [name: 'decimalLongitude', type: 'latLng'],
+                                                [name: 'uncertainty', type: 'text'],
+                                                [name: 'precision', type: 'text'],
+                                                [name: 'datum', type: 'text']
                                         ]],
-                                        [name:'PidLocation', type:'list', itemType:[
-                                                [name:'pid', type: 'text']
+                                        [name: 'PidLocation', type: 'list', itemType: [
+                                                [name: 'pid', type: 'text']
                                         ]],
-                                        [name:'UploadLocation', type:'list', itemType:[
-                                                [name:'shape', type: 'text'],
-                                                [name:'pid', type: 'text']
+                                        [name: 'UploadLocation', type: 'list', itemType: [
+                                                [name: 'shape', type: 'text'],
+                                                [name: 'pid', type: 'text']
                                         ]],
-                                        [name:'DrawnLocation', type:'list', itemType:[
-                                                [name:'decimalLatitude', type:'latLng'],
-                                                [name:'decimalLongitude', type:'latLng'],
-                                                [name:'radius', type:'text'],
-                                                [name:'wkt', type:'text']
+                                        [name: 'DrawnLocation', type: 'list', itemType: [
+                                                [name: 'decimalLatitude', type: 'latLng'],
+                                                [name: 'decimalLongitude', type: 'latLng'],
+                                                [name: 'radius', type: 'text'],
+                                                [name: 'wkt', type: 'text']
                                         ]]
                                 ]]
-                            ]
+                        ]
                         ],
                 ]
-            ]
+        ]
     }
 
     /**
@@ -443,14 +453,14 @@ class SiteService {
      * @param siteId
      * @return Boolean - true if more than one activity is associated with a site
      */
-    Boolean isSiteAssociatedWithActivity(String siteId) throws SocketTimeoutException, Exception{
+    Boolean isSiteAssociatedWithActivity(String siteId) throws SocketTimeoutException, Exception {
         Map siteCriteria = new HashMap();
         siteCriteria.put('siteId', siteId);
         Map response = activityService.search(siteCriteria);
         List activities
 
-        if(response.error){
-            if(response.error.contains('Timed out')){
+        if (response.error) {
+            if (response.error.contains('Timed out')) {
                 throw new SocketTimeoutException(response.error)
             } else {
                 throw new Exception(response.error)
@@ -458,7 +468,7 @@ class SiteService {
         }
 
         activities = response.resp?.activities;
-        if(activities?.size()){
+        if (activities?.size()) {
             return true
         }
 
@@ -474,20 +484,16 @@ class SiteService {
      * @param siteId
      * @return Boolean - true if more than one activity is associated with a site
      */
-    Boolean canDeleteSite(String siteId) throws SocketTimeoutException, Exception{
+    Boolean canDeleteSite(String siteId) throws SocketTimeoutException, Exception {
         if (isSiteProjectArea(siteId)) {
             return false
-        }
-        else if (anyProjectUsingSite(siteId)) {
+        } else if (anyProjectUsingSite(siteId)) {
             return false
-        }
-        else if (areWorksProjectsWithSite(siteId)) {
+        } else if (areWorksProjectsWithSite(siteId)) {
             return false
-        }
-        else if (anyProjectActivitiesWithSite(siteId)) {
+        } else if (anyProjectActivitiesWithSite(siteId)) {
             return false
-        }
-        else if(areActivitiesAssociatedWithSiteInProject(siteId)) {
+        } else if (areActivitiesAssociatedWithSiteInProject(siteId)) {
             return false
         }
 
@@ -503,17 +509,14 @@ class SiteService {
      * @param siteId
      * @return Boolean - true if more than one activity is associated with a site
      */
-    Boolean canRemoveProjectFromSite(String siteId, String projectId) throws SocketTimeoutException, Exception{
+    Boolean canRemoveProjectFromSite(String siteId, String projectId) throws SocketTimeoutException, Exception {
         if (isSiteProjectArea(siteId, projectId)) {
             return false
-        }
-        else if (areWorksProjectsWithSite(siteId, projectId)) {
+        } else if (areWorksProjectsWithSite(siteId, projectId)) {
             return false
-        }
-        else if (areProjectActivitiesWithSiteInProject(siteId, projectId)) {
+        } else if (areProjectActivitiesWithSiteInProject(siteId, projectId)) {
             return false
-        }
-        else if (areActivitiesAssociatedWithSiteInProject(siteId, projectId)) {
+        } else if (areActivitiesAssociatedWithSiteInProject(siteId, projectId)) {
             return false
         }
 
@@ -522,7 +525,7 @@ class SiteService {
 
     Boolean areProjectActivitiesWithSiteInProject(String siteId, String projectId = null) {
         Map criteria = [
-                "sites" : siteId
+                "sites": siteId
         ]
 
         if (projectId)
@@ -534,7 +537,7 @@ class SiteService {
     Boolean areWorksProjectsWithSite(String siteId, String projectId = null) {
         Map criteria = [
                 "mapConfiguration.sites": siteId,
-                "view": "basic"
+                "view"                  : "basic"
         ]
 
         if (projectId)
@@ -543,10 +546,10 @@ class SiteService {
         projectService.search(criteria)?.resp?.projects?.size() > 0
     }
 
-    Boolean isSiteProjectArea (String siteId, String projectId = null) {
+    Boolean isSiteProjectArea(String siteId, String projectId = null) {
         Map criteria = [
                 "projectSiteId": siteId,
-                "view": "basic"
+                "view"         : "basic"
         ]
 
         if (projectId)
@@ -558,22 +561,22 @@ class SiteService {
     Boolean areActivitiesAssociatedWithSiteInProject(String siteId, String projectId = null) {
         // check for activity associated with the site
         Map siteCriteria = [
-                "sites" : siteId
+                "sites": siteId
         ]
 
         if (projectId)
             siteCriteria['projectId'] = projectId
 
         Map response = activityService.search(siteCriteria)
-        return  response.resp?.activities?.size() > 0
+        return response.resp?.activities?.size() > 0
     }
 
     Boolean anyProjectActivitiesWithSite(String siteId) {
         areProjectActivitiesWithSiteInProject(siteId)
     }
 
-    Boolean anyProjectUsingSite (String siteId) {
-        def site = siteService.get(siteId, [raw:'true'])
+    Boolean anyProjectUsingSite(String siteId) {
+        def site = siteService.get(siteId, [raw: 'true'])
         site?.projects?.size() > 0
     }
 
@@ -582,14 +585,14 @@ class SiteService {
      * @param siteId
      * @return Boolean - true if site is project area
      */
-    Boolean isSiteAssociatedWithProject(String siteId) throws SocketTimeoutException, Exception{
+    Boolean isSiteAssociatedWithProject(String siteId) throws SocketTimeoutException, Exception {
         Map siteCriteria = new HashMap();
         siteCriteria.put('siteId', siteId);
         Map response = get(siteId);
         List projects
 
-        if(response.error){
-            if(response.error.contains('Timed out')){
+        if (response.error) {
+            if (response.error.contains('Timed out')) {
                 throw new SocketTimeoutException(response.error)
             } else {
                 throw new Exception(response.error)
@@ -597,7 +600,7 @@ class SiteService {
         }
 
         projects = response?.projects;
-        if(projects?.size()){
+        if (projects?.size()) {
             return true
         }
 
@@ -608,8 +611,8 @@ class SiteService {
 
         def response = webService.getJson(grailsApplication.config.ecodata.service.url + "/site/uniqueName/${enc(id)}?name=${enc(name)}&entityType=${enc(entityType)}")
         // convert an exception to a string and back again...
-        if(response.error){
-            if(response.error.contains('Timed out')){
+        if (response.error) {
+            if (response.error.contains('Timed out')) {
                 throw new SocketTimeoutException(response.error)
             } else {
                 throw new Exception(response.error)
@@ -636,8 +639,8 @@ class SiteService {
     void addPhotoPointPhotosForSites(List<Map> sites, List activities, List projects) {
 
         long start = System.currentTimeMillis()
-        List siteIds = sites.collect{it.siteId}
-        List pois = sites.collect{it.poi?it.poi.collect{poi->poi.poiId}:[]}.flatten()
+        List siteIds = sites.collect { it.siteId }
+        List pois = sites.collect { it.poi ? it.poi.collect { poi -> poi.poiId } : [] }.flatten()
         if (pois) {
 
 
@@ -645,36 +648,36 @@ class SiteService {
 
             if (documents.documents) {
 
-                Map docsByPOI = documents.documents.groupBy{it.poiId}
-                sites.each { site->
+                Map docsByPOI = documents.documents.groupBy { it.poiId }
+                sites.each { site ->
 
                     site.poi?.each { poi ->
                         poi.photos = docsByPOI[poi.poiId]
-                        poi.photos?.each{ photo ->
-                            photo.activity = activities?.find{it.activityId == photo.activityId}
+                        poi.photos?.each { photo ->
+                            photo.activity = activities?.find { it.activityId == photo.activityId }
                             photo.projectId = photo.activity?.projectId ?: photo.projectId
-                            Map project = projects.find{it.projectId == photo.projectId}
+                            Map project = projects.find { it.projectId == photo.projectId }
                             if (photo.activity) {
 
                                 if (!project.reports) {
                                     project.reports = reportService.getReportsForProject(photo.projectId)
                                 }
                                 Map report = reportService.findReportForDate(photo.activity.plannedEndDate, project.reports)
-                                photo.stage = report?report.name:''
+                                photo.stage = report ? report.name : ''
                             }
-                            photo.projectName = project?.name?:''
+                            photo.projectName = project?.name ?: ''
                             photo.siteName = site.name
                             photo.poiName = poi.name
 
                         }
-                        poi.photos?.sort{it.dateTaken || ''}
-                        poi.photos = poi.photos?.findAll{it.projectId} // Remove photos not associated with a supplied project
+                        poi.photos?.sort { it.dateTaken || '' }
+                        poi.photos = poi.photos?.findAll { it.projectId } // Remove photos not associated with a supplied project
                     }
                 }
             }
         }
         long end = System.currentTimeMillis()
-        log.debug "Photopoint initialisation took ${(end-start)} millis"
+        log.debug "Photopoint initialisation took ${(end - start)} millis"
     }
 
     /**
@@ -750,14 +753,88 @@ class SiteService {
     }
 
 
-    Map defaultMapConfiguration(String defaultZoomSiteId = null){
+    Map defaultMapConfiguration(String defaultZoomSiteId = null) {
         [
-            "sites" : [],
-            "allowPoints" : true,
-            "allowPolygons" : true,
-            "addCreatedSiteToListOfSelectedSites" : false,
-            "surveySiteOption" : "sitecreate",
-            "defaultZoomArea" : defaultZoomSiteId
+                "sites"                              : [],
+                "allowPoints"                        : true,
+                "allowPolygons"                      : true,
+                "addCreatedSiteToListOfSelectedSites": false,
+                "surveySiteOption"                   : "sitecreate",
+                "defaultZoomArea"                    : defaultZoomSiteId
         ]
+    }
+
+    Map checkPointInsideProjectAreaAndAddress(String lat, String lng, String projectId) {
+        Map response = [
+                isPointInsideProjectArea: false,
+                address                 : null
+        ]
+
+        response.isPointInsideProjectArea = isPointInsideProjectArea(lat, lng, projectId)
+        if (!response.isPointInsideProjectArea) {
+            response.address = lookupAddressOfPoint(lat, lng)
+        }
+
+        response
+    }
+
+    String lookupAddressOfPoint(String lat, String lng) {
+        if (lat && lng) {
+            Map address = getLocationMetadataForPoint(lat, lng)
+            return address?.formatted_address
+        }
+    }
+
+    Map getLocationMetadataForPoint(String lat, String lng) {
+        if (grailsApplication.config.google.api.key) {
+            def localityUrl = grailsApplication.config.google.geocode.url + "${lat},${lng}&key=${grailsApplication.config.google.maps.apiKey}"
+            def result = webService.getJson(localityUrl)
+            if (!result?.error) {
+                return result.results ? result.results[0] : null
+            }
+        }
+    }
+
+    boolean isPointInsideProjectArea(String lat, String lng, String projectId) {
+        Map projectArea = getProjectAreaForProject(projectId)
+        Map pointGeoJSON = createGeoJSONFromPoint(lat, lng)
+        if ((projectArea?.extent?.geometry?.type == "pid") && pointGeoJSON) {
+            def pidURL =  "${grailsApplication.config.spatial.baseURL}/ws/shape/geojson/${projectArea?.extent?.geometry?.pid}"
+            def geoJSON = webService.getJson(pidURL)
+            if (!geoJSON.error) {
+                return  GeometryUtils.doShapesIntersect(geoJSON, pointGeoJSON)
+            }
+        }
+        else if (projectArea?.geoIndex && pointGeoJSON) {
+            return GeometryUtils.doShapesIntersect(projectArea.geoIndex, pointGeoJSON)
+        }
+
+        false
+    }
+
+    Map getProjectAreaForProject(String projectId) {
+        Map project = projectService.get(projectId)
+        if (!project?.error) {
+            String siteId = project.projectSiteId
+            Map projectArea = get(siteId)
+            if (!projectArea?.error) {
+                return projectArea
+            }
+        }
+    }
+
+    Map createGeoJSONFromPoint(String lat, String lng) {
+        if (lat && lng) {
+            double latitude = Double.parseDouble(lat)
+            double longitude = Double.parseDouble(lng)
+
+            [
+                    "type"       : "Point",
+                    "coordinates": [
+                            longitude,
+                            latitude
+                    ]
+            ]
+        }
     }
 }

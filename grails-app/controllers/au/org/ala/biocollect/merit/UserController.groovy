@@ -164,7 +164,6 @@ class UserController {
      */
     def checkEmailExists() {
         String email = params.email
-
         def userId
         if(email) {
             userId =  userService.checkEmailExists(email)
@@ -176,6 +175,7 @@ class UserController {
         } else {
             render userId
         }
+
     }
 
 }

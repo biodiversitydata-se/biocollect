@@ -5,7 +5,7 @@
     <!-- ko if: projectActivities().length == 0 -->
     <div class="row-fluid">
         <div class="span12 text-left">
-            <h2><g:message code="project.survey.noSurveys"/></h2>
+            <h2><g:message code="project.survey.noSurveys" /></h2>
         </div>
     </div>
     <!-- /ko -->
@@ -541,7 +541,7 @@
                                         <br/>
                                         <!-- ko if: $parent.userIsAdmin() -->
                                         <span><a href="#" data-bind="click:function() {showAekosModal($parent.projectActivities, $parent.currentUser, $parent.vocabList, $parent.projectArea);}"
-                                                 class="btn btn-success btn-sm"><g:message code="project.survey.aekosSubmitCurrent"/></a></span>
+                                                 class="btn btn-success btn-sm"><g:message code="project.survey.aekosSubmitCurrent" /></a></span>
                                         <!-- /ko -->
                                     </div>
                                     </g:if>
@@ -554,55 +554,55 @@
                         <div class="survey-row-layout">
                             <div class="dayscount" data-bind="visible:transients.daysSince() >= 0 && transients.daysRemaining() > 0">
                                 <h2 data-bind="text:transients.daysRemaining"></h2>
-                                <h4><g:message code="project.survey.daysToGo"/></h4>
+                                <h4><g:message code="project.survey.daysToGo" /></h4>
                                 <div class="header-dates" data-bind="visible: startDate">
-                                    <g:message code="project.details.plannedStartDate"/>
+                                    <g:message code="project.details.plannedStartDate" />
                                     <!-- ko text: moment(startDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                                 <div class="header-dates" data-bind="visible: endDate">
-                                    <g:message code="project.details.plannedEndDate"/>
+                                    <g:message code="project.details.plannedEndDate" />
                                     <!-- ko text: moment(endDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                             </div>
                             <div class="dayscount" data-bind="visible:transients.daysSince() >= 0 && transients.daysRemaining() == 0">
-                                <h4><g:message code="g.survey"/></h4>
-                                <h4><g:message code="g.ended"/></h4>
+                                <h4><g:message code="g.survey" /></h4>
+                                <h4><g:message code="g.ended" /></h4>
                                 <div class="header-dates" data-bind="visible: startDate">
-                                    <g:message code="project.details.plannedStartDate"/>
+                                    <g:message code="project.details.plannedStartDate" />
 
                                     <!-- ko text: moment(startDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                                 <div class="header-dates" data-bind="visible: endDate">
-                                    <g:message code="project.details.plannedEndDate"/>
+                                    <g:message code="project.details.plannedEndDate" />
 
                                     <!-- ko text: moment(endDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                             </div>
                             <div class="dayscount" data-bind="visible:transients.daysSince() >= 0 && transients.daysRemaining() < 0">
-                                <h4><g:message code="g.survey"/></h4>
-                                <h4><g:message code="g.ongoing"/></h4>
+                                <h4><g:message code="g.survey" /></h4>
+                                <h4><g:message code="g.ongoing" /></h4>
                                 <div class="header-dates" data-bind="visible: startDate">
-                                    <g:message code="project.details.plannedStartDate"/>
+                                    <g:message code="project.details.plannedStartDate" />
 
                                     <!-- ko text: moment(startDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                                 <div class="header-dates" data-bind="visible: endDate">
-                                    <g:message code="project.details.plannedEndDate"/>
+                                    <g:message code="project.details.plannedEndDate" />
 
                                     <!-- ko text: moment(endDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                             </div>
                             <div class="dayscount" data-bind="visible:transients.daysSince() < 0">
-                                <h4><g:message code="project.survey.startsIn"/></h4>
+                                <h4><g:message code="project.survey.startsIn" /></h4>
                                 <h2 data-bind="text:-transients.daysSince()"></h2>
-                                <h4><g:message code="g.days"/></h4>
+                                <h4><g:message code="g.days" /></h4>
                                 <div class="header-dates" data-bind="visible: startDate">
-                                    <g:message code="project.details.plannedStartDate"/>
+                                    <g:message code="project.details.plannedStartDate" />
 
                                     <!-- ko text: moment(startDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                                 <div class="header-dates" data-bind="visible: endDate">
-                                    <g:message code="project.details.plannedEndDate"/>
+                                    <g:message code="project.details.plannedEndDate" />
 
                                     <!-- ko text: moment(endDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
@@ -611,16 +611,16 @@
                     </td>
                     <td>
                         <div class="survey-row-layout survey-add-record">
-                            <div><button class="btn btn-success btn-sm btn-addarecord" data-bind="click: addActivity, visible: $parent.userCanEdit($data)" title="<g:message code='project.survey.addRecord'/>"><g:message code="project.survey.addRecord"/></button></div>
+                            <div><button class="btn btn-success btn-sm btn-addarecord" data-bind="click: addActivity, visible: $parent.userCanEdit($data)" title="<g:message code='project.survey.addRecord'/>"><g:message code="project.survey.addRecord" /></button></div>
                             <g:if test="${hubConfig?.isSystematic}">
                                 <div class="margin-top-1"><button class="btn btn-success btn-sm btn-addarecord" data-bind="click: redirectToCreateSystematic" title="Click to add a new site to this survey"><g:message code="project.survey.addNewSite" /></button></div>
                             </g:if>
-                            <div class="margin-top-1"><button class="btn btn-info btn-sm btn-viewrecords" data-bind="click: listActivityRecords" title="<g:message code='project.survey.viewRecords'/>"><g:message code="project.survey.viewRecords"/></button></div>
+                            <div class="margin-top-1"><button class="btn btn-info btn-sm btn-viewrecords" data-bind="click: listActivityRecords" title="<g:message code='project.survey.viewRecords' />"><g:message code="project.survey.viewRecords" /></button></div>
                             <br><br>
-                            %{--<div class="margin-top-1"><a href="#" class="btn btn-primary btn-sm" data-bind="click: bulkDataLoad, visible: $parent.userCanEdit($data)" title="<g:message code='project.survey.loadData'/>"><g:message code="project.survey.loadData"/></a></div>--}%
+                            %{--<div class="margin-top-1"><a href="#" class="btn btn-primary btn-sm" data-bind="click: bulkDataLoad, visible: $parent.userCanEdit($data)" title="<g:message code='project.survey.loadData'/>"><g:message code="project.survey.loadData" /></a></div>--}%
                             <g:if test="${hubConfig?.content?.hideProjectSurveyDownloadXLSX != true}">
                             <div><a data-bind="attr: { href: downloadFormTemplateUrl, title: 'Download survey form template for bulk data upload (.xlsx)', target: pActivityFormName }"  >
-                                <g:message code="project.survey.downloadTemplate"/>
+                                <g:message code="project.survey.downloadTemplate" />
                             </a></div>
                             </g:if>
                             <g:if test="${grailsApplication.config.aekosEnabled}">

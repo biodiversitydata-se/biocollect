@@ -37,6 +37,8 @@
             activityDeleteUrl: "${createLink(controller: 'bioActivity', action: 'delete')}",
             activityAddUrl: "${createLink(controller: 'bioActivity', action: 'create')}",
             activityListUrl: "${createLink(controller: 'bioActivity', action: 'ajaxList')}",
+            worksActivityEditUrl: "${createLink(controller: 'activity', action: 'enterData')}",
+            worksActivityViewUrl: "${createLink(controller: 'activity', action: 'index')}",
             searchProjectActivitiesUrl: "${createLink(controller: 'bioActivity', action: 'searchProjectActivities')}",
             downloadProjectDataUrl: "${createLink(controller: 'bioActivity', action: 'downloadProjectData')}",
             getRecordsForMapping: "${createLink(controller: 'bioActivity', action: 'getProjectActivitiesRecordsForMapping')}",
@@ -67,7 +69,7 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong><g:message code="site.details.headsUp"/></strong> <g:message code="site.details.editWarning"/> 
     </div>
-    <ul class="breadcrumb pull-right">
+    <ul class="breadcrumb pull-right margin-top-10">
         <li>
             <g:set var="disabled">${(!user) ? "disabled='disabled' title='login required'" : ''}</g:set>
         %{--Favourite functionality only available to authenticated users --}%
@@ -76,8 +78,8 @@
                     class="icon-edit"></i> <g:message code="site.details.editSystematic"/> </g:link>
             </g:if>
             <g:else>
-                <g:link action="edit" id="${site.siteId}" class="btn btn-small"><i
-                    class="icon-edit"></i> <g:message code="site.details.editSite"/> </g:link>
+                <g:link action="edit" id="${site.siteId}" class="btn btn-small">
+                <i class="icon-edit"></i> <g:message code="site.details.editSite"/> </g:link>
                 %{-- TODO - delete button could be for volunteers too but maybe have an alert before delete happens --}%
                 <g:if test="${fc.userIsAlaAdmin()}">
                     <div class="btn btn-small btn-danger" onclick="deleteSite()"><i
@@ -121,10 +123,7 @@
             <g:if test="${hubConfig?.isSystematic}">
                 <dl class="dl-horizontal">
                 <table style="border:solid">
-                <%-- <tr> --%>
                 <td><g:message code="site.metadata.name" /></td><td><g:message code="site.transect.transectPart.habitat" /></td><td>Detaljkod</td><td><g:message code="site.transect.transectPart.length" /> (m)</td>
-                <%-- </tr> --%>
-                    <%-- <dt><g:message code="site.transect.title"/></dt> --%>
                     <g:each in="${site.transectParts}">
                     <tr>
                         <td>${it.name}</td><td>${it?.habitat}</td><td>${it?.detail}</td><td><g:formatNumber number="${it?.length}" type="number" maxFractionDigits="2"/></td>
@@ -326,7 +325,7 @@
                                         <a data-bind="attr:{'href': transients.editUrl}"><i
                                                 class="fa fa-edit" title="Edit survey"></i></a>
                                     </span>
-                                    <span class="margin-left-1">
+                                    <span class="margin-left-1" data-bind="visible: false">
                                         <a href="#" data-bind="click: $parent.remove"><i
                                                 class="fa fa-remove" title="Delete survey"></i></a>
                                     </span>

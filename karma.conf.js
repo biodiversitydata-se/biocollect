@@ -36,6 +36,7 @@ module.exports = function (config) {
             'grails-app/assets/javascripts/pagination.js',
             'grails-app/assets/javascripts/sites.js',
             'grails-app/assets/javascripts/systematicSites.js',
+            'grails-app/assets/javascripts/activity.js',
             'node_modules/leaflet/dist/leaflet.js',
             'grails-app/assets/vendor/leaflet-plugins-2.0.0/layer/tile/Google.js',
             'grails-app/assets/javascripts/MapUtilities.js',
