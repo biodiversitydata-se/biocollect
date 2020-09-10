@@ -5,11 +5,11 @@
 <head>
     <g:if test="${printView}">
         <meta name="layout" content="nrmPrint"/>
-        <title>Print | ${activity.type} | Bio Collect</title>
+        <title>Print | ${activity.type} | <g:message code="g.biocollect"/></title>
     </g:if>
     <g:else>
         <meta name="layout" content="${mobile ? 'mobile' : hubConfig.skin}"/>
-        <title>Create | ${activity.type} | Bio Collect</title>
+        <title>Create | ${activity.type} | <g:message code="g.biocollect"/></title>
     </g:else>
     <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},Home"/>
     <meta name="breadcrumbParent2" content="${createLink(controller: 'project', action: 'index')}/${pActivity.projectId},Project"/>
@@ -45,10 +45,11 @@
         speciesImageUrl:"${createLink(controller:'species', action:'speciesImage')}",
         bioActivityUpdate: "${createLink(controller: 'bioActivity', action: 'ajaxUpdate', params: [pActivityId: pActivity.projectActivityId])}",
         bioActivityView: "${createLink(controller: 'bioActivity', action: 'index')}/",
-        activityDataTableUploadUrl: "${createLink(controller:'bioActivity', action:'extractDataFromExcelTemplate', params:[pActivityId:pActivity.projectActivityId])}",
+        excelDataUploadUrl: "${createLink(controller:'bioActivity', action:'extractDataFromExcelTemplate', params:[pActivityId:pActivity.projectActivityId])}",
         getOutputSpeciesIdUrl : "${createLink(controller: 'output', action: 'getOutputSpeciesIdentifier')}",
         getGuidForOutputSpeciesUrl : "${createLink(controller: 'record', action: 'getGuidForOutputSpeciesIdentifier')}",
         mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
+        excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
         uploadImagesUrl: "${createLink(controller: 'image', action: 'upload')}"
         },
         here = document.location.href;

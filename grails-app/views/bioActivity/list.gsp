@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta name="layout" content="${hubConfig.skin}"/>
-    <title>${title} | Bio Collect</title>
+    <title>${title} | <g:message code="g.biocollect"/></title>
     <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},Home"/>
     <meta name="breadcrumb" content="${title}"/>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js"></script>
@@ -52,6 +52,7 @@
             occurrenceUrl: "${occurrenceUrl}",
             spatialUrl: "${spatialUrl}",
             mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
+            excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
             absenceIconUrl:"${asset.assetPath(src: 'triangle.png')}"
         },
         here = document.location.href;

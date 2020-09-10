@@ -5,11 +5,11 @@
 <head>
     <g:if test="${printView}">
         <meta name="layout" content="nrmPrint"/>
-        <title>Print | ${activity.type} | Bio Collect</title>
+        <title>Print | ${activity.type} | <g:message code="g.biocollect"/></title>
     </g:if>
     <g:else>
         <meta name="layout" content="${mobile ? 'mobile' : hubConfig.skin}"/>
-        <title>Edit | ${activity.type} | Bio Collect</title>
+        <title>Edit | ${activity.type} | <g:message code="g.biocollect"/></title>
     </g:else>
     <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},Home"/>
     <meta name="breadcrumbParent2" content="${createLink(controller: 'project', action: 'index')}/${pActivity.projectId},Project"/>
@@ -47,13 +47,14 @@
         speciesSearchUrl: "${createLink(controller: 'search', action: 'searchSpecies', params: [id: pActivity.projectActivityId, limit: 10])}",
         bioActivityUpdate: "${createLink(controller: 'bioActivity', action: 'ajaxUpdate', params: [pActivityId: pActivity.projectActivityId, id: id])}",
         bioActivityMobileUpdate: "${createLink(controller: 'bioActivity', action: 'ajaxUpdate', params: [pActivityId: pActivity.projectActivityId, id: id, isMobile: true])}",
-        activityDataTableUploadUrl: "${createLink(controller:'bioActivity', action:'extractDataFromExcelTemplate', id:projectActivityId)}",
+        excelDataUploadUrl: "${createLink(controller:'bioActivity', action:'extractDataFromExcelTemplate', id:projectActivityId)}",
         getOutputSpeciesIdUrl : "${createLink(controller: 'output', action: 'getOutputSpeciesIdentifier')}",
         getGuidForOutputSpeciesUrl : "${createLink(controller: 'record', action: 'getGuidForOutputSpeciesIdentifier')}",
         bioActivityView: "${createLink(controller: 'bioActivity', action: 'index')}/",
         activityId: "${id}",
         returnTo: "${returnTo}",
         returnToMobile: "${createLink(controller: 'mobile', action: 'status')}#successfully-posted",
+        excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
         mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON}
         },
         here = document.location.href;

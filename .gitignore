@@ -13,3 +13,4 @@ out/
 .asscache
 grails-app/assets/components/compile/biocollect-templates.js
 grails-app/assets/components/compile/*
+grails-app/assets/components/compile/*

@@ -5,7 +5,7 @@
     <!-- ko if: projectActivities().length == 0 -->
     <div class="row-fluid">
         <div class="span12 text-left">
-            <h2><g:message code="project.survey.noSurveys"/></h2>
+            <h2><g:message code="project.survey.noSurveys" /></h2>
         </div>
     </div>
     <!-- /ko -->
@@ -541,7 +541,7 @@
                                         <br/>
                                         <!-- ko if: $parent.userIsAdmin() -->
                                         <span><a href="#" data-bind="click:function() {showAekosModal($parent.projectActivities, $parent.currentUser, $parent.vocabList, $parent.projectArea);}"
-                                                 class="btn btn-success btn-sm"><g:message code="project.survey.aekosSubmitCurrent"/></a></span>
+                                                 class="btn btn-success btn-sm"><g:message code="project.survey.aekosSubmitCurrent" /></a></span>
                                         <!-- /ko -->
                                     </div>
                                     </g:if>
@@ -554,55 +554,55 @@
                         <div class="survey-row-layout">
                             <div class="dayscount" data-bind="visible:transients.daysSince() >= 0 && transients.daysRemaining() > 0">
                                 <h2 data-bind="text:transients.daysRemaining"></h2>
-                                <h4><g:message code="project.survey.daysToGo"/></h4>
+                                <h4><g:message code="project.survey.daysToGo" /></h4>
                                 <div class="header-dates" data-bind="visible: startDate">
-                                    <g:message code="project.details.plannedStartDate"/>
+                                    <g:message code="project.details.plannedStartDate" />
                                     <!-- ko text: moment(startDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                                 <div class="header-dates" data-bind="visible: endDate">
-                                    <g:message code="project.details.plannedEndDate"/>
+                                    <g:message code="project.details.plannedEndDate" />
                                     <!-- ko text: moment(endDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                             </div>
                             <div class="dayscount" data-bind="visible:transients.daysSince() >= 0 && transients.daysRemaining() == 0">
-                                <h4><g:message code="g.survey"/></h4>
-                                <h4><g:message code="g.ended"/></h4>
+                                <h4><g:message code="g.survey" /></h4>
+                                <h4><g:message code="g.ended" /></h4>
                                 <div class="header-dates" data-bind="visible: startDate">
-                                    <g:message code="project.details.plannedStartDate"/>
+                                    <g:message code="project.details.plannedStartDate" />
 
                                     <!-- ko text: moment(startDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                                 <div class="header-dates" data-bind="visible: endDate">
-                                    <g:message code="project.details.plannedEndDate"/>
+                                    <g:message code="project.details.plannedEndDate" />
 
                                     <!-- ko text: moment(endDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                             </div>
                             <div class="dayscount" data-bind="visible:transients.daysSince() >= 0 && transients.daysRemaining() < 0">
-                                <h4><g:message code="g.survey"/></h4>
-                                <h4><g:message code="g.ongoing"/></h4>
+                                <h4><g:message code="g.survey" /></h4>
+                                <h4><g:message code="g.ongoing" /></h4>
                                 <div class="header-dates" data-bind="visible: startDate">
-                                    <g:message code="project.details.plannedStartDate"/>
+                                    <g:message code="project.details.plannedStartDate" />
 
                                     <!-- ko text: moment(startDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                                 <div class="header-dates" data-bind="visible: endDate">
-                                    <g:message code="project.details.plannedEndDate"/>
+                                    <g:message code="project.details.plannedEndDate" />
 
                                     <!-- ko text: moment(endDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                             </div>
                             <div class="dayscount" data-bind="visible:transients.daysSince() < 0">
-                                <h4><g:message code="project.survey.startsIn"/></h4>
+                                <h4><g:message code="project.survey.startsIn" /></h4>
                                 <h2 data-bind="text:-transients.daysSince()"></h2>
-                                <h4><g:message code="g.days"/></h4>
+                                <h4><g:message code="g.days" /></h4>
                                 <div class="header-dates" data-bind="visible: startDate">
-                                    <g:message code="project.details.plannedStartDate"/>
+                                    <g:message code="project.details.plannedStartDate" />
 
                                     <!-- ko text: moment(startDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>
                                 <div class="header-dates" data-bind="visible: endDate">
-                                    <g:message code="project.details.plannedEndDate"/>
+                                    <g:message code="project.details.plannedEndDate" />
 
                                     <!-- ko text: moment(endDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
                                 </div>

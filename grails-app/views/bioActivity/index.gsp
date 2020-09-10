@@ -5,11 +5,11 @@
 <head>
     <g:if test="${printView}">
         <meta name="layout" content="nrmPrint"/>
-        <title>Print | ${activity.type} | Field Capture</title>
+        <title>Print | ${activity.type} | <g:message code="g.biocollect"/></title>
     </g:if>
     <g:else>
         <meta name="layout" content="${mobile ? 'mobile' : hubConfig.skin}"/>
-        <title>View | ${activity.type} | Bio Collect</title>
+        <title>View | ${activity.type} | <g:message code="g.biocollect"/></title>
     </g:else>
     <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},Home"/>
     <meta name="breadcrumbParent2" content="${createLink(controller: 'project', action: 'index')}/${pActivity.projectId},Project"/>
@@ -20,7 +20,7 @@
     </g:if>
 
     %{-- this will ultimately follow through to the comment controller using url mapping --}%
-    <g:set var="commentUrl" value="${resource(dir:'/bioActivity')}/${activity.activityId}/comment"></g:set>
+    <g:set var="commentUrl" value="/bioActivity/${activity.activityId}/comment"></g:set>
 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js"></script>
     <asset:script type="text/javascript">
@@ -52,6 +52,7 @@
         noImageUrl: '${asset.assetPath(src: "no-image-2.png")}',
         speciesImageUrl:"${createLink(controller:'species', action:'speciesImage')}",
         mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
+        excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
         ${(params?.version) ? ',version: ' + params?.version : ''}
         },
         here = document.location.href;
@@ -66,6 +67,7 @@
 <div class="container-fluid validationEngineContainer" id="validation-container">
 
     <div id="koActivityMainBlock">
+        <bc:koLoading>
         <g:if test="${!mobile}">
             <div class="row-fluid">
                 %{--page title--}%
@@ -107,13 +109,14 @@
 
     <!-- ko stopBinding:true -->
         <g:each in="${metaModel?.outputs}" var="outputName">
-            <script type="text/javascript" src="${createLink(controller: 'dataModel', action: 'getScript', params: [outputName: outputName, edit: false])}"></script>
             <g:set var="blockId" value="${fc.toSingleWord([name: outputName])}"/>
             <g:set var="model" value="${outputModels[outputName]}"/>
             <g:set var="output" value="${activity.outputs.find { it.name == outputName }}"/>
             <g:if test="${!output}">
                 <g:set var="output" value="[name: outputName]"/>
             </g:if>
+            <g:render template="/output/outputJSModelWithGeodata" plugin="ecodata-client-plugin"
+                      model="${[edit:false, readonly: true, model:model, outputName:outputName]}"></g:render>
 
             <div class="output-block well" id="ko${blockId}">
                 <div data-bind="if:outputNotCompleted">
@@ -142,6 +145,7 @@
             </div>
         </g:each>
     <!-- /ko -->
+        </bc:koLoading>
     </div>
 
     <g:if test="${pActivity.commentsAllowed}">
@@ -151,11 +155,11 @@
     <g:if test="${!mobile}">
         <div class="form-actions">
             <g:if test="${hasEditRights}">
-                <a class="btn btn-primary" href="${createLink(controller: 'bioActivity', action: 'edit')}/${activity.activityId}">Edit</a>
+                <a class="btn btn-primary btn-large" href="${createLink(controller: 'bioActivity', action: 'edit')}/${activity.activityId}"><span class="fa fa-edit"></span> Edit</a>
             </g:if>
-            <!--
-            <button type="button" id="cancel" class="btn">return</button>
-            -->
+            <g:if test="${userIsProjectMember}">
+                <a class="btn btn-primary  btn-large" href="${createLink(controller: 'bioActivity', action: 'create')}/${pActivity.projectActivityId}"><span class="fa fa-plus"></span> Add new record</a>
+            </g:if>
         </div>
     </g:if>
 </div>
