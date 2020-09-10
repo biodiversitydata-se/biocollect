@@ -357,7 +357,6 @@ projectdata:
   industries:
     enabled: false
 
-
 userDetails: 
   url: "https://auth.bioatlas.se/userdetails/"
 
