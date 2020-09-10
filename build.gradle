@@ -15,10 +15,6 @@ buildscript {
 plugins {
     id 'war'
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> dev
 version "5.1-SNAPSHOT"
 group "au.org.ala"
 
