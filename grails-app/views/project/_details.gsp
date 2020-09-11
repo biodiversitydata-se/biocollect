@@ -8,7 +8,7 @@
                 <label class="control-label span3"><g:message code="project.details.type"/><fc:iconHelp><g:message code="project.details.type.help"/></fc:iconHelp><i class="req-field"></i></label>
 
                 <div class="controls span9">
-                    <select data-bind="value:transients.kindOfProject, options:transients.availableProjectTypes, optionsText:'name', optionsValue:'value', optionsCaption:'Select...'"  <g:if test="${params.citizenScience || params.works || params.ecoScience}">disabled</g:if> data-validation-engine="validate[required]"></select>
+                    <select data-bind="value:transients.kindOfProject, options:transients.availableProjectTypes, optionsText:'name', optionsValue:'value', optionsCaption:'Select...'"  <g:if test="${params.citizenScience || params.works || params.ecoScience || params.systematicMonitoring}">disabled</g:if> data-validation-engine="validate[required]"></select>
                 </div>
             </div>
         </div>

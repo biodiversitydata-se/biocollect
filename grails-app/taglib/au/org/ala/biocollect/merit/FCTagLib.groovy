@@ -806,6 +806,8 @@ class FCTagLib {
                 out << createLink(controller: 'project', action:'create', params: [ecoScience:true])
             } else if(hubConfig.defaultFacetQuery.contains('isWorks:true')){
                 out << createLink(controller: 'project', action:'create', params: [works:true])
+            } else if(hubConfig.defaultFacetQuery.contains('isSystematicMonitoring:true')){
+                out << createLink(controller: 'project', action:'create', params: [systematicMonitoring:true])
             } else {
                 out << createLink(controller: 'project', action:'create', params: [citizenScience:true])
             }

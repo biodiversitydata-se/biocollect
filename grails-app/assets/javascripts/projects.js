@@ -435,6 +435,7 @@ function ProjectViewModel(project, isUserEditor) {
     self.mobileApp = ko.observable(project.mobileApp);
     self.isWorks = ko.observable(project.isWorks);
     self.isEcoScience = ko.observable(project.isEcoScience);
+    self.isSystematicMonitoring = ko.observable(project.isSystematicMonitoring);
     self.isExternal = ko.observable(project.isExternal);
     self.isSciStarter = ko.observable(project.isSciStarter);
     self.isMERIT = ko.observable(project.isMERIT);
@@ -918,7 +919,9 @@ function ProjectViewModel(project, isUserEditor) {
     var availableProjectTypes = [
         {name:'Citizen Science Project', display:'Citizen\nScience', value:'citizenScience'},
         {name:'Ecological or biological survey / assessment (not citizen science)', display:'Biological\nScience', value:'ecoScience'},
-        {name:'Natural resource management works project', display:'Works\nProject', value:'works'}
+        {name:'Natural resource management works project', display:'Works\nProject', value:'works'},
+        {name:'Systematic Monitoring', display:'Systematic\nMonitoring', value:'systematicMonitoring'}
+
     ];
     self.transients.availableProjectTypes = availableProjectTypes;
     self.transients.kindOfProjectDisplay = ko.pureComputed(function () {
@@ -938,8 +941,27 @@ function ProjectViewModel(project, isUserEditor) {
             if (self.isEcoScience()) {
                 return 'ecoScience';
             }
+            if (self.isSystematicMonitoring()) {
+                return 'systematicMonitoring';
+            }
             if (self.projectType()) {
-                return self.projectType() == 'survey' ? 'survey' : (self.projectType() == 'works' ? 'works' : 'ecoScience');
+                var projectType;
+                switch (self.projectType()){
+                case 'survey': 
+                    projectType = 'survey';
+                    break;
+                case 'works':
+                    projectType = 'works';
+                    break;
+                case 'ecoScience':
+                    projectType = 'ecoScience';
+                    break;
+                case 'systematicMonitoring':
+                    projectType = 'systematicMonitoring';
+                    break;
+                }
+                return projectType;
+                // return self.projectType() == 'survey' ? 'survey' : (self.projectType() == 'works' ? 'works' : 'ecoScience');
             }
         },
         write: function(value) {
@@ -963,6 +985,13 @@ function ProjectViewModel(project, isUserEditor) {
                     self.isCitizenScience(false);
                     self.projectType(value);
                     break;
+                case 'systematicMonitoring':
+                    self.isEcoScience(false);
+                    self.isWorks(false);
+                    self.isCitizenScience(false);
+                    self.isSystematicMonitoring(true);
+                    self.projectType(value);
+                    break;   
             }
         }
     });

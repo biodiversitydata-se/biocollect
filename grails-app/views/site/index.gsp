@@ -73,7 +73,7 @@
         <li>
             <g:set var="disabled">${(!user) ? "disabled='disabled' title='login required'" : ''}</g:set>
         %{--Favourite functionality only available to authenticated users --}%
-            <g:if test="${hubConfig?.isSystematic && fc.userIsAlaAdmin()}">
+            <g:if test="${project?.projectType == 'systematicMonitoring' && fc.userIsAlaAdmin()}">
                 <g:link action="editSystematic" id="${site.siteId}" class="btn btn-small"><i
                     class="icon-edit"></i> <g:message code="site.details.editSystematic"/> </g:link>
             </g:if>
@@ -120,7 +120,7 @@
                 </g:if>
             </div>
 
-            <g:if test="${hubConfig?.isSystematic}">
+            <g:if test="${project?.projectType == 'systematicMonitoring'}">
                 <dl class="dl-horizontal">
                 <table style="border:solid">
                 <%-- <tr> --%>

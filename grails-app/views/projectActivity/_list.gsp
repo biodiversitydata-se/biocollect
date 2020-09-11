@@ -612,7 +612,7 @@
                     <td>
                         <div class="survey-row-layout survey-add-record">
                             <div><button class="btn btn-success btn-sm btn-addarecord" data-bind="click: addActivity, visible: $parent.userCanEdit($data)" title="<g:message code='project.survey.addRecord'/>"><g:message code="project.survey.addRecord"/></button></div>
-                            <g:if test="${hubConfig?.isSystematic}">
+                            <g:if test="${project?.projectType=='systematicMonitoring'}">
                                 <div class="margin-top-1"><button class="btn btn-success btn-sm btn-addarecord" data-bind="click: redirectToCreateSystematic" title="Click to add a new site to this survey"><g:message code="project.survey.addNewSite" /></button></div>
                             </g:if>
                             <div class="margin-top-1"><button class="btn btn-info btn-sm btn-viewrecords" data-bind="click: listActivityRecords" title="<g:message code='project.survey.viewRecords'/>"><g:message code="project.survey.viewRecords"/></button></div>
@@ -647,7 +647,6 @@
 <!-- /ko -->
 
 <asset:script type="text/javascript">
-
     function initialiseProjectActivitiesList(pActivitiesVM){
         var pActivitiesListVM = new ProjectActivitiesListViewModel(pActivitiesVM);
         ko.applyBindings(pActivitiesListVM, document.getElementById('pActivitiesList'));
