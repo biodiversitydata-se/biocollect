@@ -11,6 +11,16 @@
                     <select data-bind="value:transients.kindOfProject, options:transients.availableProjectTypes, optionsText:'name', optionsValue:'value', optionsCaption:'Select...'"  <g:if test="${params.citizenScience || params.works || params.ecoScience || params.systematicMonitoring}">disabled</g:if> data-validation-engine="validate[required]"></select>
                 </div>
             </div>
+
+            <g:if test="${params.systematicMonitoring}">
+            <div class="clearfix control-group">
+            <%-- Should personal data be stored on ecodata --%>
+                <label class="control-label span3"><g:message code=""/>Store personal data of unregistered members?<fc:iconHelp><g:message code=""/>Use volunteer management tools for admins of the project, including storing data of unregistered users</fc:iconHelp><i class="req-field"></i></label>
+                <div class="controls span9">
+                    <select id="requiresVolManagement" data-bind="booleanValue:requiresVolManagement, options:[{label:'Yes', value:'false'}, {label:'No', value:'true'}], optionsText:'label', optionsValue:'value', optionsCaption:'Select...'" data-validation-engine="validate[required]">
+                </div>
+            </div>
+            </g:if>
         </div>
         <div data-bind="visible:!isWorks()" class="row-fluid">
 

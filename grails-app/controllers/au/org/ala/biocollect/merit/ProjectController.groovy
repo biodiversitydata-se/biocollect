@@ -421,6 +421,10 @@ class ProjectController {
             result.isCitizenScience = true
         }
 
+        if(hubConfig.defaultFacetQuery.contains('isSystematicMonitoring:true')) {
+            result.isSystematicMonitoring = true
+        }
+
         result
     }
 

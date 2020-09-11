@@ -19,7 +19,7 @@
 
                 <li><a href="#permissions" id="permissions-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.members"/></a></li>
                 <%-- TODO change the flag? not all systematic sites will require booking--%>
-                <g:if test="${project?.isSystematicMonitoring}">
+                <g:if test="${project?.requiresVolManagement}">
                     <li><a href="#bookings" id="bookings-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Site booking</a></li>
                 </g:if>
                 <g:if test="${fc.userInRole(role: grailsApplication.config.security.cas.alaAdminRole) || fc.userInRole(role: grailsApplication.config.security.cas.adminRole) || user.isAdmin}">
@@ -73,14 +73,20 @@
 
                 <div id="permissions" class="pill-pane">
                     <h3>Members</h3>
-                    <ul class="nav nav-tabs" id="members-tab">
-                        <li><a href="#user-permissions" id="user-permissions-tab" data-toggle="tab">Users</a></li>
-                        <li><a href="#persons" id="persons-tab" data-toggle="tab">Persons</a></li>
-                    </ul>
+                    <g:if test="${project?.requiresVolManagement}">
+                        <ul class="nav nav-tabs" id="members-tab">
+                            <li><a href="#user-permissions" id="user-permissions-tab" data-toggle="tab">Users</a></li>
+                            <li><a href="#persons" id="persons-tab" data-toggle="tab">Persons</a></li>
+                        </ul>
+                    </g:if>
+                    <g:else>
+                        <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:project.projectId]"/>
+                        <g:render template="/admin/permissionTablePaginated"/>
+                    </g:else>
                     <div class="tab-content">
                         <div class="tab-pane" id="user-permissions">
                             <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:project.projectId]"/>
-                            <g:if test="${project?.isSystematicMonitoring}">
+                            <g:if test="${project?.requiresVolManagement}">
                                 <g:render template="/person/linkUserToPerson" model="[linkUserToPersonUrl:g.createLink(controller:'person', action:'linkUserToPerson')]"/>
                             </g:if>
                             <g:render template="/admin/permissionTablePaginated"/>
@@ -91,7 +97,7 @@
                     </div>
                     
                 </div>
-                <g:if test="${project?.isSystematicMonitoring}">
+                <g:if test="${project?.requiresVolManagement}">
                 <div id="bookings" class="pill-pane">
                     <h3>Site booking</h3>
                     <g:render template="/site/siteBooking" model="[projectActivities:projectActivities]"/>

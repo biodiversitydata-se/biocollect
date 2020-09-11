@@ -436,6 +436,7 @@ function ProjectViewModel(project, isUserEditor) {
     self.isWorks = ko.observable(project.isWorks);
     self.isEcoScience = ko.observable(project.isEcoScience);
     self.isSystematicMonitoring = ko.observable(project.isSystematicMonitoring);
+    self.requiresVolManagement = ko.observable(project.requiresVolManagement);
     self.isExternal = ko.observable(project.isExternal);
     self.isSciStarter = ko.observable(project.isSciStarter);
     self.isMERIT = ko.observable(project.isMERIT);

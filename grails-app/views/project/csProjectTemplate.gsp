@@ -232,7 +232,7 @@
             initialiseData('project');
             <g:if test="${projectContent.admin.visible}">
                 initialiseProjectActivitiesSettings(pActivitiesVM);
-                <g:if test="${project.isSystematicMonitoring}">
+                <g:if test="${project.requiresVolManagement}">
                     initialiseSiteBooking(pActivitiesVM);
                 </g:if>
             </g:if>
