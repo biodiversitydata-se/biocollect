@@ -611,17 +611,28 @@
                     </td>
                     <td>
                         <div class="survey-row-layout survey-add-record">
-                            <div><button class="btn btn-success btn-sm btn-addarecord" data-bind="click: addActivity, visible: $parent.userCanEdit($data)" title="<g:message code='project.survey.addRecord'/>"><g:message code="project.survey.addRecord" /></button></div>
-                            <g:if test="${hubConfig?.isSystematic}">
-                                <div class="margin-top-1"><button class="btn btn-success btn-sm btn-addarecord" data-bind="click: redirectToCreateSystematic" title="Click to add a new site to this survey"><g:message code="project.survey.addNewSite" /></button></div>
+                            <div><button class="btn btn-success btn-sm btn-addarecord" data-bind="click: addActivity, visible: $parent.userCanEdit($data)" title="<g:message code='project.survey.addRecord'/>">
+                            <g:message code="project.survey.addRecord"/>
+                            </button></div>
+                            <g:if test="${project?.projectType=='systematicMonitoring'}">
+                                <div class="margin-top-1">
+                                    <button class="btn btn-success btn-sm btn-addarecord" data-bind="click: redirectToCreateSystematic" title="Click to add a new site to this survey">
+                                    <g:message code="project.survey.addNewSite" /></button>
+                                </div>
                             </g:if>
-                            <div class="margin-top-1"><button class="btn btn-info btn-sm btn-viewrecords" data-bind="click: listActivityRecords" title="<g:message code='project.survey.viewRecords' />"><g:message code="project.survey.viewRecords" /></button></div>
+                            <div class="margin-top-1">
+                                <button class="btn btn-info btn-sm btn-viewrecords" data-bind="click: listActivityRecords" title="<g:message code='project.survey.viewRecords'/>">
+                                <g:message code="project.survey.viewRecords"/></button>
+                            </div>
                             <br><br>
-                            %{--<div class="margin-top-1"><a href="#" class="btn btn-primary btn-sm" data-bind="click: bulkDataLoad, visible: $parent.userCanEdit($data)" title="<g:message code='project.survey.loadData'/>"><g:message code="project.survey.loadData" /></a></div>--}%
+                            %{--<div class="margin-top-1">
+                                <a href="#" class="btn btn-primary btn-sm" data-bind="click: bulkDataLoad, visible: $parent.userCanEdit($data)" title="<g:message code='project.survey.loadData'/>">
+                                <g:message code="project.survey.loadData"/></a>
+                            </div>--}%
                             <g:if test="${hubConfig?.content?.hideProjectSurveyDownloadXLSX != true}">
-                            <div><a data-bind="attr: { href: downloadFormTemplateUrl, title: 'Download survey form template for bulk data upload (.xlsx)', target: pActivityFormName }"  >
-                                <g:message code="project.survey.downloadTemplate" />
-                            </a></div>
+                                <div><a data-bind="attr: { href: downloadFormTemplateUrl, title: 'Download survey form template for bulk data upload (.xlsx)', target: pActivityFormName }"  >
+                                    <g:message code="project.survey.downloadTemplate"/>
+                                </a></div>
                             </g:if>
                             <g:if test="${grailsApplication.config.aekosEnabled}">
                                 <br><br><br>
@@ -647,7 +658,6 @@
 <!-- /ko -->
 
 <asset:script type="text/javascript">
-
     function initialiseProjectActivitiesList(pActivitiesVM){
         var pActivitiesListVM = new ProjectActivitiesListViewModel(pActivitiesVM);
         ko.applyBindings(pActivitiesListVM, document.getElementById('pActivitiesList'));

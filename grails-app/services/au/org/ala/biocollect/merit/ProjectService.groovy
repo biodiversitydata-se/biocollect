@@ -14,6 +14,7 @@ class ProjectService {
     public static final String PROJECT_TYPE_CITIZEN_SCIENCE_TYPE_2 = 'citizenScience'
     public static final String PROJECT_TYPE_ECOSCIENCE = 'ecoScience'
     public static final String PROJECT_TYPE_WORKS = 'works'
+    public static final String PROJECT_TYPE_SYSTEMATIC_MONITORING = 'systematicMonitoring'
         static  final MOBILE_APP_ROLE = [ "android",
                                           "blackberry",
                                           "iTunes",
@@ -845,6 +846,9 @@ class ProjectService {
         project.projectType == PROJECT_TYPE_WORKS
     }
 
+    public boolean isSystematicMonitoring(project){
+        project.projectType == PROJECT_TYPE_SYSTEMATIC_MONITORING
+    }
     /**
      * Get list of all possible facets for citizen science project finder. Then process it to a form it can be used
      * on admin's hub page.

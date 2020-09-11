@@ -41,8 +41,7 @@ def imgscalrVersion = "4.2"
 def httpmimeVersion = "4.2.1"
 def jtsVersion = "1.8"
 def geoToolsVersion = "11.2"
-// Set to true it needed only for development
-boolean inplace = true
+boolean inplace = true // Set to true it needed only for development
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-logging"

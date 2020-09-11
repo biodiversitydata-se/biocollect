@@ -128,7 +128,7 @@ class ProjectController {
             ]
 
 
-            if(project.projectType in [ProjectService.PROJECT_TYPE_ECOSCIENCE, ProjectService.PROJECT_TYPE_CITIZEN_SCIENCE]){
+            if(project.projectType in [ProjectService.PROJECT_TYPE_ECOSCIENCE, ProjectService.PROJECT_TYPE_CITIZEN_SCIENCE, ProjectService.PROJECT_TYPE_SYSTEMATIC_MONITORING]){
                 model.projectActivities = projectActivityService?.getAllByProject(project.projectId, "docs", params?.version, true)
                 model.pActivityForms = projectService.supportedActivityTypes(project).collect{[name: it.name, images: it.images]}
                 model.vocabList = vocabService.getVocabValues ()
@@ -155,7 +155,7 @@ class ProjectController {
     def listSurveys(String id) {
         def projectActivities = []
         def project = projectService.get(id, ProjectService.PRIVATE_SITES_REMOVED, false, params?.version)
-        if (project && project.projectType in [ProjectService.PROJECT_TYPE_ECOSCIENCE, ProjectService.PROJECT_TYPE_CITIZEN_SCIENCE]) {
+        if (project && project.projectType in [ProjectService.PROJECT_TYPE_ECOSCIENCE, ProjectService.PROJECT_TYPE_CITIZEN_SCIENCE, ProjectService.PROJECT_TYPE_SYSTEMATIC_MONITORING]) {
             projectActivities = projectActivityService?.getAllByProject(project.projectId, "docs", params?.version)
         }
 
@@ -169,6 +169,9 @@ class ProjectController {
             view = 'csProjectTemplate'
         } else if(projectService.isEcoScience(project)) {
             model = ecoSurveyProjectContent(project, user)
+            view = 'csProjectTemplate'
+        } else if(projectService.isSystematicMonitoring(project)) { 
+            model = surveyProjectContent(project, user, params)
             view = 'csProjectTemplate'
         } else {
             model = worksProjectContent(project, user)
@@ -352,7 +355,10 @@ class ProjectController {
             project.isEcoScience = true
             project.projectType = ProjectService.PROJECT_TYPE_ECOSCIENCE
         }
-
+        if (params.systematicMonitoring) {
+            project.isSystematicMonitoring = true
+            project.projectType = ProjectService.PROJECT_TYPE_SYSTEMATIC_MONITORING
+        }
         HubSettings hub = SettingService.getHubConfig()
         if (hub && hub.defaultProgram) {
             project.associatedProgram = hub.defaultProgram

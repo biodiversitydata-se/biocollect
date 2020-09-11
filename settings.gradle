@@ -1,4 +1,4 @@
-rootProject.name='biocollect'
+rootProject.name = 'biocollect'
 
 boolean inplace = true
 

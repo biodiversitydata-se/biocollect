@@ -73,13 +73,14 @@
         <li>
             <g:set var="disabled">${(!user) ? "disabled='disabled' title='login required'" : ''}</g:set>
         %{--Favourite functionality only available to authenticated users --}%
-            <g:if test="${hubConfig?.isSystematic && fc.userIsAlaAdmin()}">
+            <g:if test="${project?.projectType == 'systematicMonitoring' && fc.userIsAlaAdmin()}">
                 <g:link action="editSystematic" id="${site.siteId}" class="btn btn-small"><i
                     class="icon-edit"></i> <g:message code="site.details.editSystematic"/> </g:link>
             </g:if>
             <g:else>
                 <g:link action="edit" id="${site.siteId}" class="btn btn-small">
-                <i class="icon-edit"></i> <g:message code="site.details.editSite"/> </g:link>
+                    <i class="icon-edit"></i> <g:message code="site.details.editSite"/> 
+                </g:link>
                 %{-- TODO - delete button could be for volunteers too but maybe have an alert before delete happens --}%
                 <g:if test="${fc.userIsAlaAdmin()}">
                     <div class="btn btn-small btn-danger" onclick="deleteSite()"><i
@@ -120,7 +121,7 @@
                 </g:if>
             </div>
 
-            <g:if test="${hubConfig?.isSystematic}">
+            <g:if test="${project?.projectType == 'systematicMonitoring'}">
                 <dl class="dl-horizontal">
                 <table style="border:solid">
                 <td><g:message code="site.metadata.name" /></td><td><g:message code="site.transect.transectPart.habitat" /></td><td>Detaljkod</td><td><g:message code="site.transect.transectPart.length" /> (m)</td>
