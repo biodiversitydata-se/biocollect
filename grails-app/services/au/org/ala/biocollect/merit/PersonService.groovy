@@ -46,4 +46,9 @@ class PersonService {
         def url = grailsApplication.config.ecodata.service.url + "/person/searchPerson/?search=" + searchTerm
         webService.getJson(url)
     }
+
+    def getDataForPersonHomepage(String id){
+        def url = grailsApplication.config.ecodata.service.url +"/person/getDataForPersonHomepage/${id}"
+        webService.getJson(url)
+    }
 }

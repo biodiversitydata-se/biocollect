@@ -28,9 +28,16 @@ class PersonController {
     def home(){
         def userName = userService.currentUserDisplayName
         String userId = userService.currentUserId
-        // String userId = "19850000-1"
-        def result = siteService.getSitesForUser(userId)
-        render view: 'home', model: [userName: userName, sites: result?.sites, message: result?.message]
+        def data = personService.getDataForPersonHomepage(userId)
+        render view: 'home', model: [
+            personStatus: data?.personStatus,
+            userName: userName, 
+            person: data?.person,
+            sites: data?.sites, 
+            siteStatus: data?.siteStatus, 
+            projects: data?.projects,
+            surveys: data?.surveys
+            ]
     }
 
     /*
@@ -59,14 +66,14 @@ class PersonController {
         render view: 'edit', model:[create:true, projectId: params.projectId]  
     }
 
-    @PreAuthorise(accessLevel = 'admin')
+    // @PreAuthorise(accessLevel = 'admin')
     def edit(String id) {
         log.debug "params " + params
         def person = personService.get(id)
         render view: 'edit', model:[create:false, person: person, projectId: params.projectId]
     }
 
-    @PreAuthorise(accessLevel = 'admin')
+    // @PreAuthorise(accessLevel = 'admin')
     def update(String id){
         log.debug "updating person ${id}"
         def values = request.JSON

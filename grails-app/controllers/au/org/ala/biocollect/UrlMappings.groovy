@@ -38,6 +38,8 @@ class UrlMappings {
                 "/project/getAuditMessagesForProject/$id"(controller: "project", action: 'getAuditMessagesForProject')
 
                 "/person/searchPerson/" (controller: "person", action: 'searchPerson')
+                "/person/getDataForPersonHomepage/$id"(controller: "person", action: "getDataForPersonHomepage")
+                "/site/getSitesForPerson"(controller: "site", action: "getSitesForPerson")
                 "/output/getOutputCountForPerson/$id"(controller: "output", action: 'getOutputCountForPerson')
                 "/output/getOutputForPersonBySurveyName/$id"(controller: "output", action: 'getOutputForPersonBySurveyName')
 
@@ -114,7 +116,6 @@ class UrlMappings {
                 }
 
                 "/site/bookSites"(controller: "site", action: "bookSites")
-                "/site/getSitesForUser"(controller: "site", action: "getSitesForUser")
                 "/download/file"(controller: "download", action: [GET: "file"])
                 "/download/$id"(controller: "download", action: [GET: "downloadProjectDataFile"])
                 "500"(controller:'error', action:'response500')
