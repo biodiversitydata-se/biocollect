@@ -121,13 +121,16 @@
                 </g:if>
             </div>
 
-            <g:if test="${project?.projectType == 'systematicMonitoring'}">
+            <g:if test="${site?.transectParts}">
                 <dl class="dl-horizontal">
-                <table style="border:solid">
+                <table class="table table-striped table-bordered table-hover dataTable no-footer">
                 <td><g:message code="site.metadata.name" /></td><td><g:message code="site.transect.transectPart.habitat" /></td><td>Detaljkod</td><td><g:message code="site.transect.transectPart.length" /> (m)</td>
                     <g:each in="${site.transectParts}">
                     <tr>
-                        <td>${it.name}</td><td>${it?.habitat}</td><td>${it?.detail}</td><td><g:formatNumber number="${it?.length}" type="number" maxFractionDigits="2"/></td>
+                        <td>${it.name}</td>
+                        <td>${it?.habitat.join(',')}</td>
+                        <td>${it?.detail.join(',')}</td>
+                        <td><g:formatNumber number="${it?.length}" type="number" maxFractionDigits="2"/></td>
                     </tr>
                     </g:each>
                 </table>
