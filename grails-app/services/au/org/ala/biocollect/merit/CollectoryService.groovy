@@ -23,17 +23,17 @@ class CollectoryService {
 
     List licence() {
         def url = "${grailsApplication.config.collectory.service.url}/licence/"
-        List licences = webService.getJson(url);
+        // List licences = webService.getJson(url);
         List bioSupported = this.BioCollectSupported;
-        for (item in bioSupported) {
-            String supported = item.url;
-            def found = licences.find {
-                supported == it.url
-            }
-            if (found) {
-                item.name = found.name
-            }
-        }
+        // for (item in bioSupported) {
+        //     String supported = item.url;
+        //     def found = licences.find {
+        //         supported == it.url
+        //     }
+        //     if (found) {
+        //         item.name = found.name
+        //     }
+        // }
         return bioSupported;
     }
 
