@@ -73,7 +73,7 @@
         <li>
             <g:set var="disabled">${(!user) ? "disabled='disabled' title='login required'" : ''}</g:set>
         %{--Favourite functionality only available to authenticated users --}%
-            <g:if test="${project?.projectType == 'systematicMonitoring' && fc.userIsAlaAdmin()}">
+            <g:if test="${site?.transectParts && fc.userIsAlaAdmin()}">
                 <g:link action="editSystematic" id="${site.siteId}" class="btn btn-small"><i
                     class="icon-edit"></i> <g:message code="site.details.editSystematic"/> </g:link>
             </g:if>
@@ -81,13 +81,13 @@
                 <g:link action="edit" id="${site.siteId}" class="btn btn-small">
                     <i class="icon-edit"></i> <g:message code="site.details.editSite"/> 
                 </g:link>
-                %{-- TODO - delete button could be for volunteers too but maybe have an alert before delete happens --}%
-                <g:if test="${fc.userIsAlaAdmin()}">
-                    <div class="btn btn-small btn-danger" onclick="deleteSite()"><i
-                            class="fa fa-remove"></i> <g:message code="site.details.deleteSite"/> 
-                    </div>
-                </g:if>
             </g:else>
+            %{-- TODO - delete button could be for volunteers too but maybe have an alert before delete happens --}%
+            <g:if test="${fc.userIsAlaAdmin()}">
+                <div class="btn btn-small btn-danger" onclick="deleteSite()"><i
+                        class="fa fa-remove"></i> <g:message code="site.details.deleteSite"/> 
+                </div>
+            </g:if>
             <g:if test="${site?.extent?.geometry?.pid}">
                 <a href="${grailsApplication.config.spatial.layersUrl}/shape/shp/${site.extent.geometry.pid}"
                    class="btn btn-small">
