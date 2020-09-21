@@ -128,8 +128,18 @@
                     <g:each in="${site.transectParts}">
                     <tr>
                         <td>${it.name}</td>
-                        <td>${it?.habitat.join(',')}</td>
-                        <td>${it?.detail.join(',')}</td>
+                        <g:if test="${it?.habitat}">
+                            <td>${it?.habitat.join(',')}</td>
+                        </g:if>
+                        <g:else>
+                            <td></td>
+                        </g:else>
+                        <g:if test="${it?.detail}">
+                            <td>${it?.detail.join(',')}</td>
+                        </g:if>
+                        <g:else>
+                            <td></td>
+                        </g:else>
                         <td><g:formatNumber number="${it?.length}" type="number" maxFractionDigits="2"/></td>
                     </tr>
                     </g:each>
