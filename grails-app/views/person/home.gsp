@@ -24,13 +24,12 @@
 </head>
 <body>
 <h2>Hej ${userName}!</h2>
-<g:if test="${personStatus = 'ok'}">
+<g:if test="${personStatus == 'ok'}">
     <h3>Mina projekter</h3>
     <g:each in="${projects}">
         <li><a href="${createLink(controller: 'project', action: 'index', id: it?.projectId)}">${it?.name}</a></li>
     </g:each>
     <h3>Vad vill du göra?</h3>
-    ${siteStatus}
     <div class="accordion" id="homePageConfiguration">
         <div class="accordion-group">
             <div class="accordion-heading">
@@ -41,6 +40,7 @@
             <div id="collapseZero" class="accordion-body collapse">
                     <div class="accordion-inner">
                         <div class="control-group">
+                            ${siteStatus}
                             <ul>
                             <g:each in="${sites}">
                                 <li><a href="${createLink(controller: 'site', action:'index', id: it?.siteId)}">${it?.name}</a></li>
@@ -130,7 +130,7 @@
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" data-parent="#accordion2" href="${createLink(action:'edit', id: person.personId)}">
+                <a class="accordion-toggle" data-parent="#accordion2" href="${createLink(action:'edit', id: person?.personId)}">
                     Uppdatera min profil
                 </a>
             </div>

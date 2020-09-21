@@ -105,7 +105,7 @@ $(document).ready(function () {
                 tableSearchResults.ajax.url(url).load()
             } 
     
-            $('#person-search-table').on("click", "tbody td:nth-child(-n+2)", function (e) {
+            $('#person-search-table').on("click", "tbody td:nth-child(1)", function (e) {
                 e.preventDefault();
                 var row = this.parentElement;
                 var data = tableSearchResults.row(row).data();

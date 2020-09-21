@@ -1,6 +1,6 @@
 <form class="form-horizontal" id="userAccessForm">
     <div class="control-group">
-        <label class="control-label" for="emailAddress"><g:message code="project.admin.permissions.email"/>User's email address</label>
+        <label class="control-label" for="emailAddress"><g:message code="project.admin.permissions.email"/></label>
         <div class="controls">
             <input class="input-xlarge validate[required,custom[email]]" id="emailAddress" placeholder="enter a user's email address" type="text"/>
         </div>
@@ -106,7 +106,7 @@
      * @param userId
      */
     function displayUserId(userId) {
-        $('#linkingPersonId').val("person id");
+        $('#linkingPersonId').val();
         $('#linkingUserId').val(userId);
         $('#linkingUserId').html(userId);
 

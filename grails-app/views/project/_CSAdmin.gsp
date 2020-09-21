@@ -87,7 +87,7 @@
                         <div class="tab-pane" id="user-permissions">
                             <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:project.projectId]"/>
                             <g:if test="${project?.requiresVolManagement}">
-                                <g:render template="/person/linkUserToPerson" model="[linkUserToPersonUrl:g.createLink(controller:'person', action:'linkUserToPerson')]"/>
+                                <g:render template="/person/linkUserToPerson" model="[updatePersonUrl:g.createLink(controller:'person', action:'update')]"/>
                             </g:if>
                             <g:render template="/admin/permissionTablePaginated"/>
                         </div>
