@@ -27,7 +27,8 @@
 <g:if test="${personStatus == 'ok'}">
     <h3>Mina projekter</h3>
     <g:each in="${projects}">
-        <li><a href="${createLink(controller: 'project', action: 'index', id: it?.projectId)}">${it?.name}</a></li>
+        <a href="${createLink(controller: 'project', action: 'index', id: it?.projectId)}">${it?.name}</a>
+        <br/>
     </g:each>
     <h3>Vad vill du göra?</h3>
     <div class="accordion" id="homePageConfiguration">
@@ -59,7 +60,7 @@
             <div id="collapseOne" class="accordion-body collapse">
                     <div class="accordion-inner">
                         <div class="control-group">
-                            <label>Du kan rapportera for the following sites</label>
+                            <label>Du kan rapportera för:</label>
                             <ul>
                             <g:each in="${sites}">
                                 <li><a href="#">${it?.name}</a></li>
@@ -93,7 +94,7 @@
 
                 MAP
                 clicking on the link displays which sites have been booked
-                would be good if sites could be booked from here - admin could be emailed the request - with person ID and requested site ID
+                <%-- would be good if sites could be booked from here - admin could be emailed the request - with person ID and requested site ID --%>
                 </div>
             </div>
             </div>
@@ -107,6 +108,7 @@
             <div id="collapseFour" class="accordion-body collapse">
             <div class="accordion-inner">
             <div class="control-group">
+            <label>Du kan skapa en rutt för:</label>
                 <ul>
                 <g:each in="${surveys}">
                     <g:each in="${it}">
