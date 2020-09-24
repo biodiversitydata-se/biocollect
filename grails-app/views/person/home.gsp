@@ -125,7 +125,7 @@
 
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" data-parent="#accordion2" href="#">
+                <a class="accordion-toggle" href="${createLink(controller: 'bioActivity', action: 'list')}">
                     Se mina tidigare data
                 </a>
             </div>
