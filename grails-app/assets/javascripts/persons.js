@@ -124,31 +124,32 @@ function PersonViewModel(savedPerson, create, projectId) {
 
      // save site booking
      self.bookSite = function(){
-
-        var data = {
-            siteNames: self.person().bookedSites(),
-            personId: self.person().personId(),
-            };
-            console.log(data);
-        $.ajax({
-            url: fcConfig.bookSiteForPersonUrl,
-            type: 'POST',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            success: function (data) {
-                if (data.resp.message[0] != ""){
-                    $("#messageSuccess ul").html(data.resp.message[0]).parent().fadeIn()
+        if ($('#individualBookingForm').validationEngine('validate')) {
+            var data = {
+                siteNames: self.person().bookedSites(),
+                personId: self.person().personId(),
+                };
+                console.log(data);
+            $.ajax({
+                url: fcConfig.bookSiteForPersonUrl,
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.resp.message[0] != ""){
+                        $("#messageSuccess ul").html(data.resp.message[0]).parent().fadeIn()
+                    }
+                    if (data.resp.message[1] != ""){
+                        $("#messageFail ul").html(data.resp.message[1]).parent().fadeIn()
+                    }
+                    $("#bookedSitesInput").html("");
+                },
+                error: function (data) {
+                    var errorMessage = data.responseText || 'There was a problem saving this site'
+                    bootbox.alert(errorMessage);
                 }
-                if (data.resp.message[1] != ""){
-                    $("#messageFail ul").html(data.resp.message[1]).parent().fadeIn()
-                }
-                $("#bookedSitesInput").html("");
-            },
-            error: function (data) {
-                var errorMessage = data.responseText || 'There was a problem saving this site'
-                bootbox.alert(errorMessage);
-            }
-        });
+            });
+        }
     }
 
     self.toJS = function() {

@@ -5,13 +5,14 @@
 
 
     <%-- Start of site booking form  --%>
-    <bs:form action="update" inline="true" class="form-horizontal">
+    <bs:form action="update" inline="true" class="form-horizontal" id="individualBookingForm">
     <h4>Click on the site on the map to see its status</h4>
     <label id="bookedByLink"></label>
         <div class="control-group">
             <div class="controls">
                 <%-- This value will update the site object's field 'bookedBy'  --%>
-                <input class="input-xlarge" data-bind="value: bookedBy" placeholder="enter personal code" type="text"/>
+                <label class="control-label" for="siteName">Book for</label>
+                <input class="input-xlarge validate[required]" data-bind="value: bookedBy" placeholder="enter person ID" type="text"/>
             </div>
             </div>
         <div class="control-group">
