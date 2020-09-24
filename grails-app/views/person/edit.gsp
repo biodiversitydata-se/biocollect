@@ -68,7 +68,7 @@
             gender: "${person?.gender}",
             birthDate: "${person?.birthDate}",
             extra: "${person?.extra}",
-            projects: "${person?.projects}",
+            projects: ${person?.projects ?: []},
             bookedSites: ${person?.bookedSites ?: []}
         }
 

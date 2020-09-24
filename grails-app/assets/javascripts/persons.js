@@ -6,7 +6,6 @@ var createPersonForProject = function() {
 
 function PersonViewModel(savedPerson, create, projectId) {
     var self = this;
-
     self.person = ko.observable({
         personId : ko.observable(),
         personCode: ko.observable(),
@@ -22,7 +21,7 @@ function PersonViewModel(savedPerson, create, projectId) {
         gender : ko.observable(),
         birthDate : ko.observable(),
         extra : ko.observable(),
-        projects : ko.observableArray(),
+        projects : ko.observableArray([projectId]),
         bookedSites: ko.observableArray()
     });
     
