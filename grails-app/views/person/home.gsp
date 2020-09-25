@@ -25,7 +25,7 @@
 <body>
 <h2>Hej ${userName}!</h2>
 <g:if test="${personStatus == 'ok'}">
-    <h3>Mina projekter</h3>
+    <h3>Mina projekt</h3>
     <g:each in="${projects}">
         <a href="${createLink(controller: 'project', action: 'index', id: it?.projectId)}">${it?.name}</a>
         <br/>
