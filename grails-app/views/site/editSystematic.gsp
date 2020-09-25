@@ -45,7 +45,6 @@
         spatialWms: "${grailsApplication.config.spatial.geoserverUrl}",
         layersStyle: "${createLink(controller: 'regions', action: 'layersStyle')}",
         spatialService: '${createLink(controller:'proxy',action:'feature')}',
-        intersectService: "${createLink(controller: 'proxy', action: 'intersect')}",
         featuresService: "${createLink(controller: 'proxy', action: 'features')}",
         featureService: "${createLink(controller: 'proxy', action: 'feature')}",
         spatialWms: "${grailsApplication.config.spatial.geoserverUrl}",
@@ -80,12 +79,7 @@
 <body>
     <div class="container-fluid validationEngineContainer" id="validation-container">
         <bs:form action="update" inline="true">
-            <g:if test="${hubConfig?.isSystematic}">
-                <g:render template="systematicSiteDetails" model="${[showLine: true]}"/>
-            </g:if>
-            <g:else>
-                <g:render template="siteDetails" model="${[showLine: true]}"/>
-            </g:else>
+            <g:render template="systematicSiteDetails" model="${[showLine: true]}"/>
             <div class="row-fluid">
                 <div class="form-actions span12">
                     <button type="button" id="save" class="btn btn-primary"  data-bind="visible: transectParts().length < 0"><g:message code="g.save"/></button>
