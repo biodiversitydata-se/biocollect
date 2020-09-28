@@ -588,9 +588,7 @@ section#breadcrumb {
   display: block;
   position: relative;
 }
-#biocollect-header .ala-icon:before {
-  content: url(https://www.ala.org.au/wp-content/themes/ala2011/images/favicon.ico);
-}
+
 #biocollect-header nav#biocollectNav ul#main > li > a.ala-link {
   padding-top: 25px, !important;
   padding-bottom: 10px, !important;
