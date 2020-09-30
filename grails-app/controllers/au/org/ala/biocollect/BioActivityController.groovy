@@ -234,7 +234,8 @@ class BioActivityController {
 
     private def addActivity(String id, boolean mobile = false) {
         String userId = userService.getCurrentUserId(request)
-        Map pActivity = projectActivityService.get(id, "all")
+        // userId needed to retrieve only sites booked by this person 
+        Map pActivity = projectActivityService.get(id, "all", null, userId)
         String projectId = pActivity?.projectId
         String type = pActivity?.pActivityFormName
         Map model = [:]

@@ -49,10 +49,11 @@ class ProjectActivityService {
         webService.getJson(grailsApplication.config.ecodata.service.url + '/projectActivity/getAllByProject/' + projectId + params).list
     }
 
-    def get(projectActivityId, levelOfDetail = "", version = null) {
+    def get(projectActivityId, levelOfDetail = "", version = null, userId = null) {
         def params = '?'
         params += levelOfDetail ? "view=${levelOfDetail}&" : ''
         params += version ? "version=${version}&" : ''
+        params += userId ? "userId=${userId}&" : ''
         webService.getJson(grailsApplication.config.ecodata.service.url + '/projectActivity/get/' + projectActivityId + params)
     }
 
