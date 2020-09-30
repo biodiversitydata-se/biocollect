@@ -62,12 +62,9 @@
                         <div class="control-group">
                             <label>Du kan rapportera för:</label>
                             <ul>
-                            <g:each in="${sites}">
-                                <li><a href="#">${it?.name}</a></li>
-                            </g:each>
                             <g:each in="${surveys}">
                                 <g:each in="${it}">
-                                    <li><a href="#">${it?.name}</a></li>
+                                    <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: it?.projectActivityId)}">${it?.name}</a></li>
                                 </g:each>
                             </g:each>
                             </ul>
@@ -75,30 +72,7 @@
                     </div>
             </div>
         </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                    Boka en rutt
-                </a>
-            </div>
-            <div id="collapseTwo" class="accordion-body collapse">
-            <div class="accordion-inner">
-                <div class="control-group">
-                <%-- TODO - check what project the person is registered for, get surveys under that project --%>
-                List surveys that require booking 
-                <br/>
-                - <a href="#">survey 1</a>
-                - <a href="#">survey 2</a>
-                - <a href="#">survey 3</a>
-                <br/>
 
-                MAP
-                clicking on the link displays which sites have been booked
-                <%-- would be good if sites could be booked from here - admin could be emailed the request - with person ID and requested site ID --%>
-                </div>
-            </div>
-            </div>
-        </div>
 
         <div class="accordion-group">
             <div class="accordion-heading">
