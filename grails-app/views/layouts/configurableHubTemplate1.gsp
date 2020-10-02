@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="${grailsApplication.config.headerAndFooter.baseURL}/css/bootstrap-responsive.min.css"/>
     <link rel="stylesheet" href="${grailsApplication.config.headerAndFooter.baseURL}/css/ala-styles.css"/>
     <asset:stylesheet src="base.css"/>
-    <asset:stylesheet src="Common_fonts.css"/>
+    <%-- <asset:stylesheet src="Common_fonts.css"/> --%>
     <asset:javascript src="base.js"/>
     <g:set var="styles" value="${hubConfig.templateConfiguration?.styles}"></g:set>
     <asset:script type="text/javascript">

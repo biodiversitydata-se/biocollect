@@ -766,7 +766,7 @@ class BioActivityController {
                     type             : doc.type,
                     name             : doc.projectActivity?.name,
                     activityOwnerName: doc.projectActivity?.activityOwnerName,
-                    records          : doc.projectActivity?.records,
+                    // records          : doc.projectActivity?.records,
                     projectName      : doc.projectActivity?.projectName,
                     projectId        : doc.projectActivity?.projectId,
                     sites            : doc.sites,
