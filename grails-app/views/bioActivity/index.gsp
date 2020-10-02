@@ -289,7 +289,7 @@
                     }
 
                     viewModel.siteMap = new ALA.Map("activitySiteMap", mapOptions);
-
+                    console.log("mapFeatures in index", mapFeatures)
                     if (mapFeatures.features[0].pid) {
                         viewModel.siteMap.addWmsLayer(mapFeatures.features[0].pid);
                     } else {
