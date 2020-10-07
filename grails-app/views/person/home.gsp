@@ -86,10 +86,12 @@
                 <ul>
                 <g:each in="${surveys}">
                     <g:each in="${it}">
+                    <g:if test="${it.allowPolygons || it.allowLine || it.allowPoints}">
                         <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
                             params: [projectId:it?.projectId, pActivityId:it?.projectActivityId])}">
                             ${it?.name}
                         </a></li>
+                    </g:if>
                     </g:each>
                 </g:each>
                 </ul>
