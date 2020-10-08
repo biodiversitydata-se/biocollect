@@ -226,7 +226,6 @@ function stringToDate(date) {
 
             //initialize datepicker with some optional options
             var datePickerConfig = {format: 'yyyy-mm-dd', autoclose: true};
-            console.log("datepicker set!")
             if (allBindingsAccessor().datePickerOptions) {
                 $.extend(datePickerConfig, allBindingsAccessor().datePickerOptions);
             }
