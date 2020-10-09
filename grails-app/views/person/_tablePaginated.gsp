@@ -1,39 +1,31 @@
 <div class="pill-pane">
-
-<%-- TODO Pass a value of create:true to edit view --%>
-<button class="btn btn-primary btn-small" data-bind="click: createPersonForProject"><g:message code="project.admin.members.addNew" /></button>
-
-<asset:javascript src="persons.js"/>
-
+<div class="control-group">
+    <button class="btn btn-primary btn-small" data-bind="click: createPersonForProject"><g:message code="project.admin.members.addNew" /></button>
+</div>
     <%-- <g:render template="/shared/pagination"/> --%>
-    <div style="padding:40px" class="row well well-small" id="project-person-list">
-
-        <%-- <form class="form-horizontal" id=""> --%>
-            <div class="control-group">
-                <label class="control-label" for="emailSearchFld"><g:message code="project.admin.members.searchLabel"/></label>
-                <div class="controls">
-                    <input class="input-xlarge" id="searchTerm"/>
-                </div>
+    <form class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label pull-left" for="searchTerm"><g:message code="project.admin.members.searchLabel"/></label>
+            <div class="controls">
+                <input class="input-xlarge" type="text" id="searchTerm"/>
             </div>
-            <div class="control-group">
-                <div class="controls">
-                    <button class="btn btn-primary btn-small" id="searchPersonBtn"><g:message code="g.search" /></button>
-                    <%-- <g:img uri="${asset.assetPath(src:'spinner.gif')}" id="spinner2" class="hide spinner" alt="spinner icon"/>  --%>
-                </div>
+            <div class="controls">
+                <button class="btn btn-primary form-control" id="searchPersonBtn"><g:message code="g.search" /></button>       
             </div>
-        <%-- </form> --%>
-
-        <div id="person-search" hidden>
-            <table class="table table-striped table-bordered table-hover" id="person-search-table">
-                <thead>
-                <th><g:message code="site.metadata.name"/></th>
-                <th><g:message code="project.admin.members.code"/></th>
-                <th><g:message code="project.admin.members.town"/></th>
-                <th width="3%"><g:message code="g.edit"/></th>
-                </thead>
-            </table>
         </div>
+    </form>
+
+    <div id="person-search" hidden>
+        <table class="table table-striped table-bordered table-hover" id="person-search-table">
+            <thead>
+            <th><g:message code="site.metadata.name"/></th>
+            <th><g:message code="project.admin.members.code"/></th>
+            <th><g:message code="project.admin.members.town"/></th>
+            <th width="3%"><g:message code="g.edit"/></th>
+            </thead>
+        </table>
     </div>
+
     <div class="span5">
         <div id="formStatus" class="hide alert alert-success">
             <button class="close" onclick="$('.alert').fadeOut();" href="#">×</button>
@@ -44,9 +36,6 @@
 <asset:script type="text/javascript">
 
 $(document).ready(function () {
-    <%-- var personsListViewModel = new PersonsListViewModel("${project.projectId}"); --%>
-    <%-- ko.applyBindings(personsListViewModel, document.getElementById("project-person-list")) --%>
-
 
     var viewPerson = function (personId) {
         document.location.href = fcConfig.personViewUrl + '&id=' + personId; 
@@ -56,7 +45,8 @@ $(document).ready(function () {
     }
     
     var tableSearchResults;
-    $('#searchPersonBtn').click(function(){
+    $('#searchPersonBtn').click(function(e){
+        e.preventDefault();
         var searchTerm = document.getElementById("searchTerm").value;
         console.log(searchTerm);
         var url = fcConfig.personSearchUrl + "&searchTerm=" + searchTerm;

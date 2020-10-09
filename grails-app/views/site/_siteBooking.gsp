@@ -5,16 +5,15 @@
 
 
     <%-- Start of site booking form  --%>
-    <bs:form action="update" inline="true" class="form-horizontal" id="individualBookingForm">
+    <form action="update" inline="true" class="form-horizontal" id="individualBookingForm">
     <h4>Click on the site on the map to see its status</h4>
-    <label id="bookedByLink"></label>
         <div class="control-group">
+            <%-- This value will update the site object's field 'bookedBy'  --%>
+            <label class="control-label" for="siteName">Book for</label>
             <div class="controls">
-                <%-- This value will update the site object's field 'bookedBy'  --%>
-                <label class="control-label" for="siteName">Book for</label>
                 <input class="input-xlarge validate[required]" data-bind="value: bookedBy" placeholder="enter person ID" type="text"/>
             </div>
-            </div>
+        </div>
         <div class="control-group">
             <label class="control-label" for="siteName">Site name</label>
             <div class="controls">
@@ -24,11 +23,12 @@
         </div>
         <div class="control-group">
             <div class="controls">
-                <button id="save" class="btn btn-primary btn-small" data-bind="click: bookSite">Book</button>
+                <button id="save" class="btn btn-primary form-control" data-bind="click: bookSite">Book</button>
                 <g:img uri="${asset.assetPath(src:'spinner.gif')}" id="spinner1" class="hide spinner" alt="spinner icon"/>
             </div>
         </div>
-    </bs:form> 
+    </form> 
+    <label id="bookedByLink"></label>
     <%-- End of site booking form --%>
 
     <!-- Start of survey selection-->
