@@ -159,6 +159,9 @@
     <g:if test="${isEcoScience}">
         document.location.href = "${createLink(controller: 'project', action: 'create', params: [ecoScience: true])}";
     </g:if>
+    <g:if test="${isSystematicMonitoring}">
+        document.location.href = "${createLink(controller: 'project', action: 'create', params: [systematicMonitoring: true])}";
+    </g:if>
     });
 
     var projectFinder = new ProjectFinder(fcConfig);
