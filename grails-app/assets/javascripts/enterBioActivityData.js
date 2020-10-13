@@ -280,7 +280,7 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
                     transect.features[n] = feature;
                 }
                 var layerOptions = {"singleDraw": true, "markerOrShapeNotBoth": false}
-                activityLevelData.siteMap.setMultipartGeoJSON(JSON.stringify(transect), layerOptions);
+                activityLevelData.siteMap.setTransectFromGeoJSON(JSON.stringify(transect), layerOptions, true);
             }
         }
         self.transients.site(matchingSite);
