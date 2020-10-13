@@ -262,8 +262,8 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
             return siteId == site.siteId
         })[0];
         
-        var transectParts = matchingSite.transectParts;
         if (matchingSite && matchingSite.extent && matchingSite.extent.geometry) {
+            var transectParts = matchingSite.transectParts;
             if (transectParts == undefined || transectParts.length < 1){
                 var geometry = matchingSite.extent.geometry;
                 if (geometry.pid) {
