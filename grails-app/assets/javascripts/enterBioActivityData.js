@@ -258,15 +258,13 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     self.siteId = ko.vetoableObservable(act.siteId, self.confirmSiteChange);
 
     self.siteId.subscribe(function (siteId) {
-        console.log("self.transients.pActivitySites", self.transients.pActivitySites);
         var matchingSite = $.grep(self.transients.pActivitySites, function (site) {
             return siteId == site.siteId
         })[0];
-
+        
+        var transectParts = matchingSite.transectParts;
         if (matchingSite && matchingSite.extent && matchingSite.extent.geometry) {
-            console.log("matching site: ", matchingSite);
-            if (matchingSite.transectParts == undefined){
-
+            if (transectParts == undefined || transectParts.length < 1){
                 var geometry = matchingSite.extent.geometry;
                 if (geometry.pid) {
                     activityLevelData.siteMap.addWmsLayer(geometry.pid);
@@ -276,14 +274,13 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
                 }
             } else {
                 console.log("via biocollect")
-                    var transectParts = matchingSite.transectParts;
-                    var transect = {"type": "FeatureCollection", "features": []}
-                    for (var n = 0; n < transectParts.length; n++){
-                        var feature = {"type": "Feature", "geometry": transectParts[n].geometry, "properties": {"popupContent": transectParts[n].name}}; 
-                        transect.features[n] = feature;
-                    }
-                    var layerOptions = {"singleDraw": true, "markerOrShapeNotBoth": false}
-                    activityLevelData.siteMap.setMultipartGeoJSON(JSON.stringify(transect), layerOptions);
+                var transect = {"type": "FeatureCollection", "features": []}
+                for (var n = 0; n < transectParts.length; n++){
+                    var feature = {"type": "Feature", "geometry": transectParts[n].geometry, "properties": {"popupContent": transectParts[n].name}}; 
+                    transect.features[n] = feature;
+                }
+                var layerOptions = {"singleDraw": true, "markerOrShapeNotBoth": false}
+                activityLevelData.siteMap.setMultipartGeoJSON(JSON.stringify(transect), layerOptions);
             }
         }
         self.transients.site(matchingSite);
