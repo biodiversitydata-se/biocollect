@@ -329,8 +329,8 @@ class SiteService {
                 def transectPartsArr = site.transectParts
                 transectPartsArr.each {
                     def part = [:]
-                    part.name = it.name
-                    part.geometry = it.geometry
+                    part.name = it?.name
+                    part.geometry = it?.geometry
                     featuresMap.transectParts.push(part)
                 }
             }
