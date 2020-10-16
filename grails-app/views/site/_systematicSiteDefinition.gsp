@@ -121,13 +121,13 @@ function initSiteViewModel(allowPointsOfInterest, edit) {
         siteId: "${site?.siteId}",
         name : "${site?.name?.encodeAsJavaScript()}",
         externalId : "${site?.externalId}",
-        catchment: "${site?.catchment}",
         context : "${site?.context}",
         type : "${site?.type}",
         extent: ${site?.extent ?: 'null'},
         poi: ${site?.poi ?: '[]'},
         transectParts: ${site?.transectParts ?: '[]'},
         area : "${site?.area}",
+        owner: "${site?.owner}",
         description : "${site?.description?.encodeAsJavaScript()}",
         notes : "${site?.notes?.encodeAsJavaScript()}",
         documents : JSON.parse('${(siteDocuments ?: documents).encodeAsJavaScript() ?: '{}'}'),
@@ -139,7 +139,14 @@ function initSiteViewModel(allowPointsOfInterest, edit) {
     </g:else>
     };
 
-    var siteViewModel = new SystematicSiteViewModel("mapForSystematic", savedSiteData, SERVER_CONF)
+    var valuesForVM = {
+        "mapContainerId": "mapForSystematic",
+        "site": savedSiteData,
+        "mapOptions": SERVER_CONF,
+        "personId": "${personId}"
+    }
+
+    var siteViewModel = new SystematicSiteViewModel(valuesForVM)
     var map = siteViewModel.map;
     ko.applyBindings(siteViewModel, document.getElementById("sitemap"));
 

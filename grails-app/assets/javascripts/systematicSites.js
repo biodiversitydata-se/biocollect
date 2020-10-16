@@ -1,8 +1,11 @@
 'use strict';
 
-var SystematicSiteViewModel = function (mapContainerId, site, mapOptions) {
-
-    var self = $.extend(this, new Documents());
+var SystematicSiteViewModel = function (valuesForVM) {
+    var site = valuesForVM.site,
+     mapOptions = valuesForVM.mapOptions,
+     mapContainerId = valuesForVM.mapContainerId,
+     personId = valuesForVM.personId,
+     self = $.extend(this, new Documents());
 
     // create model for a new site
     self.site = ko.observable({
@@ -14,6 +17,7 @@ var SystematicSiteViewModel = function (mapContainerId, site, mapOptions) {
         area: ko.observable(),
         description: ko.observable(),
         notes: ko.observable(),
+        owner: ko.observable(personId),
         projects: ko.observableArray(),
         extent: ko.observable({
             source: ko.observable(),
@@ -24,22 +28,13 @@ var SystematicSiteViewModel = function (mapContainerId, site, mapOptions) {
                 precision: ko.observable(),
                 datum: ko.observable(),
                 type: ko.observable(),
-                nrm: ko.observable(),
-                state: ko.observable(),
-                lga: ko.observable(),
-                locality: ko.observable(),
-                mvg: ko.observable(),
-                mvs: ko.observable(),
-
                 radius: ko.observable(),
                 areaKmSq: ko.observable(),
                 coordinates: ko.observable(),
                 centre: ko.observable(),
-
                 bbox: ko.observable(),
                 pid: ko.observable(),
                 name: ko.observable(),
-                fid: ko.observable(),
                 layerName: ko.observable()
             })
         })
@@ -56,11 +51,11 @@ var SystematicSiteViewModel = function (mapContainerId, site, mapOptions) {
         siteModel.name(exists(site, "name"));
         siteModel.siteId(exists(site, "siteId"));
         siteModel.externalId(exists(site, "externalId"));
-        siteModel.catchment(exists(site, "catchment"));
         siteModel.type(exists(site, "type"));
         siteModel.area(exists(site, "area"));
         siteModel.description(exists(site, "description"));
         siteModel.notes(exists(site, "notes"));
+        siteModel.owner(exists(site, "owner"));
         siteModel.projects(site.projects || []);
 
         if (site.extent) {
@@ -85,16 +80,8 @@ var SystematicSiteViewModel = function (mapContainerId, site, mapOptions) {
         var geometryObservable = self.site().extent().geometry();
         geometryObservable.decimalLatitude(exists(geometry, 'decimalLatitude')),
         geometryObservable.decimalLongitude(exists(geometry, 'decimalLongitude')),
-        geometryObservable.uncertainty(exists(geometry, 'uncertainty')),
-        geometryObservable.precision(exists(geometry, 'precision')),
         geometryObservable.datum(exists(geometry, 'datum')),
         geometryObservable.type(exists(geometry, 'type')),
-        geometryObservable.nrm(exists(geometry, 'nrm')),
-        geometryObservable.state(exists(geometry, 'state')),
-        geometryObservable.lga(exists(geometry, 'lga')),
-        geometryObservable.locality(exists(geometry, 'locality')),
-        geometryObservable.mvg(exists(geometry, 'mvg')),
-        geometryObservable.mvs(exists(geometry, 'mvs')),
         geometryObservable.radius(exists(geometry, 'radius')),
         geometryObservable.areaKmSq(exists(geometry, 'areaKmSq')),
         geometryObservable.coordinates(exists(geometry, 'coordinates')),
@@ -102,7 +89,6 @@ var SystematicSiteViewModel = function (mapContainerId, site, mapOptions) {
         geometryObservable.bbox(exists(geometry, 'bbox')),
         geometryObservable.pid(exists(geometry, 'pid')),
         geometryObservable.name(exists(geometry, 'name')),
-        geometryObservable.fid(exists(geometry, 'fid')),
         geometryObservable.layerName(exists(geometry, 'layerName'))
 
         return geometryObservable;
@@ -181,18 +167,12 @@ var SystematicSiteViewModel = function (mapContainerId, site, mapOptions) {
 
     self.toJS = function() {
         var js = ko.toJS(self.site);
-
-        // legacy support - it was possible to have no extent for a site. This step will delete geometry before saving.
-        if(js.extent.source == 'none'){
-            delete js.extent.geometry;
-        }
-
         js.transectParts = [];
         self.transectParts().forEach(function (transectPart) {
             js.transectParts.push(transectPart.toJSON())
         });
         js.geoIndex = Biocollect.MapUtilities.constructGeoIndexObject(js);
-
+        console.log(js)
         return js;
     };
 
@@ -476,7 +456,7 @@ var SiteBookingViewModel = function (pActivitiesVM){
                                     })
                                 )
                             } else {
-                                $('#bookedByLink').html("Site is not booked. Type in the personal ID in the field below") 
+                                $('#bookedByLink').html("Site is not booked. Type in the person ID in the field 'booked by'") 
                             }
                         };
 

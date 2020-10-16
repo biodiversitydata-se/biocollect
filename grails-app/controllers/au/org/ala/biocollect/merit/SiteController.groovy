@@ -64,7 +64,7 @@ class SiteController {
         project.sites?.sort {it.name}
         project.projectSite = project.sites?.find{it.siteId == project.projectSiteId}
         render view: 'editSystematic', model: [create:true, project:project, documents:[], projectSite:project.projectSite,
-                                     pActivityId: params?.pActivityId, userCanEdit: userCanEditSite]
+                                     pActivityId: params?.pActivityId, userCanEdit: userCanEditSite, personId: params.personId]
     }
 
 
