@@ -506,24 +506,28 @@ var SiteBookingViewModel = function (pActivitiesVM){
         });
     }
 
-    // save site booking
     self.bookSite = function(){
 
-        var data = { site: {
-            bookedBy: self.bookedBy(),
-            projectId: self.projectId(),
-            projects: [self.projectId()]
-                }};
+        var data = {
+            personId: self.bookedBy(),
+            siteId: self.selectedSiteId
+            };
 
-        var siteId = self.selectedSiteId;
         $.ajax({
-            url: fcConfig.ajaxBookSiteUrl + siteId,
+            url: fcConfig.bookSiteUrl,
             type: 'POST',
             data: JSON.stringify(data),
             contentType: 'application/json',
             success: function (data) {
-                bootbox.alert("Booking successful");
-                document.location.href = fcConfig.projectIndexUrl + '/' + self.projectId();
+                $("#bookingStatus").html(data.resp.message[0]).parent().fadeIn()
+                if (data.resp.message[0] != ""){
+                    $("#messageSuccess1 ul").html(data.resp.message[0]).parent().fadeIn()
+                }
+                if (data.resp.message[1] != ""){
+                    $("#messageFail1 ul").html(data.resp.message[1]).parent().fadeIn()
+                }
+                // refresh the page to show site is booked on the map
+                // document.location.href = fcConfig.projectIndexUrl + '/' + self.projectId();
             },
             error: function (data) {
                 var errorMessage = data.responseText || 'There was a problem saving this site'

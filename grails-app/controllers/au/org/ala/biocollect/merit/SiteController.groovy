@@ -578,56 +578,56 @@ class SiteController {
         }
     }
 
-     @PreAuthorise(accessLevel = "editSite")
-    def ajaxBookSite(String id) {
-        def result = [:]
-        String userId = userService.getCurrentUserId(request)
+    // def ajaxBookSite(String id) {
+    //     def result = [:]
+    //     String userId = userService.getCurrentUserId(request)
 
-        def postBody = request.JSON
-        Boolean isCreateSiteRequest = !id
-        log.debug "Body: " + postBody
-        log.debug "Params:"
-        params.each { println it }
-        //todo: need to detect 'cleared' values which will be missing from the params - implement _destroy
-        def values = [:]
-        postBody.site?.each { k, v ->
-            if (!(k in ignore)) {
-                values[k] = v //reMarshallRepeatingObjects(v);
-            }
-        }
+    //     def postBody = request.JSON
+    //     Boolean isCreateSiteRequest = !id
+    //     log.debug "Body: " + postBody
+    //     log.debug "Params:"
+    //     params.each { println it }
+    //     //todo: need to detect 'cleared' values which will be missing from the params - implement _destroy
+    //     def values = [:]
+    //     postBody.site?.each { k, v ->
+    //         if (!(k in ignore)) {
+    //             values[k] = v //reMarshallRepeatingObjects(v);
+    //         }
+    //     }
 
-        //Compatible with previous records without visibility field
-        boolean privateSite = values['visibility'] ? (values['visibility'] == 'private' ? true : false) : false
-
-
-        if(privateSite){
-            //Do not check permission if site is private
-            //This design is specially for sightings
-            result = siteService.updateRaw(id, values,userId)
-        }
-        else {
-            result = siteService.updateRaw(id, values, userId)
-            String siteId = result.id
-            if(siteId) {
-                if(isCreateSiteRequest){
-                    log.debug "isCreateSiteRequest is true"
-                    String projectId = postBody?.projectId
-                        siteService.addSitesToSiteWhiteListInWorksProjects([siteId], [projectId], true);
-                }
-            } else {
-                result.status = 'error';
-                result.message = 'Could not save site';
-            }
-        }
+    //     //Compatible with previous records without visibility field
+    //     boolean privateSite = values['visibility'] ? (values['visibility'] == 'private' ? true : false) : false
 
 
-        if (result.status == 'error') {
-            render status: HttpStatus.SC_INTERNAL_SERVER_ERROR, text: "${result.message}"
-        } else {
-            render status: HttpStatus.SC_OK, text: result as JSON, contentType: "application/json"
-        }
-    }
+    //     if(privateSite){
+    //         //Do not check permission if site is private
+    //         //This design is specially for sightings
+    //         result = siteService.updateRaw(id, values,userId)
+    //     }
+    //     else {
+    //         result = siteService.updateRaw(id, values, userId)
+    //         String siteId = result.id
+    //         if(siteId) {
+    //             if(isCreateSiteRequest){
+    //                 log.debug "isCreateSiteRequest is true"
+    //                 String projectId = postBody?.projectId
+    //                     siteService.addSitesToSiteWhiteListInWorksProjects([siteId], [projectId], true);
+    //             }
+    //         } else {
+    //             result.status = 'error';
+    //             result.message = 'Could not save site';
+    //         }
+    //     }
 
+
+    //     if (result.status == 'error') {
+    //         render status: HttpStatus.SC_INTERNAL_SERVER_ERROR, text: "${result.message}"
+    //     } else {
+    //         render status: HttpStatus.SC_OK, text: result as JSON, contentType: "application/json"
+    //     }
+    // }
+
+    @PreAuthorise(accessLevel = "editSite")
     def bookSites(){
         def values = request.JSON
         def result = siteService.bookSites(values)

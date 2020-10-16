@@ -1,8 +1,8 @@
 <bs:form inline="true" class="form-horizontal">
-    <div id="messageSuccess" class="offset2 span7 hide alert alert-success pull-left" >
+    <div id="messageSuccess" class="span7 hide alert alert-success" >
         <ul></ul>
     </div>
-    <div id="messageFail" class="offset2 span7 hide alert alert-danger pull-left">
+    <div id="messageFail" class="span7 hide alert alert-danger">
         <ul></ul>
     </div>
     <form class="site-input input-append pull-left">

@@ -29,6 +29,12 @@
         </div>
     </form> 
     <label id="bookedByLink"></label>
+    <div id="messageSuccess1" class="span7 hide alert alert-success" >
+        <ul></ul>
+    </div>
+    <div id="messageFail1" class="span7 hide alert alert-danger">
+        <ul></ul>
+    </div>
     <%-- End of site booking form --%>
 
     <!-- Start of survey selection-->
