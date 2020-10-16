@@ -26,10 +26,29 @@
 <h2>Hej ${userName}!</h2>
 <g:if test="${personStatus == 'ok'}">
     <h3>Mina projekt</h3>
-    <g:each in="${projects}">
-        <a href="${createLink(controller: 'project', action: 'index', id: it?.projectId)}">${it?.name}</a>
-        <br/>
-    </g:each>
+    
+    <div class="well">
+        <div class="tiles">
+            <g:each in="${projects}">
+                <div class="row-fluid row-eq-height">
+                    <div class='well tile span' id="${it.projectId}">
+                        
+                        <div class="span12 padding-left-5" style="min-width: 80px;">
+                            <div test="${hubConfig?.content?.hideProjectFinderNoImagePlaceholderTile == true}">
+                                <a href="${createLink(controller: 'project', action: 'index', id: it?.projectId)}">
+                                    <img class="image-logo lazy" src="${asset.assetPath(src:'') + grailsApplication.config.merit.projectLogo}"/>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="tile-title">
+                            <h2><a href="${createLink(controller: 'project', action: 'index', id: it?.projectId)}">${it?.name}</a></h2>
+                        </div>
+                    </div>
+            </g:each>
+        </div>       
+    </div> 
+        
     <h3>Vad vill du göra?</h3>
     <div class="accordion" id="homePageConfiguration">
         <div class="accordion-group">
@@ -88,7 +107,7 @@
                     <g:each in="${it}">
                     <g:if test="${it.allowPolygons || it.allowLine || it.allowPoints}">
                         <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
-                            params: [projectId:it?.projectId, pActivityId:it?.projectActivityId])}">
+                            params: [projectId:it?.projectId, pActivityId:it?.projectActivityId, personId: person?.personId])}">
                             ${it?.name}
                         </a></li>
                     </g:if>
