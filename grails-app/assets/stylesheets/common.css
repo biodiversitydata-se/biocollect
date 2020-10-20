@@ -411,7 +411,7 @@ a[href^="http"]:not([href*="ala.org.au"]):not(.do-not-mark-external)::after {
     font-family: FontAwesome;
     padding-left: 5px;
     font-size: 10px;
-    vertical-align: super;
+    vertical-align: middle;
 }
 
 .survey-listing-title {
