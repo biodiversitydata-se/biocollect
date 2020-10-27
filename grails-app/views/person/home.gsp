@@ -26,8 +26,12 @@
 <h2>Hej ${userName}!</h2>
 <g:if test="${personStatus == 'ok'}">
     <h3>Mina projekt</h3>
+    <g:each in="${projects}">
+        <a href="${createLink(controller: 'project', action: 'index', id: it?.projectId)}">${it?.name}</a>
+        <br/>
+    </g:each>
     
-    <div class="well">
+    <%-- <div class="well">
         <div class="tiles">
             <g:each in="${projects}">
                 <div class="row-fluid row-eq-height">
@@ -47,8 +51,8 @@
                     </div>
             </g:each>
         </div>       
-    </div> 
-        
+    </div>  --%>
+
     <h3>Vad vill du göra?</h3>
     <div class="accordion" id="homePageConfiguration">
         <div class="accordion-group">
@@ -105,12 +109,18 @@
                 <ul>
                 <g:each in="${surveys}">
                     <g:each in="${it}">
-                    <g:if test="${it.allowPolygons || it.allowLine || it.allowPoints}">
-                        <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
-                            params: [projectId:it?.projectId, pActivityId:it?.projectActivityId, personId: person?.personId])}">
+                        <%-- <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
+                            params: [projectId:it?.projectId, pActivityId:it?.projectActivityId])}">
                             ${it?.name}
-                        </a></li>
-                    </g:if>
+                        </a></li> --%>
+
+                        <g:if test="${it.allowPolygons || it.allowLine || it.allowPoints}">
+                            <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
+                                params: [projectId:it?.projectId, pActivityId:it?.projectActivityId, personId: person?.personId])}">
+                                ${it?.name}
+                            </a></li>
+                        </g:if>
+
                     </g:each>
                 </g:each>
                 </ul>
