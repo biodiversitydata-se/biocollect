@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="${hubConfig.skin}"/>
     <title>Edit | Blog Entry | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},Home"/>
+    <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},${message(code: "g.home")}"/>
     <meta name="breadcrumbParent2"
           content="${createLink(controller: 'project', action: 'index')}/${blogEntry.projectId},Project"/>
     <meta name="breadcrumb" content="Edit blog entry"/>
@@ -33,8 +33,8 @@
     <g:render template="editBlogEntry"/>
 
     <div class="form-actions">
-        <button type="button" id="save" data-bind="click:save" class="btn btn-primary">Save</button>
-        <button type="button" id="cancel" data-bind="click:cancel" class="btn">Cancel</button>
+        <button type="button" id="save" data-bind="click:save" class="btn btn-primary"><g:message code='g.save'/></button>
+        <button type="button" id="cancel" data-bind="click:cancel" class="btn"><g:message code='g.cancel'/></button>
     </div>
 </div>
 

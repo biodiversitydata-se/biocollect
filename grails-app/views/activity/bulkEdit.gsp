@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="${hubConfig.skin}"/>
     <title>Create | Activity | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},Home"/>
+    <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},${message(code: "g.home")}"/>
     <meta name="breadcrumbParent2"
           content="${createLink(controller: 'project', action: 'index')}/${activity.projectId},Project"/>
     <meta name="breadcrumb" content="${title}"/>
@@ -117,9 +117,9 @@
             </span>
             <span class="span9" style="text-align:right">
                 <button type="button" id="save" class="btn btn-primary"
-                        title="Save edits and return to the previous page">Save</button>
-                <buttom type="button" id="cancel" class="btn btn"
-                        title="Cancel edits and return to previous page">Cancel</buttom>
+                        title="Save edits and return to the previous page"><g:message code='g.save'/></button>
+                <button type="button" id="cancel" class="btn btn"
+                        title="Cancel edits and return to previous page"><g:message code='g.cancel'/></button>
             </span>
         </div>
     </div>
