@@ -273,22 +273,22 @@ if (!map.baseLayers) {
         map.baseLayers = [
                 [
                         'code': 'minimal',
-                        'displayText': 'Road map',
+                        'displayText': 'Vägkarta',
                         'isSelected': false
                 ],
                 [
                         'code': 'worldimagery',
-                        'displayText': 'Satellite',
+                        'displayText': 'Satellit',
                         'isSelected': false
                 ],
                 [
                         'code': 'detailed',
-                        'displayText': 'Detailed',
+                        'displayText': 'Detaljerad',
                         'isSelected': false
                 ],
                 [
                         'code': 'topographic',
-                        'displayText': 'ESRI Topographic',
+                        'displayText': 'Topografisk',
                         'isSelected': true
                 ],
                 [
@@ -315,7 +315,7 @@ if(!map.overlays) {
                         alaId       : 'cl22',
                         alaName     : 'aus1',
                         layerName   : 'aust_states_territories',
-                        title         : 'States and territories',
+                        title         : '#',
                         defaultSelected: false,
                         boundaryColour  : '#fdb863',
                         showPropertyName: false,
