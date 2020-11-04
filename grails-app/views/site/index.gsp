@@ -122,33 +122,38 @@
             </div>
 
             <g:if test="${site?.transectParts}">
+
                 <dl class="dl-horizontal">
-                <table class="table table-striped table-bordered table-hover dataTable no-footer">
-                <td><g:message code="site.metadata.name" /></td><td><g:message code="site.transect.transectPart.habitat" /></td><td>Detaljkod</td><td><g:message code="site.transect.transectPart.length" /> (m)</td>
-                    <g:each in="${site.transectParts}">
-                    <tr>
-                        <td>${it.name}</td>
-                        <g:if test="${it?.habitat}">
-                            <td>${it?.habitat.join(',')}</td>
-                        </g:if>
-                        <g:else>
-                            <td></td>
-                        </g:else>
-                        <g:if test="${it?.detail}">
-                            <td>${it?.detail.join(',')}</td>
-                        </g:if>
-                        <g:else>
-                            <td></td>
-                        </g:else>
-                        <td><g:formatNumber number="${it?.length}" type="number" maxFractionDigits="2"/></td>
-                    </tr>
-                    </g:each>
-                </table>
+
+                <%-- start --%>
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseZero">
+                            Display details of transect parts
+                        </a>
+                    </div>
+                    <div id="collapseZero" class="accordion-body collapse">
+                        <div class="accordion-inner">
+                            <div class="control-group">
+                                <table class="table table-striped table-bordered table-hover dataTable no-footer">
+                                <td><g:message code="site.metadata.name" /></td><td><g:message code="site.transect.transectPart.length" /> (m)</td>
+                                    <g:each in="${site.transectParts}">
+                                    <tr>
+                                        <td>${it.name}</td>
+                                        <td><g:formatNumber number="${it?.length}" type="number" maxFractionDigits="2"/></td>
+                                    </tr>
+                                    </g:each>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%-- end --%>
+
                 <g:if test="${site.notes}">
                     <dt><g:message code="site.details.notes"/></dt>
                     <dd>${site.notes?.encodeAsHTML()}</dd>
                 </g:if>
-
                 </dl>
             </g:if>
 
