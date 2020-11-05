@@ -12,6 +12,7 @@ import grails.web.mapping.LinkGenerator
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.springframework.context.MessageSource
 import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST
 import static org.apache.http.HttpStatus.SC_OK
@@ -36,6 +37,8 @@ class BioActivityController {
 
     static int MAX_FLIMIT = 500
     static allowedMethods = ['bulkDelete': 'POST', bulkRelease: 'POST', bulkEmbargo: 'POST']
+
+    def locale = RCU.getLocale(request)
 
     /**
      * Update Activity by activityId or
@@ -156,7 +159,7 @@ class BioActivityController {
      */
     def create(String id) {
         Map model = addActivity(id)
-        model?.title = messageSource.getMessage('record.create.title', [].toArray(), '', new Locale('sv'))
+        model?.title = messageSource.getMessage('record.create.title', [].toArray(), '', locale)
 
         model
     }
@@ -198,7 +201,7 @@ class BioActivityController {
      */
     def edit(String id) {
         Map model = editActivity(id)
-        model?.title = messageSource.getMessage('record.edit.title', [].toArray(), '', Locale.default)
+        model?.title = messageSource.getMessage('record.edit.title', [].toArray(), '', locale)
         //May relates to the known grails.converter.JSON issue
         //Remove this seem-useless statement may causes issue
         model.toString()
@@ -422,7 +425,7 @@ class BioActivityController {
                 model: [
                         view: 'myrecords',
                         user: userService.user,
-                        title: messageSource.getMessage('myrecords.title', [].toArray(), '', Locale.default),
+                        title: messageSource.getMessage('myrecords.title', [].toArray(), '', locale),
                         returnTo: g.createLink(controller: 'bioActivity', action: 'list')
                 ]
         )
@@ -437,7 +440,7 @@ class BioActivityController {
         render(view: 'list',
                 model: [
                         view: 'allrecords',
-                        title: messageSource.getMessage('allrecords.title', [].toArray(), '', Locale.default),
+                        title: messageSource.getMessage('allrecords.title', [].toArray(), '', locale),
                         returnTo: g.createLink(controller: 'bioActivity', action: 'allRecords')
                 ]
         )
@@ -459,7 +462,7 @@ class BioActivityController {
                         view: view,
                         projectId: id,
                         project: project,
-                        title: messageSource.getMessage('project.records.title', [].toArray(), '', Locale.default),
+                        title: messageSource.getMessage('project.records.title', [].toArray(), '', locale),
                         occurrenceUrl: occurrenceUrl,
                         spatialUrl: spatialUrl,
                         isProjectContributingDataToALA: isProjectContributingDataToALA,
@@ -487,7 +490,7 @@ class BioActivityController {
                             user:  userService.user,
                             projectId: id,
                             project: project,
-                            title: messageSource.getMessage('project.myrecords.title', [].toArray(), '', Locale.default),
+                            title: messageSource.getMessage('project.myrecords.title', [].toArray(), '', locale),
                             occurrenceUrl: occurrenceUrl,
                             spatialUrl: spatialUrl,
                             isProjectContributingDataToALA: isProjectContributingDataToALA,
@@ -524,7 +527,7 @@ class BioActivityController {
                                 projectActivityId: params.projectActivityId,
                                 pActivity: projectActivity,
                                 project: project,
-                                title: "${messageSource.getMessage('project.userrecords.title', [].toArray(), '', Locale.default)} ${user.getDisplayName()}",
+                                title: "${messageSource.getMessage('project.userrecords.title', [].toArray(), '', locale)} ${user.getDisplayName()}",
                                 occurrenceUrl: occurrenceUrl,
                                 spatialUrl: spatialUrl,
                                 isProjectContributingDataToALA: isProjectContributingDataToALA,
