@@ -264,7 +264,14 @@
             amplify.store('traffic-from-project-finder-page',false)
             $('#about-tab').tab('show');
         }
-
+        <%-- If redirected from homepage, open SITE tab for bookings --%>
+        <g:if test="${params.sitesTabDefault}">
+            $('#sites-tab').tab('show');
+        </g:if>
+        <%-- Otherwise go to About page --%>
+        <g:else>
+            $('#about-tab').tab('show');
+        </g:else>
         <g:if test="${(fc.userIsAlaOrFcAdmin() || projectContent.admin.visible) && !project.isExternal}">
             projectViewModel.showBushfireBanner()
         </g:if>

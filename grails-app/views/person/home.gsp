@@ -104,20 +104,9 @@
                 <div class="accordion-inner">
                     <div class="control-group">
                         <ul>
-                        <g:each in="${surveys}">
-                            <g:each in="${it}">
-                                <%-- <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
-                                    params: [projectId:it?.projectId, pActivityId:it?.projectActivityId])}">
-                                    ${it?.name}
-                                </a></li> --%>
-                                <%-- TODO - come up with a condition when a site MUST be booked --%>
-                                <%-- <g:if test="${it.allowPolygons || it.allowLine || it.allowPoints}"> --%>
-                                    <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
-                                        params: [projectId:it?.projectId, pActivityId:it?.projectActivityId, personId: person?.personId])}">
-                                        ${it?.name}
-                                    </a></li>
-                                <%-- </g:if> --%>
-                            </g:each>
+                        <g:each in="${projects}">
+                            <a href="${createLink(controller: 'project', action: 'index', params: [id: it?.projectId, sitesTabDefault: true])}">${it?.name}</a>
+                            <br/>
                         </g:each>
                         </ul>
                     </div>
