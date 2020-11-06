@@ -1,11 +1,4 @@
-<m:map id="${id}"></m:map>
-<div class="hide">
-    <!-- ko foreach: sites -->
-    <div class="margin-left-20" data-bind="attr:{id: 'popup'+siteId}">
-        <div><i class="icon-map-marker"></i> <a href="" data-bind="text: name"></a></div>
-    </div>
-    <!-- /ko -->
-</div>
+<m:map width="90%" id="${id}"></m:map>
 
 <script>
     function initMap(params, id) {
@@ -37,7 +30,7 @@
 
         L.Icon.Default.imagePath = $('#' + id).attr('data-leaflet-img');
 
-        map.addButton("<span class='fa fa-refresh reset-map' title='Reset zoom'></span>", map.fitBounds, "bottomright");
+        map.addButton("<span class='fa fa-refresh reset-map' title='${message(code: 'site.map.resetZoom')}'></span>", map.fitBounds, "bottomright");
 
         return map;
     }

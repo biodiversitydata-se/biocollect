@@ -407,7 +407,7 @@ var SiteBookingViewModel = function (pActivitiesVM){
     var self = $.extend(this, pActivitiesVM);
     self.bookedBy = ko.observable();
 
-    // In Project ADMIN tab show on a map which sites are booked
+    // plot site extent points on a map showing whether site is booked or not
     self.plotGeoJson = function(){
 
         var siteList = self.sites; 
@@ -428,14 +428,24 @@ var SiteBookingViewModel = function (pActivitiesVM){
                         if (!feature.geometry.coordinates ) {
                             feature.geometry.coordinates = [lng, lat];
                             if (feature.geometry.aream2 > 0){
-                                //ONLY apply on site list which show a marker instead of polygon
-                                //Change from Polygon to Poin'dab767a5-929e-4733-b8eb-c9113194201f't for geojson validation
                                 feature.geometry.type = 'Point'
                             }
                         }
-
+                        // construct elements for point popup  
+                        var url = fcConfig.viewSiteUrl + '/' + site.siteId;
+                        var isBooked = (site.bookedBy != undefined && site.bookedBy != '') ? true : false;
+                        var message = "";
+                        if (!isBooked){
+                            message = "<br>Är du intresserad av att göra rutten," +
+                            "<a href='http://www.fageltaxering.lu.se/kontakta'>" + " kontakta oss gärna</a>"
+                        } else {
+                            message = "Rutten är bokad";
+                        } 
+                        // use map plugin to display point sites as circle markers color-coded dependent on the booking state 
                         geoJson = Biocollect.MapUtilities.featureToValidGeoJson(feature.geometry);
-                        geoJson.properties.isBooked = (site.bookedBy != undefined && site.bookedBy != '') ? true : false;
+                        geoJson.properties.isBooked = isBooked;
+                        geoJson.properties.popupContent = "<i class='icon-map-marker'></i> <a href=" 
+                            + url + ">" + site.name + "</a>" + message;
 
                         var markerOptions = {
                             markerLocation: [lat, lng],
@@ -460,7 +470,7 @@ var SiteBookingViewModel = function (pActivitiesVM){
                             }
                         };
 
-                        var siteAttributes = {
+                        var siteProperties = {
                             id: site.siteId, 
                             name: site.name, 
                             bookedBy: site.bookedBy,
@@ -468,19 +478,12 @@ var SiteBookingViewModel = function (pActivitiesVM){
                             layerOptions: markerOptions
                         }
 
-                        // TODO find a way to distinguish between systematic sites and non-syst
-                        // if (site.transectParts != null) {
                         if (feature.geometry.type == 'Point') {
-                            map.setGeoJSONAsCircleMarker(geoJson, siteAttributes);
+                            map.setGeoJSONAsCircleMarker(geoJson, siteProperties);
                         } 
-                        // TODO this is needed - commented now because polygon would show and cover circle markers
-                        // else {
-                        //     options.markerWithMouseOver = true
-                        //     map.setGeoJSON(geometry, options);
-                        // }
                     }
                 } catch (exception){
-                    console.log("Site:"+site.siteId +" reports exceptioptions, on: " + exception)
+                    console.log("Site: "+ site.siteId +" reports exception, on: " + exception)
                 }
             }
         });
@@ -501,13 +504,12 @@ var SiteBookingViewModel = function (pActivitiesVM){
             success: function (data) {
                 $("#bookingStatus").html(data.resp.message[0]).parent().fadeIn()
                 if (data.resp.message[0] != ""){
-                    $("#messageSuccess1 ul").html(data.resp.message[0]).parent().fadeIn()
+                    $("#messageSuccess1 ul").html(data.resp.message[0]).parent().fadeIn();
+                    document.location.href = here;
                 }
                 if (data.resp.message[1] != ""){
                     $("#messageFail1 ul").html(data.resp.message[1]).parent().fadeIn()
                 }
-                // refresh the page to show site is booked on the map
-                // document.location.href = fcConfig.projectIndexUrl + '/' + self.projectId();
             },
             error: function (data) {
                 var errorMessage = data.responseText || 'There was a problem saving this site'

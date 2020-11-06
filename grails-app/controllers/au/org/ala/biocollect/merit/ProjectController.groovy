@@ -171,7 +171,7 @@ class ProjectController {
             model = ecoSurveyProjectContent(project, user)
             view = 'csProjectTemplate'
         } else if(projectService.isSystematicMonitoring(project)) { 
-            model = surveyProjectContent(project, user, params)
+            model = systematicProjectContent(project, user, params)
             view = 'csProjectTemplate'
         } else {
             model = worksProjectContent(project, user)
@@ -201,6 +201,25 @@ class ProjectController {
             config.remove('data')
             config.remove('activites')
         }
+
+        HubSettings hubConfig = SettingService.hubConfig
+        if (hubConfig?.content?.hideProjectBlogTab == true) {
+            config.remove('news')
+        }
+
+        config
+    }
+    
+    protected Map systematicProjectContent(project, user, params) {
+        List blog = blogService.getProjectBlog(project)
+        Boolean hasNewsAndEvents = blog.find{it.type == 'News and Events'}
+        Boolean hasProjectStories = blog.find{it.type == 'Project Stories'}
+
+        def config = [about:[label:message(code: 'project.tab.about'), template:'aboutCitizenScienceProject', visible: true, type:'tab', projectSite:project.projectSite],
+         news:[label:message(code: 'project.tab.blog'), template:'projectBlog', visible: true, type:'tab', blog:blog, hasNewsAndEvents: hasNewsAndEvents, hasProjectStories:hasProjectStories, hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false],
+         documents:[label:message(code: 'project.tab.resources'), template:'/shared/listDocuments', useExistingModel: true, editable:false, filterBy: 'all', visible: true, containerId:'overviewDocumentList', type:'tab'],
+         sites: [label:message(code: 'g.sites'), template:'/site/siteBooking', editable:false, type:'tab', visible: true, isUserAdmin: user?.isAdmin],
+         admin:[label:message(code: 'project.tab.admin'), template:'CSAdmin', visible:(user?.isAdmin || user?.isCaseManager) && !params.version, type:'tab', hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false]]
 
         HubSettings hubConfig = SettingService.hubConfig
         if (hubConfig?.content?.hideProjectBlogTab == true) {
