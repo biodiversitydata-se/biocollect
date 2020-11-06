@@ -172,7 +172,7 @@ pdfgen:
 speciesConfiguration:
   default: [
             "type": "ALL_SPECIES",
-            "speciesDisplayFormat": "SCIENTIFICNAME(COMMONNAME)"
+            "speciesDisplayFormat": "COMMONNAME"
            ]
 
 
