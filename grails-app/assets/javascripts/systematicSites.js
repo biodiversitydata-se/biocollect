@@ -408,11 +408,11 @@ var SiteBookingViewModel = function (pActivitiesVM){
     self.bookedBy = ko.observable();
 
     // plot site extent points on a map showing whether site is booked or not
-    self.plotGeoJson = function(){
+    self.plotGeoJson = function(map){
 
         var siteList = self.sites; 
-        map.clearMarkers();
-        map.clearLayers();
+        // map.clearMarkers();
+        // map.clearLayers();
 
         siteList.forEach(function (site) {
 
@@ -487,6 +487,39 @@ var SiteBookingViewModel = function (pActivitiesVM){
                 }
             }
         });
+    }
+
+    self.initMap = function(params, id) {
+        var overlayLayersMapControlConfig = Biocollect.MapUtilities.getOverlayConfig();
+        var baseLayersAndOverlays = Biocollect.MapUtilities.getBaseLayerAndOverlayFromMapConfiguration(fcConfig.mapLayersConfig);
+
+        var mapOptions = $.extend({
+            autoZIndex: false,
+            preserveZIndex: true,
+            addLayersControlHeading: true,
+            allowSearchLocationByAddress: false,
+            drawControl: false,
+            singleMarker: false,
+            singleDraw: false,
+            useMyLocation: false,
+            allowSearchByAddress: false,
+            draggableMarkers: false,
+            showReset: false,
+            zoomToObject: true,
+            markerOrShapeNotBoth: false,
+            trackWindowHeight: true,
+            baseLayer: baseLayersAndOverlays.baseLayer,
+            overlayLayersSelectedByDefault: baseLayersAndOverlays.overlayLayersSelectedByDefault,
+            wmsFeatureUrl: overlayLayersMapControlConfig.wmsFeatureUrl,
+            wmsLayerUrl: overlayLayersMapControlConfig.wmsLayerUrl
+        }, params);
+
+        var map = new ALA.Map(id, mapOptions);
+
+        L.Icon.Default.imagePath = $('#' + id).attr('data-leaflet-img');
+
+        map.addButton("<span class='fa fa-refresh reset-map' title='${message(code: 'site.map.resetZoom')}'></span>", map.fitBounds, "bottomright");
+        return map;
     }
 
     self.bookSite = function(){
