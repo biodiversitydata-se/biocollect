@@ -1,3 +1,7 @@
+<!-- ko stopBinding: true -->
+
+<div id="siteBookingAdmin" class="well">
+
     <%-- Start of site booking form  --%>
     <form action="update" inline="true" class="form-horizontal" id="individualBookingForm">
     <h4>Click on the site on the map to see its status</h4>
@@ -30,5 +34,19 @@
         <ul></ul>
     </div>
     <%-- End of site booking form --%>
+
+<m:map width="90%" id="adminMap"></m:map>
+
+</div>   
+<!-- /ko -->
+
+<asset:script type="text/javascript">
+    function initialiseSiteBookingAdmin(pActivitiesVM) {
+        var siteBookingAdminVM = new SiteBookingViewModel(pActivitiesVM);
+        ko.applyBindings(siteBookingAdminVM, document.getElementById('siteBookingAdmin'));
+        var adminMap = siteBookingAdminVM.initMap({}, 'adminMap')
+        siteBookingAdminVM.plotGeoJson(adminMap);
+    };
+</asset:script>
 
 

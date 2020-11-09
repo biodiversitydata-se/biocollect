@@ -100,7 +100,7 @@
                 <g:if test="${project?.requiresVolManagement}">
                 <div id="bookings" class="pill-pane">
                     <h3>Site booking</h3>
-                    <g:render template="/site/siteBooking" model="[projectActivities:projectActivities]"/>
+                    <g:render template="/site/siteBookingAdmin" model="[projectActivities:projectActivities]"/>
                 </div>
                 </g:if>    
                 <!--AUDIT-->

@@ -1,38 +1,14 @@
-<m:map width="90%" id="${id}"></m:map>
+<!-- ko stopBinding: true -->
+<div id="siteBookingMap" class="well">
+    <m:map width="90%" id="bookingMap"></m:map>
+</div>   
+<!-- /ko -->
 
-<script>
-    function initMap(params, id) {
-        var overlayLayersMapControlConfig = Biocollect.MapUtilities.getOverlayConfig();
-        var baseLayersAndOverlays = Biocollect.MapUtilities.getBaseLayerAndOverlayFromMapConfiguration(fcConfig.mapLayersConfig);
-
-        var mapOptions = $.extend({
-            autoZIndex: false,
-            preserveZIndex: true,
-            addLayersControlHeading: true,
-            allowSearchLocationByAddress: false,
-            drawControl: false,
-            singleMarker: false,
-            singleDraw: false,
-            useMyLocation: false,
-            allowSearchByAddress: false,
-            draggableMarkers: false,
-            showReset: false,
-            zoomToObject: true,
-            markerOrShapeNotBoth: false,
-            trackWindowHeight: true,
-            baseLayer: baseLayersAndOverlays.baseLayer,
-            overlayLayersSelectedByDefault: baseLayersAndOverlays.overlayLayersSelectedByDefault,
-            wmsFeatureUrl: overlayLayersMapControlConfig.wmsFeatureUrl,
-            wmsLayerUrl: overlayLayersMapControlConfig.wmsLayerUrl
-        }, params);
-
-        var map = new ALA.Map('leafletMap', mapOptions);
-
-        L.Icon.Default.imagePath = $('#' + id).attr('data-leaflet-img');
-
-        map.addButton("<span class='fa fa-refresh reset-map' title='${message(code: 'site.map.resetZoom')}'></span>", map.fitBounds, "bottomright");
-
-        return map;
-    }
-
-</script>
+<asset:script type="text/javascript">
+    function initialiseSiteBookingMap(pActivitiesVM) {
+        var siteBookingVM = new SiteBookingViewModel(pActivitiesVM);
+        ko.applyBindings(siteBookingVM, document.getElementById('siteBookingMap'));
+        var volunteerMap = siteBookingVM.initMap({}, 'bookingMap');
+        siteBookingVM.plotGeoJson(volunteerMap);
+    };
+</asset:script>

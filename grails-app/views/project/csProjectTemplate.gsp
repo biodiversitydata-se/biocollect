@@ -230,7 +230,8 @@
         <g:if test="${!project.isExternal}">
             var pActivitiesVM = new ProjectActivitiesViewModel(params, projectViewModel);
              <g:if test="${project.isSystematicMonitoring}">
-                initialiseSiteBooking(pActivitiesVM);
+                initialiseSiteBookingMap(pActivitiesVM);
+                initialiseSiteBookingAdmin(pActivitiesVM);
             </g:if>
             <g:else>
                 initialiseProjectActivitiesList(pActivitiesVM);
