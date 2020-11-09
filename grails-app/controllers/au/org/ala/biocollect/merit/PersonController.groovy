@@ -66,20 +66,20 @@ class PersonController {
             result
     }
     
-    @PreAuthorise(accessLevel = 'admin')
+    @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def create(){
         log.debug "params " + params
         render view: 'edit', model:[create:true, projectId: params.projectId]  
     }
 
-    // @PreAuthorise(accessLevel = 'admin')
+    // TODO - what access level should dictate this? 
     def edit(String id) {
         log.debug "params " + params
         def person = personService.get(id)
         render view: 'edit', model:[create:false, person: person, projectId: params.projectId]
     }
 
-    // @PreAuthorise(accessLevel = 'admin')
+    // TODO - what access level should dictate this? 
     def update(String id){
         log.debug "updating person ${id}"
         def values = request.JSON
@@ -93,7 +93,7 @@ class PersonController {
         }
     }
 
-    @PreAuthorise(accessLevel = 'admin')
+    @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def save() {
         def values = request.JSON
         Map result = personService.create(values)
@@ -141,31 +141,9 @@ class PersonController {
     //     }
     // }
 
-    @PreAuthorise(accessLevel = 'admin')
+    @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def delete(String id) {
         def resp = personService.delete(id)
-    }
-
-    /*
-     * Admin only - when a person registers in CAS, the user id and person id have to be linked
-     * Person is modified with the new field "userId"
-     *
-     * @param id - the person to link
-     * @return 
-     */
-    @PreAuthorise(accessLevel = 'admin')
-    def linkUserToPerson(String id){
-        String userId = params.userId
-        String personId = params.personId
-        Map values = [userId : userId, personId: personId]
-        log.debug "values: " + values
-        log.debug "assigning user id to person " + personId
-        if (personId) {
-            render personService.linkUserToPerson(personId, values)
-        } else {
-            render status:400, text: 'Required param not provided: person ID'
-        }
-
     }
 
     def asJson(json) {
