@@ -26,7 +26,6 @@
     var fcConfig = {
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
         personEditUrl: "${createLink(action: 'edit', params: [id: person.personId, projectId: params.projectId])}",
-        deletePersonUrl: "${createLink(action:'delete', params: [id: person.personId])}",
         activityViewUrl: "${createLink(controller: 'bioActivity', action: 'index')}",
         returnToProjectUrl: "${createLink(controller: 'project', action:'index', params: [id: params.projectId])}",
         getOutputForPersonBySurveyNameUrl: "${createLink(controller: 'output', action:'getOutputForPersonBySurveyName')}"
@@ -138,7 +137,6 @@
                 <div class="form-actions span12">
                     <%-- <a id="cancel" class="btn" href="javascript:history.go(-1)">Cancel</a> --%>
                     <button type="button" id="cancel" class="btn">Cancel</button>
-                    <button type="button" id="delete" class="btn btn-danger" data-bind="">Delete person</button> 
                 </div>
             </div>
         </bs:form>
