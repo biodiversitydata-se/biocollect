@@ -21,7 +21,7 @@ function PersonViewModel(savedPerson, create, projectId) {
         gender : ko.observable(),
         birthDate : ko.observable(),
         extra : ko.observable(),
-        projects : ko.observableArray([projectId]),
+        projects : ko.observable(projectId),
         bookedSites: ko.observableArray()
     });
     
