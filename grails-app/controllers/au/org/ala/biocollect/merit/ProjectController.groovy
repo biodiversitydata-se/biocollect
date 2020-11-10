@@ -218,7 +218,8 @@ class ProjectController {
         def config = [about:[label:message(code: 'project.tab.about'), template:'aboutCitizenScienceProject', visible: true, type:'tab', projectSite:project.projectSite],
          news:[label:message(code: 'project.tab.blog'), template:'projectBlog', visible: true, type:'tab', blog:blog, hasNewsAndEvents: hasNewsAndEvents, hasProjectStories:hasProjectStories, hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false],
          documents:[label:message(code: 'project.tab.resources'), template:'/shared/listDocuments', useExistingModel: true, editable:false, filterBy: 'all', visible: true, containerId:'overviewDocumentList', type:'tab'],
-         sites: [label:message(code: 'g.sites'), template:'/site/siteBookingMap', editable:false, type:'tab', visible: user?.isAdmin],
+         data:[label:message(code: 'project.tab.data'), visible:user?.isAdmin, template:'/bioActivity/activities', showSites:true, site:project.sites, wordForActivity:'Data', type:'tab'],
+         sites: [label:message(code: 'g.sites'), template:'/site/siteBookingMap', editable:false, type:'tab', visible: true],
          admin:[label:message(code: 'project.tab.admin'), template:'CSAdmin', visible:(user?.isAdmin || user?.isCaseManager) && !params.version, type:'tab', hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false]]
 
         HubSettings hubConfig = SettingService.hubConfig

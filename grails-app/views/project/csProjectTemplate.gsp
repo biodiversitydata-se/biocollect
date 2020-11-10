@@ -231,7 +231,6 @@
             var pActivitiesVM = new ProjectActivitiesViewModel(params, projectViewModel);
              <g:if test="${project.isSystematicMonitoring}">
                 initialiseSiteBookingMap(pActivitiesVM);
-                initialiseSiteBookingAdmin(pActivitiesVM);
             </g:if>
             <g:else>
                 initialiseProjectActivitiesList(pActivitiesVM);
@@ -239,6 +238,10 @@
             </g:else>
             <g:if test="${projectContent.admin.visible}">
                 initialiseProjectActivitiesSettings(pActivitiesVM);
+                <g:if test="${project.isSystematicMonitoring}">
+                    initialiseSiteBookingAdmin(pActivitiesVM);
+                    initialiseData('project');
+                </g:if>
             </g:if>
         </g:if>
         <g:if test="${projectContent.admin.visible}">
