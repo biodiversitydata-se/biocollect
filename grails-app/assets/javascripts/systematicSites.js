@@ -434,18 +434,24 @@ var SiteBookingViewModel = function (pActivitiesVM){
                         // construct elements for point popup  
                         var url = fcConfig.viewSiteUrl + '/' + site.siteId;
                         var isBooked = (site.bookedBy != undefined && site.bookedBy != '') ? true : false;
-                        var message = "";
+                        var message1 = "";
+                        var message2 = "";
                         if (!isBooked){
-                            message = "<br>Är du intresserad av att göra rutten," +
+                            message2 = "<br>Är du intresserad av att göra rutten," +
                             "<a href='http://www.fageltaxering.lu.se/kontakta'>" + " kontakta oss gärna</a>"
                         } else {
-                            message = "Rutten är bokad";
+                            message2 = "<br>Rutten är bokad";
                         } 
+                        if (site.isSensitive){
+                            message1 = "<i class='icon-map-marker'></i>" + site.name
+                        } else {
+                            message1 = "<i class='icon-map-marker'></i> <a href=" 
+                            + url + ">" + site.name + "</a>"
+                        }
                         // use map plugin to display point sites as circle markers color-coded dependent on the booking state 
                         geoJson = Biocollect.MapUtilities.featureToValidGeoJson(feature.geometry);
                         geoJson.properties.isBooked = isBooked;
-                        geoJson.properties.popupContent = "<i class='icon-map-marker'></i> <a href=" 
-                            + url + ">" + site.name + "</a>" + message;
+                        geoJson.properties.popupContent = message1 + message2;
 
                         var markerOptions = {
                             markerLocation: [lat, lng],
@@ -538,7 +544,7 @@ var SiteBookingViewModel = function (pActivitiesVM){
                 $("#bookingStatus").html(data.resp.message[0]).parent().fadeIn()
                 if (data.resp.message[0] != ""){
                     $("#messageSuccess1 ul").html(data.resp.message[0]).parent().fadeIn();
-                    document.location.href = here;
+                    // document.location.href = here;
                 }
                 if (data.resp.message[1] != ""){
                     $("#messageFail1 ul").html(data.resp.message[1]).parent().fadeIn()
