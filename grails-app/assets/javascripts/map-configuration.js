@@ -16,7 +16,7 @@
  */
 function MapConfiguration(config, project)
 {
-    var SITE_CREATE = 'sitecreate', SITE_PICK = 'sitepick', SITE_PICK_CREATE = 'sitepickcreate';
+    var SITE_CREATE = 'sitecreate', SITE_PICK = 'sitepick', SITE_PICK_CREATE = 'sitepickcreate', SITE_CREATE_SYSTEMATIC = 'sitecreatesystematic';
     var self = this;
     var sites = project.sites || [],
         defaults = {
@@ -222,6 +222,9 @@ function MapConfiguration(config, project)
 
     self.surveySiteOption.subscribe(function(newOption) {
         switch (newOption) {
+            case SITE_CREATE_SYSTEMATIC:
+                self.clearCreateSiteOptions();
+                break; 
             case SITE_CREATE:
                 self.clearSelectedSites();
                 break;

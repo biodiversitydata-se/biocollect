@@ -1,5 +1,5 @@
 var ProjectActivity = function (params) {
-    var SITE_CREATE = 'sitecreate', SITE_PICK = 'sitepick', SITE_PICK_CREATE = 'sitepickcreate';
+    var SITE_CREATE = 'sitecreate', SITE_PICK = 'sitepick', SITE_PICK_CREATE = 'sitepickcreate', SITE_CREATE_SYSTEMATIC = 'sitecreatesystematic';
     if(!params) params = {};
     var pActivity = params.pActivity ? params.pActivity : {};
     var projectId = params.projectId ? params.projectId : "";
@@ -183,6 +183,9 @@ var ProjectActivity = function (params) {
      */
     self.surveySiteOption.subscribe(function(newOption) {
         switch (newOption) {
+            case SITE_CREATE_SYSTEMATIC:
+                self.clearCreateSiteOptions();
+                break;  
             case SITE_CREATE:
                 self.clearSelectedSites();
                 break;
@@ -882,6 +885,12 @@ var ProjectActivity = function (params) {
 
     self.isSiteConfigValid = function () {
         var msg
+        if (['sitecreatesystematic'].indexOf(self.surveySiteOption()) > -1) {
+            msg = self.isUserSiteCreationConfigValid();
+            if (msg) {
+                return false;
+            }
+        }
         if (['sitecreate', 'sitepickcreate'].indexOf(self.surveySiteOption()) > -1) {
             msg = self.isUserSiteCreationConfigValid();
             if (msg) {

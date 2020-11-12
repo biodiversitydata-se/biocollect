@@ -81,7 +81,7 @@
                             <g:each in="${it}">
                             <%-- TODO - come up with a condition when a site can be created - this is not a good one because 
                             if these are set, then inside survey form it is allowed to draw features which we don't want --%>
-                                <g:if test="${it.allowPolygons || it.allowLine || it.allowPoints}">
+                                <g:if test="${it.surveySiteOption=='sitecreatesystematic'}">
                                     <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
                                         params: [projectId:it?.projectId, pActivityId:it?.projectActivityId, personId: person?.personId])}">
                                         ${it?.name}
