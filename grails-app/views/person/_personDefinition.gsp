@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs" id="personDetailsTab">
-    <li><a href="#personal" id="personal-tab" data-toggle="tab">Personal info</a></li>
+    <li><a href="#personal" id="personal-tab" data-toggle="tab"><g:message code="person.info.heading"/></a></li>
     <g:if test="${fc.userIsAlaOrFcAdmin()}">
-        <li><a href="#siteBooking" id="booking-tab" data-toggle="tab">Site booking</a></li>
+        <li><a href="#siteBooking" id="booking-tab" data-toggle="tab"><g:message code="person.siteBooking.heading"/></a></li>
     </g:if> 
 </ul>
 <div class="tab-content">
