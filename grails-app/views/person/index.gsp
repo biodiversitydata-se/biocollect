@@ -23,72 +23,72 @@
 <body>
     <div class="container-fluid validationEngineContainer">
         <div id="person">
-        <button class="btn btn-small" id="edit"><i class="icon-edit"></i>Edit</button>
+        <button class="btn btn-small" id="edit"><i class="icon-edit"></i><g:message code='g.edit'/></button>
         <bs:form action="" inline="true">
             
     <ul class="nav nav-tabs" id="personDetailsTab">
-        <li><a href="#personal" id="personal-tab" data-toggle="tab">Personal info</a></li>
-        <li><a href="#surveys" id="surveys-tab" data-toggle="tab">Surveys</a></li>
+        <li><a href="#personal" id="personal-tab" data-toggle="tab"><g:message code='person.info.heading'/></a></li>
+        <li><a href="#surveys" id="surveys-tab" data-toggle="tab"><g:message code='project.tab.surveys'/></a></li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane" id="personal">
             <div class="row-fluid">
-        <h2><g:message code=""/>Person details</h2>
+        <h2><g:message code='project.admin.members.details'/></h2>
 
         <div class="span6">
-            <label for=""><g:message code=""/>Person ID<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.id"/></label>
             <p>${person.personId}</p>
         </div>
         <div class="span6">
-            <label for=""><g:message code=""/>Personal code<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.personalNumber"/></label>
             <p>${person.personCode}</p>
         </div>
         <div class="span6">
-            <label for=""><g:message code=""/>First name<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.first"/></label>
             <p>${person.firstName}</p>
         </div>
         <div class="span6">
-            <label for=""><g:message code=""/>Last name<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.last"/></label>
             <p>${person.lastName}</p>
         </div>
         <div class="span6">
-            <label for=""><g:message code=""/>Email address<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.email"/></label>
             <p>${person.email}</p>
         </div>
         <div class="span6">
-            <label for=""><g:message code=""/>Address 1<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.address"/> 1</label>
             <p>${person.address1}</p>
         </div>
         <div class="span6">
-            <label for=""><g:message code=""/>Address 2<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.address"/> 2</label>
             <p>${person.address2}</p>
         </div>
         <div class="span6">
-            <label for=""><g:message code=""/>Postcode<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.postcode"/></label>
             <p>${person.postCode}</p>
         </div>
         <div class="span6">
-            <label for=""><g:message code=""/>Town<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.town"/></label>
             <p>${person.town}</p>
         </div>
         <div class="span6">
-            <label for=""><g:message code=""/>Phone number<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.phone"/></label>
             <p>${person.phoneNum}</p>
         </div>
         <div class="span6">
-            <label for=""><g:message code=""/>Mobile number<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.mobile"/></label>
             <p>${person.mobileNum}</p>
         </div>
         <div class="span6">
-            <label for=""><g:message code=""/>Gender<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.gender"/></label>
             <p>${person.gender}</p>
         </div>
         <div class="span6">
-            <label for=""><g:message code=""/>Year of birth<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.dob"/></label>
             <p>${person.birthDate}</p>
         </div>
         <div class="span6">
-            <label for=""><g:message code=""/>Additional info<g:message code=""/></label>
+            <label><g:message code="person.personalInfo.extra"/></label>
             <p>${person.extra}</p>
         </div>
 </div>
@@ -102,7 +102,7 @@
             <div class="row-fluid">
                 <div class="form-actions span12">
                     <%-- <a id="cancel" class="btn" href="javascript:history.go(-1)">Cancel</a> --%>
-                    <button type="button" id="cancel" class="btn">Cancel</button>
+                    <button type="button" id="cancel" class="btn"><g:message code='g.cancel'/></button>
                 </div>
             </div>
         </bs:form>

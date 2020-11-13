@@ -1,11 +1,11 @@
 <div class="row-fluid validationEngineContainer" id="personal-details-form">
         <h2><g:message code="project.admin.members.details"/></h2>
         <div class="span6">
-            <label>ID</label>
+            <label><g:message code="person.personalInfo.id"/></label>
            <input disabled data-bind="value: person().personId" id="personId" type="text" class="span12"/>
         </div>
         <div class="span6">
-            <label><g:message code="person.personalInfo.code"/></label>
+            <label><g:message code="person.personalInfo.personalNumber"/></label>
            <input data-bind="value: person().personCode" id="personCode" type="text" class="span12"/>
         </div>
         <div class="span6">
