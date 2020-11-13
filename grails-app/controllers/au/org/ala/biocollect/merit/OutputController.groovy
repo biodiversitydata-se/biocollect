@@ -167,7 +167,6 @@ class OutputController {
     def getOutputForPersonBySurveyName(){
         def id = params.id
         def result = outputService.getOutputForPersonBySurveyName(id, params)
-        log.debug "result" + result
         render result as JSON
     }
 

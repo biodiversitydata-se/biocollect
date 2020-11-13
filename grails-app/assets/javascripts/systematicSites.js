@@ -317,12 +317,10 @@ var TransectPart = function (data) {
         self.detail.push(this); 
     };
     self.splitDetailStr = function () {
-        console.log(typeof self.detail());
         if (typeof self.detail() == 'string'){
             var detailArray = self.detail().split(",");
             self.detail(detailArray);
         }
-        console.log(self.detail());
         return self.detail();
     };
 
@@ -339,7 +337,6 @@ var TransectPart = function (data) {
             var habitatArray = self.habitat().split(",");
             self.habitat(habitatArray);
         }
-        console.log(self.habitat());
         return self.habitat();
     };
 
@@ -411,8 +408,6 @@ var SiteBookingViewModel = function (pActivitiesVM){
     self.plotGeoJson = function(map){
 
         var siteList = self.sites; 
-        // map.clearMarkers();
-        // map.clearLayers();
 
         siteList.forEach(function (site) {
 
