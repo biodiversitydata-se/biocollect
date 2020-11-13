@@ -45,7 +45,7 @@
         var siteBookingAdminVM = new SiteBookingViewModel(pActivitiesVM);
         ko.applyBindings(siteBookingAdminVM, document.getElementById('siteBookingAdmin'));
         var adminMap = siteBookingAdminVM.initMap({}, 'adminMap')
-        siteBookingAdminVM.plotGeoJson(adminMap);
+        siteBookingAdminVM.plotGeoJson(adminMap, true);
     };
 </asset:script>
 

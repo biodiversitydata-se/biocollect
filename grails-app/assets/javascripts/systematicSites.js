@@ -405,7 +405,7 @@ var SiteBookingViewModel = function (pActivitiesVM){
     self.bookedBy = ko.observable();
 
     // plot site extent points on a map showing whether site is booked or not
-    self.plotGeoJson = function(map){
+    self.plotGeoJson = function(map, isAdmin){
 
         var siteList = self.sites; 
 
@@ -431,18 +431,19 @@ var SiteBookingViewModel = function (pActivitiesVM){
                         var isBooked = (site.bookedBy != undefined && site.bookedBy != '') ? true : false;
                         var message1 = "";
                         var message2 = "";
+                        if (site.isSensitive && !isAdmin){
+                            message1 = "<i class='icon-map-marker'></i>" + site.name
+                        } else {
+                            message1 = "<i class='icon-map-marker'></i> <a href=" 
+                            + url + ">" + site.name + "</a>"
+                        }
                         if (!isBooked){
                             message2 = "<br>Är du intresserad av att göra rutten," +
                             "<a href='http://www.fageltaxering.lu.se/kontakta'>" + " kontakta oss gärna</a>"
                         } else {
                             message2 = "<br>Rutten är bokad";
                         } 
-                        if (site.isSensitive){
-                            message1 = "<i class='icon-map-marker'></i>" + site.name
-                        } else {
-                            message1 = "<i class='icon-map-marker'></i> <a href=" 
-                            + url + ">" + site.name + "</a>"
-                        }
+
                         // use map plugin to display point sites as circle markers color-coded dependent on the booking state 
                         geoJson = Biocollect.MapUtilities.featureToValidGeoJson(feature.geometry);
                         geoJson.properties.isBooked = isBooked;

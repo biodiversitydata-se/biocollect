@@ -9,6 +9,6 @@
         var siteBookingVM = new SiteBookingViewModel(pActivitiesVM);
         ko.applyBindings(siteBookingVM, document.getElementById('siteBookingMap'));
         var volunteerMap = siteBookingVM.initMap({}, 'bookingMap');
-        siteBookingVM.plotGeoJson(volunteerMap);
+        siteBookingVM.plotGeoJson(volunteerMap, false);
     };
 </asset:script>
