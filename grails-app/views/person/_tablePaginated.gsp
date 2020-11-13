@@ -48,9 +48,7 @@ $(document).ready(function () {
     $('#searchPersonBtn').click(function(e){
         e.preventDefault();
         var searchTerm = document.getElementById("searchTerm").value;
-        console.log(searchTerm);
         var url = fcConfig.personSearchUrl + "&searchTerm=" + searchTerm;
-        console.log(url)
 
             if (! $.fn.DataTable.isDataTable( '#person-search-table' )){
     

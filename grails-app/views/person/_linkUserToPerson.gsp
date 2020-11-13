@@ -27,10 +27,10 @@
         // Click event on "add" button to link new user to person
         $('#linkUserToPersonBtn').click(function(e) {
             e.preventDefault();
-            var personId = $('#linkingPersonId').val();
-            var userId = $('#linkingUserId').val();
-            var data = { "userId": userId };
-            var url = "${updatePersonUrl}" + '/' + personId;
+            var personId = $('#linkingPersonId').val(),
+            userId = $('#linkingUserId').val(),
+            data = { "userId": userId },
+            url = "${updatePersonUrl}" + '/' + personId;
 
             if ($('#userToPersonForm').validationEngine('validate')) {
 

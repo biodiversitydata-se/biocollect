@@ -1,26 +1,9 @@
-<%@ page import="grails.converters.JSON; org.grails.web.json.JSONArray" contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>BioCollect</title>
-  <meta name="layout" content="${hubConfig.skin}"/>
-  <style type="text/css">
-    legend {
-        border: none;
-        margin-bottom: 5px;
-    }
-    h1 input[type="text"] {
-        color: #333a3f;
-        font-size: 28px;
-        /*line-height: 40px;*/
-        font-weight: bold;
-        font-family: Arial, Helvetica, sans-serif;
-        height: 42px;
-    }
-    .no-border { border-top: none !important; }
-  </style>
-    <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700"/>
-    <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Oswald:300"/>
+    <meta name="layout" content="${hubConfig.skin}"/>
 </head>
 <body>
 
@@ -79,8 +62,6 @@
                         <ul>
                         <g:each in="${surveys}">
                             <g:each in="${it}">
-                            <%-- TODO - come up with a condition when a site can be created - this is not a good one because 
-                            if these are set, then inside survey form it is allowed to draw features which we don't want --%>
                                 <g:if test="${it.surveySiteOption=='sitecreatesystematic'}">
                                     <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
                                         params: [projectId:it?.projectId, pActivityId:it?.projectActivityId, personId: person?.personId])}">

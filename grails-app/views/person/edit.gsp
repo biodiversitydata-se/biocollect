@@ -5,23 +5,7 @@
   <meta name="layout" content="${hubConfig.skin}"/>
     <title> ${create ? 'New' : ('Edit | ' + person?.firstName + ' ' + person?.lastName)}</title>
     <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},Home"/>
-    <style type="text/css">
-    legend {
-        border: none;
-        margin-bottom: 5px;
-    }
-    h1 input[type="text"] {
-        color: #333a3f;
-        font-size: 28px;
-        /*line-height: 40px;*/
-        font-weight: bold;
-        font-family: Arial, Helvetica, sans-serif;
-        height: 42px;
-    }
-    .no-border { border-top: none !important; }
-  </style>
-    <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700"/>
-    <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Oswald:300"/>
+
     <asset:script type="text/javascript">
     var fcConfig = {
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",

@@ -4,24 +4,6 @@
 <head>
   <meta name="layout" content="${hubConfig.skin}"/>
     <title> ${person.firstName.encodeAsHTML() + ' ' + person.lastName}</title>
-
-    <style type="text/css">
-    legend {
-        border: none;
-        margin-bottom: 5px;
-    }
-    h1 input[type="text"] {
-        color: #333a3f;
-        font-size: 28px;
-        /*line-height: 40px;*/
-        font-weight: bold;
-        font-family: Arial, Helvetica, sans-serif;
-        height: 42px;
-    }
-    .no-border { border-top: none !important; }
-  </style>
-    <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700"/>
-    <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Oswald:300"/>
     <asset:script type="text/javascript">
     var fcConfig = {
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
@@ -39,7 +21,6 @@
 
 </head>
 <body>
-    <%-- <div class="container-fluid validationEngineContainer" id="validation-container"> --%>
     <div class="container-fluid validationEngineContainer">
         <div id="person">
         <button class="btn btn-small" id="edit"><i class="icon-edit"></i>Edit</button>
@@ -57,73 +38,58 @@
         <div class="span6">
             <label for=""><g:message code=""/>Person ID<g:message code=""/></label>
             <p>${person.personId}</p>
-           <%-- <input data-bind="value: '${personId}'" id="personId" type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Personal code<g:message code=""/></label>
             <p>${person.personCode}</p>
-           <%-- <input data-bind="value: '${personId}'" id="personId" type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>First name<g:message code=""/></label>
-                        <p>${person.firstName}</p>
-           <%-- <input data-bind="text: firstName" id="firstName" type="text" class="span12"/> --%>
+            <p>${person.firstName}</p>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Last name<g:message code=""/></label>
-                        <p>${person.lastName}</p>
-
-           <%-- <input data-bind="text: lastName" id="lastName" type="text" class="span12"/> --%>
+            <p>${person.lastName}</p>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Email address<g:message code=""/></label>
             <p>${person.email}</p>
-           <%-- <input data-bind="text: email" id="email" type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Address 1<g:message code=""/></label>
             <p>${person.address1}</p>
-           <%-- <input data-bind="text: address1"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Address 2<g:message code=""/></label>
             <p>${person.address2}</p>
-           <%-- <input data-bind="text: address2"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Postcode<g:message code=""/></label>
             <p>${person.postCode}</p>
-           <%-- <input data-bind="text: postCode"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Town<g:message code=""/></label>
             <p>${person.town}</p>
-           <%-- <input data-bind="text: town"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Phone number<g:message code=""/></label>
             <p>${person.phoneNum}</p>
-           <%-- <input data-bind="text: phoneNum"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Mobile number<g:message code=""/></label>
             <p>${person.mobileNum}</p>
-           <%-- <input data-bind="text: mobileNum"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Gender<g:message code=""/></label>
             <p>${person.gender}</p>
-           <%-- <input data-bind="text: gender"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Year of birth<g:message code=""/></label>
             <p>${person.birthDate}</p>
-           <%-- <input data-bind="text: birthDate"  type="text" class="span12"/> --%>
         </div>
         <div class="span6">
             <label for=""><g:message code=""/>Additional info<g:message code=""/></label>
             <p>${person.extra}</p>
-           <%-- <input data-bind="text: extra"  type="text" class="span12"/> --%>
         </div>
 </div>
 
@@ -146,7 +112,7 @@
 </body>
     <asset:script type="text/javascript">
 
-        new RestoreTab('personDetailsTab', 'personal-tab');
+    new RestoreTab('personDetailsTab', 'personal-tab');
 
     $('#delete').on("click", function (e) {
     console.log("delete ", ${personId})
@@ -158,13 +124,10 @@
                     url: fcConfig.deletePersonUrl,
                     type: 'DELETE',
                     success: function (data) {
-                        console.log(data);
                         alert("Successfully deleted. Indexing is in process, search result will be updated in few minutes. Redirecting to search page...", "alert-success");
                         window.location.href = fcConfig.returnToProjectUrl;
                     },
                     error: function () {
-                        console.log(data);
-
                         alert("Error deleting person")
                         document.location.href = fcConfig.returnToProjectUrl;
                     }

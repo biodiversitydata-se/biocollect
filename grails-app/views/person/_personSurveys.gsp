@@ -89,7 +89,6 @@
         $('#survey-list-table').on("click", "tr", function (e) {
             e.preventDefault();
             var rowData = table.row(this).data();
-            console.log(rowData)
             var activityId = rowData['activityId'];
             viewBioActivity(activityId);
         });
