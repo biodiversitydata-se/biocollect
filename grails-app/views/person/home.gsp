@@ -23,9 +23,9 @@
     <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Oswald:300"/>
 </head>
 <body>
-<h2>Välkommen ${userName}!</h2>
-<g:if test="${personStatus == 'ok'}">
 
+<g:if test="${personStatus == 'ok'}">
+<h2>Välkommen ${person.firstName + ' ' + person.lastName}!</h2>
     <h3>Vad vill du göra?</h3>
     <div class="accordion" id="homePageConfiguration">
         <div class="accordion-group">
