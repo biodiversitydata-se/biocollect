@@ -1,4 +1,4 @@
-<%@ page import="grails.converters.JSON; org.grails.web.json.JSONArray" contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,14 +17,12 @@
 
     <asset:javascript src="common.js"/>
     <asset:javascript src="persons.js"/>
-    <asset:javascript src="projects-manifest.js"/>
+    <asset:javascript src="datatables-manifest.js"/>
 
 </head>
 <body>
     <div class="container-fluid validationEngineContainer">
-        <div id="person">
-        <button class="btn btn-small" id="edit"><i class="icon-edit"></i><g:message code='g.edit'/></button>
-        <bs:form action="" inline="true">
+    <bs:form action="" inline="true">
             
     <ul class="nav nav-tabs" id="personDetailsTab">
         <li><a href="#personal" id="personal-tab" data-toggle="tab"><g:message code='person.info.heading'/></a></li>
@@ -91,22 +89,23 @@
             <label><g:message code="person.personalInfo.extra"/></label>
             <p>${person.extra}</p>
         </div>
-</div>
-
+        <div class="row-fluid">
+            <div class="form-actions span12">
+                <button class="btn btn-primary" id="edit"><g:message code='g.edit'/></button>
+                <%-- <a id="cancel" class="btn" href="javascript:history.go(-1)">Cancel</a> --%>
+                <button type="button" id="cancel" class="btn"><g:message code='g.cancel'/></button>
+            </div>
         </div>
+    </div>
+
+    </div>
         <div class="tab-pane" id="surveys">
             <g:render template="personSurveys"></g:render>
         </div>
     </div>
 
-            <div class="row-fluid">
-                <div class="form-actions span12">
-                    <%-- <a id="cancel" class="btn" href="javascript:history.go(-1)">Cancel</a> --%>
-                    <button type="button" id="cancel" class="btn"><g:message code='g.cancel'/></button>
-                </div>
-            </div>
-        </bs:form>
-        </div>
+
+    </bs:form>
     </div>
 
 </body>
