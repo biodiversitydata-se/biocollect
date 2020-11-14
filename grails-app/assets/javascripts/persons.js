@@ -22,19 +22,18 @@ function PersonViewModel(savedPerson, create, projectId) {
         birthDate : ko.observable(),
         extra : ko.observable(),
         projects : ko.observable(projectId),
-        bookedSites: ko.observableArray()
+        bookedSites: ko.observableArray(),
+        sitesToBook: ko.observableArray()
     });
     
 
-    self.splitBookedSitesStr = function () {
-        if (typeof self.person().bookedSites() == 'string'){
-            var array = self.person().bookedSites().split(",");
+    self.splitSitesToBook = function () {
+        if (typeof self.person().sitesToBook() == 'string'){
+            var array = self.person().sitesToBook().split(",");
             var siteNames = array.map(function(name){ return name.trim() })
-            // TODO push names so that saved names aren't errased 
-            self.person().bookedSites(siteNames);
+            self.person().sitesToBook(siteNames);
         }
-        console.log(self.person().bookedSites());
-        return self.person().bookedSites();
+        return self.person().sitesToBook();
     }
 
     self.loadPerson = function (person){
@@ -125,23 +124,24 @@ function PersonViewModel(savedPerson, create, projectId) {
      self.bookSite = function(){
         if ($('#individualBookingForm').validationEngine('validate')) {
             var data = {
-                siteNames: self.person().bookedSites(),
+                siteNames: self.person().sitesToBook(),
                 personId: self.person().personId(),
                 };
                 console.log(data);
             $.ajax({
-                url: fcConfig.bookSiteForPersonUrl,
+                url: fcConfig.bookSiteUrl,
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
                 success: function (data) {
                     if (data.resp.message[0] != ""){
-                        $("#messageSuccess ul").html(data.resp.message[0]).parent().fadeIn()
+                        $("#messageSuccess span").html(data.resp.message[0]).parent().fadeIn();
+                        // document.location.href = here;
                     }
                     if (data.resp.message[1] != ""){
-                        $("#messageFail ul").html(data.resp.message[1]).parent().fadeIn()
+                        $("#messageFail span").html(data.resp.message[1]).parent().fadeIn();
                     }
-                    $("#bookedSitesInput").html("");
+                    $("#bookedSitesInput").text("");
                 },
                 error: function (data) {
                     var errorMessage = data.responseText || 'There was a problem saving this site'

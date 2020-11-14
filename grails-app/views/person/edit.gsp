@@ -12,7 +12,7 @@
         personSaveUrl: "${createLink(action: 'save', params:[projectId: params.projectId])}",
         personUpdateUrl: "${createLink(action: 'update')}",
         deletePersonUrl: "${createLink(action:'delete', params:[projectId: params.projectId])}",
-        bookSiteForPersonUrl: "${createLink(controller: 'site', action:'bookSites')}",
+        bookSiteUrl: "${createLink(controller: 'site', action:'bookSites')}",
         returnToProjectUrl: "${createLink(controller: 'project', action:'index', params:[id: params.projectId])}"
         };
         here = window.location.href;

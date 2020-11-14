@@ -27,12 +27,16 @@
         </div>
     </form> 
     <label id="bookedByLink"></label>
-    <div id="messageSuccess1" class="span7 hide alert alert-success" >
-        <ul></ul>
+    <div id="messageSuccess1" class="hide alert alert-success">
+        <button class="close" onclick="$('#messageSuccess1').fadeOut();" href="#">×</button>
+        <span></span>
     </div>
-    <div id="messageFail1" class="span7 hide alert alert-danger">
-        <ul></ul>
+
+    <div id="messageFail1" class="hide alert alert-danger">
+        <button class="close" onclick="$('#messageFail1').fadeOut();" href="#">×</button>
+        <span></span>
     </div>
+
     <%-- End of site booking form --%>
 
 <m:map width="90%" id="adminMap"></m:map>

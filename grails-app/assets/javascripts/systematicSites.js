@@ -468,7 +468,7 @@ var SiteBookingViewModel = function (pActivitiesVM){
                                     })
                                 )
                             } else {
-                                $('#bookedByLink').html("Site is not booked. Type in the person ID in the field 'booked by'") 
+                                $('#bookedByLink').html("Site is not booked. Type in the person ID in the field 'Book for'") 
                             }
                         };
 
@@ -537,13 +537,13 @@ var SiteBookingViewModel = function (pActivitiesVM){
             data: JSON.stringify(data),
             contentType: 'application/json',
             success: function (data) {
-                $("#bookingStatus").html(data.resp.message[0]).parent().fadeIn()
+
                 if (data.resp.message[0] != ""){
-                    $("#messageSuccess1 ul").html(data.resp.message[0]).parent().fadeIn();
+                    $("#messageSuccess1 span").html(data.resp.message[0]).parent().fadeIn();
                     // document.location.href = here;
                 }
                 if (data.resp.message[1] != ""){
-                    $("#messageFail1 ul").html(data.resp.message[1]).parent().fadeIn()
+                    $("#messageFail1 span").html(data.resp.message[1]).parent().fadeIn();
                 }
             },
             error: function (data) {
