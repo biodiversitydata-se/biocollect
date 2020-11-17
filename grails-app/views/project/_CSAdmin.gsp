@@ -20,7 +20,7 @@
                 <li><a href="#permissions" id="permissions-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.members"/></a></li>
                 <%-- TODO change the flag? not all systematic sites will require booking--%>
                 <g:if test="${project?.requiresVolManagement}">
-                    <li><a href="#bookings" id="bookings-tab" data-toggle="tab"><i class="icon-chevron-right"></i> Site booking</a></li>
+                    <li><a href="#bookings" id="bookings-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.siteBooking"/></a></li>
                 </g:if>
                 <g:if test="${fc.userInRole(role: grailsApplication.config.security.cas.alaAdminRole) || fc.userInRole(role: grailsApplication.config.security.cas.adminRole) || user.isAdmin}">
                     <g:if test="${grailsApplication.config.notification.enabled?.toBoolean()}">
@@ -72,34 +72,19 @@
                 </g:if>
 
                 <div id="permissions" class="pill-pane">
-                    <h3>Members</h3>
+                    <h3><g:message code="project.admin.members"/></h3>
                     <g:if test="${project?.requiresVolManagement}">
-                        <ul class="nav nav-tabs" id="members-tab">
-                            <li><a href="#user-permissions" id="user-permissions-tab" data-toggle="tab">Users</a></li>
-                            <li><a href="#persons" id="persons-tab" data-toggle="tab">Persons</a></li>
-                        </ul>
+                        <g:render template="/person/volManagementTabs" model="[projectId:project.projectId]"/>
                     </g:if>
                     <g:else>
                         <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:project.projectId]"/>
                         <g:render template="/admin/permissionTablePaginated"/>
                     </g:else>
-                    <div class="tab-content">
-                        <div class="tab-pane" id="user-permissions">
-                            <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:project.projectId]"/>
-                            <g:if test="${project?.requiresVolManagement}">
-                                <g:render template="/person/linkUserToPerson" model="[updatePersonUrl:g.createLink(controller:'person', action:'update')]"/>
-                            </g:if>
-                            <g:render template="/admin/permissionTablePaginated"/>
-                        </div>
-                        <div class="tab-pane" id="persons">
-                            <g:render template="/person/tablePaginated" model="[projectId: project.projectId]"/>
-                        </div>
-                    </div>
                     
                 </div>
                 <g:if test="${project?.requiresVolManagement}">
                 <div id="bookings" class="pill-pane">
-                    <h3>Site booking</h3>
+                    <h3><g:message code="project.admin.siteBooking"/></h3>
                     <g:render template="/site/siteBookingAdmin" model="[projectActivities:projectActivities]"/>
                 </div>
                 </g:if>    

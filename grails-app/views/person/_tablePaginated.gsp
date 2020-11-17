@@ -1,21 +1,18 @@
 <div class="pill-pane">
 <div class="control-group">
-    <button class="btn btn-primary btn-small" data-bind="click: createPersonForProject"><g:message code="project.admin.members.addNew" /></button>
+    <button class="btn btn-primary" data-bind="click: createPersonForProject"><g:message code="project.admin.members.addNew" /></button>
 </div>
-    <%-- <g:render template="/shared/pagination"/> --%>
-    <form class="form-horizontal">
-        <div class="control-group">
-            <label class="control-label pull-left" for="searchTerm"><g:message code="project.admin.members.searchLabel"/></label>
-            <div class="controls">
-                <input class="input-xlarge" type="text" id="searchTerm"/>
-            </div>
-            <div class="controls">
-                <button class="btn btn-primary form-control" id="searchPersonBtn"><g:message code="g.search" /></button>       
-            </div>
+    <form class="form-horizontal input-append">
+        <div class="well">
+            <label><g:message code="project.admin.members.searchLabel"/></label>
+            <input class="input input-append pull-left" type="text" class="span6" id="searchTerm"/>
+            <button class="btn btn-primary form-control" id="searchPersonBtn">
+                <i class="icon-search icon-white"></i> <g:message code="g.search" />
+            </button>       
         </div>
     </form>
 
-    <div id="person-search" hidden>
+    <div class="well well-small" id="person-search" hidden>
         <table class="table table-striped table-bordered table-hover" id="person-search-table">
             <thead>
             <th><g:message code="site.metadata.name"/></th>
@@ -24,13 +21,6 @@
             <th width="3%"><g:message code="g.edit"/></th>
             </thead>
         </table>
-    </div>
-
-    <div class="span5">
-        <div id="formStatus" class="hide alert alert-success">
-            <button class="close" onclick="$('.alert').fadeOut();" href="#">×</button>
-            <span></span>
-        </div>
     </div>
 </div>
 <asset:script type="text/javascript">
@@ -57,6 +47,9 @@ $(document).ready(function () {
             tableSearchResults = $('#person-search-table').DataTable({
                 "ajax": {url: url, dataSrc: ''},
                 "bFilter": false,
+                "info": "",
+                "infoEmpty": "",
+                "infoFiltered": "",
                 "processing": true,
                 "serverSide": true,
                 "paging": false,
@@ -95,17 +88,17 @@ $(document).ready(function () {
     
             $('#person-search-table').on("click", "tbody td:nth-child(1)", function (e) {
                 e.preventDefault();
-                var row = this.parentElement;
-                var data = tableSearchResults.row(row).data();
-                var personId = data.personId;
+                var row = this.parentElement,
+                 data = tableSearchResults.row(row).data(),
+                 personId = data.personId;
                 viewPerson(personId);
             });
 
             $('#person-search-table').on("click", "tbody td:nth-child(4)", function (e) {
                 e.preventDefault();
-                var row = this.parentElement;
-                var data = tableSearchResults.row(row).data();
-                var personId = data.personId;
+                var row = this.parentElement,
+                 data = tableSearchResults.row(row).data(),
+                 personId = data.personId;
                 editPerson(personId);
             });
     });
