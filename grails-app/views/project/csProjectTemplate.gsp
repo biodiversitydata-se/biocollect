@@ -272,10 +272,7 @@
         <g:if test="${params.sitesTabDefault}">
             $('#sites-tab').tab('show');
         </g:if>
-        <%-- Otherwise go to About page --%>
-        <g:else>
-            $('#about-tab').tab('show');
-        </g:else>
+
         <g:if test="${(fc.userIsAlaOrFcAdmin() || projectContent.admin.visible) && !project.isExternal}">
             projectViewModel.showBushfireBanner()
         </g:if>
