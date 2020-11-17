@@ -146,6 +146,17 @@ class PersonController {
         def resp = personService.delete(id)
     }
 
+    def removeBooking(){
+        def values = request.JSON
+        def resultSites = siteService.update(values.siteId, [bookedBy: ""])
+        def resultPerson = personService.update(values?.personId, [bookedSites: values?.bookedSites])
+        if (resultSites.error || resultPerson.error){
+            log.debug "error"
+        } else {
+            [status: 200] as JSON
+        }
+    }
+
     def asJson(json) {
         render(contentType: 'application/json', text: json as JSON)
     }

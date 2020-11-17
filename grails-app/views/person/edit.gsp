@@ -4,7 +4,7 @@
 <head>
   <meta name="layout" content="${hubConfig.skin}"/>
     <title> ${create ? 'New' : ('Edit | ' + person?.firstName + ' ' + person?.lastName)}</title>
-    <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},Home"/>
+    <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},${message(code: "g.home")}"/>
 
     <asset:script type="text/javascript">
     var fcConfig = {
@@ -13,14 +13,17 @@
         personUpdateUrl: "${createLink(action: 'update')}",
         deletePersonUrl: "${createLink(action:'delete', params:[projectId: params.projectId])}",
         bookSiteUrl: "${createLink(controller: 'site', action:'bookSites')}",
+        removeBookingUrl: "${createLink(controller: 'person', action:'removeBooking')}",
+        viewSiteUrl: "${createLink(controller: 'site', action:'index')}",
+        getSiteNamesUrl: "${createLink(controller: 'site', action:'getSiteNames', params: [siteIds: person?.bookedSites])}",
         returnToProjectUrl: "${createLink(controller: 'project', action:'index', params:[id: params.projectId])}"
         };
         here = window.location.href;
-
     </asset:script>
 
     <asset:javascript src="common.js"/>
     <asset:javascript src="persons.js"/>
+    <asset:javascript src="datatables-manifest.js"/>
 
 </head>
 <body>
