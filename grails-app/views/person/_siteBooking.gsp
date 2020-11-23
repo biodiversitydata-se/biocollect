@@ -1,43 +1,42 @@
-<div class="form-horizontal">
-<bs:form inline="true" class="form-horizontal">
-    <div id="messageSuccess" class="hide alert alert-success">
-        <button class="close" onclick="$('#messageSuccess').fadeOut();" href="#">×</button>
-        <span></span>
+<div class="container-fluid">
+    <h2><g:message code="g.sites"/></h2>
+    <hr>
+        <div class="well span12">
+            <div id="messageSuccess" class="hide alert alert-success">
+                <button class="close" onclick="$('#messageSuccess').fadeOut();" href="#">×</button>
+                <span></span>
+            </div>
+            <div id="messageFail" class="hide alert alert-danger">
+                <button class="close" onclick="$('#messageFail').fadeOut();" href="#">×</button>
+                <span></span>
+            </div>
+            <div class="input-append">
+                <label><g:message code="project.admin.members.batchBookSites"/></label>
+                <input id="bookedSitesInput" data-bind="value: person().sitesToBook, event: { change: splitSitesToBook }"  type="text" class="span10"/>
+                <button class="btn btn-primary form-control" data-bind="click: bookSite"><g:message code="btn.book"/></button>
+            </div>
+        </div>
+    
+    <%-- TABLE showing what sites the person has booked and what they own  --%>
+    <div class="well span12">
+        <g:if test="${person?.bookedSites}">
+            <h4><a href="#" onclick="return loadBookedSites()"><g:message code="person.siteBooking.showBooked"/></a></h4>
+        </g:if>
+        <g:else>
+            <h4><g:message code="person.siteBooking.noSites"/></h4>
+        </g:else>
+
+        <div id="booked-sites-div" hidden>
+            <table style="width: 95%;margin:30px" class="table table-striped table-bordered table-hover" id="booked-sites-table">
+                <thead>
+                <th><g:message code="site.details.siteName"/></th>
+                <th width="10%"><g:message code="person.siteBooking.cancelBooking"/></th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    <div id="messageFail" class="hide alert alert-danger">
-        <button class="close" onclick="$('#messageFail').fadeOut();" href="#">×</button>
-        <span></span>
-    </div>
-    <form class="site-input input-append pull-left">
-        <label><g:message code="project.admin.members.batchBookSites"/></label>
-        <input id="bookedSitesInput" data-bind="value: person().sitesToBook, event: { change: splitSitesToBook }"  type="text" class="span12"/>
-        <button class="btn btn-primary form-control" data-bind="click: bookSite"><g:message code="btn.book"/></button>
-        <g:img uri="${asset.assetPath(src:'spinner.gif')}" id="spinner5" class="hide spinner" alt="spinner icon"/>
-    </form>
-
-</bs:form>
-</div>
-
-<%-- TABLE showing what sites the person has booked and what they own  --%>
-<div class="span5">
-<g:if test="${person?.bookedSites}">
-    <a href="#" onclick="return loadBookedSites()"><g:message code="person.siteBooking.showBooked"/></a>
-</g:if>
-<g:else>
-    <p><g:message code="person.siteBooking.noSites"/></p>
-</g:else>
-</div>
-
-<div id="booked-sites-div" hidden>
-    <table style="width: 95%;margin:30px" class="table table-striped table-bordered table-hover" id="booked-sites-table">
-        <thead>
-        <th><g:message code="site.details.siteName"/></th>
-        <th width="10%"><g:message code="person.siteBooking.cancelBooking"/></th>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
 </div>
 
 <asset:script>
@@ -45,7 +44,7 @@
         url = fcConfig.getSiteNamesUrl;
 
     function reloadSites() {
-        $('#booked-sites-table').DataTable().ajax.reload();
+        location.reload();
     }
 
     function cancelBooking(params){
