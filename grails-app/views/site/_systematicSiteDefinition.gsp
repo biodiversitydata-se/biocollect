@@ -45,7 +45,7 @@
         <h4 data-bind="text: name"></h4>
         </div>
         <div class="row-fluid controls-row">
-            <fc:textField data-bind="value:name" outerClass="span6" label="${message(code:'site.poi.name')}"
+            <fc:textField data-bind="value:name" outerClass="span10" label="${message(code:'site.poi.name')}"
                           data-validation-engine="validate[required]"/>
         </div>
         <g:if test="${allowDetails!='no'}">     
@@ -76,11 +76,12 @@
             </div>
         </g:if>
         <div class="row-fluid controls-row">
-            <label><g:message code="site.details.description" />: </label>
-            <textarea data-bind="value:description"></textarea>
+            <label><g:message code="site.details.description" /></label>
+            <textarea data-bind="value:description" class="span10"></textarea>
         </div>
         <div>
-            <fc:textField disabled data-bind="value:geometry().coordinates" outerClass="span10" label="${message(code:'g.coordinates')}"/>
+            <label><g:message code="g.coordinates"/></label>
+            <textarea disabled data-bind="value:geometry().coordinates" class="span10"></textarea>
         </div>
     </div>
 </div>
