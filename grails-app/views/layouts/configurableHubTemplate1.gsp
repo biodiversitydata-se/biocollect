@@ -119,6 +119,9 @@
         <div class="navbar navbar-inverse navbar-static-top">
             <div class="navbar-inner contain-to-grid">
                 <div class="${fluidLayout ? 'container-fluid' : 'container'}">
+                    <div class="pull-left" class="span3">
+                        <img class="span2 footer-logo" src="${hubConfig?.logoUrl}" style="margin:15px"/>
+                    </div>
                     <div class="pull-right">
                         <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
                         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -128,7 +131,7 @@
                         </a>
 
                         <div class="nav-collapse collapse pull-right">
-                            <ul class="nav">
+                            <ul class="nav" style="margin:15px">
                                 <g:if test="${hubConfig.templateConfiguration?.header?.links}">
                                     <g:each in="${hubConfig.templateConfiguration?.header?.links}" var="link">
                                         <config:getLinkFromConfig config="${link}"
