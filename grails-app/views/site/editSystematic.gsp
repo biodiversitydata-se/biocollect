@@ -49,6 +49,7 @@
         featureService: "${createLink(controller: 'proxy', action: 'feature')}",
         spatialWms: "${grailsApplication.config.spatial.geoserverUrl}",
         geocodeUrl: "${grailsApplication.config.google.geocode.url}",
+        siteIndexUrl: "${createLink(controller: 'site', action: 'index')}",
         siteMetaDataUrl: "${createLink(controller:'site', action:'locationMetadataForPoint')}",
         <g:if test="${project}">
             pageUrl : "${ grailsApplication.config.security.cas.appServerName}${createLink(controller:'site', action:'createForProject', params:[projectId:project.projectId,checkForState:true])}",
@@ -79,10 +80,15 @@
 <body>
     <div class="container-fluid validationEngineContainer" id="validation-container">
         <bs:form action="update" inline="true">
-            <g:render template="systematicSiteDetails" model="${[showLine: true]}"/>
+            <g:render template="systematicSiteDetails" model="${[showLine: true, allowDetails: params.allowDetails]}"/>
             <div class="row-fluid">
                 <div class="form-actions span12">
-                    <button type="button" id="save" class="btn btn-primary"  data-bind="visible: transectParts().length < 0"><g:message code="g.save"/></button>
+                <g:if test="${create}">
+                    <button type="button" id="save" class="btn btn-primary" disabled><g:message code="g.save"/></button>
+                </g:if>
+                <g:else>
+                    <button type="button" id="save" class="btn btn-primary"><g:message code="g.save"/></button>
+                </g:else>
                     <button type="button" id="cancel" class="btn"><g:message code="g.cancel" /></button>
                 </div>
             </div>
@@ -155,13 +161,10 @@
                     contentType: 'application/json',
                     success: function (data) {
                         if(data.status == 'created'){
-                        <g:if test="${project}">
-                            document.location.href = fcConfig.projectUrl;
-                        </g:if>
-                        <g:else>
-                            document.location.href = fcConfig.sitePageUrl + '/' + data.id;
-                        </g:else>
+                            bootbox.alert('Site created successfully!');
+                            document.location.href = fcConfig.siteIndexUrl + '/' + data.id;
                         } else if(data.status == 'updated'){
+                            bootbox.alert('Site updated successfully!');
                             document.location.href = fcConfig.sitePageUrl;
                         } else {
                             bootbox.alert('There was a problem saving this site', function() {location.reload();});
