@@ -21,7 +21,7 @@
 
 </head>
 <body>
-    <div class="container-fluid validationEngineContainer">
+    <div class="container-fluid">
     <bs:form action="" inline="true">
             
     <ul class="nav nav-tabs" id="personDetailsTab">
@@ -30,74 +30,55 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane" id="personal">
+        <div class="container-fluid">
             <div class="row-fluid">
-        <h2><g:message code='project.admin.members.details'/></h2>
-
-        <div class="span6">
-            <label><g:message code="person.personalInfo.id"/></label>
-            <p>${person.personId}</p>
-        </div>
-        <div class="span6">
-            <label><g:message code="person.personalInfo.personalNumber"/></label>
-            <p>${person.personCode}</p>
-        </div>
-        <div class="span6">
-            <label><g:message code="person.personalInfo.first"/></label>
-            <p>${person.firstName}</p>
-        </div>
-        <div class="span6">
-            <label><g:message code="person.personalInfo.last"/></label>
-            <p>${person.lastName}</p>
-        </div>
-        <div class="span6">
-            <label><g:message code="person.personalInfo.email"/></label>
-            <p>${person.email}</p>
-        </div>
-        <div class="span6">
-            <label><g:message code="person.personalInfo.address"/> 1</label>
-            <p>${person.address1}</p>
-        </div>
-        <div class="span6">
-            <label><g:message code="person.personalInfo.address"/> 2</label>
-            <p>${person.address2}</p>
-        </div>
-        <div class="span6">
-            <label><g:message code="person.personalInfo.postcode"/></label>
-            <p>${person.postCode}</p>
-        </div>
-        <div class="span6">
-            <label><g:message code="person.personalInfo.town"/></label>
-            <p>${person.town}</p>
-        </div>
-        <div class="span6">
-            <label><g:message code="person.personalInfo.phone"/></label>
-            <p>${person.phoneNum}</p>
-        </div>
-        <div class="span6">
-            <label><g:message code="person.personalInfo.mobile"/></label>
-            <p>${person.mobileNum}</p>
-        </div>
-        <div class="span6">
-            <label><g:message code="person.personalInfo.gender"/></label>
-            <p>${person.gender}</p>
-        </div>
-        <div class="span6">
-            <label><g:message code="person.personalInfo.dob"/></label>
-            <p>${person.birthDate}</p>
-        </div>
-        <div class="span6">
-            <label><g:message code="person.personalInfo.extra"/></label>
-            <p>${person.extra}</p>
-        </div>
-        <div class="row-fluid">
+                <h2><g:message code="project.admin.members.details"/></h2>
+                <hr>
+                <div class="col">
+                    <div class="well span6">
+                        <label><g:message code="person.personalInfo.id"/></label>
+                        <p>${person.personId}</p>
+                        <label><g:message code="person.personalInfo.personalNumber"/></label>
+                        <p>${person.personCode}</p>
+                        <label><g:message code="person.personalInfo.first"/></label>
+                        <p>${person.firstName}</p>
+                        <label><g:message code="person.personalInfo.last"/></label>
+                        <p>${person.lastName}</p>
+                        <label><g:message code="person.personalInfo.email"/></label>
+                        <p>${person.email}</p>
+                        <label><g:message code="person.personalInfo.phone"/></label>
+                        <p>${person.phoneNum}</p>
+                        <label><g:message code="person.personalInfo.mobile"/></label>
+                        <p>${person.mobileNum}</p>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="well span12">
+                        <label><g:message code="person.personalInfo.address"/> 1</label>
+                        <p>${person.address1}</p>
+                        <label><g:message code="person.personalInfo.address"/> 2</label>
+                        <p>${person.address2}</p>
+                        <label><g:message code="person.personalInfo.postcode"/></label>
+                        <p>${person.postCode}</p>
+                        <label><g:message code="person.personalInfo.town"/></label>
+                        <p>${person.town}</p>
+                        <label><g:message code="person.personalInfo.gender"/></label>
+                        <p>${person.gender}</p>
+                        <label><g:message code="person.personalInfo.dob"/></label>
+                        <p>${person.birthDate}</p>
+                        <label><g:message code="person.personalInfo.extra"/></label>
+                        <p>${person.extra}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
             <div class="form-actions span12">
                 <button class="btn btn-primary" id="edit"><g:message code='g.edit'/></button>
                 <%-- <a id="cancel" class="btn" href="javascript:history.go(-1)">Cancel</a> --%>
                 <button type="button" id="cancel" class="btn"><g:message code='g.cancel'/></button>
             </div>
         </div>
-    </div>
-
+        </div>
     </div>
         <div class="tab-pane" id="surveys">
             <g:render template="personSurveys"></g:render>

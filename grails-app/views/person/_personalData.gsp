@@ -14,6 +14,10 @@
                     <input data-validation-engine="validate[required]" data-bind="value: person().lastName" id="lastName" type="text" class="span10"/>
                     <label><g:message code="person.personalInfo.email"/><span class="req-field"></span></label>
                     <input data-validation-engine="validate[required,custom[email]]" data-bind="value: person().email" id="email" type="text" class="span10"/>
+                    <label><g:message code="person.personalInfo.phone"/></label>
+                    <input data-bind="value: person().phoneNum"  type="text" class="span10"/>
+                    <label><g:message code="person.personalInfo.mobile"/></label>
+                    <input data-bind="value: person().mobileNum"  type="text" class="span10"/>
                 </div>
             </div>
             <div class="span6">
@@ -26,10 +30,6 @@
                     <input data-validation-engine="validate[required]" data-bind="value: person().postCode"  type="text" class="span10"/>
                     <label><g:message code="person.personalInfo.town"/><span class="req-field"></span></label>
                     <input data-validation-engine="validate[required]" data-bind="value: person().town"  type="text" class="span10"/>
-                    <label><g:message code="person.personalInfo.phone"/></label>
-                    <input data-bind="value: person().phoneNum"  type="text" class="span10"/>
-                    <label><g:message code="person.personalInfo.mobile"/></label>
-                    <input data-bind="value: person().mobileNum"  type="text" class="span10"/>
                     <label><g:message code="person.personalInfo.gender"/></label>
                     <input data-bind="value: person().gender"  type="text" class="span10"/>
                     <label><g:message code="person.personalInfo.dob"/></label>
