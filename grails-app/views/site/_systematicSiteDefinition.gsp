@@ -47,32 +47,34 @@
         <div class="row-fluid controls-row">
             <fc:textField data-bind="value:name" outerClass="span6" label="${message(code:'site.poi.name')}"
                           data-validation-engine="validate[required]"/>
-        </div>     
-        <div class="row-fluid controls-row">
-            <div class="span6">
-                <label for="habitat"><g:message code="site.transect.transectPart.habitat"/></label>
-                <div data-bind="foreach: habitatList">
-                    <a href="#" data-bind="click: $parent.addHabitat, text: $data"></a>
-                </div>
-            </div>
-            <div class="span6">
-                <label for="detail"><g:message code="site.transect.transectPart.detail"/></label>
-                <div data-bind="foreach: detailList">
-                    <a href="#" data-bind="click: $parent.addDetail, text: $data"></a>
-                </div>
-            </div>
         </div>
-        <div class="row-fluid controls-row">
-            <div class="span6">
-                <label for="habitatAddedByUser"><g:message code="site.transect.transectPart.attributes" />: </label>
-                <textarea data-bind="value:habitat, event: { change: splitHabitatStr}"></textarea>
-            </div>
-            <div class="span6">
-                <label for="detailAddedByUser"><g:message code="site.transect.transectPart.attributes" />: </label>
-                <textarea data-bind="value:detail, event: { change: splitDetailStr}"></textarea>
+        <g:if test="${allowDetails!='no'}">     
+            <div class="row-fluid controls-row">
+                <div class="span6">
+                    <label for="habitat"><g:message code="site.transect.transectPart.habitat"/></label>
+                    <div data-bind="foreach: habitatList">
+                        <a href="#" data-bind="click: $parent.addHabitat, text: $data"></a>
+                    </div>
+                </div>
+                <div class="span6">
+                    <label for="detail"><g:message code="site.transect.transectPart.detail"/></label>
+                    <div data-bind="foreach: detailList">
+                        <a href="#" data-bind="click: $parent.addDetail, text: $data"></a>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="row-fluid controls-row">
+                <div class="span6">
+                    <label for="habitatAddedByUser"><g:message code="site.transect.transectPart.attributes" />: </label>
+                    <textarea data-bind="value:habitat, event: { change: splitHabitatStr}"></textarea>
+                </div>
+                <div class="span6">
+                    <label for="detailAddedByUser"><g:message code="site.transect.transectPart.attributes" />: </label>
+                    <textarea data-bind="value:detail, event: { change: splitDetailStr}"></textarea>
+                    </div>
+                </div>
+            </div>
+        </g:if>
         <div class="row-fluid controls-row">
             <label><g:message code="site.details.description" />: </label>
             <textarea data-bind="value:description"></textarea>
@@ -91,10 +93,6 @@ function initSiteViewModel(allowPointsOfInterest, edit) {
     // server side generated paths & properties
     var SERVER_CONF = {
         siteData: ${site ?: [] as grails.converters.JSON},
-        <%-- spatialService: '${createLink(controller: 'proxy', action: 'feature')}',
-        regionListUrl: "${createLink(controller: 'regions', action: 'regionsList')}",
-        featuresService: "${createLink(controller: 'proxy', action: 'features')}",
-        featureService: "${createLink(controller: 'proxy', action: 'feature')}", --%>
         spatialWms: '${grailsApplication.config.spatial.geoserverUrl}',
         maxAutoZoom: 14,
         maxZoom: 20,

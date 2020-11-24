@@ -96,7 +96,7 @@ var SystematicSiteViewModel = function (valuesForVM) {
 
     
     self.addTransectPartFromMap = function () {
-
+        $('#save').removeAttr('disabled');
         var featuresAreDrawn = getTransectPart();
         var layersCount = self.map.countFeatures();
         var countTransectParts = self.transectParts().length;
@@ -114,10 +114,10 @@ var SystematicSiteViewModel = function (valuesForVM) {
 
     function createTransectPart(lngLatFeature) {
 
-        var transectPart = new TransectPart(lngLatFeature);
-        var geometry = lngLatFeature.geometry;
-        var lngLatCoordinates = geometry.coordinates;
-        var popup = transectPart.name();
+        var transectPart = new TransectPart(lngLatFeature),
+         geometry = lngLatFeature.geometry,
+         lngLatCoordinates = geometry.coordinates,
+         popup = transectPart.name();
 
         /* a geometry to display on leaflet map will be created here so coordinate order needs to be changed
         from [lng, lat] that came from geoJSON to [lat, lng] for any leaflet feature */
@@ -164,7 +164,6 @@ var SystematicSiteViewModel = function (valuesForVM) {
         self.transectParts.remove(transectPart);
         transectFeatureGroup.removeLayer(transectPart.feature);
     };
-
     self.toJS = function() {
         var js = ko.toJS(self.site);
         js.transectParts = [];

@@ -54,7 +54,7 @@
         <div class="accordion-group">
             <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" href="#collapseTwo">
-                Skapa en rutt/ ruta</a>
+                Skapa en rutt/ sektor</a>
             </div>
             <div id="collapseTwo" class="accordion-body collapse">
                 <div class="accordion-inner">
@@ -64,7 +64,7 @@
                             <g:each in="${it}">
                                 <g:if test="${it.surveySiteOption=='sitecreatesystematic'}">
                                     <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
-                                        params: [projectId:it?.projectId, pActivityId:it?.projectActivityId, personId: person?.personId])}">
+                                        params: [projectId:it?.projectId, pActivityId:it?.projectActivityId, personId: person?.personId, allowDetails: 'no'])}">
                                         ${it?.name}
                                     </a></li>
                                 </g:if>
