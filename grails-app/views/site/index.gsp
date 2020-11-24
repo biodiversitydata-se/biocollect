@@ -74,7 +74,7 @@
             <g:set var="disabled">${(!user) ? "disabled='disabled' title='login required'" : ''}</g:set>
         %{--Favourite functionality only available to authenticated users --}%
             <g:if test="${!site?.transectParts?.isEmpty() && fc.userIsAlaAdmin()}">
-                <g:link action="editSystematic" id="${site.siteId}" class="btn btn-small"><i
+                <g:link action="editSystematic" id="${site.siteId}" params="${[allowDetails: 'no']}" class="btn btn-small"><i
                     class="icon-edit"></i> <g:message code="site.details.editSystematic"/> </g:link>
             </g:if>
             <g:elseif test="${site?.transectParts?.isEmpty()}">
