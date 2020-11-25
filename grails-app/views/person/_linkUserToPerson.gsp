@@ -1,6 +1,6 @@
 <form class="form-horizontal" id="userToPersonForm">
     <div class="control-group">
-        <label class="control-label" for="linkingPersonId">Existing person ID to link</label>
+        <label class="control-label" for="linkingPersonId"><g:message code="project.admin.members.internalIdLbl"/></label>
         <div class="controls">
             <input class="input-xlarge validate[required]" id="linkingPersonId" type="text"/>
             <input class="input-xlarge" id="linkingUserId" disabled type="text"/>
@@ -8,8 +8,7 @@
     </div>
     <div class="control-group">
         <div class="controls">
-            <button id="linkUserToPersonBtn" class="btn btn-primary btn-small">Link</button>
-            <g:img uri="${asset.assetPath(src:'spinner.gif')}" id="spinner2" class="hide spinner" alt="spinner icon"/>
+            <button id="linkUserToPersonBtn" class="btn btn-primary btn-small"><g:message code="project.admin.members.link"/></button>
         </div>
         <div class="controls">
         <div id="linkingStatus" class="offset2 span7 hide alert">
@@ -27,10 +26,10 @@
         // Click event on "add" button to link new user to person
         $('#linkUserToPersonBtn').click(function(e) {
             e.preventDefault();
-            var personId = $('#linkingPersonId').val(),
+            var internalPersonId = $('#linkingPersonId').val(),
             userId = $('#linkingUserId').val(),
-            data = { "userId": userId },
-            url = "${updatePersonUrl}" + '/' + personId;
+            data = { "userId": userId,  "internalPersonId": internalPersonId },
+            url = "${linkUserToPersonUrl}";
 
             if ($('#userToPersonForm').validationEngine('validate')) {
 

@@ -526,7 +526,7 @@ var SiteBookingViewModel = function (pActivitiesVM){
     self.bookSite = function(){
 
         var data = {
-            personId: self.bookedBy(),
+            internalPersonId: self.bookedBy(),
             siteId: self.selectedSiteId
             };
 

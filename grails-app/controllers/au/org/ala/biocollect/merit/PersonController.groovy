@@ -93,6 +93,16 @@ class PersonController {
         }
     }
 
+    def linkUserToPerson(String internalPersonId){
+        def values = request.JSON
+        def resp = personService.linkUserToPerson(values)  
+        if (resp.error) {
+            resp.status = 500
+        } else {
+            render resp as JSON
+        }
+    }
+
     @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def save() {
         def values = request.JSON

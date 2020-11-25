@@ -9,13 +9,13 @@
             <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:projectId]"/>
         </div>
         <div class="row-fluid">
-            <g:render template="/person/linkUserToPerson" model="[updatePersonUrl:g.createLink(controller:'person', action:'update')]"/>
+            <g:render template="/person/linkUserToPerson" model="[linkUserToPersonUrl:g.createLink(controller:'person', action:'linkUserToPerson')]"/>
         </div>
         <div class="row-fluid">
             <g:render template="/admin/permissionTablePaginated"/>
         </div>
     </div>
     <div class="tab-pane" id="persons">
-        <g:render template="/person/tablePaginated" model="[projectId: projectId]"/>
+        <g:render template="/person/search" model="[projectId: projectId]"/>
     </div>
 </div>

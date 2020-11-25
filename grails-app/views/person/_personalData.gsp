@@ -6,8 +6,8 @@
                 <div class="well span6">
                     <label><g:message code="person.personalInfo.id"/></label>
                     <input disabled data-bind="value: person().personId" id="personId" type="text" class="span10"/>
-                    <label><g:message code="person.personalInfo.personalNumber"/></label>
-                    <input data-bind="value: person().personCode" id="personCode" type="text" class="span10"/>
+                    <label><g:message code="person.personalInfo.internalId"/></label>
+                    <input data-bind="value: person().internalPersonId" id="internalPersonId" type="text" class="span10"/>
                     <label><g:message code="person.personalInfo.first"/><span class="req-field"></span></label>
                     <input data-validation-engine="validate[required]" data-bind="value: person().firstName" id="firstName" type="text" class="span10"/>
                     <label><g:message code="person.personalInfo.last"/><span class="req-field"></span></label>

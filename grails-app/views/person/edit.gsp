@@ -42,7 +42,7 @@
     function initPersonViewModel() {
         var savedPersonDetails = {
             personId: "${person?.personId}",
-            personCode: "${person?.personCode}",
+            internalPersonId: "${person?.internalPersonId}",
             firstName: "${person?.firstName}",
             lastName:  "${person?.lastName}",
             email:"${person?.email}",

@@ -38,8 +38,8 @@
                     <div class="well span6">
                         <label><g:message code="person.personalInfo.id"/></label>
                         <p>${person.personId}</p>
-                        <label><g:message code="person.personalInfo.personalNumber"/></label>
-                        <p>${person.personCode}</p>
+                        <label><g:message code="person.personalInfo.internalId"/></label>
+                        <p>${person.internalPersonId}</p>
                         <label><g:message code="person.personalInfo.first"/></label>
                         <p>${person.firstName}</p>
                         <label><g:message code="person.personalInfo.last"/></label>
@@ -95,7 +95,6 @@
     new RestoreTab('personDetailsTab', 'personal-tab');
 
     $('#delete').on("click", function (e) {
-    console.log("delete ", ${personId})
     var personId = "${personId}";
         var message = "<span class='label label-important'>Important</span><p><b>This cannot be undone</b></p><p>Are you sure you want to delete this person?</p>";
         bootbox.confirm(message, function (result) {

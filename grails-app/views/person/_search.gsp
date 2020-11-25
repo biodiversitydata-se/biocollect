@@ -16,7 +16,7 @@
         <table class="table table-striped table-bordered table-hover" id="person-search-table">
             <thead>
             <th><g:message code="site.metadata.name"/></th>
-            <th><g:message code="person.personalInfo.id"/></th>
+            <th><g:message code="person.personalInfo.internalId"/></th>
             <th><g:message code="person.personalInfo.town"/></th>
             <th width="3%"><g:message code="g.edit"/></th>
             </thead>

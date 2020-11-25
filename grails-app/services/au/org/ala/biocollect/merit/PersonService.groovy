@@ -25,8 +25,9 @@ class PersonService {
         response
     }
 
-    def linkUserToPerson(String id, Map body){
-        webService.doPost(grailsApplication.config.ecodata.service.url + "/person/linkUserToPerson/${id}", body) 
+    def linkUserToPerson(Map body){
+        def result = webService.doPost(grailsApplication.config.ecodata.service.url + "/person/linkUserToPerson/", body) 
+        result
     }
 
     def searchPerson(String searchTerm){

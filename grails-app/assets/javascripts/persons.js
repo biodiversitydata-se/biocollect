@@ -8,7 +8,7 @@ function PersonViewModel(savedPerson, create, projectId) {
     var self = this;
     self.person = ko.observable({
         personId : ko.observable(),
-        personCode: ko.observable(),
+        internalPersonId: ko.observable(),
         firstName : ko.observable(),
         lastName : ko.observable(),
         email : ko.observable(),
@@ -38,7 +38,7 @@ function PersonViewModel(savedPerson, create, projectId) {
 
     self.loadPerson = function (person){
         var personModel = self.person();
-        personModel.personCode(exists(person, "personCode"))
+        personModel.internalPersonId(exists(person, "internalPersonId"))
         personModel.firstName(exists(person, "firstName"));
         personModel.lastName(exists(person, "lastName"));
         personModel.email(exists(person, "email"));
@@ -63,8 +63,8 @@ function PersonViewModel(savedPerson, create, projectId) {
     self.save = function (){
 
         if ($('#personal-details-form').validationEngine('validate')) {
-        var id = self.person().personId();
-        var data = self.modelAsJSON(self.person());
+        var id = self.person().personId(),
+         data = self.modelAsJSON(self.person());
         
         if (create) {
             url = fcConfig.personSaveUrl; 
