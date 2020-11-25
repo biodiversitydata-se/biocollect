@@ -4,16 +4,16 @@
 
     <%-- Start of site booking form  --%>
     <form action="update" inline="true" class="form-horizontal" id="individualBookingForm">
-    <h4>Click on the site on the map to see its status</h4>
+    <h4><g:message code="project.admin.siteBooking.clickOnMap"/></h4>
         <div class="control-group">
             <%-- This value will update the site object's field 'bookedBy'  --%>
-            <label class="control-label" for="siteName">Book for</label>
+            <label class="control-label" for="siteName"><g:message code="project.admin.siteBooking.bookFor"/></label>
             <div class="controls">
-                <input class="input-xlarge validate[required]" data-bind="value: bookedBy" placeholder="enter person ID" type="text"/>
+                <input class="input-xlarge validate[required]" data-bind="value: bookedBy" placeholder="${message(code:'project.admin.siteBooking.placeholder')}" type="text"/>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="siteName">Site name</label>
+            <label class="control-label" for="siteName"><g:message code="project.admin.siteBooking.siteName"/></label>
             <div class="controls">
                 <input class="input-xlarge" disabled id="siteName"/>
                 <g:hiddenField name="siteId" id="siteId" data-bind="value: siteId"/>
@@ -21,8 +21,7 @@
         </div>
         <div class="control-group">
             <div class="controls">
-                <button id="save" class="btn btn-primary form-control" data-bind="click: bookSite">Book</button>
-                <g:img uri="${asset.assetPath(src:'spinner.gif')}" id="spinner1" class="hide spinner" alt="spinner icon"/>
+                <button id="save" class="btn btn-primary form-control" data-bind="click: bookSite"><g:message code="btn.book"/></button>
             </div>
         </div>
     </form> 
