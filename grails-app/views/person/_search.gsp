@@ -64,8 +64,8 @@ $(document).ready(function () {
                     bSortable: false
                     },
                     {
-                        data: 'personId',
-                        name: 'personId'
+                        data: 'internalPersonId',
+                        name: 'internalPersonId'
                     },
                     {
                         data: 'town',
