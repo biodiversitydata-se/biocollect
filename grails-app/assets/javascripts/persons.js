@@ -126,6 +126,7 @@ function PersonViewModel(savedPerson, create, projectId) {
             var data = {
                 siteNames: self.person().sitesToBook(),
                 personId: self.person().personId(),
+                bookMany: true
                 };
                 console.log(data);
             $.ajax({

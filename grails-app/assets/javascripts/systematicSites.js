@@ -527,7 +527,8 @@ var SiteBookingViewModel = function (pActivitiesVM){
 
         var data = {
             internalPersonId: self.bookedBy(),
-            siteId: self.selectedSiteId
+            siteId: self.selectedSiteId,
+            bookOne: true
             };
 
         $.ajax({

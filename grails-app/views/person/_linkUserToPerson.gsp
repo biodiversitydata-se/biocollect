@@ -10,13 +10,12 @@
         <div class="controls">
             <button id="linkUserToPersonBtn" class="btn btn-primary btn-small"><g:message code="project.admin.members.link"/></button>
         </div>
-        <div class="controls">
+    </div>
         <div id="linkingStatus" class="offset2 span7 hide alert">
             <button class="close" onclick="$('.alert').fadeOut();" href="#">×</button>
             <span></span>
         </div>
-        </div>
-    </div>
+
 </form>
 <asset:script type="text/javascript">
         $(document).ready(function() {
@@ -44,9 +43,13 @@
                             $('#linkingStatus').removeClass("alert-warning").addClass("alert-success");
                             updateLinkingStatusMessage(result.resp.personName + " has been linked to user ID");
                             resetLinkForm();
-                        } else if (result.resp.status == 'error') {
+                        } else if (result.resp.status == 'notFound') {
                             $('#linkingStatus').removeClass("alert-success").addClass("alert-warning");
-                            updateLinkingStatusMessage(result.resp.error);
+                            updateLinkingStatusMessage("Failed to link person - no such internal id:" + result.resp.internalPersonId);
+                        } else if (result.resp.status == 'foundMany') {
+                            $('#linkingStatus').removeClass("alert-success").addClass("alert-warning");
+                            updateLinkingStatusMessage("There are multiple users with the same internal ID " + result.resp.internalPersonId +
+                             ". Please go to the user's page to book a site from there");
                         }
                     }, 
                     error: function(result) { 
