@@ -1,5 +1,6 @@
 package au.org.ala.biocollect.merit
 
+import au.org.ala.biocollect.EmailService
 import au.org.ala.web.AuthService
 import grails.converters.JSON
 import org.apache.commons.lang.StringUtils
@@ -16,6 +17,7 @@ class SiteController {
 
     AuthService authService
     CommonService commonService
+    EmailService emailService
 
     static defaultAction = "index"
 
@@ -573,6 +575,78 @@ class SiteController {
         if (result.status == 'error') {
             render status: HttpStatus.SC_INTERNAL_SERVER_ERROR, text: "${result.message}"
         } else {
+            render status: HttpStatus.SC_OK, text: result as JSON, contentType: "application/json"
+        }
+    }
+
+    @PreAuthorise(accessLevel = "editSite")
+    def ajaxUpdateSystematic(String id) {
+        def result = [:]
+        String userId = userService.getCurrentUserId(request)
+        String userName = userService.getCurrentUserDisplayName()
+
+        def postBody = request.JSON
+        def siteIndexUrl = postBody.siteIndexUrl
+        // get postBody.pActivityId -> pActivity.alert.emailAddresses
+        def projectActivity = projectActivityService.get(postBody.pActivityId)
+        def emailAddresses = projectActivity.alert.emailAddresses
+
+        Boolean isCreateSiteRequest = !id
+        log.debug "Body: " + postBody
+        log.debug "Params:"
+        params.each { println it }
+        //todo: need to detect 'cleared' values which will be missing from the params - implement _destroy
+        def values = [:]
+        postBody.site?.each { k, v ->
+            if (!(k in ignore)) {
+                values[k] = v //reMarshallRepeatingObjects(v);
+            }
+        }
+
+        //Compatible with previous records without visibility field
+        boolean privateSite = values['visibility'] ? (values['visibility'] == 'private' ? true : false) : false
+
+
+        if (privateSite) {
+            //Do not check permission if site is private
+            //This design is specially for sightings
+            result = siteService.updateRaw(id, values, userId)
+            log.debug "private site ID " + id
+        } else {
+            result = siteService.updateRaw(id, values, userId)
+            String siteId = result.id
+            if (siteId) {
+                if (isCreateSiteRequest) {
+                    String projectId = postBody?.projectId
+                    Boolean isAdmin = projectService.isUserAdminForProject(userId, projectId)
+                    if (projectId && isAdmin) {
+                        siteService.addSitesToSiteWhiteListInWorksProjects([siteId], [projectId], true);
+                    } else {
+                        siteService.addSitesToSiteWhiteListInWorksProjects([siteId], values.projects)
+                    }
+
+                    if (postBody?.pActivityId) {
+                        def pActivity = projectActivityService.get(postBody.pActivityId);
+
+                        if (result?.status != 'error') {
+                            pActivity.sites.add(siteId)
+
+                            projectActivityService.update(postBody.pActivityId, pActivity)
+                        }
+                    }
+                }
+            } else {
+                result.status = 'error';
+                result.message = 'Could not save site';
+            }
+        }
+
+        if (result.status == 'error') {
+            render status: HttpStatus.SC_INTERNAL_SERVER_ERROR, text: "${result.message}"
+        } else {
+            def subject = "BioCollect update: New site created for ${projectActivity.name}"
+            def emailBody = "${userName} has just created a new site. Check it and edit if necessary: ${grailsApplication.config.server.serverURL}${siteIndexUrl}/${result.id}"
+            emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
             render status: HttpStatus.SC_OK, text: result as JSON, contentType: "application/json"
         }
     }

@@ -21,7 +21,6 @@ class PersonService {
 
     def delete(String personId){
         def response = webService.doDelete(grailsApplication.config.ecodata.service.url + '/person/' + personId)
-        // emailService.sendEmail(subject, emailBody, ["${grailsApplication.config.biocollect.support.email.address}"])
         response
     }
 

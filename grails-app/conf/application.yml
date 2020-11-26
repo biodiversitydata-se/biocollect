@@ -20,8 +20,11 @@ environments:
       #    cas:
       #       appServerName: 'http://canmove-dev.ekol.lu.se:8087'
         biocollect:
-          system:
-            email:
+           support:
+             email:
+              address: "aleksandra.magdziarek@biol.lu.se"
+           system:
+             email:
               replyTo: "aleksandra.magdziarek@biol.lu.se"
               sender: "aleksandra.magdziarek@biol.lu.se"
         debugUI: true
@@ -50,6 +53,9 @@ environments:
              cas:
                 appServerName: 'https://auth.bioatlas.se'
         biocollect:
+           support:
+            email:
+              address: "aleksandra.magdziarek@biol.lu.se"
            system:
               email:
                 replyTo: "aleksandra.magdziarek@biol.lu.se"

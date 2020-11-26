@@ -63,7 +63,7 @@
         </g:else>
         sitePageUrl : "${createLink(action: 'index', id: site?.siteId)}",
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
-        ajaxUpdateUrl: "${createLink(action: 'ajaxUpdate', id: site?.siteId)}",
+        ajaxUpdateSystematicUrl: "${createLink(action: 'ajaxUpdateSystematic', id: site?.siteId)}",
         mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
         returnTo: "${createLink(controller: 'project', action: 'index', id: project?.projectId)}"
         },
@@ -136,13 +136,10 @@
         $('#save').click(function () {
             if ($('#validation-container').validationEngine('validate')) {
                 var json = systematicSiteViewModel.toJS();
-                //validate  if extent.geometry.pid, then update extent.source to pid, extent.geometry.type to pid
-                if (json.extent.geometry.pid){
-                    json.extent.source = 'pid';
-                    json.extent.geometry.type = 'pid'
-                }
+
                 var data = {
-                    site: json
+                    site: json,
+                    siteIndexUrl: fcConfig.siteIndexUrl
                     <g:if test="${project?.projectId}">
                         ,
                         projectId: '${project?.projectId.encodeAsHTML()}'
@@ -155,7 +152,7 @@
                 };
 
                 $.ajax({
-                    url: fcConfig.ajaxUpdateUrl,
+                    url: fcConfig.ajaxUpdateSystematicUrl,
                     type: 'POST',
                     data: JSON.stringify(data),
                     contentType: 'application/json',
