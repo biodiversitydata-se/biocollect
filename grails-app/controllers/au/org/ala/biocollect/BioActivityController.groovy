@@ -34,6 +34,7 @@ class BioActivityController {
     SettingService settingService
     AuthService authService
     UtilService utilService
+    EmailService emailService
 
     static int MAX_FLIMIT = 500
     static allowedMethods = ['bulkDelete': 'POST', bulkRelease: 'POST', bulkEmbargo: 'POST']
@@ -142,6 +143,22 @@ class BioActivityController {
                 result = userAlreadyInRole
             }
         }
+
+        // START OF SYSTEMATIC MONITORING CHANGES 
+        // TODO set a condition is survey settings whether a notification should be sent to admins
+        def project = projectService.get(projectId)
+        Boolean isSystematicMonitoring = projectService.isSystematicMonitoring(project)
+        if (isSystematicMonitoring){
+            def projectActivity = projectActivityService.get(pActivityId)
+            def emailAddresses = projectActivity.alert.emailAddresses
+            String userName = userService.getCurrentUserDisplayName()
+            String bioActivityEditUrl = g.createLink(controller: 'bioActivity', action: 'edit')
+            String bioActivityId = result.resp.activityId
+            def subject = "BioCollect update: New record created for ${projectActivity.name}"
+            def emailBody = "${userName} has just added a new record. Check it and edit if necessary: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>here</a>"
+            emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
+        }
+        // END OF SYSTEMATIC MONITORING CHANGES 
         result.error = flash.message
         render result as JSON
     }

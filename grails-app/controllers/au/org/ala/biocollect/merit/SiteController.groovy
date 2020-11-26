@@ -645,7 +645,7 @@ class SiteController {
             render status: HttpStatus.SC_INTERNAL_SERVER_ERROR, text: "${result.message}"
         } else {
             def subject = "BioCollect update: New site created for ${projectActivity.name}"
-            def emailBody = "${userName} has just created a new site. Check it and edit if necessary: ${grailsApplication.config.server.serverURL}${siteIndexUrl}/${result.id}"
+            def emailBody = "${userName} has just created a new site. Check it and edit if necessary <a href='${grailsApplication.config.server.serverURL}${siteIndexUrl}/${result.id}'>here</a>"
             emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
             render status: HttpStatus.SC_OK, text: result as JSON, contentType: "application/json"
         }
