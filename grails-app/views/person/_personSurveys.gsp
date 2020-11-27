@@ -60,7 +60,7 @@
                     name: 'dateCreated',
                     render: function (data, type, row) {
                         return '<div>' + 
-                        '<a class="margin-left-10" href="#" title="See full form">' 
+                        '<a class="margin-left-10" href="#">' 
                         + data +
                         '</a></div>';
                     }

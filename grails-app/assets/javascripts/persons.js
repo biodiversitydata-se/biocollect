@@ -166,84 +166,84 @@ function PersonViewModel(savedPerson, create, projectId) {
 
 /* This view model lists all observers registered for this project, 
  it displays links on each name so that person can be viewed in detail and edited  */
-function PersonsListViewModel(projectId){
-    var self = this;
+// function PersonsListViewModel(projectId){
+//     var self = this;
 
-    // list persons for project
-    self.loadPersons = function(){
+//     // list persons for project
+//     self.loadPersons = function(){
 
-        // START of temporary list 
+//         // START of temporary list 
 
-        var table = $('#person-list').DataTable({
-            "bFilter": false,
-            "processing": true,
-            "serverSide": true,
-            "paging": false,
-            "ajax": fcConfig.getPersonsForProjectIdPaginatedUrl + "/" + projectId,
-            "columns": [
-                {
-                    data: 'personId',
-                    name: 'personId'
-                },
-                {
-                    data: 'firstName',
-                    name: 'firstName',
-                    bSortable: false
-                },
-                {
-                    data: 'lastName',
-                    name: 'lastName',
-                    bSortable: true
-                },
-                {
-                    data: 'email',
-                    name: 'email',
-                    bSortable: false
-                },
-                {
-                    data: 'town',
-                    name: 'town',
-                    bSortable: false
+//         var table = $('#person-list').DataTable({
+//             "bFilter": false,
+//             "processing": true,
+//             "serverSide": true,
+//             "paging": false,
+//             "ajax": fcConfig.getPersonsForProjectIdPaginatedUrl + "/" + projectId,
+//             "columns": [
+//                 {
+//                     data: 'personId',
+//                     name: 'personId'
+//                 },
+//                 {
+//                     data: 'firstName',
+//                     name: 'firstName',
+//                     bSortable: false
+//                 },
+//                 {
+//                     data: 'lastName',
+//                     name: 'lastName',
+//                     bSortable: true
+//                 },
+//                 {
+//                     data: 'email',
+//                     name: 'email',
+//                     bSortable: false
+//                 },
+//                 {
+//                     data: 'town',
+//                     name: 'town',
+//                     bSortable: false
     
-                },
-                {
-                    render: function (data, type, row) {
-                        return '<div class="pull-right margin-right-20">' + 
-                        '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' 
-                        + '</div>';
-                    },
-                    bSortable: false
-                }
-            ]
-        });
+//                 },
+//                 {
+//                     render: function (data, type, row) {
+//                         return '<div class="pull-right margin-right-20">' + 
+//                         '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' 
+//                         + '</div>';
+//                     },
+//                     bSortable: false
+//                 }
+//             ]
+//         });
 
-        $('#person-list').on("click", "tbody td:nth-child(1)", function (e) {
-            e.preventDefault();
-            var row = this.parentElement;
-            var data = table.row(row).data();
-            var personId = data.personId;
-            self.viewPerson(personId);
-        });
+//         $('#person-list').on("click", "tbody td:nth-child(1)", function (e) {
+//             e.preventDefault();
+//             var row = this.parentElement;
+//             var data = table.row(row).data();
+//             var personId = data.personId;
+//             self.viewPerson(personId);
+//         });
 
-        $('#person-list').on("click", "tbody td:nth-child(6)", function (e) {
-            e.preventDefault();
-            var row = this.parentElement;
-            var data = table.row(row).data();
-            var personId = data.personId;
-            console.log(personId)
-            self.editPerson(personId);
-        });
-        // END of temporary list
+//         $('#person-list').on("click", "tbody td:nth-child(6)", function (e) {
+//             e.preventDefault();
+//             var row = this.parentElement;
+//             var data = table.row(row).data();
+//             var personId = data.personId;
+//             console.log(personId)
+//             self.editPerson(personId);
+//         });
+//         // END of temporary list
 
-    }
+//     }
 
-    self.viewPerson = function (personId) {
-        document.location.href = fcConfig.personViewUrl + '&id=' + personId; 
-    }
+//     self.viewPerson = function (personId) {
+//         document.location.href = fcConfig.personViewUrl + '&id=' + personId; 
+//     }
 
-    self.editPerson = function(personId) {
-        document.location.href = fcConfig.personEditUrl + '&id=' + personId; 
-    }
+//     self.editPerson = function(personId) {
+//         document.location.href = fcConfig.personEditUrl + '&id=' + personId; 
+//     }
 
-    self.loadPersons();
-}
+//     self.loadPersons();
+// }

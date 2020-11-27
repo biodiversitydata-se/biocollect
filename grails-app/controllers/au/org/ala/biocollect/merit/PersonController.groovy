@@ -55,28 +55,20 @@ class PersonController {
     def index(String id) {
         def person = personService.get(id)
         def outputs = outputService.getOutputCountForPerson(id)
-        log.debug "outputs" + outputs
-        
-        def result = [person: person,
-            outputs: outputs]
-
-        if (params.format == 'json')
-            render result as JSON
-        else
-            result
+        render view: 'index', model: [person: person, outputs: outputs]
     }
     
     @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def create(){
         log.debug "params " + params
-        render view: 'edit', model:[create:true, projectId: params.projectId]  
+        render view: 'edit', model: [create:true, projectId: params.projectId]  
     }
 
     // TODO - what access level should dictate this? 
     def edit(String id) {
-        log.debug "params " + params
+        def outputs = outputService.getOutputCountForPerson(id)
         def person = personService.get(id)
-        render view: 'edit', model:[create:false, person: person, projectId: params.projectId]
+        render view: 'edit', model:[create:false, person: person, projectId: params.projectId, outputs: outputs]
     }
 
     // TODO - what access level should dictate this? 

@@ -16,6 +16,7 @@
         removeBookingUrl: "${createLink(controller: 'person', action:'removeBooking')}",
         viewSiteUrl: "${createLink(controller: 'site', action:'index')}",
         getSiteNamesUrl: "${createLink(controller: 'site', action:'getSiteNames', params: [siteIds: person?.bookedSites])}",
+        getOutputForPersonBySurveyNameUrl: "${createLink(controller: 'output', action:'getOutputForPersonBySurveyName')}",
         returnToProjectUrl: "${createLink(controller: 'project', action:'index', params:[id: params.projectId])}"
         };
         here = window.location.href;
