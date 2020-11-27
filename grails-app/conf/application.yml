@@ -53,9 +53,6 @@ environments:
              cas:
                 appServerName: 'https://auth.bioatlas.se'
         biocollect:
-           support:
-            email:
-              address: "aleksandra.magdziarek@biol.lu.se"
            system:
               email:
                 replyTo: "aleksandra.magdziarek@biol.lu.se"
@@ -129,8 +126,8 @@ collectory:
 
 ecodata:
   baseURL: "https://canmove-dev.ekol.lu.se:8080/"
-#  service:
-#    url: "${ecodata.baseURL}/ws"
+  service:
+   url: "${ecodata.baseURL}/ws"
 
 
 google:
