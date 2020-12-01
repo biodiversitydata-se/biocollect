@@ -30,11 +30,11 @@ class PersonController {
         String userId = userService.currentUserId
         def data = personService.getDataForPersonHomepage(userId)
         if (data.statusCode == 500){
-            render view: 'home', model: [
+            render view: 'SFThome', model: [
                 personStatus: "This user is not linked to a person. Ask the admin to link user ID to person ID"
                 ]
         } else {
-            render view: 'home', model: [
+            render view: 'SFThome', model: [
                 personStatus: data?.personStatus,
                 userName: userName, 
                 person: data?.person,
