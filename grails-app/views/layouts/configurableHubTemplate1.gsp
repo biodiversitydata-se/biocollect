@@ -120,7 +120,7 @@
             <div class="navbar-inner contain-to-grid">
                 <div class="${fluidLayout ? 'container-fluid' : 'container'}">
                     <div class="pull-left" class="span3">
-                        <img class="span2 footer-logo" src="${hubConfig?.logoUrl}" style="margin:15px"/>
+                        <img class="span3 footer-logo" src="${hubConfig?.logoUrl}" style="margin:15px"/>
                     </div>
                     <div class="pull-right">
                         <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
@@ -264,7 +264,7 @@
     %{-- Adding GA script here since it is not included anywhere when custom footer is used. --}%
     %{-- Ala footer does not need it since it comes with GA script included. --}%
     <!-- Google Analytics -->
-    <script>
+    <%-- <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -272,7 +272,7 @@
 
         ga('create', 'UA-4355440-1', 'auto');
         ga('send', 'pageview');
-    </script>
+    </script> --%>
     <!-- End Google Analytics -->
 </g:elseif>
 <asset:script type="text/javascript">
