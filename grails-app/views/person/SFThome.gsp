@@ -105,14 +105,14 @@
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" href="${createLink(controller: 'bioActivity', action: 'list')}">
+                <a class="accordion-toggle" href="${createLink(action: 'edit', id: person?.personId, params:[defaultTab:'surveys'])}">
                     Se vad jag rapporterat tidigare
                 </a>
             </div>
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" href="${createLink(action:'edit', id: person?.personId)}">
+                <a class="accordion-toggle" href="${createLink(action:'edit', id: person?.personId, params:[defaultTab:'contact'])}">
                     Uppdatera min profil
                 </a>
             </div>

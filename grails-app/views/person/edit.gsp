@@ -38,6 +38,11 @@
 
 <asset:script type="text/javascript">
 
+    if ("${defaultTab}" == 'surveys'){
+        $('#surveys-tab').tab('show');
+    } else {
+        $('#personal-tab').tab('show');
+    }
     $('#personal-details-form').validationEngine();
 
     function initPersonViewModel() {

@@ -68,7 +68,7 @@ class PersonController {
     def edit(String id) {
         def outputs = outputService.getOutputCountForPerson(id)
         def person = personService.get(id)
-        render view: 'edit', model:[create:false, person: person, projectId: params.projectId, outputs: outputs]
+        render view: 'edit', model:[create:false, person: person, projectId: params.projectId, defaultTab: params.defaultTab, outputs: outputs]
     }
 
     // TODO - what access level should dictate this? 
