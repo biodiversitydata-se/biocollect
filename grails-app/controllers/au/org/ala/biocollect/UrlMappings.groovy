@@ -40,9 +40,8 @@ class UrlMappings {
                 "/person/searchPerson/" (controller: "person", action: 'searchPerson')
                 "/person/getDataForPersonHomepage/$id"(controller: "person", action: "getDataForPersonHomepage")
                 "/site/getSitesForPerson"(controller: "site", action: "getSitesForPerson")
-                "/output/getOutputCountForPerson/$id"(controller: "output", action: 'getOutputCountForPerson')
-                "/output/getOutputForPersonBySurveyName/$id"(controller: "output", action: 'getOutputForPersonBySurveyName')
 
+                "/activity/getActivitiesForPersonByType"(controller: "activity", action: "getActivitiesForPersonByType")
                 "/activity/$entityId/comment"(controller: "comment"){
                         action = [GET: 'list', POST: 'create']
                         entityType = 'au.org.ala.ecodata.Activity'
@@ -51,7 +50,6 @@ class UrlMappings {
                         entityType = 'au.org.ala.ecodata.Activity'
                         action = [GET: 'get', POST: 'update', PUT: 'update', DELETE: 'delete']
                 }
-
 
                 "/bioActivity/$entityId/comment"(controller: "comment"){
                         action = [GET: 'list', POST: 'create']

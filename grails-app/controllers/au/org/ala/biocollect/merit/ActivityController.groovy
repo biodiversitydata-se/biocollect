@@ -509,4 +509,9 @@ class ActivityController {
 
         shortName
     }
+
+    def getActivitiesForPersonByType(){
+        def result = activityService.getActivitiesForPersonByType(params)
+        render result as JSON
+    }
 }

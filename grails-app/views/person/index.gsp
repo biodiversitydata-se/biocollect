@@ -8,9 +8,9 @@
     var fcConfig = {
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
         personEditUrl: "${createLink(action: 'edit', params: [id: person.personId, projectId: params.projectId])}",
-        activityViewUrl: "${createLink(controller: 'bioActivity', action: 'index')}",
+        viewActivityUrl: "${createLink(controller: 'bioActivity', action: 'index')}",
         returnToProjectUrl: "${createLink(controller: 'project', action:'index', params: [id: params.projectId])}",
-        getOutputForPersonBySurveyNameUrl: "${createLink(controller: 'output', action:'getOutputForPersonBySurveyName')}"
+        getActivitiesForPersonByTypeUrl: "${createLink(controller: 'activity', action:'getActivitiesForPersonByType')}"
         };
         here = window.location.href;
     </asset:script>

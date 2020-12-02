@@ -159,15 +159,4 @@ class OutputController {
         }
     }
 
-    /**
-     * Get a list of output dates and sites where they were conducted 
-     *
-     * @return 
-     */
-    def getOutputForPersonBySurveyName(){
-        def id = params.id
-        def result = outputService.getOutputForPersonBySurveyName(id, params)
-        render result as JSON
-    }
-
 }

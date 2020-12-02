@@ -1,15 +1,15 @@
 <div id="persons-surveys-form">
 
-<g:if test="${outputs.size() != 0}">
+<g:if test="${activityCount?.size() != 0}">
     <table class="table table-striped table-bordered table-hover" id="persons-surveys">
         <thead>
         <th><g:message code="site.details.surveyName"/></th>
         <th><g:message code="g.number"/></th>
         </thead>
-        <g:each in="${outputs}">
+        <g:each in="${activityCount}">
         <tr>
             <td>
-            <a href="#outputList" onclick="return loadOutputs('${person.personId}', '${it.key}')">
+            <a href="#activityList" onclick="return loadOutputs('${person.personId}', '${it.key}')">
             ${it.key}</a>
             </td>
             <td>${it.value}</td>
@@ -27,7 +27,6 @@
             <th><g:message code="g.date"/></th>
             <th><g:message code="site.details.siteName"/></th>
             <th><g:message code="site.details.siteName"/></th>
-            <th><g:message code="g.period"/></th>
             </thead>
         </table>
     </div>
@@ -41,8 +40,8 @@
     }
 
     var table;
-    var loadOutputs = function(id, name){
-        var url = fcConfig.getOutputForPersonBySurveyNameUrl + "/?id=" + id + '&name=' + encodeURI(name);
+    var loadOutputs = function(personId, type){
+        var url = fcConfig.getActivitiesForPersonByTypeUrl + "&personId=" + personId + '&type=' + encodeURI(type);
 
         if (! $.fn.DataTable.isDataTable( '#survey-list-table' )){
 
@@ -74,11 +73,6 @@
                     data: 'siteCode',
                     name: 'siteCode',
                     bSortable: false
-                },
-                {
-                    data: 'period',
-                    name: 'period',
-                    bSortable: false
                 }
                 ]
             });
@@ -94,7 +88,7 @@
         });
 
         var viewBioActivity = function (activityId){
-            document.location.href = fcConfig.activityViewUrl + '/' + activityId; 
+            document.location.href = fcConfig.viewActivityUrl + '/' + activityId; 
         }    
     }
 

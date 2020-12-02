@@ -377,4 +377,20 @@ class ActivityService {
 
         result
     }
+
+    /**
+     * 
+     * 
+     * 
+     * @param params containing personId and name of the survey which is equivalent to activity.type
+     */
+
+    def getActivitiesForPersonByType(params){
+        def activityType = java.net.URLEncoder.encode(params.type, "UTF-8")
+        def urlParams = "?personId=${params.personId}&"
+        urlParams += "activityType=${activityType}"
+        def url = grailsApplication.config.ecodata.service.url + "/activity/getActivitiesForPersonByType" + urlParams
+        log.debug "url with survey name and person id " + url
+        webService.getJson(url)
+    }
 }

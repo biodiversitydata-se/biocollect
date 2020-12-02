@@ -17,7 +17,7 @@ class PersonController {
     PersonService personService 
     UserService userService
     ProjectService projectService
-    OutputService outputService
+    ActivityService activityService
     SiteService siteService
 
     /*
@@ -54,8 +54,7 @@ class PersonController {
      */
     def index(String id) {
         def person = personService.get(id)
-        def outputs = outputService.getOutputCountForPerson(id)
-        render view: 'index', model: [person: person, outputs: outputs]
+        render view: 'index', model: [person: person?.person, activityCount: person?.activityCount]
     }
     
     @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
@@ -66,9 +65,8 @@ class PersonController {
 
     // TODO - what access level should dictate this? 
     def edit(String id) {
-        def outputs = outputService.getOutputCountForPerson(id)
         def person = personService.get(id)
-        render view: 'edit', model:[create:false, person: person, projectId: params.projectId, defaultTab: params.defaultTab, outputs: outputs]
+        render view: 'edit', model:[create:false, person: person?.person, activityCount: person?.activityCount, projectId: params.projectId, defaultTab: params.defaultTab]
     }
 
     // TODO - what access level should dictate this? 
