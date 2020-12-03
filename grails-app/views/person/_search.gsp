@@ -91,7 +91,7 @@ $(document).ready(function () {
                 var row = this.parentElement,
                  data = tableSearchResults.row(row).data(),
                  personId = data.personId;
-                viewPerson(personId);
+                editPerson(personId);
             });
 
             $('#person-search-table').on("click", "tbody td:nth-child(4)", function (e) {
