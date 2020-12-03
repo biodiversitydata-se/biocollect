@@ -1,5 +1,6 @@
 package au.org.ala.biocollect.merit
 
+import au.org.ala.biocollect.merit.hub.HubSettings
 import au.org.ala.biocollect.merit.PersonService
 import au.org.ala.biocollect.merit.UserService
 import au.org.ala.biocollect.merit.ProjectService
@@ -19,6 +20,7 @@ class PersonController {
     ProjectService projectService
     ActivityService activityService
     SiteService siteService
+    SettingService settingService
 
     /*
      * Show actions specific to the logged in person 
@@ -26,15 +28,24 @@ class PersonController {
      *
      */
     def home(){
+        HubSettings hubConfig = SettingService.hubConfig
         def userName = userService.currentUserDisplayName
         String userId = userService.currentUserId
         def data = personService.getDataForPersonHomepage(userId)
+        def view
         if (data.statusCode == 500){
             render view: 'SFThome', model: [
                 personStatus: "This user is not linked to a person. Ask the admin to link user ID to person ID"
                 ]
         } else {
-            render view: 'SFThome', model: [
+            if (hubConfig?.defaultFacetQuery.contains('isSft:true')){
+                view = 'SFThome'
+            } else if (hubConfig?.defaultFacetQuery.contains('isSebms:true')) {
+                view = 'SEBMShome'
+            } else {
+                view = 'home'
+            }
+            render view: view, model: [
                 personStatus: data?.personStatus,
                 userName: userName, 
                 person: data?.person,

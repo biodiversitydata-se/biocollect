@@ -41,10 +41,8 @@
                         <div class="control-group">
                             <label>Du kan rapportera för:</label>
                             <ul>
-                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'a14cf615-a26b-48a7-87fd-00360f3d03d6', params: [personId: person.personId])}">Standardrutt</a></li>
-                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'eb7e3708-f1ff-4114-b1c3-84ed93ec7a8d', params: [personId: person.personId])}">Nattrutt</a></li>
-                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'ccace44f-c37a-44de-a586-7880128046d3', params: [personId: person.personId])}">Vinterrutt</a></li>
-                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'd47b0d4e-6353-4bb8-94cb-400a5f07f21d', params: [personId: person.personId])}">Kustfågelrutor</a></li>
+                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: '642ee449-88c1-4e76-9350-85f66cb6ad8e')}">Punklokal</a></li>
+                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: '3a024566-7a65-41c8-b740-aed47d42e8d4')}">Slinga</a></li>
                             </ul>
                         </div>
                     </div>
@@ -59,10 +57,14 @@
                 <div class="accordion-inner">
                     <div class="control-group">
                         <ul>
-                            <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
-                                params: [projectId:'b7eee643-d5fe-465e-af38-36b217440bd2', pActivityId:'ccace44f-c37a-44de-a586-7880128046d3', personId: person?.personId, allowDetails: 'no'])}">
-                            Vinterrutt</a>
-                            </li>
+                        <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
+                                params: [projectId:'1fb10915-e6c0-451e-b575-b7e715d5d32f', pActivityId:'642ee449-88c1-4e76-9350-85f66cb6ad8e', personId: person?.personId, allowDetails: 'no'])}">
+                            Punktlokal</a>
+                        </li>
+                        <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
+                                params: [projectId:'30634be4-7aac-4ffb-8e5f-5e100ed2a4ea', pActivityId:'3a024566-7a65-41c8-b740-aed47d42e8d4', personId: person?.personId, allowDetails: 'no'])}">
+                            Slinga</a>
+                        </li>
                         </ul>
                     </div>
                 </div>
@@ -77,9 +79,10 @@
                 <div class="accordion-inner">
                     <div class="control-group">
                         <ul>
-                            <li><a href="${createLink(controller: 'project', action: 'index', params: [id: '89383d0f-9735-4fe7-8eb4-8b2e9e9b7b5c', sitesTabDefault: true])}">Standardrutt</a></li>
-                            <li><a href="${createLink(controller: 'project', action: 'index', params: [id: 'd0b2f329-c394-464b-b5ab-e1e205585a7c', sitesTabDefault: true])}">Nattrutt</a></li>
-                            <li><a href="${createLink(controller: 'project', action: 'index', params: [id: '49f55dc1-a63a-4ebf-962b-4d486db0ab16', sitesTabDefault: true])}">Kustfågelrutor</a></li>
+                        <g:each in="${projects}">
+                            <a href="${createLink(controller: 'project', action: 'index', params: [id: it?.projectId, sitesTabDefault: true])}">${it?.name}</a>
+                            <br/>
+                        </g:each>
                         </ul>
                     </div>
                 </div>
@@ -112,7 +115,7 @@
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" href="${createLink(action:'edit', id: person?.personId, params:[defaultTab:'contact'])}">
+                <a class="accordion-toggle" href="${createLink(action:'edit', id: person?.personId)}">
                     Uppdatera min profil
                 </a>
             </div>
