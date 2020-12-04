@@ -588,7 +588,7 @@ class SiteController {
         def postBody = request.JSON
         def siteIndexUrl = postBody.siteIndexUrl
         def projectActivity = projectActivityService.get(postBody.pActivityId)
-        def emailAddresses = projectActivity.alert.emailAddresses
+        def emailAddresses = projectActivity.alert.emailAddresses ?: grailsApplication.config.biocollect.support.email.address
 
         Boolean isCreateSiteRequest = !id
         log.debug "Body: " + postBody
@@ -645,7 +645,7 @@ class SiteController {
         } else {
             def subject = "BioCollect update: New site created for ${projectActivity.name}"
             def emailBody = "${userName} has just created a new site. Check it and edit if necessary <a href='${grailsApplication.config.server.serverURL}${siteIndexUrl}/${result.id}'>here</a>"
-            emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.system.email.address}")
+            emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
             render status: HttpStatus.SC_OK, text: result as JSON, contentType: "application/json"
         }
     }
