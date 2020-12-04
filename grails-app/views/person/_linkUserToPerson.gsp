@@ -48,8 +48,7 @@
                             updateLinkingStatusMessage("Failed to link person - no such internal id:" + result.resp.internalPersonId);
                         } else if (result.resp.status == 'foundMany') {
                             $('#linkingStatus').removeClass("alert-success").addClass("alert-warning");
-                            updateLinkingStatusMessage("There are multiple users with the same internal ID " + result.resp.internalPersonId +
-                             ". Please go to the user's page to book a site from there");
+                            updateLinkingStatusMessage("There are multiple users with the same internal ID " + result.resp.internalPersonId);
                         }
                     }, 
                     error: function(result) { 
