@@ -94,7 +94,7 @@ class PersonController {
         }
     }
 
-    def linkUserToPerson(String internalPersonId){
+    def linkUserToPerson(){
         def values = request.JSON
         def resp = personService.linkUserToPerson(values)  
         if (resp.error) {
