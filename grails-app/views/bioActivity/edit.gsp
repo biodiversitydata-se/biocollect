@@ -55,7 +55,8 @@
         returnTo: "${returnTo}",
         returnToMobile: "${createLink(controller: 'mobile', action: 'status')}#successfully-posted",
         excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
-        mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON}
+        mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
+        validationStatus: 1
         },
         here = document.location.href;
     </asset:script>
@@ -67,6 +68,7 @@
 
 
 <body>
+     <%-- TODO  Add a dropdown for validation --%>
     <g:render template="createEditActivityBody"></g:render>
 </body>
 </html>

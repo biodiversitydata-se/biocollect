@@ -852,6 +852,7 @@ var ActivitiesAndRecordsViewModel = function (placeHolder, view, user, ignoreMap
 };
 
 var ActivityRecordViewModel = function (activity) {
+    console.log("ActivityRecordViewModel init")
     var self = this;
     if (!activity) activity = {};
 
@@ -865,7 +866,9 @@ var ActivityRecordViewModel = function (activity) {
     self.lastUpdated = ko.observable(activity.lastUpdated).extend({simpleDate: true});
     self.ownerName = ko.observable(activity.activityOwnerName);
     self.userId = ko.observable(activity.userId);
+    self.personId = ko.observable(activity.personId);
     self.siteId = ko.observable(activity.siteId);
+    self.verificationStatus = ko.observable(activity.verificationStatus);
     self.embargoed = ko.observable(activity.embargoed);
     self.embargoUntil = ko.observable(activity.embargoUntil).extend({simpleDate: false});
     self.projectName = ko.observable(activity.projectName);
@@ -874,7 +877,7 @@ var ActivityRecordViewModel = function (activity) {
     self.isWorksProject = ko.pureComputed(function () {
         return self.projectType() === "works"
     });
-
+    console.log("Activity model" + JSON.stringify(self));
     self.projectUrl = ko.pureComputed(function () {
         return fcConfig.projectIndexUrl + '/' + self.projectId() +
             (fcConfig.version !== undefined ? "?version=" + fcConfig.version : '');

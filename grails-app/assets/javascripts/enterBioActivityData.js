@@ -11,6 +11,7 @@ function validateDateField(dateField) {
 
 /* Master controller for page. This handles saving each model as required. */
 function Master(activityId, config) {
+
     var self = this;
     self.subscribers = [];
 
@@ -81,7 +82,8 @@ function Master(activityId, config) {
             activityData = {};
         }
         activityData.outputs = outputs;
-
+        activityData.personId = config.personId
+        activityData.validationStatus = config.validationStatus
         return activityData;
     };
 

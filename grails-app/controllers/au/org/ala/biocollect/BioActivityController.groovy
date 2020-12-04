@@ -150,7 +150,7 @@ class BioActivityController {
         Boolean isSystematicMonitoring = projectService.isSystematicMonitoring(project)
         if (isSystematicMonitoring){
             def projectActivity = projectActivityService.get(pActivityId)
-            def emailAddresses = projectActivity.alert.emailAddresses
+            def emailAddresses = projectActivity.alert.emailAddresses ? projectActivity.alert.emailAddresses : grailsApplication.config.biocollect.support.email.address
             String userName = userService.getCurrentUserDisplayName()
             String bioActivityEditUrl = g.createLink(controller: 'bioActivity', action: 'edit')
             String bioActivityId = result.resp.activityId
@@ -253,8 +253,10 @@ class BioActivityController {
 
 
     private def addActivity(String id, boolean mobile = false) {
-        String userId = userService.getCurrentUserId(request)
         // userId needed to retrieve only sites booked by this person 
+        String userId = userService.getCurrentUserId(request)
+        // personId to save in activity 
+        String personId = params.personId
         Map pActivity = projectActivityService.get(id, "all", null, userId)
         String projectId = pActivity?.projectId
         String type = pActivity?.pActivityFormName
@@ -270,7 +272,7 @@ class BioActivityController {
             flash.message = "Access denied: This survey is closed."
             if (!mobile) redirect(controller: 'project', action: 'index', id: projectId)
         } else {
-            Map activity = [activityId: '', siteId: '', projectId: projectId, type: type]
+            Map activity = [activityId: '', siteId: '', projectId: projectId, type: type, personId: personId]
             Map project = projectService.get(projectId)
             model = activityModel(activity, projectId)
             model.pActivity = pActivity
