@@ -33,7 +33,7 @@
         <div class="accordion-group">
             <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
-                    Rapportera en inventering
+                    Rapportera resultat
                 </a>
             </div>
             <div id="collapseOne" class="accordion-body collapse">
@@ -91,7 +91,7 @@
         <div class="accordion-group">
             <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" href="#collapseFour">
-                Läsa om de olika projekten</a>
+                Läs om de olika delprogrammen</a>
             </div>
             <div id="collapseFour" class="accordion-body collapse">
                 <div class="accordion-inner">
