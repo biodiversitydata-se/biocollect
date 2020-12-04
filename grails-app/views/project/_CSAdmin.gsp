@@ -74,7 +74,7 @@
                 <div id="permissions" class="pill-pane">
                     <h3><g:message code="project.admin.members"/></h3>
                     <g:if test="${project?.requiresVolManagement}">
-                        <g:render template="/person/volManagementTabs" model="[projectId:project.projectId]"/>
+                        <g:render template="/person/volManagementTabs" model="[projectId:project.projectId, relatedProjectIds: relatedProjectIds]"/>
                     </g:if>
                     <g:else>
                         <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:project.projectId]"/>

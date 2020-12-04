@@ -105,6 +105,9 @@ class ProjectController {
             String spatialUrl = projectService.getSpatialUrl(project, view, params.spotterId)
             Boolean isProjectContributingDataToALA = projectService.isProjectContributingDataToALA(project)
             def licences = collectoryService.licence()
+            HubSettings hubConfig = SettingService.hubConfig
+            def hubUrl = hubConfig?.urlPath
+            def relatedProjectIds = projectService.getRelatedProjectIds(hubUrl)
 
             def model = [project: project,
                 mapFeatures: commonService.getMapFeatures(project),
@@ -124,7 +127,8 @@ class ProjectController {
                 occurrenceUrl: occurrenceUrl,
                 spatialUrl: spatialUrl,
                 isProjectContributingDataToALA: isProjectContributingDataToALA,
-                licences: licences
+                licences: licences,
+                relatedProjectIds: relatedProjectIds
             ]
 
 

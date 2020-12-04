@@ -1092,4 +1092,17 @@ class ProjectService {
     List sanitiseRecipientList (List userIDs, List whiteList, List blackList) {
         userIDs?.findAll { whiteList?.contains(it) && !blackList?.contains(it) }
     }
+
+    /**
+     * Get list of project Ids of projects that belongt to the same hub
+     * @param hubUrl
+     * @return List of ids
+     */
+    
+    def getRelatedProjectIds(String hubUrl){
+        Map body = [hubUrl : hubUrl]
+        def result = webService.getJson(grailsApplication.config.ecodata.service.url + '/project/getRelatedProjectIds/?hub=' +hubUrl)
+        def relatedProjectIds = result.relatedProjectIds
+        relatedProjectIds as JSON
+    }
 }

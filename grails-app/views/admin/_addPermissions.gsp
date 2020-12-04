@@ -22,6 +22,9 @@
             </div>
         </div>
     </g:elseif>
+    <g:elseif test="${relatedProjectIds}">
+        <input type='hidden' id='relatedProjectIds' value='${relatedProjectIds}'>
+    </g:elseif>
     <g:else><div class="alert alert-error"><g:message code="project.admin.permissions.missingmodel"/></div></g:else>
     <div class="control-group">
         <div class="controls">
@@ -55,7 +58,14 @@
             var email = $('#emailAddress').val();
             var role = $('#addUserRole').val();
             var entityId = $('#entityId').val();
-
+            var relatedProjectIdsJSON = $('#relatedProjectIds').val();
+            var relatedProjectIds = JSON.parse(relatedProjectIdsJSON);
+            console.log(typeof entityId);
+            console.log(typeof relatedProjectIds)
+            console.log(relatedProjectIds)
+            if (relatedProjectIds == undefined) {
+                relatedProjectIds = [entityId]
+            }
             if ($('#userAccessForm').validationEngine('validate')) {
                 $("#spinner1").show();
 
@@ -63,7 +73,11 @@
                     // first check email address is a valid user
                     $.get("${g.createLink(controller:'user',action:'checkEmailExists')}?email=" + email, function(data) {
                         if (data && /^\d+$/.test(data)) {
-                            addUserWithRole( data, role, entityId);
+                            //add permissions for user for all related project within a hub
+                            relatedProjectIds.forEach(function(entityId){ 
+                                console.log(entityId)   
+                                addUserWithRole( data, role, entityId);
+                            });
                             displayUserId(data);
                         } else {
                             var $clone = $('.bbAlert1').clone();
