@@ -78,17 +78,17 @@ function PersonViewModel(savedPerson, create, projectId) {
                 contentType: 'application/json',
                 success: function (data) {
                     if(data.statusCode == 200){
-                        bootbox.alert(data.resp.personName + " successfully saved");
-                        document.location.href = fcConfig.returnToProjectUrl;
+                        alert(data.resp.personName + " successfully saved");
+                        document.location.href = fcConfig.homePageUrl;
                     }    
                     else {
-                        bootbox.alert("Person saved", data);
-                        document.location.href = fcConfig.returnToProjectUrl;
+                        alert("Person saved");
+                        document.location.href = fcConfig.homePageUrl;
                     }              
                 },
                 error: function (data) {
                     var errorMessage = data.resp.error|| 'There was a problem saving this person'
-                    bootbox.alert(errorMessage);
+                    alert(errorMessage);
                     document.location.href = fcConfig.returnToProjectUrl;
                 }
             });
