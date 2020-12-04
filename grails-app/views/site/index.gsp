@@ -204,7 +204,7 @@
             <m:map id="smallMap" width="100%" height="500px"/>
         </div>
     </div>
-
+    <g:if test="${!site?.transectParts}">
     <h3><g:message code="site.associated.title"/>:</h3>
     <div id="detailsLinkedToSite">
         <ul class="nav nav-tabs" id="myTab">
@@ -373,6 +373,7 @@
             </div>
         </div>
     </div>
+    </g:if>
     <small class="pull-right"><em><g:message code="site.details.createdOn"/> <fc:formatDateString date="${site.dateCreated}"
                                                                   inputFormat="yyyy-MM-dd'T'HH:mm:ss'Z'"
                                                                   format="dd-MM-yyyy"/>
