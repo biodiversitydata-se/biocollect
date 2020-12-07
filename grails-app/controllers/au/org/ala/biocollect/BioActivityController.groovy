@@ -154,8 +154,8 @@ class BioActivityController {
             String userName = userService.getCurrentUserDisplayName()
             String bioActivityEditUrl = g.createLink(controller: 'bioActivity', action: 'edit')
             String bioActivityId = result.resp.activityId
-            def subject = "BioCollect update: New record created for ${projectActivity.name}"
-            def emailBody = "${userName} has just added a new record. Check it and edit if necessary: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>here</a>"
+            def subject = "BioCollect update: New survey created for ${projectActivity.name}"
+            def emailBody = "${userName} has just added a new survey. Check it and edit if necessary: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>here</a>"
             emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
         }
         // END OF SYSTEMATIC MONITORING CHANGES 
