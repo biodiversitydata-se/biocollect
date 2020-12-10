@@ -18,6 +18,7 @@ class SiteController {
     AuthService authService
     CommonService commonService
     EmailService emailService
+    PersonService personService
 
     static defaultAction = "index"
 
@@ -65,7 +66,7 @@ class SiteController {
         project.sites?.sort {it.name}
         project.projectSite = project.sites?.find{it.siteId == project.projectSiteId}
         render view: 'editSystematic', model: [create:true, project:project, documents:[], projectSite:project.projectSite,
-            pActivityId: params?.pActivityId, userCanEdit: userCanEditSite, personId: params.personId, allowDetails: params?.allowDetails]
+            pActivityId: params?.pActivityId, userCanEdit: userCanEditSite, ownerId: params?.ownerId, personId: params?.personId, allowDetails: params?.allowDetails]
     }
 
 
@@ -586,9 +587,11 @@ class SiteController {
         String userName = userService.getCurrentUserDisplayName()
 
         def postBody = request.JSON
-        def siteIndexUrl = postBody.siteIndexUrl
+        // values sent in the body are for creating a site
+        def siteEditUrl = postBody?.siteEditUrl
+        def personId = postBody?.personId
         def projectActivity = projectActivityService.get(postBody.pActivityId)
-        def emailAddresses = projectActivity.alert.emailAddresses ?: grailsApplication.config.biocollect.support.email.address
+        def emailAddresses = projectActivity?.alert?.emailAddresses ?: grailsApplication.config.biocollect.support.email.address
 
         Boolean isCreateSiteRequest = !id
         log.debug "Body: " + postBody
@@ -643,9 +646,17 @@ class SiteController {
         if (result.status == 'error') {
             render status: HttpStatus.SC_INTERNAL_SERVER_ERROR, text: "${result.message}"
         } else {
-            def subject = "BioCollect update: New site created for ${projectActivity.name}"
-            def emailBody = "${userName} has just created a new site. Check it and edit if necessary <a href='${grailsApplication.config.server.serverURL}${siteIndexUrl}/${result.id}'>here</a>"
-            emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
+            // if site is created
+            if (isCreateSiteRequest){
+                def subject = "BioCollect update: New site created for ${projectActivity.name}"
+                def emailBody = "${userName} has just created a new site. Check it and edit if necessary <a href='${grailsApplication.config.server.serverURL}${siteEditUrl}/${result.id}/?ownerId=${personId}'>here</a>"
+                emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
+            } else {
+                // if site is updated
+                log.debug "assigning ownership of this site to person with person Id: " + postBody.site?.owner
+                personService.addSiteOwnership(postBody.site?.owner, id)
+            }
+            
             render status: HttpStatus.SC_OK, text: result as JSON, contentType: "application/json"
         }
     }

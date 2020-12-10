@@ -4,8 +4,9 @@ var SystematicSiteViewModel = function (valuesForVM) {
     var site = valuesForVM.site,
      mapOptions = valuesForVM.mapOptions,
      mapContainerId = valuesForVM.mapContainerId,
-     personId = valuesForVM.personId,
+     ownerId = valuesForVM.ownerId,
      self = $.extend(this, new Documents());
+     console.log("ownerId " + ownerId);
 
     // create model for a new site
     self.site = ko.observable({
@@ -17,7 +18,7 @@ var SystematicSiteViewModel = function (valuesForVM) {
         area: ko.observable(),
         description: ko.observable(),
         notes: ko.observable(),
-        owner: ko.observable(personId),
+        owner: ko.observable(),
         projects: ko.observableArray(),
         extent: ko.observable({
             source: ko.observable(),
@@ -94,7 +95,13 @@ var SystematicSiteViewModel = function (valuesForVM) {
         return geometryObservable;
     };
 
-    
+    self.assignOwner = function(){
+        if (ownerId){
+            self.site().owner(ownerId);
+        }
+        return true
+    }
+
     self.addTransectPartFromMap = function () {
         $('#save').removeAttr('disabled');
         var featuresAreDrawn = getTransectPart();

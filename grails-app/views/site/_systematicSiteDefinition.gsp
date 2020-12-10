@@ -48,6 +48,7 @@
             <fc:textField data-bind="value:name" outerClass="span10" label="${message(code:'site.poi.name')}"
                           data-validation-engine="validate[required]"/>
         </div>
+        <%-- If it's a systematic site the below details should be hidden from volunteers --%>
         <g:if test="${allowDetails!='no'}">     
             <div class="row-fluid controls-row">
                 <div class="span6">
@@ -142,7 +143,7 @@ function initSiteViewModel(allowPointsOfInterest, edit) {
         "mapContainerId": "mapForSystematic",
         "site": savedSiteData,
         "mapOptions": SERVER_CONF,
-        "personId": "${personId}"
+        "ownerId": "${ownerId}"
     }
 
     var siteViewModel = new SystematicSiteViewModel(valuesForVM)

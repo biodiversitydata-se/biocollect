@@ -50,6 +50,7 @@
         spatialWms: "${grailsApplication.config.spatial.geoserverUrl}",
         geocodeUrl: "${grailsApplication.config.google.geocode.url}",
         siteIndexUrl: "${createLink(controller: 'site', action: 'index')}",
+        siteEditUrl: "${createLink(controller: 'site', action: 'editSystematic')}",
         siteMetaDataUrl: "${createLink(controller:'site', action:'locationMetadataForPoint')}",
         <g:if test="${project}">
             pageUrl : "${ grailsApplication.config.security.cas.appServerName}${createLink(controller:'site', action:'createForProject', params:[projectId:project.projectId,checkForState:true])}",
@@ -80,9 +81,9 @@
 <body>
     <div class="container-fluid validationEngineContainer" id="validation-container">
         <bs:form action="update" inline="true">
-            <g:render template="systematicSiteDetails" model="${[showLine: true, allowDetails: params.allowDetails]}"/>
+            <g:render template="systematicSiteDetails" model="${[ownerId: params.ownerId, showLine: true, allowDetails: params.allowDetails]}"/>
             <div class="row-fluid">
-                <div class="form-actions span12">
+                <div class="form-actions span12">                
                 <g:if test="${create}">
                     <button type="button" id="save" class="btn btn-primary" disabled><g:message code="g.save"/></button>
                 </g:if>
@@ -139,7 +140,11 @@
 
                 var data = {
                     site: json,
-                    siteIndexUrl: fcConfig.siteIndexUrl
+                    siteEditUrl: fcConfig.siteEditUrl
+                    <g:if test="${personId}">
+                        ,
+                        personId: "${personId}"
+                    </g:if>
                     <g:if test="${project?.projectId}">
                         ,
                         projectId: '${project?.projectId.encodeAsHTML()}'
@@ -160,7 +165,7 @@
                         if(data.status == 'created'){
                             bootbox.alert('Site created successfully!');
                             document.location.href = fcConfig.siteIndexUrl + '/' + data.id;
-                        } else if(data.status == 'updated'){
+                        } else if (data.status == 'updated'){
                             bootbox.alert('Site updated successfully!');
                             document.location.href = fcConfig.sitePageUrl;
                         } else {
