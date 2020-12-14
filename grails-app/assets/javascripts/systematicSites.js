@@ -406,9 +406,12 @@ var TransectPart = function (data) {
     };
 };
 
-var SiteBookingViewModel = function (pActivitiesVM){
+var SiteBookingViewModel = function (pActivitiesVM, emailAddresses){
     var self = $.extend(this, pActivitiesVM);
     self.bookedBy = ko.observable();
+    self.message = ko.observable();
+    self.isBooked = ko.observable();
+    self.emailAddresses = emailAddresses;
 
     // plot site extent points on a map showing whether site is booked or not
     self.plotGeoJson = function(map, isAdmin){
@@ -444,8 +447,7 @@ var SiteBookingViewModel = function (pActivitiesVM){
                             + url + ">" + site.name + "</a>"
                         }
                         if (!isBooked){
-                            message2 = "<br>Är du intresserad av att göra rutten," +
-                            "<a href='http://www.fageltaxering.lu.se/kontakta'>" + " kontakta oss gärna</a>"
+                            message2 = "<br>Är du intresserad av att göra rutten, klicka på den gröna knappen Boka"
                         } else {
                             message2 = "<br>Rutten är bokad";
                         } 
@@ -463,9 +465,12 @@ var SiteBookingViewModel = function (pActivitiesVM){
                         // display name and fetch the id (hidden field) of selected site
                         var displaySiteDetails = function(){
                             self.selectedSiteId = site.siteId;
+                            $("#siteNameAdmin").val(site.name);
                             $("#siteName").val(site.name);
+
                             if (site.bookedBy != undefined && site.bookedBy != ''){
-                                $('#bookedByLink').html("")
+                                $('#btnRequestBooking').css("visibility", "hidden");
+                                $('#bookedByLink').html("");
                                 $('#bookedByLink').append(
                                     $(document.createElement('a')).prop({
                                     target: '_blank',
@@ -475,6 +480,7 @@ var SiteBookingViewModel = function (pActivitiesVM){
                                 )
                             } else {
                                 $('#bookedByLink').html("Site is not booked. Type in the person ID in the field 'Book for'") 
+                                $('#btnRequestBooking').css("visibility", "visible");
                             }
                         };
 
@@ -528,6 +534,32 @@ var SiteBookingViewModel = function (pActivitiesVM){
 
         map.addButton("<span class='fa fa-refresh reset-map' title='${message(code: 'site.map.resetZoom')}'></span>", map.fitBounds, "bottomright");
         return map;
+    }
+
+    self.requestBooking= function(){
+        var data = {
+            siteId: self.selectedSiteId,
+            siteName: self.siteName,
+            message: self.message(),
+            personEditUrl: fcConfig.personEditUrl,
+            viewSiteUrl: fcConfig.viewSiteUrl,
+            emailAddresses: self.emailAddresses
+        }
+
+        $.ajax({
+            url: fcConfig.submitBookingRequestUrl,
+            data:  JSON.stringify(data),
+            type: 'POST',
+            contentType: 'application/json',
+            success: function (data) {
+                alert("Your request has been sent to the admin. When the site is booked it will show on your homepage and you will receive a confirmation to your email address.");
+                $("#messageSuccessfulRequest span").html(data.message).parent().fadeIn();
+            },
+            error: function (data) {
+                var errorMessage = data.responseText || 'There was a problem while requesting this site'
+                bootbox.alert(errorMessage);
+            }
+        })
     }
 
     self.bookSite = function(){

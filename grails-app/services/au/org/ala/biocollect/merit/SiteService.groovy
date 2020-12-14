@@ -1,5 +1,6 @@
 package au.org.ala.biocollect.merit
 
+import au.org.ala.biocollect.EmailService
 import au.org.ala.biocollect.GeometryUtils
 import au.org.ala.biocollect.ProjectActivityService
 import com.vividsolutions.jts.geom.Geometry
@@ -23,6 +24,7 @@ class SiteService {
     ReportService reportService
     ProjectActivityService projectActivityService
     SiteService siteService
+    EmailService emailService
 
     def list() {
         webService.getJson(grailsApplication.config.ecodata.service.url + '/site/').list
@@ -625,6 +627,22 @@ class SiteService {
     def bookSites(body) {
         def response = webService.doPost(grailsApplication.config.ecodata.service.url + '/site/bookSites/', body)
         return response
+    }
+
+    def submitBookingRequest(params, body){
+        String userName = userService.getCurrentUserDisplayName()
+        List emailAddresses = body?.emailAddresses ?: grailsApplication.config.biocollect.support.email.address
+
+        def subject = "BioCollect update: Site booking requested for ${params?.projectName}"
+        def emailBody = "${userName} would like to book the site ${body?.siteName} for ${params?.projectName}. This site isn't currently booked by anyone else. <br>" + 
+            "You can view the site <a href='${grailsApplication.config.server.serverURL}${body?.viewSiteUrl}/${body?.siteId}'>here</a><br>" +
+            "You can confirm the booking <a href='${grailsApplication.config.server.serverURL}${body?.personEditUrl}/${params?.personId}?defaultTab=sites&siteName=${body?.siteName}'>here</a>"
+        if (body?.message){
+             emailBody += "<br>The user attached a message: ${body?.message}<br>"
+        }
+        emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
+        def result = [message: "Request to book ${body?.siteName} has been sent. You will get a notification from the admin if the booking was successfull and you will be able to access the site from your homepage"]
+        result
     }
 
     def getSitesForPerson(String id){

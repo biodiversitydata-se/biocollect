@@ -7,15 +7,15 @@
     <h4><g:message code="project.admin.siteBooking.clickOnMap"/></h4>
         <div class="control-group">
             <%-- This value will update the site object's field 'bookedBy'  --%>
-            <label class="control-label" for="siteName"><g:message code="project.admin.siteBooking.bookFor"/></label>
+            <label class="control-label"><g:message code="project.admin.siteBooking.bookFor"/></label>
             <div class="controls">
                 <input class="input-xlarge validate[required]" data-bind="value: bookedBy" placeholder="${message(code:'project.admin.siteBooking.placeholder')}" type="text"/>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="siteName"><g:message code="project.admin.siteBooking.siteName"/></label>
+            <label class="control-label"><g:message code="project.admin.siteBooking.siteName"/></label>
             <div class="controls">
-                <input class="input-xlarge" disabled id="siteName"/>
+                <input id="siteNameAdmin" class="input-xlarge" disabled />
                 <g:hiddenField name="siteId" id="siteId" data-bind="value: siteId"/>
             </div>
         </div>

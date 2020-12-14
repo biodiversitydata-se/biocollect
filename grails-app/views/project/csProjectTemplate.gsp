@@ -112,9 +112,10 @@
         getPersonsForProjectIdPaginatedUrl: "${createLink(controller: 'person', action: 'getPersonsForProjectIdPaginated')}",
         personCreateUrl: "${createLink(controller: 'person', action: 'create', params: [projectId: project.projectId])}",
         personViewUrl: "${createLink(controller: 'person', action: 'index', params: [projectId: project.projectId])}",
-        personEditUrl: "${createLink(controller: 'person', action: 'edit', params: [projectId: project.projectId])}",
+        personEditUrl: "${createLink(controller: 'person', action: 'edit')}",
         personSearchUrl: "${createLink(controller: 'person', action: 'searchPerson')}",
         viewSiteUrl: "${createLink(controller: 'site', action: 'index')}",
+        submitBookingRequestUrl: "${createLink(controller: 'site', action: 'submitBookingRequest', params: [projectName: project?.name, personId: params?.personId])}",
         absenceIconUrl:"${asset.assetPath(src: 'triangle.png')}",
         projectNotificationUrl: "${createLink(controller: 'project', action: 'sendEmailToMembers', params: [id: project.projectId])}",
         projectTestNotificationUrl: "${createLink(controller: 'project', action: 'sendTestEmail', params: [id: project.projectId])}",
@@ -230,7 +231,7 @@
         <g:if test="${!project.isExternal}">
             var pActivitiesVM = new ProjectActivitiesViewModel(params, projectViewModel);
              <g:if test="${project.isSystematicMonitoring}">
-                initialiseSiteBookingMap(pActivitiesVM);
+                initialiseSiteBookingRequest(pActivitiesVM);
             </g:if>
             <g:else>
                 initialiseProjectActivitiesList(pActivitiesVM);

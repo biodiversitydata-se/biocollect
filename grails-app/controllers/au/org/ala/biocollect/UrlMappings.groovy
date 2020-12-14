@@ -41,6 +41,7 @@ class UrlMappings {
                 "/person/getDataForPersonHomepage/$id"(controller: "person", action: "getDataForPersonHomepage")
                 "/person/addSiteOwnership/$id"(controller: "person"){action = [POST: "addSiteOwnership"]}
                 "/site/getSitesForPerson"(controller: "site", action: "getSitesForPerson")
+                "/site/submitBookingRequest"(controller: "site", action: "submitBookingRequest")
 
                 "/activity/getActivitiesForPersonByType"(controller: "activity", action: "getActivitiesForPersonByType")
                 "/activity/$entityId/comment"(controller: "comment"){

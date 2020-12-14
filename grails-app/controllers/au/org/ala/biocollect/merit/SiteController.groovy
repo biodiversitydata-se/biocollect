@@ -646,13 +646,13 @@ class SiteController {
         if (result.status == 'error') {
             render status: HttpStatus.SC_INTERNAL_SERVER_ERROR, text: "${result.message}"
         } else {
-            // if site is created
+            // if site is created send a notification to the addresses defined in survey alert configuration
             if (isCreateSiteRequest){
                 def subject = "BioCollect update: New site created for ${projectActivity.name}"
                 def emailBody = "${userName} has just created a new site. Check it and edit if necessary <a href='${grailsApplication.config.server.serverURL}${siteEditUrl}/${result.id}/?ownerId=${personId}'>here</a>"
                 emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
             } else {
-                // if site is updated
+                // if site is updated only add the id of the site to person's ownedSites, no emails
                 log.debug "assigning ownership of this site to person with person Id: " + postBody.site?.owner
                 personService.addSiteOwnership(postBody.site?.owner, id)
             }
@@ -666,6 +666,12 @@ class SiteController {
         def values = request.JSON
         def result = siteService.bookSites(values)
         render result as JSON 
+    }
+
+    def submitBookingRequest() {
+        def body = request.JSON
+        def result = siteService.submitBookingRequest(params, body);
+        render result as JSON
     }
 
     def checkSiteName(String id) {

@@ -54,6 +54,7 @@ function PersonViewModel(savedPerson, create, projectId) {
         personModel.extra(exists(person, "extra"));
         personModel.projects(exists(person, "projects"));
         personModel.bookedSites(exists(person, "bookedSites"));
+        personModel.sitesToBook(exists(person, "sitesToBook"));
     }
 
     if (!create){

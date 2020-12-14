@@ -77,7 +77,7 @@ class PersonController {
     // TODO - what access level should dictate this? 
     def edit(String id) {
         def person = personService.get(id)
-        render view: 'edit', model:[create:false, person: person?.person, activityCount: person?.activityCount, projectId: params.projectId, defaultTab: params.defaultTab]
+        render view: 'edit', model:[create:false, person: person?.person, activityCount: person?.activityCount, projectId: params?.projectId, defaultTab: params?.defaultTab, siteName: params?.siteName]
     }
 
     // TODO - what access level should dictate this? 

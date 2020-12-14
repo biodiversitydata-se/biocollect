@@ -9,16 +9,16 @@
     <asset:script type="text/javascript">
     var fcConfig = {
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
-        personSaveUrl: "${createLink(action: 'save', params:[projectId: params.projectId])}",
+        personSaveUrl: "${createLink(action: 'save', params:[projectId: params?.projectId])}",
         personUpdateUrl: "${createLink(action: 'update')}",
-        deletePersonUrl: "${createLink(action:'delete', params:[projectId: params.projectId])}",
+        deletePersonUrl: "${createLink(action:'delete', params:[projectId: params?.projectId])}",
         bookSiteUrl: "${createLink(controller: 'site', action:'bookSites')}",
         removeBookingUrl: "${createLink(controller: 'person', action:'removeBooking')}",
         viewSiteUrl: "${createLink(controller: 'site', action:'index')}",
         viewActivityUrl: "${createLink(controller: 'bioActivity', action: 'index')}",
         getSiteNamesUrl: "${createLink(controller: 'site', action:'getSiteNames', params: [siteIds: person?.bookedSites])}",
         getActivitiesForPersonByTypeUrl: "${createLink(controller: 'activity', action:'getActivitiesForPersonByType')}",
-        returnToProjectUrl: "${createLink(controller: 'project', action:'index', params:[id: params.projectId])}"
+        returnToProjectUrl: "${createLink(controller: 'project', action:'index', params:[id: params?.projectId])}"
         };
         here = window.location.href;
     </asset:script>
@@ -41,6 +41,8 @@
 
     if ("${defaultTab}" == 'surveys'){
         $('#surveys-tab').tab('show');
+    } else if ("${defaultTab}" == 'sites'){
+        $('#booking-tab').tab('show');
     } else {
         $('#personal-tab').tab('show');
     }
@@ -63,7 +65,8 @@
             birthDate: "${person?.birthDate}",
             extra: "${person?.extra}",
             projects: ${person?.projects ?: []},
-            bookedSites: ${person?.bookedSites ?: []}
+            bookedSites: ${person?.bookedSites ?: []},
+            sitesToBook: ["${siteName}"]
         }
 
         var personViewModel = new PersonViewModel(savedPersonDetails, ${create}, "${projectId}");
