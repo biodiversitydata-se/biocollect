@@ -411,6 +411,7 @@ var SiteBookingViewModel = function (pActivitiesVM, emailAddresses){
     self.bookedBy = ko.observable();
     self.message = ko.observable();
     self.isBooked = ko.observable();
+    self.siteName = ko.observable();
     self.emailAddresses = emailAddresses;
 
     // plot site extent points on a map showing whether site is booked or not
@@ -465,6 +466,7 @@ var SiteBookingViewModel = function (pActivitiesVM, emailAddresses){
                         // display name and fetch the id (hidden field) of selected site
                         var displaySiteDetails = function(){
                             self.selectedSiteId = site.siteId;
+                            self.siteName = site.name;
                             $("#siteNameAdmin").val(site.name);
                             $("#siteName").val(site.name);
 

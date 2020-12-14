@@ -7,7 +7,7 @@
         <div class="control-group">
             <label class="control-label" for="siteName"><g:message code="project.admin.siteBooking.siteName"/></label>
             <div class="controls">
-                <input class="input-xlarge" disabled id="siteName"/>
+                <input class="input-xlarge" disabled id="siteName" data-bind="value: siteName"/>
                 <g:hiddenField name="siteId" id="siteId" data-bind="value: siteId"/>
             </div>
         </div>
