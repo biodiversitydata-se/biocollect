@@ -1,6 +1,6 @@
 <div class="pill-pane">
 <div class="control-group">
-    <button class="btn btn-primary" data-bind="click: createPersonForProject"><g:message code="project.admin.members.addNew" /></button>
+    <button class="btn btn-primary" data-bind="click: createPersonForProject">${relatedProjectIds}<g:message code="project.admin.members.addNew" /></button>
 </div>
     <form class="form-horizontal input-append">
         <div class="well">
@@ -28,10 +28,10 @@
 $(document).ready(function () {
 
     var viewPerson = function (personId) {
-        document.location.href = fcConfig.personViewUrl + '&id=' + personId; 
+        document.location.href = fcConfig.personViewUrl + '/' + personId; 
     }
     var editPerson = function(personId) {
-        document.location.href = fcConfig.personEditUrl + '&id=' + personId; 
+        document.location.href = fcConfig.personEditUrl + '/' + personId; 
     }
     
     var tableSearchResults;
