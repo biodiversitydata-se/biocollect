@@ -14,7 +14,7 @@
         <div class="accordion-group">
             <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" href="#collapseZero">
-                    Se mina rutter/ rutor/ sektorer (personliga eller bokade)
+                    Se mina rutter/ rutor/ sektorer
                 </a>
             </div>
             <div id="collapseZero" class="accordion-body collapse">
@@ -65,24 +65,6 @@
                                 params: [projectId:'30634be4-7aac-4ffb-8e5f-5e100ed2a4ea', pActivityId:'3a024566-7a65-41c8-b740-aed47d42e8d4', personId: person?.personId, allowDetails: 'no'])}">
                             Slinga</a>
                         </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" href="#collapseThree">
-                Boka en rutt/ ruta/ sektor</a>
-            </div>
-            <div id="collapseThree" class="accordion-body collapse">
-                <div class="accordion-inner">
-                    <div class="control-group">
-                        <ul>
-                        <g:each in="${projects}">
-                            <a href="${createLink(controller: 'project', action: 'index', params: [id: it?.projectId, sitesTabDefault: true])}">${it?.name}</a>
-                            <br/>
-                        </g:each>
                         </ul>
                     </div>
                 </div>
