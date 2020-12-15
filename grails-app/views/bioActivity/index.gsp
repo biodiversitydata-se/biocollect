@@ -153,14 +153,16 @@
     </g:if>
 
     <g:if test="${!mobile}">
-        <div class="form-actions">
-            <g:if test="${hasEditRights}">
-                <a class="btn btn-primary btn-large" href="${createLink(controller: 'bioActivity', action: 'edit')}/${activity.activityId}"><span class="fa fa-edit"></span> Edit</a>
-            </g:if>
-            <g:if test="${userIsProjectMember}">
-                <a class="btn btn-primary  btn-large" href="${createLink(controller: 'bioActivity', action: 'create')}/${pActivity.projectActivityId}"><span class="fa fa-plus"></span> Add new record</a>
-            </g:if>
-        </div>
+        <g:if test="${!hubIsSft}">
+            <div class="form-actions">
+                <g:if test="${hasEditRights}">
+                    <a class="btn btn-primary btn-large" href="${createLink(controller: 'bioActivity', action: 'edit')}/${activity.activityId}"><span class="fa fa-edit"></span> Edit</a>
+                </g:if>
+                <g:if test="${userIsProjectMember}">
+                    <a class="btn btn-primary  btn-large" href="${createLink(controller: 'bioActivity', action: 'create')}/${pActivity.projectActivityId}"><span class="fa fa-plus"></span> Add new record</a>
+                </g:if>
+            </div>
+        </g:if>
     </g:if>
 </div>
 <!-- templates -->

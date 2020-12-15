@@ -53,6 +53,7 @@ class BioActivityController {
         def activity = null
         def pActivity = null
         String projectId = null
+        Boolean isCreateRecordRequest = !id
 
         id = id ?: ''
 
@@ -146,17 +147,19 @@ class BioActivityController {
 
         // START OF SYSTEMATIC MONITORING CHANGES 
         // TODO set a condition is survey settings whether a notification should be sent to admins
-        def project = projectService.get(projectId)
-        Boolean isSystematicMonitoring = projectService.isSystematicMonitoring(project)
-        if (isSystematicMonitoring){
-            def projectActivity = projectActivityService.get(pActivityId)
-            def emailAddresses = projectActivity.alert.emailAddresses ? projectActivity.alert.emailAddresses : grailsApplication.config.biocollect.support.email.address
-            String userName = userService.getCurrentUserDisplayName()
-            String bioActivityEditUrl = g.createLink(controller: 'bioActivity', action: 'edit')
-            String bioActivityId = result.resp.activityId
-            def subject = "BioCollect update: New survey created for ${projectActivity.name}"
-            def emailBody = "${userName} has just added a new survey. Check it and edit if necessary: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>here</a>"
-            emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
+        if (isCreateRecordRequest){
+            def project = projectService.get(projectId)
+            Boolean isSystematicMonitoring = projectService.isSystematicMonitoring(project)
+            if (isSystematicMonitoring){
+                def projectActivity = projectActivityService.get(pActivityId)
+                def emailAddresses = projectActivity.alert.emailAddresses ? projectActivity.alert.emailAddresses : grailsApplication.config.biocollect.support.email.address
+                String userName = userService.getCurrentUserDisplayName()
+                String bioActivityEditUrl = g.createLink(controller: 'bioActivity', action: 'edit')
+                String bioActivityId = result.resp.activityId
+                def subject = "BioCollect update: New survey added for ${projectActivity?.name}"
+                def emailBody = "${userName} has just added a new survey. Check it and edit if necessary: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>here</a>"
+                emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
+            } 
         }
         // END OF SYSTEMATIC MONITORING CHANGES 
         result.error = flash.message
@@ -403,7 +406,8 @@ class BioActivityController {
             return
         }
         def pActivity = projectActivityService.get(activity?.projectActivityId, "all", params?.version)
-
+        HubSettings hubSettings = SettingService.hubConfig
+        boolean hubIsSft = hubSettings.urlPath == "sft" ? true : false
         boolean embargoed = (activity.embargoed == true) || projectActivityService.isEmbargoed(pActivity)
         boolean userIsOwner = userId && activityService.isUserOwnerForActivity(userId, id)
         boolean userIsModerator = userId && projectService.canUserModerateProjects(userId, pActivity?.projectId)
@@ -423,6 +427,7 @@ class BioActivityController {
                 model.id = pActivity.projectActivityId
                 model.userIsProjectMember = userIsProjectMember
                 model.hasEditRights = userIsOwner || userIsModerator
+                model.hubIsSft = hubIsSft
                 model.returnTo = params.returnTo ? params.returnTo : g.createLink(controller: 'project', action: 'index', id: pActivity?.projectId)
                 params.mobile ? model.mobile = true : ''
 
