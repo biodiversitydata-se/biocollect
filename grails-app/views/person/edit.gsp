@@ -38,7 +38,6 @@
     </div>
 
 <asset:script type="text/javascript">
-
     if ("${defaultTab}" == 'surveys'){
         $('#surveys-tab').tab('show');
     } else if ("${defaultTab}" == 'sites'){
@@ -64,12 +63,11 @@
             gender: "${person?.gender}",
             birthDate: "${person?.birthDate}",
             extra: "${person?.extra}",
-            projects: ${person?.projects ?: []},
             bookedSites: ${person?.bookedSites ?: []},
             sitesToBook: ["${siteName}"]
         }
 
-        var personViewModel = new PersonViewModel(savedPersonDetails, ${create}, "${projectId}");
+        var personViewModel = new PersonViewModel(savedPersonDetails, ${create}, ${relatedProjectIds});
         return personViewModel;
     }
     $(function(){

@@ -71,7 +71,7 @@ class PersonController {
     @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def create(){
         log.debug "params " + params
-        render view: 'edit', model: [create:true, projectId: params.projectId]  
+        render view: 'edit', model: [create:true, relatedProjectIds: params?.relatedProjectIds]  
     }
 
     // TODO - what access level should dictate this? 

@@ -1,10 +1,4 @@
-    // TODO - this should contain projectId that will be saved in person.projects - 
-// projectId is available in personlistview - move this function there
-var createPersonForProject = function() {
-    window.location.href = fcConfig.personCreateUrl;
-};
-
-function PersonViewModel(savedPerson, create, projectId) {
+function PersonViewModel(savedPerson, create, hubProjectIds) {
     var self = this;
     self.person = ko.observable({
         personId : ko.observable(),
@@ -21,12 +15,11 @@ function PersonViewModel(savedPerson, create, projectId) {
         gender : ko.observable(),
         birthDate : ko.observable(),
         extra : ko.observable(),
-        projects : ko.observable(projectId),
         bookedSites: ko.observableArray(),
         sitesToBook: ko.observableArray()
     });
-    
 
+    self.person().projects = hubProjectIds;
     self.splitSitesToBook = function () {
         if (typeof self.person().sitesToBook() == 'string'){
             var array = self.person().sitesToBook().split(",");
@@ -52,7 +45,6 @@ function PersonViewModel(savedPerson, create, projectId) {
         personModel.gender(exists(person, "gender"));
         personModel.birthDate(exists(person, "birthDate"));
         personModel.extra(exists(person, "extra"));
-        personModel.projects(exists(person, "projects"));
         personModel.bookedSites(exists(person, "bookedSites"));
         personModel.sitesToBook(exists(person, "sitesToBook"));
     }
@@ -66,33 +58,32 @@ function PersonViewModel(savedPerson, create, projectId) {
         if ($('#personal-details-form').validationEngine('validate')) {
         var id = self.person().personId(),
          data = self.modelAsJSON(self.person());
-        
         if (create) {
             url = fcConfig.personSaveUrl; 
         } else {
             url = fcConfig.personUpdateUrl + '/' + id;
         }
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: data,
-                contentType: 'application/json',
-                success: function (data) {
-                    if(data.statusCode == 200){
-                        alert(data.resp.personName + " successfully saved");
-                        document.location.href = fcConfig.returnTo;
-                    }    
-                    else {
-                        alert("Person saved");
-                        document.location.href = fcConfig.returnTo;
-                    }              
-                },
-                error: function (data) {
-                    var errorMessage = data.resp.error|| 'There was a problem saving this person'
-                    alert(errorMessage);
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            contentType: 'application/json',
+            success: function (data) {
+                if(data.statusCode == 200){
+                    alert(data.resp.personName + " successfully saved");
                     document.location.href = fcConfig.returnTo;
                 }
-            });
+                else {
+                    alert("Person saved");
+                    document.location.href = fcConfig.returnTo;
+                }
+            },
+            error: function (data) {
+                var errorMessage = data.resp.error|| 'There was a problem saving this person'
+                alert(errorMessage);
+                document.location.href = fcConfig.returnTo;
+            }
+        });
     
         }
     }

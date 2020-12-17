@@ -1,6 +1,8 @@
 <div class="pill-pane">
 <div class="control-group">
-    <button class="btn btn-primary" data-bind="click: createPersonForProject">${relatedProjectIds}<g:message code="project.admin.members.addNew" /></button>
+    <a href="${createLink(controller:'person', action:'create', params:[relatedProjectIds: relatedProjectIds])}">
+        <button class="btn btn-primary"><g:message code="project.admin.members.addNew" /></button>
+    </a>
 </div>
     <form class="form-horizontal input-append">
         <div class="well">
