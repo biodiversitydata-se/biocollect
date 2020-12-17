@@ -18,7 +18,7 @@
         viewActivityUrl: "${createLink(controller: 'bioActivity', action: 'index')}",
         getSiteNamesUrl: "${createLink(controller: 'site', action:'getSiteNames', params: [siteIds: person?.bookedSites])}",
         getActivitiesForPersonByTypeUrl: "${createLink(controller: 'activity', action:'getActivitiesForPersonByType')}",
-        returnToProjectUrl: "${createLink(controller: 'project', action:'index', params:[id: params?.projectId])}"
+        returnTo: "${returnTo}"
         };
         here = window.location.href;
     </asset:script>
@@ -78,11 +78,11 @@
      }); 
 
      $("#cancel").click(function (){
-         document.location.href = fcConfig.returnToProjectUrl;
+         document.location.href = fcConfig.returnTo;
      });
     
     $('#goBack').on("click", function (){
-        document.location.href = fcConfig.returnToProjectUrl;
+        document.location.href = fcConfig.returnTo;
     })
 
 </asset:script>

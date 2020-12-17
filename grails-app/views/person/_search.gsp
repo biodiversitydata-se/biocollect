@@ -31,7 +31,7 @@ $(document).ready(function () {
         document.location.href = fcConfig.personViewUrl + '/' + personId; 
     }
     var editPerson = function(personId) {
-        document.location.href = fcConfig.personEditUrl + '/' + personId; 
+        document.location.href = fcConfig.personEditUrl + '/' + personId + '/?returnTo=' + fcConfig.returnTo; 
     }
     
     var tableSearchResults;

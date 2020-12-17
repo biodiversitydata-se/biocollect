@@ -61,7 +61,7 @@
                         <ul>
                             <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
                                 params: [projectId:'b7eee643-d5fe-465e-af38-36b217440bd2', pActivityId:'ccace44f-c37a-44de-a586-7880128046d3', personId: person?.personId, allowDetails: 'no'])}">
-                            Vinterrutt</a>
+                            Vinterrutt</a> (se <a href="https://www.fageltaxering.lu.se/inventera/metoder/nattrutter">metoden) </a>
                             </li>
                         </ul>
                     </div>
@@ -112,7 +112,7 @@
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" href="${createLink(action:'edit', id: person?.personId, params:[defaultTab:'contact'])}">
+                <a class="accordion-toggle" href="${createLink(action:'edit', id: person?.personId, params:[defaultTab:'contact'])}&returnTo=${createLink(controller:'person', action:'home')}">
                     Uppdatera min profil
                 </a>
             </div>

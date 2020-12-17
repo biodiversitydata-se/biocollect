@@ -80,17 +80,17 @@ function PersonViewModel(savedPerson, create, projectId) {
                 success: function (data) {
                     if(data.statusCode == 200){
                         alert(data.resp.personName + " successfully saved");
-                        document.location.href = fcConfig.homePageUrl;
+                        document.location.href = fcConfig.returnTo;
                     }    
                     else {
                         alert("Person saved");
-                        document.location.href = fcConfig.homePageUrl;
+                        document.location.href = fcConfig.returnTo;
                     }              
                 },
                 error: function (data) {
                     var errorMessage = data.resp.error|| 'There was a problem saving this person'
                     alert(errorMessage);
-                    document.location.href = fcConfig.returnToProjectUrl;
+                    document.location.href = fcConfig.returnTo;
                 }
             });
     
@@ -108,13 +108,13 @@ function PersonViewModel(savedPerson, create, projectId) {
                     success: function (data) {
                         console.log(data);
                         alert("Successfully deleted. Indexing is in process, search result will be updated in few minutes. Redirecting to search page...", "alert-success");
-                        window.location.href = fcConfig.returnToProjectUrl;
+                        window.location.href = fcConfig.returnTo;
                     },
                     error: function () {
                         console.log(data);
 
                         alert("Error deleting person")
-                        document.location.href = fcConfig.returnToProjectUrl;
+                        document.location.href = fcConfig.returnTo;
                     }
                 });
             }
