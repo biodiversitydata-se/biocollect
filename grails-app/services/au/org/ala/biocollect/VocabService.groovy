@@ -23,4 +23,14 @@ class VocabService {
       ]
       return model
   }
+
+  def getFacetsForSites () {
+    def facetsForSites = new JsonSlurper().parseText(getClass().getResourceAsStream("/data/SiteFacets.json").getText())
+  }
+
+  // def getTransectProperties () {
+  //   def transectProperties = [
+  //     new JsonSlurper().parseText(getClass().getResourceAsStream("/data/SiteProperties.json").getText())
+  //   ]
+  // }
 }

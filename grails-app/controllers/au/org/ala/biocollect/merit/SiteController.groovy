@@ -1,6 +1,7 @@
 package au.org.ala.biocollect.merit
 
 import au.org.ala.biocollect.EmailService
+import au.org.ala.biocollect.VocabService
 import au.org.ala.web.AuthService
 import grails.converters.JSON
 import org.apache.commons.lang.StringUtils
@@ -19,6 +20,7 @@ class SiteController {
     CommonService commonService
     EmailService emailService
     PersonService personService
+    VocabService vocabService
 
     static defaultAction = "index"
 
@@ -848,6 +850,8 @@ class SiteController {
     }
 
     def list() {
+        def facets = vocabService.getFacetsForSites()
+        render view: "list", model: [facets: facets]
     }
 
     def myFavourites() {

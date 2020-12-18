@@ -14,22 +14,14 @@
  * 
  * Created by Temi on 1/02/16.
  */
-var availableFacets = [
-    {name: 'siteProjectNameFacet', displayName: 'Project'},
-    {name: 'siteSurveyNameFacet', displayName: 'Survey'},
-    {name: 'photoType', displayName: 'Photo Type'},
-    {name: 'typeFacet', displayName: 'Type'},
-    {name: 'stateFacet', displayName: 'State / Territory'},
-    {name: 'lgaFacet', displayName: 'Local Government Area'},
-    {name: 'nrmFacet', displayName: 'Natural Resource Management'}
-];
 
 /**
  * view model for sites used to display gallery
  * @param params
  * @constructor
  */
-function SitesListViewModel(params) {
+function SitesListViewModel(params, facets) {
+    var availableFacets = facets.navTree.nodes;
     var self = this,
         config = $.extend({
             // can turn off initial load if set to false

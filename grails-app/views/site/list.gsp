@@ -115,8 +115,8 @@
     var SITES_TAB_AMPLIFY_VAR = 'site-list-result-tab'
     $(document).ready(function () {
         RestoreTab('siteListResultTab', 'list-tab')
-
-        var sites = new SitesListViewModel();
+        var facets = <fc:modelAsJavascript model="${facets}" />
+        var sites = new SitesListViewModel(params, facets);
         var params = {
             loadOnInit: false
         }
