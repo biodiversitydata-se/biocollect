@@ -1,10 +1,10 @@
 <div class="row-fluid">
     <div class="span12">
-        <h4>Filter results</h4>
+        <h4><g:message code="project.search.heading"/></h4>
         <div class="row-fluid">
             <div class="span12">
-                <button class="btn btn-small" data-bind="click: addRefineListToSelected"><i class="icon-filter">&nbsp;</i> Refine</button>
-                <button class="btn btn-small" data-bind="click: removeAllSelectedFacets" style=""><i class="icon-remove-sign">&nbsp;</i>Clear all</button>
+                <button class="btn btn-small" data-bind="click: addRefineListToSelected"><i class="icon-filter">&nbsp;</i> <g:message code="g.refine"/></button>
+                <button class="btn btn-small" data-bind="click: removeAllSelectedFacets" style=""><i class="icon-remove-sign">&nbsp;</i><g:message code="g.clearAll"/></button>
             </div>
         </div>
         <div data-bind="slideVisible: selectedFacets().length">

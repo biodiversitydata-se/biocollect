@@ -1,7 +1,7 @@
 {
     "navTree": {
       "nodes": [
-    {"name": "siteProjectNameFacet", "displayName": "Project"},
+    {"name": "siteProjectNameFacet", "displayName": "Projekt"},
     {"name": "siteSurveyNameFacet", "displayName": "Delprogram"},
     {"name": "typeFacet", "displayName": "Typ"},
     {"name": "stateFacet", "displayName": "LSK"},

@@ -24,6 +24,7 @@ class VocabService {
       return model
   }
 
+  // defines facets and their display names for the main sites view - all sites from a hub
   def getFacetsForSites () {
     def facetsForSites = new JsonSlurper().parseText(getClass().getResourceAsStream("/data/SiteFacets.json").getText())
   }

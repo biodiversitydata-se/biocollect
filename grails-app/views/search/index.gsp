@@ -10,13 +10,13 @@
 <html>
 <head>
     <meta name="layout" content="${hubConfig.skin}"/>
-    <title>Search Results | <g:message code="g.biocollect"/></title>
+    <title><g:message code="g.searchResult"/> | <g:message code="g.biocollect"/></title>
 </head>
 <body>
 <div id="wrapper" class="container-fluid">
     <div class="row-fluid">
         <div class="span12" id="header">
-            <h1 class="pull-left">Search Results</h1>
+            <h1 class="pull-left"><g:message code="g.searchResult"/></h1>
             <g:form controller="search" method="GET" class="hide form-horizontal pull-right" style="padding-top:5px;">
                 <div class="input-append">
                     <g:textField class="input-large" name="query" value="${params.query}"/>
@@ -56,14 +56,14 @@
         </div>
         <div id="content" class="row-fluid ">
             <div id="facetsCol" class="span3 well well-small">
-                <h2>Filter results</h2>
+                <h2><g:message code="project.search.heading"/></h2>
                 <g:set var="facets" value="${results.facets}"/>
                 <g:set var="max" value="${5}"/>
                 <g:set var="reqParams" value="sort,order,max,fq,query"/>
                 <g:set var="fqLink"><fc:formatParams params="${params}" requiredParams="${reqParams}"/></g:set>
                 <g:if test="${params.fq}">
                     <div class="currentFilters">
-                        <h4>Current filters</h4>
+                        <h4><g:message code="g.filters"/></h4>
                         <ul>
                         <%-- convert either Object and Object[] to a list, in case there are multiple params with same name --%>
                             <g:set var="fqList" value="${[params.fq].flatten().findAll { it != null }}"/>
