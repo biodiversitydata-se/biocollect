@@ -2,12 +2,10 @@
     "navTree": {
       "nodes": [
     {"name": "siteProjectNameFacet", "displayName": "Project"},
-    {"name": "siteSurveyNameFacet", "displayName": "Survey"},
-    {"name": "photoType", "displayName": "Photo Type"},
-    {"name": "typeFacet", "displayName": "Type"},
-    {"name": "stateFacet", "displayName": "State / Territory"},
-    {"name": "lgaFacet", "displayName": "Lån"},
-    {"name": "nrmFacet", "displayName": "Natural Resource Management"}
+    {"name": "siteSurveyNameFacet", "displayName": "Delprogram"},
+    {"name": "typeFacet", "displayName": "Typ"},
+    {"name": "stateFacet", "displayName": "LSK"},
+    {"name": "lgaFacet", "displayName": "LAN"}
         ]
     }
 }
