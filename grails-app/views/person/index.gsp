@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta name="layout" content="${hubConfig.skin}"/>
-    <title> ${person.firstName.encodeAsHTML() + ' ' + person.lastName}</title>
+    <title> ${person.firstName.encodeAsHTML() + ' ' + person.lastName.encodeAsHTML()}</title>
     <asset:script type="text/javascript">
     var fcConfig = {
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
@@ -37,37 +37,37 @@
                 <div class="col">
                     <div class="well span6">
                         <label><g:message code="person.personalInfo.id"/></label>
-                        <p>${person.personId}</p>
+                        <p>${person.personId.encodeAsHTML()}</p>
                         <label><g:message code="person.personalInfo.internalId"/></label>
-                        <p>${person.internalPersonId}</p>
+                        <p>${person.internalPersonId.encodeAsHTML()}</p>
                         <label><g:message code="person.personalInfo.first"/></label>
-                        <p>${person.firstName}</p>
+                        <p>${person.firstName.encodeAsHTML()}</p>
                         <label><g:message code="person.personalInfo.last"/></label>
-                        <p>${person.lastName}</p>
+                        <p>${person.lastName.encodeAsHTML()}</p>
                         <label><g:message code="person.personalInfo.email"/></label>
-                        <p>${person.email}</p>
+                        <p>${person.email.encodeAsHTML()}</p>
                         <label><g:message code="person.personalInfo.phone"/></label>
-                        <p>${person.phoneNum}</p>
+                        <p>${person.phoneNum.encodeAsHTML()}</p>
                         <label><g:message code="person.personalInfo.mobile"/></label>
-                        <p>${person.mobileNum}</p>
+                        <p>${person.mobileNum.encodeAsHTML()}</p>
                     </div>
                 </div>
                 <div class="span6">
                     <div class="well span12">
                         <label><g:message code="person.personalInfo.address"/> 1</label>
-                        <p>${person.address1}</p>
+                        <p>${person.address1.encodeAsHTML()}</p>
                         <label><g:message code="person.personalInfo.address"/> 2</label>
-                        <p>${person.address2}</p>
+                        <p>${person.address2.encodeAsHTML()}</p>
                         <label><g:message code="person.personalInfo.postcode"/></label>
-                        <p>${person.postCode}</p>
+                        <p>${person.postCode.encodeAsHTML()}</p>
                         <label><g:message code="person.personalInfo.town"/></label>
-                        <p>${person.town}</p>
+                        <p>${person.town.encodeAsHTML()}</p>
                         <label><g:message code="person.personalInfo.gender"/></label>
-                        <p>${person.gender}</p>
+                        <p>${person.gender.encodeAsHTML()}</p>
                         <label><g:message code="person.personalInfo.dob"/></label>
-                        <p>${person.birthDate}</p>
+                        <p>${person.birthDate.encodeAsHTML()}</p>
                         <label><g:message code="person.personalInfo.extra"/></label>
-                        <p>${person.extra}</p>
+                        <p>${person.extra.encodeAsHTML()}</p>
                     </div>
                 </div>
             </div>

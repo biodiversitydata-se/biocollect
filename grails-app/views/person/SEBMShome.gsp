@@ -8,7 +8,7 @@
 <body>
 
 <g:if test="${personStatus == 'ok'}">
-<h2>Välkommen ${person.firstName + ' ' + person.lastName}!</h2>
+<h2>Välkommen ${person.firstName.encodeAsHTML() + ' ' + person.lastName.encodeAsHTML()}!</h2>
     <h3>Vad vill du göra?</h3>
     <div class="accordion" id="homePageConfiguration">
         <div class="accordion-group">
@@ -23,7 +23,7 @@
                             ${siteStatus}
                             <ul>
                             <g:each in="${sites}">
-                                <li><a href="${createLink(controller: 'site', action:'index', id: it?.siteId)}">${it?.name}</a></li>
+                                <li><a href="${createLink(controller: 'site', action:'index', id: it?.siteId)}">${it?.name.encodeAsHTML()}</a></li>
                             </g:each>
                             </ul>
                         </div>
@@ -80,7 +80,7 @@
                     <div class="control-group">
                         <ul>
                         <g:each in="${projects}">
-                            <a href="${createLink(controller: 'project', action: 'index', id: it?.projectId)}">${it?.name}</a>
+                            <a href="${createLink(controller: 'project', action: 'index', id: it?.projectId)}">${it?.name.encodeAsHTML()}</a>
                             <br/>
                         </g:each>
                         </ul>

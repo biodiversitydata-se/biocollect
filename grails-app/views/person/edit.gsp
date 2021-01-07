@@ -3,8 +3,7 @@
 <html>
 <head>
   <meta name="layout" content="${hubConfig.skin}"/>
-    <title> ${create ? 'New' : ('Edit | ' + person?.firstName + ' ' + person?.lastName)}</title>
-    <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},${message(code: "g.home")}"/>
+    <title> ${create ? 'New' : ('Edit | ' + person?.firstName.encodeAsHTML() + ' ' + person?.lastName.encodeAsHTML())}</title>
 
     <asset:script type="text/javascript">
     var fcConfig = {

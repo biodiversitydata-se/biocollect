@@ -8,7 +8,7 @@
 <body>
 
 <g:if test="${personStatus == 'ok'}">
-<h2>Välkommen ${person.firstName + ' ' + person.lastName}!</h2>
+<h2>Välkommen ${person?.firstName.encodeAsHTML() + ' ' + person?.lastName.encodeAsHTML()}!</h2>
     <h3>Vad vill du göra?</h3>
     <div class="accordion" id="homePageConfiguration">
         <div class="accordion-group">
@@ -23,7 +23,7 @@
                             ${siteStatus}
                             <ul>
                             <g:each in="${sites}">
-                                <li><a href="${createLink(controller: 'site', action:'index', id: it?.siteId)}">${it?.name}</a></li>
+                                <li><a href="${createLink(controller: 'site', action:'index', id: it?.siteId)}">${it?.name.encodeAsHTML()}</a></li>
                             </g:each>
                             </ul>
                         </div>
@@ -61,7 +61,7 @@
                         <ul>
                             <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
                                 params: [projectId:'b7eee643-d5fe-465e-af38-36b217440bd2', pActivityId:'ccace44f-c37a-44de-a586-7880128046d3', personId: person?.personId, allowDetails: 'no'])}">
-                            Vinterrutt</a> (se <a href="https://www.fageltaxering.lu.se/inventera/metoder/nattrutter">metoden) </a>
+                            Vinterrutt</a> (se <a href="https://www.fageltaxering.lu.se/inventera/metoder/nattrutter">metoder</a>) 
                             </li>
                         </ul>
                     </div>
@@ -95,7 +95,7 @@
                     <div class="control-group">
                         <ul>
                         <g:each in="${projects}">
-                            <a href="${createLink(controller: 'project', action: 'index', id: it?.projectId, params: [personId: person.personId])}">${it?.name}</a>
+                            <a href="${createLink(controller: 'project', action: 'index', id: it?.projectId, params: [personId: person.personId])}">${it?.name.encodeAsHTML()}</a>
                             <br/>
                         </g:each>
                         </ul>
