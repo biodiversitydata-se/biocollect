@@ -249,7 +249,7 @@
                                 <a class="brand text-left" href="http://ala.org.au/" id="alaLink" title="ALA home page">
                                     <img src="${asset.assetPath(src:'mdba/ALA-logo-BW-124x109.png')}" alt="Powered by ALA logo"
                                          class="headerLogo"/>
-                                    <div id="alaHeadingText"><div id="poweredBy">powered by</div>
+                                    <div id="alaHeadingText"><div id="poweredBy"><g:message code='footer.poweredBy'/></div>
                                         <div id="alaBy" class="visible-desktop">Atlas of Living Australia</div>
                                         <div class="hidden-desktop">ALA</div>
                                     </div>
