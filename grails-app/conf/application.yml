@@ -126,8 +126,6 @@ collectory:
 
 ecodata:
   baseURL: "https://canmove-dev.ekol.lu.se:8080/"
-  service:
-   url: "${ecodata.baseURL}/ws"
 
 
 google:
@@ -138,12 +136,7 @@ google:
   geocode:
     url: "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&latlng="
 
-#    geocode:
-#      url: "https://maps.googleapis.com/maps/api/geocode/json?"
-
-
 headerAndFooter:
-  # baseURL: "https://www.ala.org.au/commonui-bs2" #"https://www.ala.org.au/commonui-bs2-v2/commonui-bs2"
   baseURL: "https://beta.bioatlas.se/static/bs3"
 images:
   baseURL: "https://images.bioatlas.se"
@@ -151,15 +144,6 @@ images:
 lists:
   baseURL: "https://lists.bioatlas.se" 
   commonFields: ['rawScientificName', 'matchedName', 'commonName']
-
-# mdba:
-#   baseUrl: "http://mdba-test.ala.org.au"
-#   searchUrl: "/occurrences/search?fq=data_hub_uid:dh10#tab_mapView"
-
-# mobile:
-#   auth:
-#     check:
-#       url:  "https://m.ala.org.au/mobileauth/mobileKey/checkKey"
 
 
 pdfgen:
@@ -181,16 +165,6 @@ speciesConfiguration:
 
 spatial:
    baseURL: "https://spatial.bioatlas.se/"
-   layersUrl: "https://spatial.bioatlas.se/ws"
-   geoserverUrl: "https://spatial.bioatlas.se/geoserver"
-   wms:
-    # url: "${spatial.baseURL}/geoserver/ALA/wms?"
-    url: "https://spatial.bioatlas.se/geoserver/ALA/wms?"
-    cache:
-        url: "https://spatial.bioatlas.se/geoserver/gwc/service/wms?"
-
-
-
 
 upload:
    images:
