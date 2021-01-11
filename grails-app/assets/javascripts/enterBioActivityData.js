@@ -13,6 +13,7 @@ function validateDateField(dateField) {
 function Master(activityId, config) {
 
     var self = this;
+    self.validationStatus = ko.observable();
     self.subscribers = [];
 
     // client models register their name and methods to participate in saving
@@ -82,8 +83,7 @@ function Master(activityId, config) {
             activityData = {};
         }
         activityData.outputs = outputs;
-        activityData.personId = config.personId
-        activityData.validationStatus = config.validationStatus
+        activityData.personId = config.personId;
         return activityData;
     };
 
@@ -234,6 +234,8 @@ function Master(activityId, config) {
 function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, config) {
     var self = this;
     self.activityId = act.activityId;
+    self.validationStatus = ko.observable(act.validationStatus || 0);
+    self.validationStatusOptions = [0, 1, 2];
     self.notes = ko.observable(act.notes);
     self.eventPurpose = ko.observable(act.eventPurpose);
     self.fieldNotes = ko.observable(act.fieldNotes);
@@ -275,7 +277,6 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
                     activityLevelData.siteMap.setGeoJSON(geoJson);
                 }
             } else {
-                console.log("via biocollect")
                 var transect = {"type": "FeatureCollection", "features": []}
                 for (var n = 0; n < transectParts.length; n++){
                     var feature = {"type": "Feature", "geometry": transectParts[n].geometry, "properties": {"popupContent": transectParts[n].name}}; 
@@ -313,7 +314,7 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
 
     self.modelForSaving = function () {
         // get model as a plain javascript object
-        var jsData = ko.mapping.toJS(self, {'ignore':['transients']});
+        var jsData = ko.mapping.toJS(self, {'ignore':['transients', 'validationStatusOptions']});
         if (metaModel.supportsPhotoPoints) {
             jsData.photoPoints = self.transients.photoPointModel().modelForSaving();
         }

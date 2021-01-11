@@ -55,8 +55,7 @@
         returnTo: "${returnTo}",
         returnToMobile: "${createLink(controller: 'mobile', action: 'status')}#successfully-posted",
         excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
-        mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
-        validationStatus: 1
+        mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON}
         },
         here = document.location.href;
     </asset:script>
