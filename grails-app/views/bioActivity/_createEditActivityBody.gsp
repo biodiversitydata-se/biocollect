@@ -16,6 +16,9 @@
                 %{--quick links END--}%
             </div>
         </g:if>
+<g:if test="${isUserAdmin}">
+    <fc:select data-bind="options:validationStatusOptions, value: validationStatus"/>
+</g:if>
 <!-- start model binding -->
 <!-- ko stopBinding: true -->
 <g:set var="user" value="${user}"/>
