@@ -16,8 +16,9 @@
                 %{--quick links END--}%
             </div>
         </g:if>
-<g:if test="${isUserAdmin}">
-    <fc:select data-bind="options:validationStatusOptions, value: validationStatus"/>
+<g:if test="${isUserAdmin && pActivity?.dataQualityAssuranceMethods.contains('adminverification')}">
+    <label><g:message code="record.edit.verificationLabel"/></label>
+    <fc:select data-bind="options:verificationStatusOptions, value: verificationStatus"/>
 </g:if>
 <!-- start model binding -->
 <!-- ko stopBinding: true -->

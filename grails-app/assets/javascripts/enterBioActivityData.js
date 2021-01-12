@@ -12,7 +12,7 @@ function validateDateField(dateField) {
 /* Master controller for page. This handles saving each model as required. */
 function Master(activityId, config) {
     var self = this;
-    self.validationStatus = ko.observable();
+    self.verificationStatus = ko.observable();
     self.subscribers = [];
 
     // client models register their name and methods to participate in saving
@@ -232,8 +232,8 @@ function Master(activityId, config) {
 function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, config) {
     var self = this;
     self.activityId = act.activityId;
-    self.validationStatus = ko.observable(act.validationStatus || 0);
-    self.validationStatusOptions = [0, 1, 2];
+    self.verificationStatus = ko.observable(act.verificationStatus || 0);
+    self.verificationStatusOptions = [0, 1, 2];
     self.notes = ko.observable(act.notes);
     self.eventPurpose = ko.observable(act.eventPurpose);
     self.fieldNotes = ko.observable(act.fieldNotes);
@@ -302,7 +302,7 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
 
     self.modelForSaving = function () {
         // get model as a plain javascript object
-        var jsData = ko.mapping.toJS(self, {'ignore':['transients', 'validationStatusOptions']});
+        var jsData = ko.mapping.toJS(self, {'ignore':['transients', 'verificationStatusOptions']});
         if (metaModel.supportsPhotoPoints) {
             jsData.photoPoints = self.transients.photoPointModel().modelForSaving();
         }

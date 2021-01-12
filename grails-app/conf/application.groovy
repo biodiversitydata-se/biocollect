@@ -17,6 +17,7 @@ dataQualityAssuranceMethods = [
         "recordannotation",
         "systemsupported",
         "nodqmethodsused",
+        "adminverification",
         "na"
     ]
 
