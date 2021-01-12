@@ -16,8 +16,9 @@
                 %{--quick links END--}%
             </div>
         </g:if>
-<g:if test="${isUserAdmin}">
-    <fc:select data-bind="options:validationStatusOptions, value: validationStatus"/>
+<g:if test="${isUserAdmin && pActivity?.dataQualityAssuranceMethods.contains('adminverification')}">
+    <label><g:message code="record.edit.verificationLabel"/></label>
+    <fc:select data-bind="options:verificationStatusOptions, value: verificationStatus"/>
 </g:if>
 <!-- start model binding -->
 <!-- ko stopBinding: true -->
@@ -78,11 +79,11 @@
         <g:render template="/shared/termsOfUse"/>
         <br>
         <g:if test="${!preview}">
-            <button type="button" id="save" class="btn btn-primary btn-large"><g:message code='g.submit'/></button>
+            <button type="button" id="save" class="btn btn-primary btn-large">Submit</button>
         </g:if>
         <g:if test="${showCreate && !mobile}">
             <g:if test="${!preview}">
-                <button type="button" id="cancel" class="btn btn-large"><g:message code='g.cancel'/></button>
+                <button type="button" id="cancel" class="btn btn-large">Cancel</button>
             </g:if>
         </g:if>
     </div>
