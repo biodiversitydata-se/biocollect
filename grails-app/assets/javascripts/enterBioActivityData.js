@@ -278,10 +278,15 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
                 }
             } else {
                 var transect = {"type": "FeatureCollection", "features": []}
-                for (var n = 0; n < transectParts.length; n++){
-                    var feature = {"type": "Feature", "geometry": transectParts[n].geometry, "properties": {"popupContent": transectParts[n].name}}; 
-                    transect.features[n] = feature;
-                }
+                transectParts.forEach(function(part){
+                    transect.features.push({
+                        "type": "Feature", 
+                        "geometry": part.geometry, 
+                        "properties": {
+                            "popupContent": part.name
+                        }
+                        })
+                });
                 var layerOptions = {"singleDraw": true, "markerOrShapeNotBoth": false}
                 activityLevelData.siteMap.setTransectFromGeoJSON(JSON.stringify(transect), layerOptions, true);
             }
