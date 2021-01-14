@@ -428,6 +428,7 @@ function FacetViewModel(facet) {
     });
     self.type = facet.type;
     self.styleName;
+    self.adminOnly = ko.observable(facet.adminOnly || false);
 
     if(facet.ref.isFacetSelected(self)){
         state = 'Expanded'
