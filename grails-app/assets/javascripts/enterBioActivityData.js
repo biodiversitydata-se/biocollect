@@ -12,7 +12,6 @@ function validateDateField(dateField) {
 /* Master controller for page. This handles saving each model as required. */
 function Master(activityId, config) {
     var self = this;
-    self.verificationStatus = ko.observable();
     self.subscribers = [];
 
     // client models register their name and methods to participate in saving
@@ -232,8 +231,6 @@ function Master(activityId, config) {
 function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, config) {
     var self = this;
     self.activityId = act.activityId;
-    self.verificationStatus = ko.observable(act.verificationStatus || 0);
-    self.verificationStatusOptions = [0, 1, 2];
     self.notes = ko.observable(act.notes);
     self.eventPurpose = ko.observable(act.eventPurpose);
     self.fieldNotes = ko.observable(act.fieldNotes);
@@ -241,6 +238,13 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     self.mainTheme = ko.observable(act.mainTheme);
     self.type = ko.observable(act.type);
     self.projectId = act.projectId;
+
+    // check if project activity requires manual verification by admin 
+    // if so, display a dropdown for verification stages: 1- not verified, 2 - partly, 3 - verified
+    var verificationStatus = pActivity.adminVerification ? 1 : 0;
+    self.verificationStatus = ko.observable(act.verificationStatus || verificationStatus);
+    self.verificationStatusOptions = [1, 2, 3];
+
     self.transients = {};
     self.transients.pActivity = new pActivityInfo(pActivity);
     self.transients.pActivitySites = pActivity.sites;

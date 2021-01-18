@@ -73,6 +73,10 @@
                 %{--page title--}%
                 <div class="span4">
                     <h2><g:message code="record.view.title"></g:message></h2>
+                    <g:if test="${pActivity?.adminVerification}">
+                        <h4><g:message code="record.view.verificationStatus"></g:message>: 
+                        <g:message code="facets.verified.${activity.verificationStatus}"/></h4>
+                    </g:if>
                 </div>
                 %{-- quick links --}%
                 <div class="span8">

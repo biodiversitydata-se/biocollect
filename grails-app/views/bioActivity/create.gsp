@@ -50,7 +50,8 @@
         getGuidForOutputSpeciesUrl : "${createLink(controller: 'record', action: 'getGuidForOutputSpeciesIdentifier')}",
         mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
         excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
-        uploadImagesUrl: "${createLink(controller: 'image', action: 'upload')}"
+        uploadImagesUrl: "${createLink(controller: 'image', action: 'upload')}",
+        adminVerification: ${pActivity?.adminVerification || false}
         },
         here = document.location.href;
     </asset:script>
