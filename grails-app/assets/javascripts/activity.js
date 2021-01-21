@@ -1648,7 +1648,6 @@ var ActivitiesAndRecordsViewModel = function (placeHolder, view, user, ignoreMap
 };
 
 var ActivityRecordViewModel = function (activity) {
-    console.log("ActivityRecordViewModel init")
     var self = this;
     if (!activity) activity = {};
 
@@ -1673,7 +1672,6 @@ var ActivityRecordViewModel = function (activity) {
     self.isWorksProject = ko.pureComputed(function () {
         return self.projectType() === "works"
     });
-    console.log("Activity model" + JSON.stringify(self));
     self.projectUrl = ko.pureComputed(function () {
         return fcConfig.projectIndexUrl + '/' + self.projectId() +
             (fcConfig.version !== undefined ? "?version=" + fcConfig.version : '');
