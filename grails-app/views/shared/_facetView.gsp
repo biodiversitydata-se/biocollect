@@ -1,10 +1,10 @@
 <g:set var="modalName" value="${modalId?:'chooseMore'}"></g:set>
 <div class="row-fluid">
     <div class="span12">
-    <g:set var="userIsAlaOrFcAdmin" value="${userIsAlaOrFcAdmin}"></g:set>
+    <g:set var="userIsProjectAdmin" value="${userIsProjectAdmin}"></g:set>
         <!-- ko foreach: facets -->
             <!-- ko if: $data instanceof FacetViewModel -->
-                <!-- ko if: !adminOnly() || ${userIsAlaOrFcAdmin} -->
+                <!-- ko if: !adminOnly() || ${userIsProjectAdmin} -->
                     <div class="row-fluid" data-bind="visible: showTermPanel">
                         <button data-bind="click: toggleState" class="btn btn-block btn-text-left">
                             &nbsp;
