@@ -320,6 +320,7 @@ class SearchService {
             facet.ranges = item.ranges
             facet.entries = item.entries
             facet.type = item._type
+            facet.adminOnly = item?.adminOnly || false
 
             facet
         }

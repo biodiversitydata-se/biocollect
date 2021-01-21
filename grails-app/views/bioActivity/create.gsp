@@ -52,7 +52,7 @@
         excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
         uploadImagesUrl: "${createLink(controller: 'image', action: 'upload')}",
         personId: "${activity.personId}",
-        validationStatus: 0
+        adminVerification: ${pActivity?.adminVerification || false}
         },
         here = document.location.href;
     </asset:script>

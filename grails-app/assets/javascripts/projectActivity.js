@@ -50,6 +50,7 @@ var ProjectActivity = function (params) {
     self.speciesIdentification = ko.observable(pActivity.speciesIdentification || "");
     self.temporalAccuracy = ko.observable(pActivity.temporalAccuracy || "");
     self.nonTaxonomicAccuracy = ko.observable(pActivity.nonTaxonomicAccuracy || "");
+    self.adminVerification = ko.observable(pActivity.adminVerification || false);
     self.dataQualityAssuranceMethods = ko.observableArray(pActivity.dataQualityAssuranceMethods || []);
     self.dataAccessMethods = ko.observableArray(pActivity.dataAccessMethods || []);
     self.dataAccessExternalURL = ko.observable(pActivity.dataAccessExternalURL || "");

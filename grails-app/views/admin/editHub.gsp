@@ -1309,6 +1309,7 @@
         <th>Display interval</th>
         <th>Display name</th>
         <th>Help text</th>
+        <th>Admin only</th>
         <th>Action</th>
     </tr>
     </thead>
@@ -1342,6 +1343,9 @@
         </td>
         <td>
             <textarea data-bind="value:helpText" placeholder="Add custom help text"></textarea>
+        </td>
+        <td>
+            <input type="checkbox" data-bind="checked: adminOnly" placeholder="Add restrictions on displaying this facet"/>
         </td>
         <td>
             <button class="btn btn-small btn-danger" data-bind="click: $parent.remove"><i class="icon-remove icon-white"></i> Remove</button>

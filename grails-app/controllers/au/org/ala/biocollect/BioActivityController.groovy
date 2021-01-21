@@ -462,10 +462,12 @@ class BioActivityController {
      * @return
      */
     def allRecords() {
+        Boolean userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
         render(view: 'list',
                 model: [
                         view: 'allrecords',
                         title: messageSource.getMessage('allrecords.title', [].toArray(), '', locale),
+                        userIsAlaOrFcAdmin: userIsAlaOrFcAdmin,
                         returnTo: g.createLink(controller: 'bioActivity', action: 'allRecords')
                 ]
         )

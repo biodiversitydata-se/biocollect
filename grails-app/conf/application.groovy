@@ -162,6 +162,11 @@ datapage.allColumns = datapage.defaultColumns + [
                 type: "property",
                 propertyName: "activityOwnerNameFacet",
                 displayName: "Owner"
+        ],
+        [
+                type: "property",
+                propertyName: "verificationStatusFacet",
+                displayName: "Verification status"
         ]
 ]
 
@@ -184,7 +189,8 @@ activitypropertypath = [
         associatedSubProgramFacet: ['projectActivity', 'associatedSubProgram'],
         spatialAccuracy: ['projectActivity', 'spatialAccuracy'],
         methodType: ['projectActivity', 'methodType'],
-        activityOwnerNameFacet: ['projectActivity', 'activityOwnerName']
+        activityOwnerNameFacet: ['projectActivity', 'activityOwnerName'],
+        verificationStatusFacet: ['verificationStatus']
 ]
 
 
