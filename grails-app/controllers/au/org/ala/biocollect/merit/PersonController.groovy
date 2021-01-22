@@ -70,7 +70,6 @@ class PersonController {
     
     @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def create(){
-        log.debug "params " + params
         render view: 'edit', model: [create:true, relatedProjectIds: params?.relatedProjectIds]  
     }
 
@@ -82,10 +81,8 @@ class PersonController {
 
     // TODO - what access level should dictate this? 
     def update(String id){
-        log.debug "updating person ${id}"
         def values = request.JSON
         // TODO check if user is admin
-        log.debug "values to send: " + values
         def resp = personService.update(id, values)  
         if (resp.error) {
             resp.status = 500
@@ -126,7 +123,6 @@ class PersonController {
     def searchPerson(){
         def searchTerm = params.searchTerm
         def result = personService.searchPerson(searchTerm)
-        log.debug "result" + result                                                                                                                                                                                                                                                                                                                 
         render result as JSON
     }
 
