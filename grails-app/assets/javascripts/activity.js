@@ -1,6 +1,6 @@
 //= require snap-svg-0.5.1/snap.svg.js
 //= require self
-var ActivitiesAndRecordsViewModel = function (placeHolder, view, user, ignoreMap, doNotInit, doNotStoreFacetFiltering, columnConfig) {
+var ActivitiesAndRecordsViewModel = function (placeHolder, view, user, ignoreMap, doNotInit, doNotStoreFacetFiltering, columnConfig, generalView=false) {
     var self = this;
 
     var features, featureType = 'record', alaMap, results,
@@ -291,6 +291,10 @@ var ActivitiesAndRecordsViewModel = function (placeHolder, view, user, ignoreMap
 
         activities = $.map(activities ? activities : [], function (activity, index) {
             activity.parent = self;
+            // there has to be a condition here when to use which model
+            if (generalView){
+                return new ActivityViewModel(activity);
+            } 
             return new ActivityRecordViewModel(activity);
         });
         self.activities(activities);
@@ -1648,7 +1652,6 @@ var ActivitiesAndRecordsViewModel = function (placeHolder, view, user, ignoreMap
 };
 
 var ActivityRecordViewModel = function (activity) {
-    console.log("ActivityRecordViewModel init")
     var self = this;
     if (!activity) activity = {};
 
@@ -1673,7 +1676,6 @@ var ActivityRecordViewModel = function (activity) {
     self.isWorksProject = ko.pureComputed(function () {
         return self.projectType() === "works"
     });
-    console.log("Activity model" + JSON.stringify(self));
     self.projectUrl = ko.pureComputed(function () {
         return fcConfig.projectIndexUrl + '/' + self.projectId() +
             (fcConfig.version !== undefined ? "?version=" + fcConfig.version : '');
@@ -1781,3 +1783,103 @@ function generateTermId(term) {
         return term.facetName.replace(/[^a-zA-Z0-9]/g, "") + term.term.replace(/[^a-zA-Z0-9]/g, "")
     }
 }
+
+var ActivityViewModel = function (activity) {
+    var self = this;
+    if (!activity) activity = {};
+    self.rawData = activity;
+    self.siteName = activity.siteNameFacet;
+    self.activityId = ko.observable(activity.activityId);
+    self.showCrud = ko.observable(activity.showCrud);
+    self.userCanModerate = activity.userCanModerate;
+    self.projectActivityId = ko.observable(activity.projectActivityId);
+    self.name = ko.observable(activity.name);
+    self.type = ko.observable(activity.type);
+    self.lastUpdated = ko.observable(activity.lastUpdated).extend({simpleDate: true});
+    self.dateCreated = ko.observable(activity.dateCreated).extend({simpleDate: true});
+    self.ownerName = ko.observable(activity.activityOwnerName);
+    self.userId = ko.observable(activity.userId);
+    self.personId = ko.observable(activity.personId);
+    self.siteId = ko.observable(activity.siteId);
+    self.verificationStatus = ko.observable(activity.verificationStatus);
+    self.embargoed = ko.observable(activity.embargoed);
+    self.embargoUntil = ko.observable(activity.embargoUntil).extend({simpleDate: false});
+    self.projectName = ko.observable(activity.projectName);
+    self.projectId = ko.observable(activity.projectId);
+    self.projectType = ko.observable(activity.projectType);
+    self.isWorksProject = ko.pureComputed(function () {
+        return self.projectType() === "works"
+    });
+    self.projectUrl = ko.pureComputed(function () {
+        return fcConfig.projectIndexUrl + '/' + self.projectId() +
+            (fcConfig.version !== undefined ? "?version=" + fcConfig.version : '');
+    });
+
+    self.delete = function () {
+
+        bootbox.confirm("Are you sure you want to delete the activity?", function (result) {
+            if (result) {
+                var url = fcConfig.activityDeleteUrl + "/" + self.activityId();
+                // Don't allow another save to be initiated.
+                blockUIWithMessage("Deleting...");
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        if (data.text == 'deleted') {
+                            blockUIWithMessage("Successfully deleted, after indexing activity will be removed. <br>Reloading the page...");
+                        } else {
+                            blockUIWithMessage("Error deleting the activity, please try again later.");
+                        }
+                    },
+                    error: function (data) {
+                        if (data.status == 401) {
+                            var message = $.parseJSON(data.responseText);
+                            blockUIWithMessage(message.error);
+                        } else if (data.status == 404) {
+                            blockUIWithMessage("Activity not available. Indexing might be in process, reloading the page...");
+                        } else {
+                            blockUIWithMessage('An unhandled error occurred, please try again later.');
+                        }
+                    },
+                    complete: function() {
+                        setTimeout(function () {
+                            //$.unblockUI(); Don't unblock this, let the reload do the work.
+                            location.reload();
+                        }, 2500);
+                    }
+                });
+            }
+        });
+    };
+    self.transients = {};
+    self.transients.viewUrl = ko.observable((self.isWorksProject() ? fcConfig.worksActivityViewUrl : fcConfig.activityViewUrl) + "/" + self.activityId()).extend({returnTo: fcConfig.returnTo, dataVersion: fcConfig.version});
+    self.transients.editUrl = ko.observable((self.isWorksProject() ? fcConfig.worksActivityEditUrl : fcConfig.activityEditUrl) + "/" + self.activityId()).extend({returnTo: fcConfig.returnTo});
+    self.transients.addUrl = ko.observable(fcConfig.activityAddUrl + "/" + self.projectActivityId()).extend({returnTo: fcConfig.returnTo});
+    self.transients.parent = activity.parent;
+    self.transients.thumbnailUrl = ko.observable(activity.thumbnailUrl ||  fcConfig.imageLocation + "no-image-2.png");
+    self.transients.imageTitle = ko.observable(activity.thumbnailUrl? '' : 'No image' );
+    self.transients.readOnly = ko.observable((fcConfig.version || '' ).length > 0);
+    self.siteUrl = fcConfig.siteViewUrl + '/' + self.siteId();
+    var projectActivityOpen = true;
+    if (activity.endDate) {
+        projectActivityOpen = moment(activity.endDate).isAfter(moment());
+    }
+}
+
+
+ActivityViewModel.prototype.getPropertyValue = RecordVM.prototype.getPropertyValue = function (config) {
+    var property = this['rawData'][config.propertyName];
+    if(!property && this['parent']){
+        property = this['parent']['rawData'][config.propertyName];
+    }
+
+    property = ko.unwrap(property);
+
+    if (config.dataType == 'date' && ( property instanceof Array)) {
+       return property[0]
+    } else {
+        return property
+    }
+};

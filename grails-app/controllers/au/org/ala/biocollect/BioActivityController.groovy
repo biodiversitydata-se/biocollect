@@ -693,6 +693,7 @@ class BioActivityController {
                     type             : doc.type,
                     status           : doc.status,
                     lastUpdated      : doc.lastUpdated,
+                    dateCreated      : doc.dateCreated,
                     userId           : doc.userId,
                     siteId           : doc.siteId,
                     name             : doc.projectActivity?.name,
