@@ -94,7 +94,7 @@
             }
             this.map = new google.maps.Map(document.getElementById(this.containerId), {
                 zoom: 3,
-                center: new google.maps.LatLng(-28.5, 133.5),
+                center: new google.maps.LatLng(57.13, 15.99),
                 panControl: false,
                 streetViewControl: false,
                 mapTypeControl: true,

@@ -82,6 +82,12 @@ datapage.allColumns = datapage.defaultColumns + [
         ,
         [
                 type: "property",
+                propertyName: "surveyDate",
+                displayName: "Survey Date"
+        ]
+        ,
+        [
+                type: "property",
                 propertyName: "projectNameFacet",
                 displayName: "Project name"
         ]
