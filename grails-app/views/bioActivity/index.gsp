@@ -73,12 +73,22 @@
                 %{--page title--}%
                 <div class="span4">
                     <h2><g:message code="record.view.title"></g:message></h2>
-                    <g:if test="${pActivity?.adminVerification}">
-                        <h4><g:message code="record.view.verificationStatus"></g:message>: 
-                        <g:message code="facets.verified.${activity.verificationStatus}"/></h4>
-                    </g:if>
                 </div>
                 %{-- quick links --}%
+                <g:if test="${pActivity?.adminVerification && pActivity?.showVerificationStatus}">
+                    <div class="row-fluid">
+                        <div class="span12 text-right">
+                        <g:if test="${activity.verificationStatus == 'verified'}">
+                            <span class="badge badge-success"><g:message code="record.view.verificationStatus"></g:message>: 
+                            <g:message code="facets.verified.${activity.verificationStatus}"/></span>
+                        </g:if>
+                        <g:else >
+                            <span class="badge badge-danger"><g:message code="record.view.verificationStatus"></g:message>: 
+                            <g:message code="facets.verified.${activity.verificationStatus}"/></span>
+                        </g:else>
+                        </div>
+                    </div>
+                </g:if>
                 <div class="span8">
                     <g:render template="/shared/quickLinks" model="${[cssClasses: 'pull-right']}"></g:render>
                 </div>
