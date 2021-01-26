@@ -1,7 +1,7 @@
 <g:set var="modalName" value="${modalId?:'chooseMore'}"></g:set>
 <div class="row-fluid">
     <div class="span12">
-    <g:set var="userIsProjectAdmin" value="${userIsProjectAdmin}"></g:set>
+    <g:set var="userIsProjectAdmin" value="${userIsProjectAdmin || false}"></g:set>
         <!-- ko foreach: facets -->
             <!-- ko if: $data instanceof FacetViewModel -->
                 <!-- ko if: !adminOnly() || ${userIsProjectAdmin} -->

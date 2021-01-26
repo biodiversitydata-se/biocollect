@@ -446,10 +446,12 @@ class BioActivityController {
      * @return
      */
     def list() {
+        Boolean userIsAdmin = userService.userIsAlaOrFcAdmin()
         render(view: 'list',
                 model: [
                         view: 'myrecords',
                         user: userService.user,
+                        userIsProjectAdmin: userIsAdmin,
                         title: messageSource.getMessage('myrecords.title', [].toArray(), '', locale),
                         returnTo: g.createLink(controller: 'bioActivity', action: 'list')
                 ]

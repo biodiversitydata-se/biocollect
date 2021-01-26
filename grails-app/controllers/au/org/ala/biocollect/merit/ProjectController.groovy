@@ -220,7 +220,7 @@ class ProjectController {
         def config = [about:[label:message(code: 'project.tab.about'), template:'aboutCitizenScienceProject', visible: true, type:'tab', projectSite:project.projectSite],
          news:[label:message(code: 'project.tab.blog'), template:'projectBlog', visible: true, type:'tab', blog:blog, hasNewsAndEvents: hasNewsAndEvents, hasProjectStories:hasProjectStories, hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false],
          documents:[label:message(code: 'project.tab.resources'), template:'/shared/listDocuments', useExistingModel: true, editable:false, filterBy: 'all', visible: true, containerId:'overviewDocumentList', type:'tab'],
-         data:[label:message(code: 'project.tab.data'), visible:user?.isAdmin, template:'/bioActivity/activities_short', showSites:false, wordForActivity:'Data', type:'tab'],
+         data:[label:message(code: 'project.tab.data'), visible:user?.isAdmin, userIsProjectAdmin:user?.isAdmin, template:'/bioActivity/activities_short', showSites:false, wordForActivity:'Data', type:'tab'],
          // rework sites to have 2 tabs: list and map and a search box 
          sites: [label:message(code: 'g.sites'), template:'/site/siteBookingRequest', visible:(!user?.isAdmin), editable:false, type:'tab'],
          admin:[label:message(code: 'project.tab.admin'), template:'CSAdmin', visible:(user?.isAdmin || user?.isCaseManager) && !params.version, type:'tab', hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false]]
