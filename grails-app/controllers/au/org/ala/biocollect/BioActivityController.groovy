@@ -451,7 +451,7 @@ class BioActivityController {
                 model: [
                         view: 'myrecords',
                         user: userService.user,
-                        userIsProjectAdmin: userIsAdmin,
+                        userIsAdmin: userIsAdmin,
                         title: messageSource.getMessage('myrecords.title', [].toArray(), '', locale),
                         returnTo: g.createLink(controller: 'bioActivity', action: 'list')
                 ]
@@ -469,7 +469,7 @@ class BioActivityController {
                 model: [
                         view: 'allrecords',
                         title: messageSource.getMessage('allrecords.title', [].toArray(), '', locale),
-                        userIsProjectAdmin: userIsAdmin,
+                        userIsAdmin: userIsAdmin,
                         returnTo: g.createLink(controller: 'bioActivity', action: 'allRecords')
                 ]
         )
