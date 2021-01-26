@@ -240,10 +240,9 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     self.projectId = act.projectId;
 
     // check if project activity requires manual verification by admin 
-    // if so, display a dropdown for verification stages: 1- not verified, 2 - partly, 3 - verified
-    var verificationStatus = pActivity.adminVerification ? 1 : 0;
+    var verificationStatus = pActivity.adminVerification ? 'not verified' : 'not applicable';
     self.verificationStatus = ko.observable(act.verificationStatus || verificationStatus);
-    self.verificationStatusOptions = [1, 2, 3];
+    self.verificationStatusOptions = ['not approved', 'not verified', 'under review' , 'approved'];
 
     self.transients = {};
     self.transients.pActivity = new pActivityInfo(pActivity);

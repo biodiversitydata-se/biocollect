@@ -78,13 +78,13 @@
                 <g:if test="${pActivity?.adminVerification && pActivity?.showVerificationStatus}">
                     <div class="row-fluid">
                         <div class="span12 text-right">
-                        <g:if test="${activity.verificationStatus == 'verified'}">
+                        <g:if test="${activity.verificationStatus == 'approved'}">
                             <span class="badge badge-success"><g:message code="record.view.verificationStatus"></g:message>: 
-                            <g:message code="facets.verified.${activity.verificationStatus}"/></span>
+                            ${activity.verificationStatus}</span>
                         </g:if>
                         <g:else >
-                            <span class="badge badge-danger"><g:message code="record.view.verificationStatus"></g:message>: 
-                            <g:message code="facets.verified.${activity.verificationStatus}"/></span>
+                            <span class="badge badge-important"><g:message code="record.view.verificationStatus"></g:message>: 
+                            ${activity.verificationStatus}</span>
                         </g:else>
                         </div>
                     </div>
