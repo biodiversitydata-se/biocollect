@@ -71,6 +71,7 @@ class ProjectController {
 
             if(project.sites?.find{it.siteId == project.projectSiteId}) {
                 project.projectSite = project.sites?.find{it.siteId == project.projectSiteId}
+                // project.projectSite = siteService.get(project.projectSiteId, [view:'brief'])
             } else if(project.projectSiteId) {
                 // Project site is missing, update site and sync project site info
                 project.projectSite = siteService.get(project.projectSiteId, [view:'brief'])
@@ -106,14 +107,14 @@ class ProjectController {
             HubSettings hubConfig = SettingService.hubConfig
             def hubUrl = hubConfig?.urlPath
             def relatedProjectIds = projectService.getRelatedProjectIds(hubUrl)
-
-            def model = [project: project,
-                mapFeatures: commonService.getMapFeatures(project),
+            // project.remove("sites")
+            def model = [project: project, //this has sites
+                mapFeatures: commonService.getMapFeatures(project), //this has sites too but only extent
                 isProjectStarredByUser: userService.isProjectStarredByUser(user?.userId?:"0", project.projectId)?.isProjectStarredByUser,
                 user: user,
                 roles: roles,
                 admins: admins,
-                activityTypes: projectService.activityTypesList(),
+                activityTypes: [:], // projectService.activityTypesList(),
                 metrics: project.projectType == projectService.PROJECT_TYPE_WORKS ? projectService.summary(id): [],
                 outputTargetMetadata:  metadataService.getOutputTargetScores(),
                 programs: programs,
@@ -132,8 +133,9 @@ class ProjectController {
 
             if(project.projectType in [ProjectService.PROJECT_TYPE_ECOSCIENCE, ProjectService.PROJECT_TYPE_CITIZEN_SCIENCE, ProjectService.PROJECT_TYPE_SYSTEMATIC_MONITORING]){
                 model.projectActivities = projectActivityService?.getAllByProject(project.projectId, "docs", params?.version, true)
+                // model.projectActivities[0].remove("sites")
                 model.pActivityForms = projectService.supportedActivityTypes(project).collect{[name: it.name, images: it.images]}
-                model.vocabList = vocabService.getVocabValues ()
+                model.vocabList = []  // vocabService.getVocabValues ()
                 println model.pActivityForms
             }
             model.mobile = params.getBoolean('mobile', false)
@@ -217,7 +219,7 @@ class ProjectController {
         Boolean hasNewsAndEvents = blog.find{it.type == 'News and Events'}
         Boolean hasProjectStories = blog.find{it.type == 'Project Stories'}
 
-        def config = [about:[label:message(code: 'project.tab.about'), template:'aboutCitizenScienceProject', visible: true, type:'tab', projectSite:project.projectSite],
+        def config = [about:[label:message(code: 'project.tab.about'), template:'aboutSystematicMonitoringProject', visible: true, type:'tab', projectSite:project.projectSite],
          news:[label:message(code: 'project.tab.blog'), template:'projectBlog', visible: true, type:'tab', blog:blog, hasNewsAndEvents: hasNewsAndEvents, hasProjectStories:hasProjectStories, hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false],
          documents:[label:message(code: 'project.tab.resources'), template:'/shared/listDocuments', useExistingModel: true, editable:false, filterBy: 'all', visible: true, containerId:'overviewDocumentList', type:'tab'],
          data:[label:message(code: 'project.tab.data'), visible:user?.isAdmin, userIsProjectAdmin:user?.isAdmin, template:'/bioActivity/activities_short', showSites:false, wordForActivity:'Data', type:'tab'],
