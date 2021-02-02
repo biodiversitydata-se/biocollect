@@ -1,6 +1,6 @@
 //= require snap-svg-0.5.1/snap.svg.js
 //= require self
-var ActivitiesAndRecordsViewModel = function (placeHolder, view, user, ignoreMap, doNotInit, doNotStoreFacetFiltering, columnConfig, generalView=false) {
+var ActivitiesAndRecordsViewModel = function (placeHolder, view, user, ignoreMap, doNotInit, doNotStoreFacetFiltering, columnConfig) {
     var self = this;
 
     var features, featureType = 'record', alaMap, results,
@@ -292,7 +292,7 @@ var ActivitiesAndRecordsViewModel = function (placeHolder, view, user, ignoreMap
         activities = $.map(activities ? activities : [], function (activity, index) {
             activity.parent = self;
             // there has to be a condition here when to use which model
-            if (generalView){
+            if (true){
                 return new ActivityViewModel(activity);
             } 
             return new ActivityRecordViewModel(activity);
