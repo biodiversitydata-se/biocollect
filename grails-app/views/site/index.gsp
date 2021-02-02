@@ -446,8 +446,8 @@
                 }
             }
 
-
-            var activitiesAndRecordsViewModel = new ActivitiesAndRecordsViewModel('data-result-placeholder', null, null, true, true)
+            var activityView = ${hubConfig?.isSystematicMonitoring ? true : false};
+            var activitiesAndRecordsViewModel = new ActivitiesAndRecordsViewModel('data-result-placeholder', null, null, true, true, activityView)
             activitiesAndRecordsViewModel.searchTerm('siteId:${site.siteId}');
             activitiesAndRecordsViewModel.search();
             ko.applyBindings(activitiesAndRecordsViewModel, document.getElementById('siteActivities'));

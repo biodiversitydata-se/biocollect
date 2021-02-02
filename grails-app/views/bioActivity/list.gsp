@@ -99,7 +99,12 @@
     </div>
 
     <div class="main-content" style="display:none;">
-        <g:render template="/bioActivity/activities"/>
+        <g:if test='${hubConfig?.isSystematicMonitoring}'>
+            <g:render template="/bioActivity/activities_short"/>
+        </g:if>
+        <g:else>
+            <g:render template="/bioActivity/activities"/>
+        </g:else>
     </div>
     <div class="loading-message">
         <span class="fa fa-spin fa-spinner"></span>&nbsp;Loading...

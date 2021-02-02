@@ -197,9 +197,10 @@
             user = null;
         }
 
-        var columnConfig =${ hubConfig.getDataColumns(grailsApplication) as grails.converters.JSON}
-
-        activitiesViewModel = new ActivitiesAndRecordsViewModel('activities-placeholder', view, user, ${showSites}, false, ${doNotStoreFacetFilters?:false}, columnConfig, true);
+        var columnConfig =${hubConfig.getDataColumns(grailsApplication) as grails.converters.JSON},
+        activityView = true,
+        showSites = ${showSites ? true : false};
+        activitiesViewModel = new ActivitiesAndRecordsViewModel('activities-placeholder', view, user, showSites, false, ${doNotStoreFacetFilters?:false}, columnConfig, true, activityView);
         ko.applyBindings(activitiesViewModel, document.getElementById('survey-all-activities-content'));
 
     }

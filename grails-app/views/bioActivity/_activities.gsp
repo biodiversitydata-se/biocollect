@@ -390,8 +390,8 @@
         }
 
         var columnConfig =${ hubConfig.getDataColumns(grailsApplication) as grails.converters.JSON}
-
-        activitiesAndRecordsViewModel = new ActivitiesAndRecordsViewModel('data-result-placeholder', view, user, false, false, ${doNotStoreFacetFilters?:false}, columnConfig);
+        var activityView = false;
+        activitiesAndRecordsViewModel = new ActivitiesAndRecordsViewModel('data-result-placeholder', view, user, false, false, ${doNotStoreFacetFilters?:false}, columnConfig, activityView);
         ko.applyBindings(activitiesAndRecordsViewModel, document.getElementById('survey-all-activities-and-records-content'));
         configImageGallery = {
             recordUrl: fcConfig.recordImageListUrl,
