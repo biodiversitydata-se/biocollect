@@ -132,8 +132,7 @@ class ProjectController {
 
 
             if(project.projectType in [ProjectService.PROJECT_TYPE_ECOSCIENCE, ProjectService.PROJECT_TYPE_CITIZEN_SCIENCE, ProjectService.PROJECT_TYPE_SYSTEMATIC_MONITORING]){
-                model.projectActivities = projectActivityService?.getAllByProject(project.projectId, "docs", params?.version, true)
-                // model.projectActivities[0].remove("sites")
+                model.projectActivities = projectActivityService?.getAllByProject(project.projectId, "brief", params?.version, true)
                 model.pActivityForms = projectService.supportedActivityTypes(project).collect{[name: it.name, images: it.images]}
                 model.vocabList = []  // vocabService.getVocabValues ()
                 println model.pActivityForms

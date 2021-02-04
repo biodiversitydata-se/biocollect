@@ -215,9 +215,6 @@
         case 'list':
             tabId = '#recordVis-tab';
             break;
-        case 'image':
-            tabId = '#dataImageTab';
-            break;
     }
 
     tabId && $(tabId).tab('show');

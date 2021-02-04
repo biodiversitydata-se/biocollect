@@ -260,6 +260,9 @@ class BioActivityController {
         String userId = userService.getCurrentUserId(request)
         // personId to save in activity 
         String personId = params.personId
+        // the pActivity has pre-filtered sites - only ones that were booked/ created by the user
+        // this is where the dropdown is populated from and it has the details of transect parts to be displayed on the map
+        // we don't want sites in any other objects inside the model because they don't count
         Map pActivity = projectActivityService.get(id, "all", null, userId)
         String projectId = pActivity?.projectId
         String type = pActivity?.pActivityFormName
@@ -276,21 +279,20 @@ class BioActivityController {
             if (!mobile) redirect(controller: 'project', action: 'index', id: projectId)
         } else {
             Map activity = [activityId: '', siteId: '', projectId: projectId, type: type, personId: personId]
-            Map project = projectService.get(projectId)
+            Map project = projectService.get(projectId, 'brief') 
             model = activityModel(activity, projectId)
             model.pActivity = pActivity
             model.speciesConfig = [surveyConfig: [speciesFields: pActivity?.speciesFields]]
             model.projectName = project.name
             model.returnTo = params.returnTo ? params.returnTo : g.createLink(controller: 'project', id: projectId)
             model.autocompleteUrl = "${request.contextPath}/search/searchSpecies/${pActivity.projectActivityId}?limit=10"
-            addOutputModel(model)
+            addOutputModel(model) // this is where more stuff is added! 
             addDefaultSpecies(activity)
         }
 
         if (mobile && flash.message) {
             model?.error = flash.message
         }
-
         model
     }
 
@@ -307,8 +309,10 @@ class BioActivityController {
             flash.message = "Invalid activity - ${id}"
             if(!mobile)  redirect(controller: 'project', action: 'index', id: projectId)
         } else if (projectService.canUserModerateProjects(userId, projectId) || activityService.isUserOwnerForActivity(userId, activity?.activityId)) {
-            def pActivity = projectActivityService.get(activity?.projectActivityId, "all")
             model = activityAndOutputModel(activity, activity.projectId)
+            def pActivity = projectActivityService.get(activity?.projectActivityId, "all", null, userId) 
+            // don't allow editing sites, only the existing activity site is allowed in the dropdown - so it might as well be non-editable, not dropdown
+            pActivity.sites = [model.site]
             model.pActivity = pActivity
             model.projectActivityId = pActivity.projectActivityId
             model.id = id
@@ -892,8 +896,8 @@ class BioActivityController {
 
     private Map activityModel(activity, projectId, mode = '', version = null) {
         Map model = [activity: activity, returnTo: params.returnTo, mode: mode]
-        model.site = model.activity?.siteId ? siteService.get(model.activity.siteId, [view: 'brief', version: version]) : null
-        model.project = projectId ? projectService.get(model.activity.projectId, null, false, version) : null
+        model.site = model.activity?.siteId ? siteService.get(model.activity.siteId, [view: 'transects', version: version]) : null
+        model.project = projectId ? projectService.get(model.activity.projectId, 'brief', false, version) : null
         model.projectSite = model.project?.sites?.find { it.siteId == model.project.projectSiteId }
 
         // Add the species lists that are relevant to this activity.
