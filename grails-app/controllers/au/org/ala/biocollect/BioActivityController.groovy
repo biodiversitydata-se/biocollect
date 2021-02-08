@@ -309,8 +309,8 @@ class BioActivityController {
             flash.message = "Invalid activity - ${id}"
             if(!mobile)  redirect(controller: 'project', action: 'index', id: projectId)
         } else if (projectService.canUserModerateProjects(userId, projectId) || activityService.isUserOwnerForActivity(userId, activity?.activityId)) {
-            model = activityAndOutputModel(activity, activity.projectId)
-            def pActivity = projectActivityService.get(activity?.projectActivityId, "all", null, userId) 
+            model = activityAndOutputModel(activity, projectId)
+            def pActivity = projectActivityService.get(activity?.projectActivityId, "brief", null, userId) 
             // don't allow editing sites, only the existing activity site is allowed in the dropdown - so it might as well be non-editable, not dropdown
             pActivity.sites = [model.site]
             model.pActivity = pActivity
@@ -410,7 +410,8 @@ class BioActivityController {
             redirect(controller: "error", action:'response404', params: [status: 404, errMsg: activity.error])
             return
         }
-        def pActivity = projectActivityService.get(activity?.projectActivityId, "all", params?.version)
+        // levelOfDetail has to be ALL, otherwise the activity won't display at all
+        def pActivity = projectActivityService.get(activity?.projectActivityId, "all", null, userId) 
         HubSettings hubSettings = SettingService.hubConfig
         boolean hubIsSft = hubSettings.urlPath == "sft" ? true : false
         boolean embargoed = (activity.embargoed == true) || projectActivityService.isEmbargoed(pActivity)
@@ -428,6 +429,8 @@ class BioActivityController {
             } else {
                 Map model = activityAndOutputModel(activity, activity.projectId, 'view', params?.version)
                 model.speciesConfig = [surveyConfig: [speciesFields: pActivity?.speciesFields]]
+            // don't allow editing sites, only the existing activity site is allowed in the dropdown - so it might as well be non-editable, not dropdown
+                pActivity.sites = [model.site]
                 model.pActivity = pActivity
                 model.id = pActivity.projectActivityId
                 model.userIsProjectMember = userIsProjectMember
@@ -897,6 +900,7 @@ class BioActivityController {
     private Map activityModel(activity, projectId, mode = '', version = null) {
         Map model = [activity: activity, returnTo: params.returnTo, mode: mode]
         model.site = model.activity?.siteId ? siteService.get(model.activity.siteId, [view: 'transects', version: version]) : null
+        // model.project is minimal - don't fiddle with it
         model.project = projectId ? projectService.get(model.activity.projectId, 'brief', false, version) : null
         model.projectSite = model.project?.sites?.find { it.siteId == model.project.projectSiteId }
 
@@ -908,7 +912,7 @@ class BioActivityController {
                     model.speciesLists.add(list)
                 }
             }
-            model.themes = metadataService.getThemesForProject(model.project)
+            // model.themes = metadataService.getThemesForProject(model.project)
         }
 
         model.user = userService.getUser()
