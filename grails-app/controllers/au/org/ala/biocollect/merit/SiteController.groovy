@@ -60,15 +60,16 @@ class SiteController {
     def createSystematic(){
         def project = projectService.getRich(params.projectId)
         // permissions check
-        def userCanEditSite = projectService.canUserEditSitesForProject(userService.getCurrentUserId(), params.projectId)
-        if (!userCanEditSite) {
+        def projectMembers = projectService.getMembersForProjectId(params.projectId)
+        def userCanCreateSite = projectMembers.find{it.userId == userService.getCurrentUserId()} ?: false
+        if (!userCanCreateSite) {
             flash.message = "Access denied: User is not en editor or is not allowed to manage sites for projectId ${params.projectId}"
             redirect(controller:'project', action:'index', id: params.projectId)
         }
         project.sites?.sort {it.name}
         project.projectSite = project.sites?.find{it.siteId == project.projectSiteId}
         render view: 'editSystematic', model: [create:true, project:project, documents:[], projectSite:project.projectSite,
-            pActivityId: params?.pActivityId, userCanEdit: userCanEditSite, ownerId: params?.ownerId, personId: params?.personId, allowDetails: params?.allowDetails]
+            pActivityId: params?.pActivityId, userCanEdit: userCanCreateSite, ownerId: params?.ownerId, personId: params?.personId, allowDetails: params?.allowDetails]
     }
 
 
