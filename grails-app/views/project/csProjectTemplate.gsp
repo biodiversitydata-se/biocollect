@@ -137,8 +137,7 @@
         lineLegendTitle: "<g:message code="map.line.legend.title"/>",
         heatmapHelpText: "<g:message code="map.heatmap.help.text"/>",
         clusterHelpText: "<g:message code="map.cluster.help.text"/>",
-        lineHelpText: "<g:message code="map.line.help.text"/>", <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700"/>
-    <link rel="s
+        lineHelpText: "<g:message code="map.line.help.text"/>",
         pointHelpText: "<g:message code="map.point.help.text"/>",
         polygonHelpText: "<g:message code="map.polygon.help.text"/>"
         },
