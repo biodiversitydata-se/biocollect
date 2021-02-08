@@ -7,8 +7,6 @@
     <title>${project?.name.encodeAsHTML()} | Project | BioCollect</title>
     <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},${message(code: "g.home")}"/>
     <meta name="breadcrumb" content="${project?.name}"/>
-    <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700"/>
-    <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Oswald:300"/>
     <asset:stylesheet src="forms-manifest.css"/>
     <asset:stylesheet src="projects.css"/>
     <asset:script type="text/javascript">
@@ -139,7 +137,8 @@
         lineLegendTitle: "<g:message code="map.line.legend.title"/>",
         heatmapHelpText: "<g:message code="map.heatmap.help.text"/>",
         clusterHelpText: "<g:message code="map.cluster.help.text"/>",
-        lineHelpText: "<g:message code="map.line.help.text"/>",
+        lineHelpText: "<g:message code="map.line.help.text"/>", <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700"/>
+    <link rel="s
         pointHelpText: "<g:message code="map.point.help.text"/>",
         polygonHelpText: "<g:message code="map.polygon.help.text"/>"
         },
