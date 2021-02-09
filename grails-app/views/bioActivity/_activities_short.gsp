@@ -189,8 +189,7 @@
 <asset:script type="text/javascript">
     var activitiesViewModel, alaMap, results;
     function initialiseData(view) {
-        var user = '${user ? user as grails.converters.JSON : "{}"}',
-        configImageGallery;
+        var user = '${user ? user as grails.converters.JSON : "{}"}';
         if (user) {
             user = JSON.parse(user);
         } else {
