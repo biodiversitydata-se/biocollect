@@ -46,4 +46,9 @@ class PersonService {
         log.debug "BODY" + body
         webService.doPost(grailsApplication.config.ecodata.service.url + "/person/addSiteOwnership/${personId}", body) 
     }
+
+    String getPersonIdForUser(String userId){
+        def result = webService.getJson(grailsApplication.config.ecodata.service.url + "/person/getPersonIdForUser?userId=${userId}")
+        result.personId
+    }
 }

@@ -35,6 +35,7 @@ class BioActivityController {
     AuthService authService
     UtilService utilService
     EmailService emailService
+    PersonService personService
 
     static int MAX_FLIMIT = 500
     static allowedMethods = ['bulkDelete': 'POST', bulkRelease: 'POST', bulkEmbargo: 'POST']
@@ -625,7 +626,9 @@ class BioActivityController {
     private GrailsParameterMap constructDefaultSearchParams(Map params) {
         GrailsParameterMap queryParams = new GrailsParameterMap([:], request)
         Map parsed = commonService.parseParams(params)
-        parsed.userId = userService.getCurrentUserId(parsed.mobile ? request : null)
+        String userId = userService.getCurrentUserId(parsed.mobile ? request : null)
+        parsed.userId = userId
+        parsed.personId = personService.getPersonIdForUser(userId) ?: null
 
         parsed.each { key, value ->
             if (value != null && value) {

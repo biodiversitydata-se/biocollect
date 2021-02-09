@@ -90,7 +90,7 @@
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" href="${createLink(action: 'edit', id: person?.personId, params:[defaultTab:'surveys'])}">
+                <a class="accordion-toggle" href="${createLink(controller: 'bioActivity', action: 'list')}">
                     Se vad jag rapporterat tidigare
                 </a>
             </div>
