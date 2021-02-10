@@ -69,18 +69,16 @@ function PersonViewModel(savedPerson, create, hubProjectIds) {
             data: data,
             contentType: 'application/json',
             success: function (data) {
-                if(data.statusCode == 200){
-                    alert(data.resp.personName + " successfully saved");
-                    document.location.href = fcConfig.returnTo;
-                }
-                else {
-                    alert("Person saved");
+                if (data.resp.status=='error'){
+                    bootbox.alert(data.resp.error);
+                } else {
+                    bootbox.alert(data.resp.personName + " successfully saved");
                     document.location.href = fcConfig.returnTo;
                 }
             },
             error: function (data) {
                 var errorMessage = data.resp.error|| 'There was a problem saving this person'
-                alert(errorMessage);
+                bootbox.alert(errorMessage);
                 document.location.href = fcConfig.returnTo;
             }
         });

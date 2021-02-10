@@ -1,8 +1,6 @@
 <div class="pill-pane">
 <div class="control-group">
-    <a href="${createLink(controller:'person', action:'create', params:[relatedProjectIds: relatedProjectIds])}">
-        <button class="btn btn-primary"><g:message code="project.admin.members.addNew" /></button>
-    </a>
+    <button class="btn btn-primary" onclick="addPerson()"><g:message code="project.admin.members.addNew" /></button>
 </div>
     <form class="form-horizontal input-append">
         <div class="well">
@@ -26,6 +24,9 @@
     </div>
 </div>
 <asset:script type="text/javascript">
+function addPerson(){
+    document.location.href = fcConfig.personCreateUrl + '&returnTo=' + fcConfig.returnTo; 
+}
 
 $(document).ready(function () {
 
