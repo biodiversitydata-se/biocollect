@@ -10,7 +10,7 @@
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
         personSaveUrl: "${createLink(action: 'save', params:[projectId: params?.projectId])}",
         personUpdateUrl: "${createLink(action: 'update')}",
-        deletePersonUrl: "${createLink(action:'delete', params:[projectId: params?.projectId])}",
+        deletePersonUrl: "${createLink(action:'delete', id:person.personId)}",
         bookSiteUrl: "${createLink(controller: 'site', action:'bookSites')}",
         removeBookingUrl: "${createLink(controller: 'person', action:'removeBooking')}",
         viewSiteUrl: "${createLink(controller: 'site', action:'index')}",

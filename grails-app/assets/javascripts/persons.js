@@ -87,12 +87,11 @@ function PersonViewModel(savedPerson, create, hubProjectIds) {
     }
 
     self.deletePerson = function () {
-        var personId = self.person().personId();
         var message = "<span class='label label-important'>Important</span><p><b>This cannot be undone</b></p><p>Are you sure you want to delete this person?</p>";
         bootbox.confirm(message, function (result) {
             if (result) {
                 $.ajax({
-                    url: fcConfig.deletePersonUrl + '/' + personId,
+                    url: fcConfig.deletePersonUrl,
                     type: 'DELETE',
                     success: function (data) {
                         console.log(data);
