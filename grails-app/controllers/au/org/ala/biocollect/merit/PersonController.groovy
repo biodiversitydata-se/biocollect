@@ -70,13 +70,30 @@ class PersonController {
     
     @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def create(){
-        render view: 'edit', model: [create:true, relatedProjectIds: params?.relatedProjectIds]  
+        def userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
+        render view: 'edit', model: [create:true, relatedProjectIds: params?.relatedProjectIds, userIsAlaOrFcAdmin: userIsAlaOrFcAdmin]  
     }
 
     // TODO - what access level should dictate this? 
     def edit(String id) {
         def person = personService.get(id)
-        render view: 'edit', model:[create:false, person: person?.person, activityCount: person?.activityCount, returnTo: params?.returnTo, defaultTab: params?.defaultTab, siteName: params?.siteName]
+        def userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
+        if (userIsAlaOrFcAdmin || ownerOfProfile) {
+            Map model = [
+                create:false, 
+                person: person?.person, 
+                activityCount: person?.activityCount, 
+                returnTo: params?.returnTo, 
+                defaultTab: params?.defaultTab, 
+                siteName: params?.siteName,
+                userIsAlaOrFcAdmin: userIsAlaOrFcAdmin
+            ]
+            render view: 'edit', model: model
+        } else {
+            flash.message = "Error: access denied: User does not have <b>editor</b> permission for projectId ${projectId}"
+            response.status = 401
+            result = [status:401, error: flash.message]
+        }
     }
 
     // TODO - what access level should dictate this? 
