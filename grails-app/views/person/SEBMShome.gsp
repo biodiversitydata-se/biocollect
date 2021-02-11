@@ -41,8 +41,8 @@
                         <div class="control-group">
                             <label>Du kan rapportera för:</label>
                             <ul>
-                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: '642ee449-88c1-4e76-9350-85f66cb6ad8e')}">Punklokal</a></li>
-                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: '3a024566-7a65-41c8-b740-aed47d42e8d4')}">Slinga</a></li>
+                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: '642ee449-88c1-4e76-9350-85f66cb6ad8e', params: [personId: person.personId])}">Punklokal</a></li>
+                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: '3a024566-7a65-41c8-b740-aed47d42e8d4', params: [personId: person.personId])}">Slinga</a></li>
                             </ul>
                         </div>
                     </div>
