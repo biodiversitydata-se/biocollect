@@ -79,7 +79,9 @@ class PersonController {
         def person = personService.get(id)
         def userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
         // TODO - check if person is owner of profile (now anyone with a link could change it)
-        if (userIsAlaOrFcAdmin) {
+        String userId = userService.currentUserId
+        Boolean userIsOwnerOfProfile = (person?.person?.userId == userId) ?: false
+        if (userIsAlaOrFcAdmin || userIsOwnerOfProfile) {
             Map model = [
                 create:false, 
                 person: person?.person, 
@@ -91,7 +93,7 @@ class PersonController {
             ]
             render view: 'edit', model: model
         } else {
-            flash.message = "Error: access denied: User does not have <b>editor</b> permission for projectId ${projectId}"
+            flash.message = "Error: access denied: User does not have <b>editor</b> permission to edit this person's profile."
             response.status = 401
             result = [status:401, error: flash.message]
         }
