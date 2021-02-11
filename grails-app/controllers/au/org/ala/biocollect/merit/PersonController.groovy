@@ -78,7 +78,8 @@ class PersonController {
     def edit(String id) {
         def person = personService.get(id)
         def userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
-        if (userIsAlaOrFcAdmin || ownerOfProfile) {
+        // TODO - check if person is owner of profile (now anyone with a link could change it)
+        if (userIsAlaOrFcAdmin) {
             Map model = [
                 create:false, 
                 person: person?.person, 
