@@ -76,11 +76,11 @@
                 <g:link action="editSystematic" id="${site.siteId}" params="${[allowDetails: 'no']}" class="btn btn-small"><i
                     class="icon-edit"></i> <g:message code="site.details.editSystematic"/> </g:link>
             </g:if>
-            <g:elseif test="${site?.transectParts?.isEmpty()}">
+            <g:else>
                 <g:link action="edit" id="${site.siteId}" class="btn btn-small">
                     <i class="icon-edit"></i> <g:message code="site.details.editSite"/> 
                 </g:link>
-            </g:elseif>
+            </g:else>
             %{-- TODO - delete button could be for volunteers too but maybe have an alert before delete happens --}%
             <g:if test="${fc.userIsAlaAdmin()}">
                 <div class="btn btn-small btn-danger" onclick="deleteSite()"><i
@@ -127,20 +127,46 @@
                 <%-- start --%>
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseZero">
-                            Display details of transect parts
+                        <a class="accordion-toggle" data-toggle="collapse" href="#collapseZero">
+                            <g:message code= "site.transect.displayCoordinates"/>
                         </a>
                     </div>
                     <div id="collapseZero" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <div class="control-group">
                                 <table class="table table-striped table-bordered table-hover dataTable no-footer">
-                                <td><g:message code="site.metadata.name" /></td><td><g:message code="site.transect.transectPart.length" /> (m)</td>
+                                    <td><g:message code="site.metadata.name" /></td>
+                                    <td><g:message code="site.transect.transectPart.length" /> (m)</td>
+                                    <td><g:message code="g.coordinates"/></td>
                                     <g:each in="${site.transectParts}">
-                                    <tr>
-                                        <td>${it.name}</td>
-                                        <td><g:formatNumber number="${it?.length}" type="number" maxFractionDigits="2"/></td>
-                                    </tr>
+                                        <tr>
+                                            <td>${it.name}</td>
+                                            <td><g:formatNumber number="${it?.length}" type="number" maxFractionDigits="2"/></td>
+                                            <td>${it?.geometry?.coordinates}</td>
+                                        </tr>
+                                    </g:each>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
+                            <g:message code= "site.transect.displayOtherDetails"/>
+                        </a>
+                    </div>
+                    <div id="collapseOne" class="accordion-body collapse">
+                        <div class="accordion-inner">
+                            <div class="control-group">
+                                <table class="table table-striped table-bordered table-hover dataTable no-footer">
+                                    <td><g:message code="site.metadata.name" /></td>
+                                    <td><g:message code="site.details.description" /></td>
+                                    <g:each in="${site.transectParts}">
+                                        <tr>
+                                            <td>${it?.name}</td>
+                                            <td>${it?.description}</td>
+                                        </tr>
                                     </g:each>
                                 </table>
                             </div>
