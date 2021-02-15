@@ -276,18 +276,38 @@ var SystematicSiteViewModel = function (valuesForVM) {
         
         if (features && features.length > 0) {
             var i = self.transectParts().length;
-            var index = 0; 
-            if (i == 0){
-                index  = 0;
-            } else if (i > 0){
-                index = 1; 
-            }
-            
+            var index = (i == 0) ? 0 : 1;
+
             for (index; index < features.length; index++){
                 var geoType = features[index].geometry.type;
-                var coordinates = features[index].geometry.coordinates;
+                // used here old version of leaflet doesn't support requests for limited coordinate length
+                // it ends up being doubles with 14 decimal places. This is a roundabout way of limiting decimal places to 5 
+                var rawCoordinates = features[index].geometry.coordinates;
+                var coordinates;
+                function limitDecimalPlaces(coordinatePair) {
+                    coordinatePair = coordinatePair.map(function(coordinate) {
+                        return coordinate = parseFloat(coordinate.toFixed(5));
+                    });
+                    return coordinatePair
+                }
+                switch (geoType){
+                    case 'Point':
+                        coordinates = limitDecimalPlaces(rawCoordinates);
+                        break;
+                    case 'Polygon':
+                        coordinates = [rawCoordinates[0].map(function(coordinatePair) { 
+                            return limitDecimalPlaces(coordinatePair)
+                        })];
+                        break; 
+                    case 'LineString':
+                        coordinates = rawCoordinates.map(function(coordinatePair) { 
+                            return limitDecimalPlaces(coordinatePair)
+                        }); 
+                        break;
+                    default:
+                        coordinates = rawCoordinates;                    
+                }
                 var name = self.transectParts().length + 1;
-
                 createTransectPart({
                     name: determineGeoType(geoType) + String(name),
                     geometry: {
