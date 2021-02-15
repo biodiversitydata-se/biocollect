@@ -453,36 +453,34 @@
             };
             var smallMap = new ALA.Map("smallMap", mapOptions);
 
-            if(mapFeatures.features === undefined || mapFeatures.features.length == 0){
-                $('#siteNotDefined').show();
-            } else {
-                var geoJson = Biocollect.MapUtilities.featureToValidGeoJson(mapFeatures.features[0]);
-                smallMap.setGeoJSON(geoJson);
-            }
-
-            <%-- if site is systematic display all parts of the transect --%>
+            <%-- if site is systematic display all parts of the transect but don't show the extent (centroid) --%>
             var transectParts = mapFeatures.transectParts;
             if(transectParts === undefined || transectParts.length == 0){
-                $('#siteNotDefined').show();
+                if(mapFeatures.features === undefined || mapFeatures.features.length == 0){
+                    $('#siteNotDefined').show();
+                } else {
+                    var geoJson = Biocollect.MapUtilities.featureToValidGeoJson(mapFeatures.features[0]);
+                    smallMap.setGeoJSON(geoJson);
+                }
+
+                var activitiesAndRecordsViewModel = new ActivitiesAndRecordsViewModel('data-result-placeholder', null, null, true, true, false)
+                activitiesAndRecordsViewModel.searchTerm('siteId:${site.siteId}');
+                activitiesAndRecordsViewModel.search();
+                ko.applyBindings(activitiesAndRecordsViewModel, document.getElementById('siteActivities'));
+                var params = {
+                    params: {
+                        id: '${site.siteId}'
+                    }
+                }
+                initPoiGallery(params,'sitePhotopoints');
             } else {
-                for (var part of transectParts) {
+                transectParts.forEach(function(part) {
                     var geoJson = Biocollect.MapUtilities.featureToValidGeoJson(part.geometry);
                     geoJson.properties.popupContent = part.name;
                     smallMap.setTransectFromGeoJSON(geoJson);
-                }
+                });
             }
 
-            var activityView = ${hubConfig?.isSystematicMonitoring ? true : false};
-            var activitiesAndRecordsViewModel = new ActivitiesAndRecordsViewModel('data-result-placeholder', null, null, true, true, activityView)
-            activitiesAndRecordsViewModel.searchTerm('siteId:${site.siteId}');
-            activitiesAndRecordsViewModel.search();
-            ko.applyBindings(activitiesAndRecordsViewModel, document.getElementById('siteActivities'));
-            var params = {
-                params: {
-                    id: '${site.siteId}'
-                }
-            }
-            initPoiGallery(params,'sitePhotopoints');
         });
         function Message (){
             var self = this;
