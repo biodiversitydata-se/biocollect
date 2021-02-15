@@ -138,9 +138,9 @@
                                     <td><g:message code="site.metadata.name" /></td>
                                     <td><g:message code="site.transect.transectPart.length" /> (m)</td>
                                     <td><g:message code="g.coordinates"/></td>
-                                    <g:each in="${site.transectParts}">
+                                    <g:each in="${site?.transectParts}">
                                         <tr>
-                                            <td>${it.name}</td>
+                                            <td>${it?.name}</td>
                                             <td><g:formatNumber number="${it?.length}" type="number" maxFractionDigits="2"/></td>
                                             <td>${it?.geometry?.coordinates}</td>
                                         </tr>
