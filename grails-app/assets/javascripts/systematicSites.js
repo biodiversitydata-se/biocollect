@@ -103,17 +103,15 @@ var SystematicSiteViewModel = function (valuesForVM) {
     }
 
     self.addTransectPartFromMap = function () {
-        $('#save').removeAttr('disabled');
-        var featuresAreDrawn = getTransectPart();
-        var layersCount = self.map.countFeatures();
-        var countTransectParts = self.transectParts().length;
+        var featuresAreDrawn = transformDrawnFeaturesToTransectParts(),
+         layersCount = self.map.countFeatures(),
+         countTransectParts = self.transectParts().length;
 
-        if (featuresAreDrawn && layersCount == countTransectParts){
+        if (featuresAreDrawn && (layersCount == countTransectParts || layersCount < countTransectParts)){
             self.renderTransect();
-        } else if (featuresAreDrawn && layersCount < countTransectParts) {
-            self.renderTransect();
+            $('#save').removeAttr('disabled');
         } else {
-            alert("Draw on the map first.");
+            bootbox.alert("Draw on the map first.");
         }
 
     };
@@ -269,45 +267,51 @@ var SystematicSiteViewModel = function (valuesForVM) {
         return type;
     }
 
-    // checks if new features have been drawn on the map - if yes creates new transectPart object from each new feature  
-    function getTransectPart() {
-        var geoJson = self.map.getGeoJSON();
-        var features = geoJson.features;
-        
-        if (features && features.length > 0) {
-            var i = self.transectParts().length;
-            var index = (i == 0) ? 0 : 1;
+    function limitDecimalPlaces(coordinatePair) {
+        coordinatePair = coordinatePair.map(function(coordinate) {
+            return coordinate = parseFloat(coordinate.toFixed(5));
+        });
+        return coordinatePair
+    }
 
-            for (index; index < features.length; index++){
-                var geoType = features[index].geometry.type;
+    function extractCoordinates(rawCoordinates, geoType){
+        var coordinates;
+        switch (geoType){
+            case 'Point':
+                coordinates = limitDecimalPlaces(rawCoordinates);
+                break;
+            case 'Polygon':
+                coordinates = [rawCoordinates[0].map(function(coordinatePair) { 
+                    return limitDecimalPlaces(coordinatePair)
+                })];
+                break; 
+            case 'LineString':
+                coordinates = rawCoordinates.map(function(coordinatePair) { 
+                    return limitDecimalPlaces(coordinatePair)
+                }); 
+                break;
+            default:
+                coordinates = rawCoordinates;                    
+        }
+        return coordinates;
+    }
+
+    // checks if new features have been drawn on the map - if yes create new transectPart object from each new feature  
+    function transformDrawnFeaturesToTransectParts() {
+        var geoJson = self.map.getGeoJSON();
+        var mapFeatures = geoJson.features;
+        
+        if (mapFeatures && mapFeatures.length > 0) {
+            var i = self.transectParts().length,
+             index = (i == 0) ? 0 : 1;
+
+            for (index; index < mapFeatures.length; index++){
                 // used here old version of leaflet doesn't support requests for limited coordinate length
                 // it ends up being doubles with 14 decimal places. This is a roundabout way of limiting decimal places to 5 
-                var rawCoordinates = features[index].geometry.coordinates;
-                var coordinates;
-                function limitDecimalPlaces(coordinatePair) {
-                    coordinatePair = coordinatePair.map(function(coordinate) {
-                        return coordinate = parseFloat(coordinate.toFixed(5));
-                    });
-                    return coordinatePair
-                }
-                switch (geoType){
-                    case 'Point':
-                        coordinates = limitDecimalPlaces(rawCoordinates);
-                        break;
-                    case 'Polygon':
-                        coordinates = [rawCoordinates[0].map(function(coordinatePair) { 
-                            return limitDecimalPlaces(coordinatePair)
-                        })];
-                        break; 
-                    case 'LineString':
-                        coordinates = rawCoordinates.map(function(coordinatePair) { 
-                            return limitDecimalPlaces(coordinatePair)
-                        }); 
-                        break;
-                    default:
-                        coordinates = rawCoordinates;                    
-                }
-                var name = self.transectParts().length + 1;
+                var geoType = mapFeatures[index].geometry.type,
+                 coordinates = extractCoordinates(mapFeatures[index].geometry.coordinates, geoType),
+                 name = self.transectParts().length + 1;
+
                 createTransectPart({
                     name: determineGeoType(geoType) + String(name),
                     geometry: {
@@ -318,7 +322,6 @@ var SystematicSiteViewModel = function (valuesForVM) {
             }
             return true;     
         } else {
-            // TODO - should be a message in template systematicSiteDefinition.gsp
             return false;
         }
     }
