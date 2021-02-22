@@ -79,6 +79,19 @@ class ProjectActivityController {
     }
 
     /**
+     * For systematic monitoring get all pActivities for a project 
+     * only if admin clicks on the tab 
+     * @param projectId
+     * @return
+     */
+
+    def getAllByProject(){
+        String projectId = params?.projectId
+        def pActivities = projectActivityService.getAllByProject(projectId, "", params?.version, true)
+        render pActivities as JSON
+    }
+
+    /**
      * Delete activities and records by project activityId
      * @param id projact activity id
      * @return

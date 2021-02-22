@@ -104,9 +104,6 @@ class ProjectController {
             String spatialUrl = projectService.getSpatialUrl(project, view, params.spotterId)
             Boolean isProjectContributingDataToALA = projectService.isProjectContributingDataToALA(project)
             def licences = collectoryService.licence()
-            HubSettings hubConfig = SettingService.hubConfig
-            def hubUrl = hubConfig?.urlPath
-            def relatedProjectIds = projectService.getRelatedProjectIds(hubUrl)
             // project.remove("sites")
             def model = [project: project, //this has sites
                 mapFeatures: commonService.getMapFeatures(project), //this has sites too but only extent
@@ -126,17 +123,24 @@ class ProjectController {
                 occurrenceUrl: occurrenceUrl,
                 spatialUrl: spatialUrl,
                 isProjectContributingDataToALA: isProjectContributingDataToALA,
-                licences: licences,
-                relatedProjectIds: relatedProjectIds
+                licences: licences
             ]
 
 
-            if(project.projectType in [ProjectService.PROJECT_TYPE_ECOSCIENCE, ProjectService.PROJECT_TYPE_CITIZEN_SCIENCE, ProjectService.PROJECT_TYPE_SYSTEMATIC_MONITORING]){
-                model.projectActivities = projectActivityService?.getAllByProject(project.projectId, "brief", params?.version, true)
+            if(project.projectType in [ProjectService.PROJECT_TYPE_ECOSCIENCE, ProjectService.PROJECT_TYPE_CITIZEN_SCIENCE]){
+                model.projectActivities = projectActivityService?.getAllByProject(project.projectId, "docs", params?.version, true)
                 model.pActivityForms = projectService.supportedActivityTypes(project).collect{[name: it.name, images: it.images]}
-                model.vocabList = []  // vocabService.getVocabValues ()
+                model.vocabList = vocabService.getVocabValues()
                 println model.pActivityForms
             }
+            if(project.projectType == ProjectService.PROJECT_TYPE_SYSTEMATIC_MONITORING){
+                HubSettings hubConfig = SettingService.hubConfig
+                def hubUrl = hubConfig?.urlPath
+                def relatedProjectIds = projectService.getRelatedProjectIds(hubUrl)
+                model.relatedProjectIds = relatedProjectIds
+                model.pActivityForms = projectService.supportedActivityTypes(project).collect{[name: it.name, images: it.images]}
+            }
+
             model.mobile = params.getBoolean('mobile', false)
             model.showBackButton = request.getHeader('referer') ? true:false
             if(projectService.isWorks(project)){
@@ -175,7 +179,7 @@ class ProjectController {
             view = 'csProjectTemplate'
         } else if(projectService.isSystematicMonitoring(project)) { 
             model = systematicProjectContent(project, user, params)
-            view = 'csProjectTemplate'
+            view = 'systematicProjectTemplate'
         } else {
             model = worksProjectContent(project, user)
             view = 'worksProjectTemplate'

@@ -8,7 +8,15 @@
                 <li><a href="#edit-documents" id="edit-documents-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.resources"/></a></li>
 
                 <g:if test="${!project.isExternal}">
-                    <li><a href="#project-activity" id="project-activity-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.settings"/></a></li>
+                    <g:if test="${!project.isSystematicMonitoring}"> 
+                        <li><a href="#project-activity" id="project-activity-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.settings"/></a></li>
+                    </g:if>
+                    <g:else>
+                        <li>
+                            <a href="#systematic-project-activity" id="systematic-project-activity-tab" data-toggle="tab"><i class="icon-chevron-right"></i> 
+                            <g:message code="project.admin.settings"/></a>
+                        </li>
+                    </g:else>
                     <g:if test="${hasLegacyNewsAndEvents}">
                         <li><a href="#edit-news-and-events" id="editnewsandevents-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.news"/></a></li>
                     </g:if>
@@ -65,10 +73,16 @@
                     <div id="edit-project-stories" class="pill-pane">
                         <g:render template="editProjectContent" model="${[attributeName:'projectStories', header: message(code:'project.admin.stories')]}"/>
                     </div>
-
-                    <div id="project-activity" class="pill-pane">
-                        <g:render template="/projectActivity/settings" model="[projectActivities:projectActivities]" />
-                    </div>
+                    <g:if test="${!project.isSystematicMonitoring}"> 
+                        <div id="project-activity" class="pill-pane">
+                            <g:render template="/projectActivity/settings" model="[projectActivities:projectActivities]" />
+                        </div>
+                    </g:if>
+                    <g:else>
+                        <div id="systematic-project-activity" class="pill-pane">
+                            <g:render template="/projectActivity/systematicSettings" />
+                        </div>
+                    </g:else>
                 </g:if>
 
                 <div id="permissions" class="pill-pane">
@@ -108,8 +122,17 @@
 <g:render template="/shared/attachDocument"/>
 
 <asset:script type="text/javascript">
-    function initialiseInternalCSAdmin() {
-        new RestoreTab('ul-cs-internal-project-admin', 'project-settings-tab');
-        new RestoreTab('members-tab', 'user-permissions-tab')
+    // for systematic monitoring project activites are obtained through an ajax call only when needed
+    if (${project.isSystematicMonitoring}) {
+        function initialiseInternalSystematicCSAdmin() {
+            new RestoreTab('members-tab', 'user-permissions-tab');
+        }
+        // other types of projects get all project activities on default when opening the project page
+    } else {
+       function initialiseInternalCSAdmin() {
+            new RestoreTab('ul-cs-internal-project-admin', 'project-settings-tab');
+            new RestoreTab('members-tab', 'user-permissions-tab');
+        }
     }
+
 </asset:script>
