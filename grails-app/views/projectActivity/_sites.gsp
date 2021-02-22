@@ -26,8 +26,9 @@
                 <div class="accordion-toggle">
                     <label class="radio">
                         <input type="radio" name="siteType"
-                               data-bind="checked: surveySiteOption, click: transients.toggleSiteOptionPanel.bind({accordionLinkId:'#site-create-systematic-link'}), clickBubble: false" value="sitecreatesystematic"/>
-                        <a id="site-create-systematic-link" data-parent="#site-accordion" href="#site-create-systematic"
+                               data-bind="checked: surveySiteOption, click: transients.toggleSiteOptionPanel.bind({accordionLinkId:'#site-create-systematic-link'}), 
+                               clickBubble: false" value="sitecreatesystematic"/>
+                        <a id="site-create-systematic-link" data-toggle="collapse" data-parent="#site-accordion" href="#site-create-systematic"
                            data-bind="click: transients.setSurveySiteOption.bind({value: 'sitecreatesystematic'})">
                             <h4><g:message code="mapConfiguration.sites.createSystematic.title"/></h4>
                         </a>
@@ -37,7 +38,29 @@
             <div id="site-create-systematic" class="accordion-body collapse" data-bind="css: { 'in': transients.surveySiteOption == 'sitecreatesystematic' }">
                 <div class="accordion-inner" data-bind="css: {'bg-selected-color':  surveySiteOption() === 'sitecreatesystematic' }">
                 This option allows user who are registered for the scheme to create their own sites before adding a record
-                </div>
+                
+                <div class="margin-left-30" data-bind="if: surveySiteOption() === 'sitecreatesystematic', slideVisible: surveySiteOption() === 'sitecreatesystematic'">
+                    
+                        <h5><strong><g:message code="mapConfiguration.user.pick.site.title"/></strong></h5>
+                        <h5><small><span class="req-field"></span> <g:message code="mapConfiguration.site.mandatory.title"/></small></h5>
+                        <!-- ko template: {name: 'template-sites-pick-one'} -->
+                        <!-- /ko -->
+
+                        <hr/>
+
+                        <h5><strong><g:message
+                                code="mapConfiguration.user.created.site.title"/></strong></h5>
+                        <h5><small><span class="req-field"></span> <g:message code="mapConfiguration.site.mandatory.title"/></small></h5>
+                        <!-- ko template: {name: 'template-site-create'} -->
+                        <!-- /ko -->
+
+                        <hr>
+
+                        <h5><strong><g:message
+                                code="mapConfiguration.map.behaviour.title"/></strong></h5>
+                        <!-- ko template: {name: 'template-site-add-to-project'} -->
+                        <!-- /ko -->
+                    </div></div>
             </div>
         </div>
 

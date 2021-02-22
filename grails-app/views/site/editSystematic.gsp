@@ -65,6 +65,7 @@
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
         ajaxUpdateSystematicUrl: "${createLink(action: 'ajaxUpdateSystematic', id: site?.siteId)}",
         mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
+        drawOptionsConfig: ${mapService.getDrawOptions(survey) as JSON},
         returnTo: "${createLink(controller: 'project', action: 'index', id: project?.projectId)}"
         },
         here = window.location.href;
@@ -80,7 +81,7 @@
 <body>
     <div class="container-fluid validationEngineContainer" id="validation-container">
         <bs:form action="update" inline="true">
-            <g:render template="systematicSiteDetails" model="${[ownerId: params.ownerId, showLine: true, allowDetails: params.allowDetails]}"/>
+            <g:render template="systematicSiteDetails" model="${[ownerId: params?.ownerId, allowDetails: params.allowDetails]}"/>
             <div class="row-fluid">
                 <div class="form-actions span12">                
                 <g:if test="${create}">
@@ -118,11 +119,12 @@
 <asset:script type="text/javascript">
     $(function(){
 
+        var drawOptions = fcConfig.drawOptionsConfig;
         $('#validation-container').validationEngine('attach', {scroll: false});
 
         $('.helphover').popover({animation: true, trigger:'hover'});
 
-        var systematicSiteViewModel = initSiteViewModel(true, ${!userCanEdit});
+        var systematicSiteViewModel = initSiteViewModel(true, ${!userCanEdit}, drawOptions);
         $('#cancel').click(function () {
             if(systematicSiteViewModel.saved()){
                 document.location.href = fcConfig.sitePageUrl;

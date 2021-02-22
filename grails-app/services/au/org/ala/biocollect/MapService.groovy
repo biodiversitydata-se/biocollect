@@ -95,6 +95,23 @@ class MapService {
         mapConfig
     }
 
+    /** get location settings for project activity
+    * set in Project - Admin - Survey settings - Locations
+    * @param survey for which the site will be drawn
+    * 
+    * @return Map drawOptions defining which features can be drawn as part of a new site 
+    */
+    def getDrawOptions(Map survey){
+        Map drawOptions = [
+            polyline: survey.allowLine,
+            marker: survey.allowPoints,
+            polygon: survey.allowPolygons,
+            rectangle: false,
+            circle: false
+        ]
+        drawOptions
+    }
+
     List addOverlayDefaultSettings(List overlays) {
         List propertiesToCopy = ['display', 'bounds']
             overlays?.each { overlay ->

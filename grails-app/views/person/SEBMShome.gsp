@@ -58,11 +58,11 @@
                     <div class="control-group">
                         <ul>
                         <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
-                                params: [projectId:'1fb10915-e6c0-451e-b575-b7e715d5d32f', pActivityId:'642ee449-88c1-4e76-9350-85f66cb6ad8e', personId: person?.personId, allowDetails: 'no'])}">
+                                params: [projectId:'1fb10915-e6c0-451e-b575-b7e715d5d32f', pActivityId:'642ee449-88c1-4e76-9350-85f66cb6ad8e', personId: person?.personId, allowDetails: 'yes'])}">
                             Punktlokal</a>
                         </li>
                         <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
-                                params: [projectId:'30634be4-7aac-4ffb-8e5f-5e100ed2a4ea', pActivityId:'3a024566-7a65-41c8-b740-aed47d42e8d4', personId: person?.personId, allowDetails: 'no'])}">
+                                params: [projectId:'30634be4-7aac-4ffb-8e5f-5e100ed2a4ea', pActivityId:'3a024566-7a65-41c8-b740-aed47d42e8d4', personId: person?.personId, allowDetails: 'yes'])}">
                             Slinga</a>
                         </li>
                         </ul>

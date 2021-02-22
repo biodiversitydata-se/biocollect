@@ -72,17 +72,17 @@
         <li>
             <g:set var="disabled">${(!user) ? "disabled='disabled' title='login required'" : ''}</g:set>
         %{--Favourite functionality only available to authenticated users --}%
-            <g:if test="${!site?.transectParts?.isEmpty() && fc.userIsAlaAdmin()}">
+            <g:if test="${!site?.transectParts?.isEmpty() && userIsAlaOrFcAdmin}">
                 <g:link action="editSystematic" id="${site.siteId}" params="${[allowDetails: 'no']}" class="btn btn-small"><i
                     class="icon-edit"></i> <g:message code="site.details.editSystematic"/> </g:link>
             </g:if>
-            <g:else>
+            <g:elseif test="${site?.transectParts?.isEmpty()}">
                 <g:link action="edit" id="${site.siteId}" class="btn btn-small">
                     <i class="icon-edit"></i> <g:message code="site.details.editSite"/> 
                 </g:link>
-            </g:else>
+            </g:elseif>
             %{-- TODO - delete button could be for volunteers too but maybe have an alert before delete happens --}%
-            <g:if test="${fc.userIsAlaAdmin()}">
+            <g:if test="${userIsAlaOrFcAdmin}">
                 <div class="btn btn-small btn-danger" onclick="deleteSite()"><i
                         class="fa fa-remove"></i> <g:message code="site.details.deleteSite"/> 
                 </div>

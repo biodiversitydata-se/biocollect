@@ -59,6 +59,7 @@ class SiteController {
     }
     def createSystematic(){
         def project = projectService.getRich(params.projectId)
+        def survey = projectActivityService.get(params?.pActivityId, 'brief')
         // permissions check
         def projectMembers = projectService.getMembersForProjectId(params.projectId)
         def userCanCreateSite = projectMembers.find{it.userId == userService.getCurrentUserId()} ?: false
@@ -68,8 +69,19 @@ class SiteController {
         }
         project.sites?.sort {it.name}
         project.projectSite = project.sites?.find{it.siteId == project.projectSiteId}
-        render view: 'editSystematic', model: [create:true, project:project, documents:[], projectSite:project.projectSite,
-            pActivityId: params?.pActivityId, userCanEdit: userCanCreateSite, ownerId: params?.ownerId, personId: params?.personId, allowDetails: params?.allowDetails]
+        Map model = [
+            create: true, 
+            project: project, 
+            documents: [], 
+            projectSite: project?.projectSite,
+            pActivityId: params?.pActivityId,
+            survey: survey, 
+            userCanEdit: userCanCreateSite, 
+            ownerId: params?.ownerId, 
+            personId: params?.personId, 
+            allowDetails: params?.allowDetails
+            ]
+        render view: 'editSystematic', model: model
     }
 
 
@@ -109,7 +121,8 @@ class SiteController {
                           //activities: activityService.activitiesForProject(id),
                           mapFeatures        : mapFeatures,
                           isSiteStarredByUser: userService.isSiteStarredByUser(user?.userId ?: "0", site.siteId)?.isSiteStarredByUser,
-                          user               : user
+                          user               : user,
+                          userIsAlaOrFcAdmin : userService.userIsAlaOrFcAdmin()
             ]
 
             if (params.format == 'json')
@@ -154,6 +167,7 @@ class SiteController {
             String projectIds = result.site.projects.toList().join(',')
             String userId = authService.getUserId()
             result.userCanEdit = projectService.isUserEditorForProjects(userId, projectIds)
+            result.survey = projectActivityService.get(params?.pActivityId, 'brief')
             result
         }
     }

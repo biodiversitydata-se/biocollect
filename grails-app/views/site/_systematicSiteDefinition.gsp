@@ -91,7 +91,7 @@
 
 <asset:script type="text/javascript">
 var transectFeatureGroup = new L.FeatureGroup();
-function initSiteViewModel(allowPointsOfInterest, edit) {
+function initSiteViewModel(allowPointsOfInterest, edit, drawOptions) {
     // server side generated paths & properties
     var SERVER_CONF = {
         siteData: ${site ?: [] as grails.converters.JSON},
@@ -106,12 +106,7 @@ function initSiteViewModel(allowPointsOfInterest, edit) {
         useMyLocation: ${showMyLocation ?: false},
         allowSearchLocationByAddress: ${showAllowSearchLocationByAddress ?: false},
         allowSearchRegionByAddress: ${showAllowSearchRegionByAddress ?: true},
-        drawOptions: {
-            polyline: ${showLine ?: true},
-            marker:  ${showMarker ?: true},
-            polygon: ${showPolygon ?: true},
-            circle: false
-        },
+        drawOptions: drawOptions,
         editOptions: {
             featureGroup: transectFeatureGroup
         }
