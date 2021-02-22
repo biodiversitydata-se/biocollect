@@ -15,9 +15,12 @@
             <div class="span12 text-left">
 
                 <!-- ko if: projectActivities().length > 0 -->
+                 <div id="pActivity-spinner">
+                    <span class="fa fa-spin fa-spinner"></span><p>Loading...</p>
+                </div>
                  <span> <b> Select survey: </b></span>
+                 
                  <div class="btn-group">
-
                  <button type="button" class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <!-- ko  foreach: projectActivities -->
                         <span data-bind="if: current">
@@ -168,6 +171,7 @@
                 contentType: 'application/json',
                 success: function (data) {
                     createProjectActivitiesVM(data);
+                    $("#pActivity-spinner").hide();
                 },
                 error: function (data) {
                     showAlert("Error: Unhandled error", "alert-error", self.transients.resultsHolder);
@@ -176,6 +180,7 @@
         }
 
         $("#loadProjectActivities").click(function() {
+            $("#pActivity-spinner").show();
             $("#loadProjectActivities").hide();
             $("#pActivities").show();
             new RestoreTab('ul-survey-constraint-citizen-science', 'survey-info');
