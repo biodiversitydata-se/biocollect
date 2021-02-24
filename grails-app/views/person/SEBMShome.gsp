@@ -41,8 +41,11 @@
                         <div class="control-group">
                             <label>Du kan rapportera för:</label>
                             <ul>
-                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: '642ee449-88c1-4e76-9350-85f66cb6ad8e', params: [personId: person.personId])}">Punklokal</a></li>
-                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: '3a024566-7a65-41c8-b740-aed47d42e8d4', params: [personId: person.personId])}">Slinga</a></li>
+                                <g:each in="${surveys}">
+                                    <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: it?.projectActivityId, 
+                                        params: [personId: person.personId])}">${it?.name}</a>
+                                    </li>
+                                </g:each>
                             </ul>
                         </div>
                     </div>
@@ -56,15 +59,15 @@
             <div id="collapseTwo" class="accordion-body collapse">
                 <div class="accordion-inner">
                     <div class="control-group">
-                        <ul>
-                        <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
-                                params: [projectId:'1fb10915-e6c0-451e-b575-b7e715d5d32f', pActivityId:'642ee449-88c1-4e76-9350-85f66cb6ad8e', personId: person?.personId, allowDetails: 'yes'])}">
-                            Punktlokal</a>
-                        </li>
-                        <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
-                                params: [projectId:'30634be4-7aac-4ffb-8e5f-5e100ed2a4ea', pActivityId:'3a024566-7a65-41c8-b740-aed47d42e8d4', personId: person?.personId, allowDetails: 'yes'])}">
-                            Slinga</a>
-                        </li>
+                         <ul>
+                            <g:each in="${surveys}">
+                                <g:if test="${it?.surveySiteOption == 'sitecreatesystematic'}">
+                                    <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
+                                            params: [projectId:it?.projectId, pActivityId:it?.projectActivityId, 
+                                            personId: person?.personId, allowDetails: 'no'])}">${it?.name}</a>
+                                    </li>
+                                </g:if>
+                            </g:each>
                         </ul>
                     </div>
                 </div>

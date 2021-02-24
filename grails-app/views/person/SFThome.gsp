@@ -41,10 +41,15 @@
                         <div class="control-group">
                             <label>Du kan rapportera för:</label>
                             <ul>
-                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'a14cf615-a26b-48a7-87fd-00360f3d03d6', params: [personId: person.personId])}">Standardrutt</a></li>
+                                <%-- <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'a14cf615-a26b-48a7-87fd-00360f3d03d6', params: [personId: person.personId])}">Standardrutt</a></li>
                                 <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'eb7e3708-f1ff-4114-b1c3-84ed93ec7a8d', params: [personId: person.personId])}">Nattrutt</a></li>
                                 <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'ccace44f-c37a-44de-a586-7880128046d3', params: [personId: person.personId])}">Vinterrutt</a></li>
-                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'd47b0d4e-6353-4bb8-94cb-400a5f07f21d', params: [personId: person.personId])}">Kustfågelrutor</a></li>
+                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'd47b0d4e-6353-4bb8-94cb-400a5f07f21d', params: [personId: person.personId])}">Kustfågelrutor</a></li> --%>
+                                <g:each in="${surveys}">
+                                    <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: it?.projectActivityId, 
+                                        params: [personId: person.personId])}">${it?.name}</a>
+                                    </li>
+                                </g:each>
                             </ul>
                         </div>
                     </div>
@@ -59,10 +64,15 @@
                 <div class="accordion-inner">
                     <div class="control-group">
                         <ul>
-                            <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
-                                params: [projectId:'b7eee643-d5fe-465e-af38-36b217440bd2', pActivityId:'ccace44f-c37a-44de-a586-7880128046d3', personId: person?.personId, allowDetails: 'no'])}">
-                            Vinterrutt</a> (se <a href="https://www.fageltaxering.lu.se/inventera/metoder/nattrutter">metoder</a>) 
-                            </li>
+                            <g:each in="${surveys}">
+                                <g:if test="${it?.surveySiteOption == 'sitecreatesystematic'}">
+                                    <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
+                                            params: [projectId:it?.projectId, pActivityId:it?.projectActivityId, 
+                                            personId: person?.personId, allowDetails: 'no'])}">${it?.name}</a>
+                                            (se <a href="${it?.methodUrl}">metoder</a>) 
+                                    </li>
+                                </g:if>
+                            </g:each>
                         </ul>
                     </div>
                 </div>
