@@ -26,8 +26,7 @@
                 </g:if>
 
                 <li><a href="#permissions" id="permissions-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.members"/></a></li>
-                <%-- TODO change the flag? not all systematic sites will require booking--%>
-                <g:if test="${project?.requiresVolManagement}">
+                <g:if test="${siteBookingRequired}">
                     <li><a href="#bookings" id="bookings-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.siteBooking"/></a></li>
                 </g:if>
                 <g:if test="${fc.userInRole(role: grailsApplication.config.security.cas.alaAdminRole) || fc.userInRole(role: grailsApplication.config.security.cas.adminRole) || user.isAdmin}">

@@ -429,8 +429,8 @@ var TransectPart = function (data) {
     };
 };
 
-var SiteBookingViewModel = function (pActivitiesVM, emailAddresses){
-    var self = $.extend(this, pActivitiesVM);
+var SiteBookingViewModel = function (project, emailAddresses){
+    var self = $.extend(this, project);
     self.bookedBy = ko.observable();
     self.message = ko.observable();
     self.isBooked = ko.observable();

@@ -77,9 +77,11 @@
                 <div class="accordion-inner">
                     <div class="control-group">
                         <ul>
-                            <li><a href="${createLink(controller: 'project', action: 'index', params: [id: '89383d0f-9735-4fe7-8eb4-8b2e9e9b7b5c', sitesTabDefault: true, personId: person.personId])}">Standardrutt</a></li>
-                            <li><a href="${createLink(controller: 'project', action: 'index', params: [id: 'd0b2f329-c394-464b-b5ab-e1e205585a7c', sitesTabDefault: true, personId: person.personId])}">Nattrutt</a></li>
-                            <li><a href="${createLink(controller: 'project', action: 'index', params: [id: '49f55dc1-a63a-4ebf-962b-4d486db0ab16', sitesTabDefault: true, personId: person.personId])}">Kustfågelrutor</a></li>
+                            <g:each in="${projects}">
+                                <g:if test="${it.alertConfig?.ctx.contains('siteBooking')}">
+                                    <li><a href="${createLink(controller: 'project', action: 'index', id: it?.projectId, params: [sitesTabDefault: true, personId: person.personId])}">${it?.name}</a></li>
+                                </g:if>
+                            </g:each>
                         </ul>
                     </div>
                 </div>

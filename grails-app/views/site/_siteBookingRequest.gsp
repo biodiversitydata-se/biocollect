@@ -35,8 +35,8 @@
 <!-- /ko -->
 
 <asset:script type="text/javascript">
-    function initialiseSiteBookingRequest(pActivitiesVM) {
-        var siteBookingVM = new SiteBookingViewModel(pActivitiesVM, [${projectActivities[0].alert.emailAddresses}]);
+    function initialiseSiteBookingRequest(project, emailNotificationAddresses) {
+        var siteBookingVM = new SiteBookingViewModel(project, emailNotificationAddresses);
         ko.applyBindings(siteBookingVM, document.getElementById('siteBookingRequest'));
         var volunteerMap = siteBookingVM.initMap({}, 'bookingMap');
         siteBookingVM.plotGeoJson(volunteerMap, false);

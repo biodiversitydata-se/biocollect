@@ -244,17 +244,16 @@
         params.vocabList = vocabList;
         params.projectArea = projectArea;
         params.licences = licences;
-        var pActivitiesVM = new ProjectActivitiesViewModel(params, projectViewModel);
-        <g:if test="${!project.isExternal}">
-            <g:if test="${!projectContent.admin.visible}">
-                initialiseSiteBookingRequest(pActivitiesVM);
-            </g:if>
+        <g:if test="${!project.isExternal && !projectContent.admin.visible && siteBookingRequired}">
+            initialiseSiteBookingRequest(project, [${emailNotificationAddresses}]);
         </g:if>
 
         <g:if test="${projectContent.admin.visible}">
             initialiseData('project');
             initialiseInternalSystematicCSAdmin();
-            initialiseSiteBookingAdmin(pActivitiesVM);
+            <g:if test="${siteBookingRequired}">
+                initialiseSiteBookingAdmin(project);
+            </g:if>
         </g:if>
 
         $('.validationEngineContainer').validationEngine({promptPosition: 'topLeft'});

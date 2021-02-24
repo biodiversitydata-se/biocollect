@@ -104,7 +104,6 @@ class ProjectController {
             String spatialUrl = projectService.getSpatialUrl(project, view, params.spotterId)
             Boolean isProjectContributingDataToALA = projectService.isProjectContributingDataToALA(project)
             def licences = collectoryService.licence()
-            // project.remove("sites")
             def model = [project: project, //this has sites
                 mapFeatures: commonService.getMapFeatures(project), //this has sites too but only extent
                 isProjectStarredByUser: userService.isProjectStarredByUser(user?.userId?:"0", project.projectId)?.isProjectStarredByUser,
@@ -126,19 +125,22 @@ class ProjectController {
                 licences: licences
             ]
 
+            if (project.projectType == ProjectService.PROJECT_TYPE_SYSTEMATIC_MONITORING){
+                Boolean siteBookingRequired = project?.alertConfig?.ctx.contains('siteBooking')
+                HubSettings hubConfig = SettingService.hubConfig
+                String hubUrl = hubConfig?.urlPath
+                def relatedProjectIds = projectService.getRelatedProjectIds(hubUrl)
+                model.relatedProjectIds = relatedProjectIds
+                model.siteBookingRequired = siteBookingRequired
+                model.emailNotificationAddresses = siteBookingRequired ? project?.alertConfig?.emailAddresses : null
+                model.pActivityForms = projectService.supportedActivityTypes(project).collect{[name: it.name, images: it.images]}
+            }
 
             if(project.projectType in [ProjectService.PROJECT_TYPE_ECOSCIENCE, ProjectService.PROJECT_TYPE_CITIZEN_SCIENCE]){
                 model.projectActivities = projectActivityService?.getAllByProject(project.projectId, "docs", params?.version, true)
                 model.pActivityForms = projectService.supportedActivityTypes(project).collect{[name: it.name, images: it.images]}
                 model.vocabList = vocabService.getVocabValues()
                 println model.pActivityForms
-            }
-            if(project.projectType == ProjectService.PROJECT_TYPE_SYSTEMATIC_MONITORING){
-                HubSettings hubConfig = SettingService.hubConfig
-                def hubUrl = hubConfig?.urlPath
-                def relatedProjectIds = projectService.getRelatedProjectIds(hubUrl)
-                model.relatedProjectIds = relatedProjectIds
-                model.pActivityForms = projectService.supportedActivityTypes(project).collect{[name: it.name, images: it.images]}
             }
 
             model.mobile = params.getBoolean('mobile', false)
@@ -221,18 +223,21 @@ class ProjectController {
         List blog = blogService.getProjectBlog(project)
         Boolean hasNewsAndEvents = blog.find{it.type == 'News and Events'}
         Boolean hasProjectStories = blog.find{it.type == 'Project Stories'}
+        Boolean siteBookingRequired = project?.alertConfig?.ctx.contains('siteBooking')
 
         def config = [about:[label:message(code: 'project.tab.about'), template:'aboutSystematicMonitoringProject', visible: true, type:'tab', projectSite:project.projectSite],
          news:[label:message(code: 'project.tab.blog'), template:'projectBlog', visible: true, type:'tab', blog:blog, hasNewsAndEvents: hasNewsAndEvents, hasProjectStories:hasProjectStories, hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false],
          documents:[label:message(code: 'project.tab.resources'), template:'/shared/listDocuments', useExistingModel: true, editable:false, filterBy: 'all', visible: true, containerId:'overviewDocumentList', type:'tab'],
          data:[label:message(code: 'project.tab.data'), visible:user?.isAdmin, userIsProjectAdmin:user?.isAdmin, template:'/bioActivity/activities_short', showSites:false, wordForActivity:'Data', type:'tab'],
-         // rework sites to have 2 tabs: list and map and a search box 
-         sites: [label:message(code: 'g.sites'), template:'/site/siteBookingRequest', visible:(!user?.isAdmin), editable:false, type:'tab'],
-         admin:[label:message(code: 'project.tab.admin'), template:'CSAdmin', visible:(user?.isAdmin || user?.isCaseManager) && !params.version, type:'tab', hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false]]
+         admin:[label:message(code: 'project.tab.admin'), template:'CSAdmin', visible:(user?.isAdmin) && !params.version, type:'tab', hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false]]
 
         HubSettings hubConfig = SettingService.hubConfig
         if (hubConfig?.content?.hideProjectBlogTab == true) {
             config.remove('news')
+        }
+        if (siteBookingRequired) {
+            // rework sites to have 2 tabs: list and map and a search box 
+            config.sites = [label:message(code: 'g.sites'), template:'/site/siteBookingRequest', visible:(!user?.isAdmin), editable:false, type:'tab']
         }
 
         config
