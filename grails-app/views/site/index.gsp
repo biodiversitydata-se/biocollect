@@ -64,10 +64,14 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <span data-bind="text: message"></span>
     </div>
-    <div class="alert alert-info">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong><g:message code="site.details.headsUp"/></strong> <g:message code="site.details.editWarning"/> 
-    </div>
+    <%-- TODO - ultimately whether this message is displayed should be based on what hub it is or project type 
+    not on the type of site?  --%>
+    <g:if test="${site?.transectParts?.isEmpty()}">
+        <div class="alert alert-info">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong><g:message code="site.details.headsUp"/></strong> <g:message code="site.details.editWarning"/> 
+        </div>
+    </g:if>
     <ul class="breadcrumb pull-right margin-top-10">
         <li>
             <g:set var="disabled">${(!user) ? "disabled='disabled' title='login required'" : ''}</g:set>
