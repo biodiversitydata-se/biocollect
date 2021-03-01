@@ -169,12 +169,14 @@
                         <button id="downloadBtn" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span>Download</button>
                                 <table class="table table-striped table-bordered table-hover dataTable no-footer">
                                     <th><g:message code="site.metadata.name"/></th>
+                                    <th>WGS84</th>
                                     <th>SWEREF99 TM</th>
                                     <th>RT90 2.5 gon V</th>
                                     <%-- if transectParts have otherCRS then print the value --%>
                                     <g:each in="${site?.transectParts}">
                                         <tr>
                                             <td>${it?.name}</td>
+                                            <td>${it?.geometry.coordinates}</td>
                                             <td>${it?.otherCRS?.coords_3006}</td>
                                             <td>${it?.otherCRS?.coords_3021}</td>
                                         </tr>
@@ -464,16 +466,27 @@
 
     var downloadBtn = document.getElementById('downloadBtn');
     downloadBtn.addEventListener('click', function () {
-        var coordinatesOfOtherCrs = [["Name", "SWEREF99_x", "SWEREF99_y", "RT90_x", "RT90_y"]];
+        var coordinatesOfOtherCrs = [["Name", "WGS84_x", "WGS84_y", "SWEREF99_x", "SWEREF99_y", "RT90_x", "RT90_y"]];
         var segments = ${site?.transectParts};
         segments.forEach(function(segment){
-            // only get the segments that do have other CRS
-            if (segment.otherCRS){
-                var row = [segment.name, 
+            if (segment.otherCRS !== undefined){
+                var row = [
+                    segment.name, 
+                    segment.geometry.coordinates[0], segment.geometry.coordinates[1],
                     segment.otherCRS.coords_3006[0], segment.otherCRS.coords_3006[1], 
                     segment.otherCRS.coords_3021[0], segment.otherCRS.coords_3021[1]
                     ];
-                coordinatesOfOtherCrs.push(row)
+                coordinatesOfOtherCrs.push(row);
+            } else if (segment.geometry.type == "Point" && segment.otherCRS == undefined) {
+                var row = [
+                    segment.name, 
+                    segment.geometry.coordinates[0], segment.geometry.coordinates[1],
+                    'n/a', 'n/a',
+                    'n/a', 'n/a'
+                    ];
+                coordinatesOfOtherCrs.push(row);
+            } else {
+                bootbox.alert("Coordinates for some segments (lines and polygons) cannot be downloaded. Only point coordinates will be saved");
             }
         });
 
