@@ -198,11 +198,19 @@
                                 <table class="table table-striped table-bordered table-hover dataTable no-footer">
                                     <th><g:message code="site.metadata.name" /></th>
                                     <th><g:message code="site.details.description" /></th>
-                                    <th>${site?.transectParts}</th>
+                                    <th><g:message code="site.transect.transectPart.habitat" /></th>
+                                    <th><g:message code="site.transect.transectPart.detail" /></th>
+
+                                    <%-- <g:each in="${site?.transectParts?.adminProperties}">
+                                        <th >${it}</th>
+                                    </g:each> --%>
                                     <g:each in="${site?.transectParts}">
                                         <tr>
                                             <td>${it?.name}</td>
                                             <td>${it?.description}</td>
+                                            <td>${it?.displayProperties?.habitat}</td>
+                                            <td>${it?.displayProperties?.detail}</td>
+
                                         </tr>
                                     </g:each>
                                 </table>
