@@ -81,8 +81,9 @@
             <textarea data-bind="value:description" class="span10"></textarea>
         </div>
         <div>
-            <label><g:message code="g.coordinates"/></label>
-            <textarea disabled data-bind="value:geometry().coordinates" class="span10"></textarea>
+            <%-- Removing coordinate display for now - can be displayed on index page  --%>
+            <%-- <label hidden><g:message code="g.coordinates"/></label> --%>
+            <g:hiddenField name="coordinatesFromMap" data-bind="value:geometry().coordinates" class="span10"></g:hiddenField>
         </div>
     </div>
 </div>
