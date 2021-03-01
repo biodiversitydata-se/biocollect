@@ -129,19 +129,20 @@
                 <dl class="dl-horizontal">
 
                 <%-- start --%>
+                <%-- Display EPSG 4326 coordinates --%>
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" href="#collapseZero">
+                        <a class="accordion-toggle" data-toggle="collapse" href="#collapse">
                             <g:message code= "site.transect.displayCoordinates"/>
                         </a>
                     </div>
-                    <div id="collapseZero" class="accordion-body collapse">
+                    <div id="collapse" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <div class="control-group">
                                 <table class="table table-striped table-bordered table-hover dataTable no-footer">
-                                    <td><g:message code="site.metadata.name" /></td>
-                                    <td><g:message code="site.transect.transectPart.length" /> (m)</td>
-                                    <td><g:message code="g.coordinates"/></td>
+                                    <th><g:message code="site.metadata.name" /></th>
+                                    <th><g:message code="site.transect.transectPart.length" /> (m)</th>
+                                    <th><g:message code="g.coordinates"/></th>
                                     <g:each in="${site?.transectParts}">
                                         <tr>
                                             <td>${it?.name}</td>
@@ -154,19 +155,49 @@
                         </div>
                     </div>
                 </div>
+                <%-- If available display coordinates in other CRS --%>
+
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
+                        <a class="accordion-toggle" data-toggle="collapse" href="#collapse1">
+                            <g:message code= "site.transect.displayCoordinatesInOtherCRS"/>
+                        </a>
+                    </div>
+                    <div id="collapse1" class="accordion-body collapse">
+                        <div class="accordion-inner">
+                            <div class="control-group">
+                        <button id="downloadBtn" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span>Download</button>
+                                <table class="table table-striped table-bordered table-hover dataTable no-footer">
+                                    <th><g:message code="site.metadata.name"/></th>
+                                    <th>SWEREF99 TM</th>
+                                    <th>RT90 2.5 gon V</th>
+                                    <%-- if transectParts have otherCRS then print the value --%>
+                                    <g:each in="${site?.transectParts}">
+                                        <tr>
+                                            <td>${it?.name}</td>
+                                            <td>${it?.otherCRS?.coords_3006}</td>
+                                            <td>${it?.otherCRS?.coords_3021}</td>
+                                        </tr>
+                                    </g:each>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" href="#collapse2">
                             <g:message code= "site.transect.displayOtherDetails"/>
                         </a>
                     </div>
-                    <div id="collapseOne" class="accordion-body collapse">
+                    <div id="collapse2" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <div class="control-group">
                                 <table class="table table-striped table-bordered table-hover dataTable no-footer">
-                                    <td><g:message code="site.metadata.name" /></td>
-                                    <td><g:message code="site.details.description" /></td>
-                                    <g:each in="${site.transectParts}">
+                                    <th><g:message code="site.metadata.name" /></th>
+                                    <th><g:message code="site.details.description" /></th>
+                                    <th>${site?.transectParts}</th>
+                                    <g:each in="${site?.transectParts}">
                                         <tr>
                                             <td>${it?.name}</td>
                                             <td>${it?.description}</td>
@@ -430,88 +461,120 @@
     </g:if>
 </div>
 <asset:script type="text/javascript">
-        $(function(){
-            var mapFeatures = $.parseJSON('${mapFeatures?.encodeAsJavaScript()}');
-            var overlayLayersMapControlConfig = Biocollect.MapUtilities.getOverlayConfig();
-            var baseLayersAndOverlays = Biocollect.MapUtilities.getBaseLayerAndOverlayFromMapConfiguration(fcConfig.mapLayersConfig);
 
-            var mapOptions = {
-                autoZIndex: false,
-                preserveZIndex: true,
-                addLayersControlHeading: true,
-                allowSearchLocationByAddress: false,
-                allowSearchRegionByAddress: false,
-                drawControl: false,
-                singleMarker: false,
-                useMyLocation: false,
-                allowSearchByAddress: false,
-                draggableMarkers: false,
-                showReset: false,
-                maxZoom: 20,
-                baseLayer: baseLayersAndOverlays.baseLayer,
-                otherLayers: baseLayersAndOverlays.otherLayers,
-                overlays: baseLayersAndOverlays.overlays,
-                overlayLayersSelectedByDefault: baseLayersAndOverlays.overlayLayersSelectedByDefault,
-                wmsFeatureUrl: overlayLayersMapControlConfig.wmsFeatureUrl,
-                wmsLayerUrl: overlayLayersMapControlConfig.wmsLayerUrl
-            };
-            var smallMap = new ALA.Map("smallMap", mapOptions);
-
-            <%-- if site is systematic display all parts of the transect but don't show the extent (centroid) --%>
-            var transectParts = mapFeatures.transectParts;
-            if(transectParts === undefined || transectParts.length == 0){
-                if(mapFeatures.features === undefined || mapFeatures.features.length == 0){
-                    $('#siteNotDefined').show();
-                } else {
-                    var geoJson = Biocollect.MapUtilities.featureToValidGeoJson(mapFeatures.features[0]);
-                    smallMap.setGeoJSON(geoJson);
-                }
-
-                var activitiesAndRecordsViewModel = new ActivitiesAndRecordsViewModel('data-result-placeholder', null, null, true, true, false)
-                activitiesAndRecordsViewModel.searchTerm('siteId:${site.siteId}');
-                activitiesAndRecordsViewModel.search();
-                ko.applyBindings(activitiesAndRecordsViewModel, document.getElementById('siteActivities'));
-                var params = {
-                    params: {
-                        id: '${site.siteId}'
-                    }
-                }
-                initPoiGallery(params,'sitePhotopoints');
-            } else {
-                transectParts.forEach(function(part) {
-                    var geoJson = Biocollect.MapUtilities.featureToValidGeoJson(part.geometry);
-                    geoJson.properties.popupContent = part.name;
-                    smallMap.setTransectFromGeoJSON(geoJson);
-                });
+    var downloadBtn = document.getElementById('downloadBtn');
+    downloadBtn.addEventListener('click', function () {
+        var coordinatesOfOtherCrs = [["Name", "SWEREF99_x", "SWEREF99_y", "RT90_x", "RT90_y"]];
+        var segments = ${site?.transectParts};
+        segments.forEach(function(segment){
+            // only get the segments that do have other CRS
+            if (segment.otherCRS){
+                var row = [segment.name, 
+                    segment.otherCRS.coords_3006[0], segment.otherCRS.coords_3006[1], 
+                    segment.otherCRS.coords_3021[0], segment.otherCRS.coords_3021[1]
+                    ];
+                coordinatesOfOtherCrs.push(row)
             }
-
         });
-        function Message (){
-            var self = this;
-            self.message = ko.observable();
-            self.clear = function(){
-                self.message('')
+
+        var csvContent = "data:text/csv;charset=utf-8,";
+        coordinatesOfOtherCrs.forEach(function(rowArray) {
+            let row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "site.csv");
+        document.body.appendChild(link); // Required for FF
+
+        link.click();
+
+    }, false);
+
+    $(function(){
+        var mapFeatures = $.parseJSON('${mapFeatures?.encodeAsJavaScript()}');
+        var overlayLayersMapControlConfig = Biocollect.MapUtilities.getOverlayConfig();
+        var baseLayersAndOverlays = Biocollect.MapUtilities.getBaseLayerAndOverlayFromMapConfiguration(fcConfig.mapLayersConfig);
+
+        var mapOptions = {
+            autoZIndex: false,
+            preserveZIndex: true,
+            addLayersControlHeading: true,
+            allowSearchLocationByAddress: false,
+            allowSearchRegionByAddress: false,
+            drawControl: false,
+            singleMarker: false,
+            useMyLocation: false,
+            allowSearchByAddress: false,
+            draggableMarkers: false,
+            showReset: false,
+            maxZoom: 20,
+            baseLayer: baseLayersAndOverlays.baseLayer,
+            otherLayers: baseLayersAndOverlays.otherLayers,
+            overlays: baseLayersAndOverlays.overlays,
+            overlayLayersSelectedByDefault: baseLayersAndOverlays.overlayLayersSelectedByDefault,
+            wmsFeatureUrl: overlayLayersMapControlConfig.wmsFeatureUrl,
+            wmsLayerUrl: overlayLayersMapControlConfig.wmsLayerUrl
+        };
+        var smallMap = new ALA.Map("smallMap", mapOptions);
+
+        <%-- if site is systematic display all parts of the transect but don't show the extent (centroid) --%>
+        var transectParts = mapFeatures.transectParts;
+        if(transectParts === undefined || transectParts.length == 0){
+            if(mapFeatures.features === undefined || mapFeatures.features.length == 0){
+                $('#siteNotDefined').show();
+            } else {
+                var geoJson = Biocollect.MapUtilities.featureToValidGeoJson(mapFeatures.features[0]);
+                smallMap.setGeoJSON(geoJson);
             }
 
-            self.message.subscribe(function(){
-                setTimeout(self.clear, 3000);
-            })
-        }
-        var msg = new Message();
-        ko.applyBindings(msg, document.getElementById('message'))
-        function deleteSite(){
-            var url = fcConfig.siteDeleteUrl + '/' + "${site.siteId}"
-            $.ajax({
-                url: url,
-                success: function(){
-                    msg.message('Successfully deleted site. Redirecting in 3 seconds.');
-                    setTimeout(function(){ window.location = fcConfig.siteListUrl}, 3000);
-                },
-                error: function(xhr){
-                    msg.message(xhr.responseText);
+            var activitiesAndRecordsViewModel = new ActivitiesAndRecordsViewModel('data-result-placeholder', null, null, true, true, false)
+            activitiesAndRecordsViewModel.searchTerm('siteId:${site.siteId}');
+            activitiesAndRecordsViewModel.search();
+            ko.applyBindings(activitiesAndRecordsViewModel, document.getElementById('siteActivities'));
+            var params = {
+                params: {
+                    id: '${site.siteId}'
                 }
-            })
+            }
+            initPoiGallery(params,'sitePhotopoints');
+        } else {
+            transectParts.forEach(function(part) {
+                var geoJson = Biocollect.MapUtilities.featureToValidGeoJson(part.geometry);
+                geoJson.properties.popupContent = part.name;
+                smallMap.setTransectFromGeoJSON(geoJson);
+            });
         }
+
+    });
+    function Message (){
+        var self = this;
+        self.message = ko.observable();
+        self.clear = function(){
+            self.message('')
+        }
+
+        self.message.subscribe(function(){
+            setTimeout(self.clear, 3000);
+        })
+    }
+    var msg = new Message();
+    ko.applyBindings(msg, document.getElementById('message'))
+    function deleteSite(){
+        var url = fcConfig.siteDeleteUrl + '/' + "${site.siteId}"
+        $.ajax({
+            url: url,
+            success: function(){
+                msg.message('Successfully deleted site. Redirecting in 3 seconds.');
+                setTimeout(function(){ window.location = fcConfig.siteListUrl}, 3000);
+            },
+            error: function(xhr){
+                msg.message(xhr.responseText);
+            }
+        })
+    }
 </asset:script>
 </body>
 </html>

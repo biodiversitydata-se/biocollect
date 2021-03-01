@@ -105,7 +105,7 @@ class SiteController {
     def index(String id) {
 
         // Include activities only when biocollect starts supporting NRM based projects.
-        def site = siteService.get(id, [view: 'projects'])
+        def site = siteService.get(id)
         if (site && site.status != 'deleted') {
             // inject the metadata model for each activity
             site.activities = site.activities ?: []
