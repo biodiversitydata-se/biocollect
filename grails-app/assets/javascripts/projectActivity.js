@@ -22,6 +22,14 @@ var ProjectActivity = function (params) {
      * If this option is unchecked, the drawing controls create private site. Private site is not visible or indexed.
      */
     self.addCreatedSiteToListOfSelectedSites = ko.observable(pActivity.addCreatedSiteToListOfSelectedSites);
+
+    /**
+     * Check this flag, if user should be allowed to add metadata to segments. 
+     * 
+     * If this option is unchecked, only description and name of the segment can be entered.
+     */
+    self.allowSegmentMetadata = ko.observable(pActivity.allowSegmentMetadata);
+
     /**
      * selectFromSitesOnly removed
      * Use surveySiteOption = 'sitepick' instead.
@@ -721,6 +729,7 @@ var ProjectActivity = function (params) {
             jsData.sites = sites;
             jsData.restrictRecordToSites = self.restrictRecordToSites();
             jsData.addCreatedSiteToListOfSelectedSites = self.addCreatedSiteToListOfSelectedSites();
+            jsData.allowSegmentMetadata = self.allowSegmentMetadata();
             jsData.mapLayersConfig = ko.toJS(self.mapLayersConfig);
             jsData.allowPolygons = self.allowPolygons();
             jsData.allowPoints = self.allowPoints();
