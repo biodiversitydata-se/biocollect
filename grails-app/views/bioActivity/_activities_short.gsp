@@ -123,11 +123,11 @@
                                                 <span>
                                                     <a data-bind="attr: {href: $parent.transients.viewUrl}" title="View record" class="btn btn-small editBtn btn-default margin-top-5"><i class="fa fa-file-o"></i> View</a>
                                                 </span>
-                                                
-                                                <span data-bind="visible: !$parent.readOnly, if: $parent.showCrud">
-                                                    <a data-bind="attr: {href: $parent.transients.editUrl }" title="Edit record" class="btn btn-small editBtn btn-default margin-top-5"><i class="fa fa-pencil"></i> Edit</a>
-                                                </span>
-                                                
+                                                <g:if test="${userIsAdmin}">
+                                                    <span data-bind="visible: !$parent.readOnly, if: $parent.showCrud">
+                                                        <a data-bind="attr: {href: $parent.transients.editUrl }" title="Edit record" class="btn btn-small editBtn btn-default margin-top-5"><i class="fa fa-pencil"></i> Edit</a>
+                                                    </span>
+                                                </g:if>
                                             </div>
                                         </td>
                                         <!-- /ko -->
