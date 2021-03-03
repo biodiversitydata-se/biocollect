@@ -337,8 +337,8 @@ var TransectPart = function (data) {
     self.type = ko.observable(exists(data, 'type'));
     self.description = ko.observable(exists(data, 'description'));
     self.displayProperties = ko.observable({
-        habitat: ko.observableArray(exists(data, 'habitat')),
-        detail: ko.observableArray(exists(data, 'detail'))
+        habitat: ko.observableArray(exists(data.displayProperties, 'habitat')),
+        detail: ko.observableArray(exists(data.displayProperties, 'detail'))
     });
     
     self.detailList = ko.observableArray(['D1. Kraftledningsgata', 'D2. Grusväg', 'D3. Asfaltsväg',

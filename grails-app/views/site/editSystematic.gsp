@@ -1,5 +1,6 @@
 <%@ page import="grails.converters.JSON; org.grails.web.json.JSONArray" contentType="text/html;charset=UTF-8" %>
 <g:set var="mapService" bean="mapService"></g:set>
+<g:set var="allowSegmentMetadata" value="${allowSegmentMetadata}"></g:set>
 <!DOCTYPE html>
 <html>
 <head>
@@ -81,7 +82,7 @@
 <body>
     <div class="container-fluid validationEngineContainer" id="validation-container">
         <bs:form action="update" inline="true">
-            <g:render template="systematicSiteDetails" model="${[ownerId: params?.ownerId, allowDetails: params.allowDetails]}"/>
+            <g:render template="systematicSiteDetails"/>
             <div class="row-fluid">
                 <div class="form-actions span12">                
                 <g:if test="${create}">
@@ -110,7 +111,7 @@
                 <h4>Projects</h4>
                 <pre>${projects?.encodeAsHTML()}</pre>
                 <h4>Features</h4>
-                <pre>${mapFeatures}</pre>
+                <pre>${mapFeatures}</pre>                
             </div>
         </div>
     </div>

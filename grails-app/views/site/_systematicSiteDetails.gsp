@@ -41,7 +41,7 @@
 
     <h4><g:message code="site.transect.step.title" /> 2</h4>
     <label for="name"><g:message code="site.transect.step2"/></label>
-    <g:render template="/site/systematicSiteDefinition" model="${[allowDetails: params?.allowDetails]}"/>
+    <g:render template="/site/systematicSiteDefinition"/>
 
 </div>
 <!-- /ko -->

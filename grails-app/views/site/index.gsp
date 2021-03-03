@@ -77,7 +77,7 @@
             <g:set var="disabled">${(!user) ? "disabled='disabled' title='login required'" : ''}</g:set>
         %{--Favourite functionality only available to authenticated users --}%
             <g:if test="${!site?.transectParts?.isEmpty() && userIsAlaOrFcAdmin}">
-                <g:link action="editSystematic" id="${site.siteId}" params="${[allowDetails: 'no']}" class="btn btn-small"><i
+                <g:link action="editSystematic" id="${site.siteId}" class="btn btn-small"><i
                     class="icon-edit"></i> <g:message code="site.details.editSystematic"/> </g:link>
             </g:if>
             <g:elseif test="${site?.transectParts?.isEmpty()}">
@@ -200,17 +200,12 @@
                                     <th><g:message code="site.details.description" /></th>
                                     <th><g:message code="site.transect.transectPart.habitat" /></th>
                                     <th><g:message code="site.transect.transectPart.detail" /></th>
-
-                                    <%-- <g:each in="${site?.transectParts?.adminProperties}">
-                                        <th >${it}</th>
-                                    </g:each> --%>
-                                    <g:each in="${site?.transectParts}">
+                                    <g:each var="segment" in="${site?.transectParts}">
                                         <tr>
-                                            <td>${it?.name}</td>
-                                            <td>${it?.description}</td>
-                                            <td>${it?.displayProperties?.habitat}</td>
-                                            <td>${it?.displayProperties?.detail}</td>
-
+                                            <td>${segment?.name}</td>
+                                            <td>${segment?.description}</td>
+                                            <td><g:each in="${segment?.displayProperties?.habitat}">${it}</br></g:each></td>
+                                            <td><g:each in="${segment?.displayProperties?.detail}">${it}</br></g:each></td>
                                         </tr>
                                     </g:each>
                                 </table>
@@ -466,6 +461,8 @@
                 <pre>${projects?.encodeAsHTML()}</pre>
                 <h4>Features</h4>
                 <pre>${mapFeatures}</pre>
+                <h4>Surveys</h4>
+                <pre>${survey}</pre>
             </div>
         </div>
     </g:if>
@@ -570,7 +567,7 @@
         }
 
     });
-    function Message (){
+    <%-- function Message (){
         var self = this;
         self.message = ko.observable();
         self.clear = function(){
@@ -581,8 +578,8 @@
             setTimeout(self.clear, 3000);
         })
     }
-    var msg = new Message();
-    ko.applyBindings(msg, document.getElementById('message'))
+    var msg = new Message(); --%>
+    <%-- ko.applyBindings(msg, document.getElementById('message')) --%>
     function deleteSite(){
         var url = fcConfig.siteDeleteUrl + '/' + "${site.siteId}"
         $.ajax({
