@@ -107,29 +107,38 @@ class SiteController {
         // Include activities only when biocollect starts supporting NRM based projects.
         def site = siteService.get(id)
         if (site && site.status != 'deleted') {
-            // inject the metadata model for each activity
-            site.activities = site.activities ?: []
-            site.activities?.each {
-                it.model = metadataService.getActivityModel(it.type)
-            }
-            //siteService.injectLocationMetadata(site)
+            Boolean userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
             def user = userService.getUser()
-            def mapFeatures = siteService.getMapFeatures(site)
-            println mapFeatures
+            String personId = personService.getPersonIdForUser(user.userId)
+            Boolean userIsSiteOwner = (site.owner == personId ? true: false)
+            Boolean userBookedSite = (site.bookedBy == personId ? true: false)
+            Boolean userCanViewSite = !site.isSensitive || userIsAlaOrFcAdmin || userIsSiteOwner || userBookedSite
+            if (userCanViewSite){
+                // inject the metadata model for each activity
+                site.activities = site.activities ?: []
+                site.activities?.each {
+                    it.model = metadataService.getActivityModel(it.type)
+                }
+                //siteService.injectLocationMetadata(site)
+                def mapFeatures = siteService.getMapFeatures(site)
+                println mapFeatures
 
-            def result = [site               : site,
-                          //activities: activityService.activitiesForProject(id),
-                          mapFeatures        : mapFeatures,
-                          isSiteStarredByUser: userService.isSiteStarredByUser(user?.userId ?: "0", site.siteId)?.isSiteStarredByUser,
-                          user               : user,
-                          userIsAlaOrFcAdmin : userService.userIsAlaOrFcAdmin()
-            ]
+                def result = [site               : site,
+                            //activities: activityService.activitiesForProject(id),
+                            mapFeatures        : mapFeatures,
+                            isSiteStarredByUser: userService.isSiteStarredByUser(user?.userId ?: "0", site.siteId)?.isSiteStarredByUser,
+                            user               : user,
+                            userIsAlaOrFcAdmin : userIsAlaOrFcAdmin
+                ]
 
-            if (params.format == 'json')
-                render result as JSON
-            else
-                result
-
+                if (params.format == 'json')
+                    render result as JSON
+                else
+                    result
+            } else {
+                flash.message = "You don't have sufficient permissions to see this site."
+                redirect(controller: 'site', action: 'list')
+            }
         } else {
             //forward(action: 'list', model: [error: 'no such id'])
             flash.message = "Site not found."

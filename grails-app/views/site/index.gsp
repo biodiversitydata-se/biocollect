@@ -64,9 +64,7 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <span data-bind="text: message"></span>
     </div>
-    <%-- TODO - ultimately whether this message is displayed should be based on what hub it is or project type 
-    not on the type of site?  --%>
-    <g:if test="${site?.transectParts?.isEmpty()}">
+    <g:if test="${!hubConfig?.isSystematicMonitoring}">
         <div class="alert alert-info">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong><g:message code="site.details.headsUp"/></strong> <g:message code="site.details.editWarning"/> 
@@ -269,175 +267,175 @@
             <m:map id="smallMap" width="100%" height="500px"/>
         </div>
     </div>
-    <g:if test="${!site?.transectParts}">
-    <h3><g:message code="site.associated.title"/>:</h3>
-    <div id="detailsLinkedToSite">
-        <ul class="nav nav-tabs" id="myTab">
-            <g:if test="${site.projects}">
-                <li><a href="#siteProjects" data-toggle="tab"><g:message code="g.projects"/></a></li>
-            </g:if>
-            <li class="active"><a href="#siteActivities" data-toggle="tab"><g:message code="site.details.associated.surveysAndActivities"/></a></li>
-            <li><a href="#sitePhotopoints" data-toggle="tab"><g:message code="site.details.photoPoints"/></a></li>
-        </ul>
-
-        <div class="tab-content">
-            <!-- ko stopBinding: true -->
-            <div class="tab-pane" id="sitePhotopoints">
-                <g:render template="poiGallery"
-                          model="${[siteId: site.siteId, siteElementId: 'sitePhotopoints']}"></g:render>
-            </div>
-            <!-- /ko -->
-            <div class="tab-pane" id="siteProjects">
+    <g:if test="${!hubConfig?.isSystematicMonitoring}">
+        <h3><g:message code="site.associated.title"/>:</h3>
+        <div id="detailsLinkedToSite">
+            <ul class="nav nav-tabs" id="myTab">
                 <g:if test="${site.projects}">
-                    <div>
-                        <p> <g:message code="site.details.associated.projects"/> -</p>
-                        <ol>
-                            <g:each in="${site.projects}" var="p" status="count">
-                                <li>
-                                    <g:link controller="project" action="index"
-                                            id="${p.projectId}">${p.name?.encodeAsHTML()}</g:link>
-                                </li>
-                            </g:each>
-                        </ol>
-                    </div>
+                    <li><a href="#siteProjects" data-toggle="tab"><g:message code="g.projects"/></a></li>
                 </g:if>
-            </div>
+                <li class="active"><a href="#siteActivities" data-toggle="tab"><g:message code="site.details.associated.surveysAndActivities"/></a></li>
+                <li><a href="#sitePhotopoints" data-toggle="tab"><g:message code="site.details.photoPoints"/></a></li>
+            </ul>
 
-            <div class="tab-pane active" id="siteActivities">
-                <!-- ko if: activities().length == 0 -->
-                <div class="row-fluid">
-                    <h4 class="text-left margin-bottom-five">
-                        <!-- ko if: $root.searchTerm() != "" || $root.selectedFilters().length > 0 -->
-                        <g:message code="site.details.noResults"/>
-                        <!-- /ko -->
-                    </h4>
+            <div class="tab-content">
+                <!-- ko stopBinding: true -->
+                <div class="tab-pane" id="sitePhotopoints">
+                    <g:render template="poiGallery"
+                            model="${[siteId: site.siteId, siteElementId: 'sitePhotopoints']}"></g:render>
                 </div>
                 <!-- /ko -->
-
-                <!-- ko if: activities().length > 0 -->
-
-                <div class="alert alert-info hide" id="downloadStartedMsg"><i
-                        class="fa fa-spin fa-spinner">&nbsp;&nbsp;</i><g:message code="site.details.downloading"/>...</div>
-
-                <div class="row-fluid">
-                    <div class="span9">
-                        <h3 class="text-left margin-bottom-2"><g:message code="g.found"/> <span data-bind="text: total()"></span> <g:message code="g.records"/>
-                        </h3>
-                    </div>
+                <div class="tab-pane" id="siteProjects">
+                    <g:if test="${site.projects}">
+                        <div>
+                            <p> <g:message code="site.details.associated.projects"/> -</p>
+                            <ol>
+                                <g:each in="${site.projects}" var="p" status="count">
+                                    <li>
+                                        <g:link controller="project" action="index"
+                                                id="${p.projectId}">${p.name?.encodeAsHTML()}</g:link>
+                                    </li>
+                                </g:each>
+                            </ol>
+                        </div>
+                    </g:if>
                 </div>
-                <g:render template="/shared/pagination"/>
-                <!-- ko foreach : activities -->
-                <div class="row-fluid">
-                    <div class="span12">
-                        <div data-bind="attr:{class: embargoed() ? 'searchResultSection locked' : 'searchResultSection'}">
 
-                            <div class="span9 text-left">
-                                <div>
-                                    <h4>
-                                        <!-- ko if: embargoed() -->
-                                        <a href="#" class="helphover"
-                                           data-bind="popover: {title:'Only project members can access the record.', content:'Embargoed until : ' + moment(embargoUntil()).format('DD/MM/YYYY')}">
-                                            <span class="fa fa-lock"></span>
-                                        </a>
-                                        <!--/ko -->
-                                        <g:message code="site.details.surveyName"/>:
-                                        <a data-bind="attr:{'href': transients.viewUrl}">
-                                            <span data-bind="text: name"></span>
-                                        </a>
-                                    </h4>
-                                </div>
+                <div class="tab-pane active" id="siteActivities">
+                    <!-- ko if: activities().length == 0 -->
+                    <div class="row-fluid">
+                        <h4 class="text-left margin-bottom-five">
+                            <!-- ko if: $root.searchTerm() != "" || $root.selectedFilters().length > 0 -->
+                            <g:message code="site.details.noResults"/>
+                            <!-- /ko -->
+                        </h4>
+                    </div>
+                    <!-- /ko -->
 
-                                <div class="row-fluid">
-                                    <div class="span12">
-                                        <div class="span7">
-                                            <div>
-                                                <h6><g:message code="site.details.projectName"/>: <a
-                                                        data-bind="attr:{'href': projectUrl()}"><span
-                                                            data-bind="text: projectName"></span></a></h6>
-                                            </div>
+                    <!-- ko if: activities().length > 0 -->
 
-                                            <div>
-                                                <h6><g:message code="site.details.submittedBy"/>: <span
-                                                        data-bind="text: ownerName"></span> on <span
-                                                        data-bind="text: lastUpdated.formattedDate"></span>
-                                                </h6>
-                                            </div>
-                                        </div>
+                    <div class="alert alert-info hide" id="downloadStartedMsg"><i
+                            class="fa fa-spin fa-spinner">&nbsp;&nbsp;</i><g:message code="site.details.downloading"/>...</div>
 
-                                        <div class="span5">
-                                            <!-- ko if : records().length > 0 -->
-                                            <div>
-                                                <h6>
-                                                    <g:message code="g.species"/> :
-                                                    <!-- ko foreach : records -->
-                                                    <a target="_blank"
-                                                       data-bind="visible: guid, attr:{href: $root.transients.bieUrl + '/species/' + guid()}">
-                                                        <span data-bind="text: $index()+1"></span>. <span
-                                                            data-bind="text: name"></span>
-                                                    </a>
-                                                    <span data-bind="visible: !guid()">
-                                                        <span data-bind="text: $index()+1"></span>. <span
-                                                            data-bind="text: name"></span>
-                                                    </span>
-                                                    <span data-bind="if: $parent.records().length != $index()+1">
-                                                        <b>|</b>
-                                                    </span>
-                                                    <!-- /ko -->
-                                                </h6>
-                                            </div>
-                                            <!-- /ko -->
+                    <div class="row-fluid">
+                        <div class="span9">
+                            <h3 class="text-left margin-bottom-2"><g:message code="g.found"/> <span data-bind="text: total()"></span> <g:message code="g.records"/>
+                            </h3>
+                        </div>
+                    </div>
+                    <g:render template="/shared/pagination"/>
+                    <!-- ko foreach : activities -->
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div data-bind="attr:{class: embargoed() ? 'searchResultSection locked' : 'searchResultSection'}">
 
-                                        </div>
+                                <div class="span9 text-left">
+                                    <div>
+                                        <h4>
+                                            <!-- ko if: embargoed() -->
+                                            <a href="#" class="helphover"
+                                            data-bind="popover: {title:'Only project members can access the record.', content:'Embargoed until : ' + moment(embargoUntil()).format('DD/MM/YYYY')}">
+                                                <span class="fa fa-lock"></span>
+                                            </a>
+                                            <!--/ko -->
+                                            <g:message code="site.details.surveyName"/>:
+                                            <a data-bind="attr:{'href': transients.viewUrl}">
+                                                <span data-bind="text: name"></span>
+                                            </a>
+                                        </h4>
                                     </div>
 
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="span7">
+                                                <div>
+                                                    <h6><g:message code="site.details.projectName"/>: <a
+                                                            data-bind="attr:{'href': projectUrl()}"><span
+                                                                data-bind="text: projectName"></span></a></h6>
+                                                </div>
+
+                                                <div>
+                                                    <h6><g:message code="site.details.submittedBy"/>: <span
+                                                            data-bind="text: ownerName"></span> on <span
+                                                            data-bind="text: lastUpdated.formattedDate"></span>
+                                                    </h6>
+                                                </div>
+                                            </div>
+
+                                            <div class="span5">
+                                                <!-- ko if : records().length > 0 -->
+                                                <div>
+                                                    <h6>
+                                                        <g:message code="g.species"/> :
+                                                        <!-- ko foreach : records -->
+                                                        <a target="_blank"
+                                                        data-bind="visible: guid, attr:{href: $root.transients.bieUrl + '/species/' + guid()}">
+                                                            <span data-bind="text: $index()+1"></span>. <span
+                                                                data-bind="text: name"></span>
+                                                        </a>
+                                                        <span data-bind="visible: !guid()">
+                                                            <span data-bind="text: $index()+1"></span>. <span
+                                                                data-bind="text: name"></span>
+                                                        </span>
+                                                        <span data-bind="if: $parent.records().length != $index()+1">
+                                                            <b>|</b>
+                                                        </span>
+                                                        <!-- /ko -->
+                                                    </h6>
+                                                </div>
+                                                <!-- /ko -->
+
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="span3 text-right">
+                                <div class="span3 text-right">
 
-                                <!-- looks awkward to show view eye icon by itself. Users can view the survey by clicking the survey title.-->
-                                <div class="padding-top-0" data-bind="if: showCrud()">
-                                    <span class="margin-left-1">
-                                        <a data-bind="attr:{'href': transients.viewUrl}"><i
-                                                class="fa fa-eye" title="View survey"></i></a>
-                                    </span>
-                                    <span class="margin-left-1" data-bind="visible: showAdd()">
-                                        <a data-bind="attr:{'href': transients.addUrl}"><i
-                                                class="fa fa-plus" title="Add survey"></i></a>
-                                    </span>
-                                    <span class="margin-left-1">
-                                        <a data-bind="attr:{'href': transients.editUrl}"><i
-                                                class="fa fa-edit" title="Edit survey"></i></a>
-                                    </span>
-                                    <span class="margin-left-1" data-bind="visible: false">
-                                        <a href="#" data-bind="click: $parent.remove"><i
-                                                class="fa fa-remove" title="Delete survey"></i></a>
-                                    </span>
+                                    <!-- looks awkward to show view eye icon by itself. Users can view the survey by clicking the survey title.-->
+                                    <div class="padding-top-0" data-bind="if: showCrud()">
+                                        <span class="margin-left-1">
+                                            <a data-bind="attr:{'href': transients.viewUrl}"><i
+                                                    class="fa fa-eye" title="View survey"></i></a>
+                                        </span>
+                                        <span class="margin-left-1" data-bind="visible: showAdd()">
+                                            <a data-bind="attr:{'href': transients.addUrl}"><i
+                                                    class="fa fa-plus" title="Add survey"></i></a>
+                                        </span>
+                                        <span class="margin-left-1">
+                                            <a data-bind="attr:{'href': transients.editUrl}"><i
+                                                    class="fa fa-edit" title="Edit survey"></i></a>
+                                        </span>
+                                        <span class="margin-left-1" data-bind="visible: false">
+                                            <a href="#" data-bind="click: $parent.remove"><i
+                                                    class="fa fa-remove" title="Delete survey"></i></a>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <hr/>
-                <!-- /ko -->
-                <div class="margin-top-2"></div>
-                <g:render template="/shared/pagination"/>
-                <!-- ko if : activities().length > 0 -->
-                <div class="row-fluid">
-                    <div class="span12 pull-right">
-                        <div class="span12 text-right">
-                            <div><small class="text-right"><span class="fa fa-lock"></span> <g:message code="site.details.accessRestrictedTip"/>
-                            </small></div>
+                    <hr/>
+                    <!-- /ko -->
+                    <div class="margin-top-2"></div>
+                    <g:render template="/shared/pagination"/>
+                    <!-- ko if : activities().length > 0 -->
+                    <div class="row-fluid">
+                        <div class="span12 pull-right">
+                            <div class="span12 text-right">
+                                <div><small class="text-right"><span class="fa fa-lock"></span> <g:message code="site.details.accessRestrictedTip"/>
+                                </small></div>
+                            </div>
+
                         </div>
-
                     </div>
-                </div>
-                <!-- /ko -->
+                    <!-- /ko -->
 
-                <!-- /ko -->
+                    <!-- /ko -->
+                </div>
             </div>
         </div>
-    </div>
     </g:if>
     <small class="pull-right"><em><g:message code="site.details.createdOn"/> <fc:formatDateString date="${site.dateCreated}"
                                                                   inputFormat="yyyy-MM-dd'T'HH:mm:ss'Z'"
@@ -567,7 +565,7 @@
         }
 
     });
-    <%-- function Message (){
+    function Message (){
         var self = this;
         self.message = ko.observable();
         self.clear = function(){
@@ -578,8 +576,9 @@
             setTimeout(self.clear, 3000);
         })
     }
-    var msg = new Message(); --%>
-    <%-- ko.applyBindings(msg, document.getElementById('message')) --%>
+    var msg = new Message();
+    ko.applyBindings(msg, document.getElementById('message'))
+
     function deleteSite(){
         var url = fcConfig.siteDeleteUrl + '/' + "${site.siteId}"
         $.ajax({
