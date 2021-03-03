@@ -78,8 +78,8 @@ class SiteController {
             survey: survey, 
             userCanEdit: userCanCreateSite, 
             ownerId: params?.ownerId, 
-            personId: params?.personId, 
-            allowDetails: params?.allowDetails
+            personId: params?.personId,
+            allowSegmentMetadata: survey?.allowSegmentMetadata
             ]
         render view: 'editSystematic', model: model
     }
@@ -105,7 +105,7 @@ class SiteController {
     def index(String id) {
 
         // Include activities only when biocollect starts supporting NRM based projects.
-        def site = siteService.get(id, [view: 'projects'])
+        def site = siteService.get(id)
         if (site && site.status != 'deleted') {
             // inject the metadata model for each activity
             site.activities = site.activities ?: []
@@ -164,10 +164,15 @@ class SiteController {
             flash.message = "Access denied: User does not have <b>editor</b> permission to edit site: ${id}"
             redirect(controller:'home', action:'index')
         } else {
+            // getting projectId to get pActivity to see setting for the site
+            String projectId = result.site.projects[0]
+            def survey = projectActivityService.getAllByProject(projectId, 'brief')
             String projectIds = result.site.projects.toList().join(',')
             String userId = authService.getUserId()
             result.userCanEdit = projectService.isUserEditorForProjects(userId, projectIds)
-            result.survey = projectActivityService.get(params?.pActivityId, 'brief')
+            // not ideal but getting the first projectId as for systematic we only have one anyway
+            result.survey = survey
+            result.allowSegmentMetadata = survey.allowSegmentMetadata[0]
             result
         }
     }

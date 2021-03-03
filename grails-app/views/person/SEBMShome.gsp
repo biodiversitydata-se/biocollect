@@ -64,7 +64,7 @@
                                 <g:if test="${it?.surveySiteOption == 'sitecreatesystematic'}">
                                     <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
                                             params: [projectId:it?.projectId, pActivityId:it?.projectActivityId, 
-                                            personId: person?.personId, allowDetails: 'no'])}">${it?.name}</a>
+                                            personId: person?.personId])}">${it?.name}</a>
                                     </li>
                                 </g:if>
                             </g:each>

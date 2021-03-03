@@ -48,8 +48,7 @@
             <fc:textField data-bind="value:name" outerClass="span10" label="${message(code:'site.poi.name')}"
                           data-validation-engine="validate[required]"/>
         </div>
-        <%-- If it's a systematic site the below details should be hidden from volunteers --%>
-        <g:if test="${allowDetails!='no'}">     
+        <g:if test="${allowSegmentMetadata}">     
             <div class="row-fluid controls-row">
                 <div class="span6">
                     <label for="habitat"><g:message code="site.transect.transectPart.habitat"/></label>
@@ -67,11 +66,11 @@
             <div class="row-fluid controls-row">
                 <div class="span6">
                     <label for="habitatAddedByUser"><g:message code="site.transect.transectPart.attributes" />: </label>
-                    <textarea data-bind="value:habitat, event: { change: splitHabitatStr}"></textarea>
+                    <textarea data-bind="value:displayProperties().habitat, event: { change: splitHabitatStr}"></textarea>
                 </div>
                 <div class="span6">
                     <label for="detailAddedByUser"><g:message code="site.transect.transectPart.attributes" />: </label>
-                    <textarea data-bind="value:detail, event: { change: splitDetailStr}"></textarea>
+                    <textarea data-bind="value:displayProperties().detail, event: { change: splitDetailStr}"></textarea>
                     </div>
                 </div>
             </div>

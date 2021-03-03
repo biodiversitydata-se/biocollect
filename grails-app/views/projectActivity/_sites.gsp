@@ -57,8 +57,8 @@
                         <hr>
 
                         <h5><strong><g:message
-                                code="mapConfiguration.map.behaviour.title"/></strong></h5>
-                        <!-- ko template: {name: 'template-site-add-to-project'} -->
+                                code="mapConfiguration.transect.allowSegmentMetadata"/></strong></h5>
+                        <!-- ko template: {name: 'template-allow-segment-metadata'} -->
                         <!-- /ko -->
                     </div></div>
             </div>
@@ -276,6 +276,16 @@
         </label>
         <span class="help-block"><g:message
                 code="mapConfiguration.addCreatedSiteToListOfSelectedSites.help.text"/></span>
+    </div>
+</div>
+</script>
+<script id="template-allow-segment-metadata" type="text/html">
+<div class="row-fluid">
+    <div class="span6">
+        <label class="checkbox">
+            <input type="checkbox" data-bind="checked: allowSegmentMetadata"/>
+            <g:message code="mapConfiguration.transect.allowSegmentMetadata.help"/>
+        </label>
     </div>
 </div>
 </script>

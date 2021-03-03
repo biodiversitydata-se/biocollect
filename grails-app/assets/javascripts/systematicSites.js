@@ -6,7 +6,6 @@ var SystematicSiteViewModel = function (valuesForVM) {
      mapContainerId = valuesForVM.mapContainerId,
      ownerId = valuesForVM.ownerId,
      self = $.extend(this, new Documents());
-     console.log("ownerId " + ownerId);
 
     // create model for a new site
     self.site = ko.observable({
@@ -176,7 +175,6 @@ var SystematicSiteViewModel = function (valuesForVM) {
             js.transectParts.push(transectPart.toJSON())
         });
         js.geoIndex = Biocollect.MapUtilities.constructGeoIndexObject(js);
-        console.log(js)
         return js;
     };
 
@@ -338,35 +336,37 @@ var TransectPart = function (data) {
     self.name = ko.observable(exists(data, 'name'));
     self.type = ko.observable(exists(data, 'type'));
     self.description = ko.observable(exists(data, 'description'));
+    self.displayProperties = ko.observable({
+        habitat: ko.observableArray(exists(data.displayProperties, 'habitat')),
+        detail: ko.observableArray(exists(data.displayProperties, 'detail'))
+    });
     
     self.detailList = ko.observableArray(['D1. Kraftledningsgata', 'D2. Grusväg', 'D3. Asfaltsväg',
         'D4. Aktivt bete', 'D5. Upphörd hävd', 'D6. Glänta', 'D7. Åkerren', 'D8. Skyddat område']);
-    self.detail = ko.observableArray(exists(data, 'detail'));
     self.addDetail = function() {
-        self.detail.push(this); 
+        self.displayProperties().detail.push(this); 
     };
     self.splitDetailStr = function () {
-        if (typeof self.detail() == 'string'){
-            var detailArray = self.detail().split(",");
-            self.detail(detailArray);
+        if (typeof self.displayProperties().detail() == 'string'){
+            var detailArray = self.displayProperties().detail().split(",");
+            self.displayProperties().detail(detailArray);
         }
-        return self.detail();
+        return self.displayProperties().detail();
     };
 
     self.habitatList = ko.observableArray(['Lövskog', 'Blandskog', 'Barrskog', 'Hygge', 'Buskmark', 'Alvamark', 
         'Ljunghed', 'Sanddynområde', 'Betesmark', 'Åkermark', 'Kärr', 'Mosse', 'Havsstrandsdäng', 
         'Strandäng vid sjö eller vattendrag', 'Bebyggelse och trädgård', 'Häll- eller blockmark',
         'Fjällterräng']);
-    self.habitat = ko.observableArray(exists(data, 'habitat'));
     self.addHabitat = function() {
-        self.habitat.push(this); 
-    };
+            self.displayProperties().habitat.push(this); 
+        };
     self.splitHabitatStr = function () {
-        if (typeof self.habitat() == 'string'){
-            var habitatArray = self.habitat().split(",");
-            self.habitat(habitatArray);
+        if (typeof self.displayProperties().habitat() == 'string'){
+            var habitatArray = self.displayProperties().habitat().split(",");
+            self.displayProperties().habitat(habitatArray);
         }
-        return self.habitat();
+        return self.displayProperties().habitat();
     };
 
     self.length = null;
@@ -420,8 +420,7 @@ var TransectPart = function (data) {
             transectPartId: self.transectPartId(),
             name: self.name(),
             type: self.type(),
-            habitat: self.habitat(),
-            detail: self.detail(),
+            displayProperties: ko.toJS(self.displayProperties),
             description: self.description(),
             geometry: ko.toJS(self.geometry)
         };
