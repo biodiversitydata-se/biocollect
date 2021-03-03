@@ -167,7 +167,7 @@
     </g:if>
 
     <g:if test="${!mobile}">
-        <g:if test="${!hubIsSft}">
+        <g:if test="${!hubConfig?.isSystematicMonitoring}">
             <div class="form-actions">
                 <g:if test="${hasEditRights}">
                     <a class="btn btn-primary btn-large" href="${createLink(controller: 'bioActivity', action: 'edit')}/${activity.activityId}"><span class="fa fa-edit"></span> Edit</a>
