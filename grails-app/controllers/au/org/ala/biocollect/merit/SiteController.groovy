@@ -929,10 +929,14 @@ class SiteController {
             } else if (!queryParams.fq) {
                 queryParams.fq = []
             }
-
-            queryParams.fq.addAll(searchService.allProjectsInHub(request)?.collect {
-                "projects:${it}"
-            })
+            // prefilter sites for sites tab on project page
+            if (params?.view != 'projectSites'){
+                queryParams.fq.addAll(searchService.allProjectsInHub(request)?.collect {
+                    "projects:${it}"
+                })
+            } else {
+                queryParams.fq.push("projects:${params?.projectId}")
+            }
             queryParams.query = query.join(' AND ')
             queryParams.remove('hub')
             queryParams.remove('hubFq')

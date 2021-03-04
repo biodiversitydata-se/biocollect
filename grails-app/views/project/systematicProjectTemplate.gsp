@@ -11,6 +11,7 @@
     <asset:stylesheet src="projects.css"/>
     <asset:script type="text/javascript">
     var fcConfig = {
+        listSitesUrl: '${createLink(controller: 'site', action: 'elasticsearch', params: [projectId: project.projectId, view: 'projectSites'])}',
         intersectService: "${createLink(controller: 'proxy', action: 'intersect')}",
         featuresService: "${createLink(controller: 'proxy', action: 'features')}",
         featureService: "${createLink(controller: 'proxy', action: 'feature')}",
@@ -165,7 +166,7 @@
     <asset:javascript src="common.js"/>
     <asset:javascript src="project-activity-manifest.js"/>
     <asset:javascript src="projects-manifest.js"/>
-    <script src="${grailsApplication.config.google.maps.url}" async defer></script>
+    <%-- <script src="${grailsApplication.config.google.maps.url}" async defer></script> --%>
 </head>
 <body>
 
@@ -222,6 +223,7 @@
         var vocabList = <fc:modelAsJavascript model="${vocabList}" />;
         var projectArea = <fc:modelAsJavascript model="${projectSite?.extent?.geometry}"/>;
         var licences = <fc:modelAsJavascript model="${licences}"/>;
+        var facets = <fc:modelAsJavascript model="${facets}"/>;
         var ViewModel = function() {
             var self = this;
             $.extend(this, projectViewModel);
@@ -250,6 +252,7 @@
 
         <g:if test="${projectContent.admin.visible}">
             initialiseData('project');
+            initialiseSites(facets);
             initialiseInternalSystematicCSAdmin();
             <g:if test="${siteBookingRequired}">
                 initialiseSiteBookingAdmin(project);
