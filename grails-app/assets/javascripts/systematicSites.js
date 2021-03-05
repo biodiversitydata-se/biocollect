@@ -428,8 +428,8 @@ var TransectPart = function (data) {
     };
 };
 
-var SiteBookingViewModel = function (project, emailAddresses){
-    var self = $.extend(this, project);
+var SiteBookingViewModel = function (emailAddresses){
+    var self = this;
     self.bookedBy = ko.observable();
     self.message = ko.observable();
     self.isBooked = ko.observable();
@@ -437,128 +437,128 @@ var SiteBookingViewModel = function (project, emailAddresses){
     self.emailAddresses = emailAddresses;
 
     // plot site extent points on a map showing whether site is booked or not
-    self.plotGeoJson = function(map, isAdmin){
+    // self.plotGeoJson = function(map, isAdmin){
 
-        var siteList = self.sites; 
+    //     var siteList = self.sites; 
 
-        siteList.forEach(function (site) {
+    //     siteList.forEach(function (site) {
 
-            var feature = site.extent
-            if (feature && feature.source != 'none' && feature.geometry) {
-                var lng, lat, geoJson;
+    //         var feature = site.extent
+    //         if (feature && feature.source != 'none' && feature.geometry) {
+    //             var lng, lat, geoJson;
 
-                try {
+    //             try {
 
-                    if (feature.geometry.centre && feature.geometry.centre.length) {
-                        lng = parseFloat(feature.geometry.centre[0]);
-                        lat = parseFloat(feature.geometry.centre[1]);
-                        if (!feature.geometry.coordinates ) {
-                            feature.geometry.coordinates = [lng, lat];
-                            if (feature.geometry.aream2 > 0){
-                                feature.geometry.type = 'Point'
-                            }
-                        }
-                        // construct elements for point popup  
-                        var url = fcConfig.viewSiteUrl + '/' + site.siteId;
-                        var isBooked = (site.bookedBy != undefined && site.bookedBy != '') ? true : false;
-                        var message1 = "";
-                        var message2 = "";
-                        if (site.isSensitive && !isAdmin){
-                            message1 = "<i class='icon-map-marker'></i>" + site.name
-                        } else {
-                            message1 = "<i class='icon-map-marker'></i> <a href=" 
-                            + url + ">" + site.name + "</a>"
-                        }
-                        if (!isBooked){
-                            message2 = "<br>Är du intresserad av att göra rutten, klicka på den gröna knappen Boka"
-                        } else {
-                            message2 = "<br>Rutten är bokad";
-                        } 
+    //                 if (feature.geometry.centre && feature.geometry.centre.length) {
+    //                     lng = parseFloat(feature.geometry.centre[0]);
+    //                     lat = parseFloat(feature.geometry.centre[1]);
+    //                     if (!feature.geometry.coordinates ) {
+    //                         feature.geometry.coordinates = [lng, lat];
+    //                         if (feature.geometry.aream2 > 0){
+    //                             feature.geometry.type = 'Point'
+    //                         }
+    //                     }
+    //                     // construct elements for point popup  
+    //                     var url = fcConfig.viewSiteUrl + '/' + site.siteId;
+    //                     var isBooked = (site.bookedBy != undefined && site.bookedBy != '') ? true : false;
+    //                     var message1 = "";
+    //                     var message2 = "";
+    //                     if (site.isSensitive && !isAdmin){
+    //                         message1 = "<i class='icon-map-marker'></i>" + site.name
+    //                     } else {
+    //                         message1 = "<i class='icon-map-marker'></i> <a href=" 
+    //                         + url + ">" + site.name + "</a>"
+    //                     }
+    //                     if (!isBooked){
+    //                         message2 = "<br>Är du intresserad av att göra rutten, klicka på den gröna knappen Boka"
+    //                     } else {
+    //                         message2 = "<br>Rutten är bokad";
+    //                     } 
 
-                        // use map plugin to display point sites as circle markers color-coded dependent on the booking state 
-                        geoJson = Biocollect.MapUtilities.featureToValidGeoJson(feature.geometry);
-                        geoJson.properties.isBooked = isBooked;
-                        geoJson.properties.popupContent = message1 + message2;
+    //                     // use map plugin to display point sites as circle markers color-coded dependent on the booking state 
+    //                     geoJson = Biocollect.MapUtilities.featureToValidGeoJson(feature.geometry);
+    //                     geoJson.properties.isBooked = isBooked;
+    //                     geoJson.properties.popupContent = message1 + message2;
 
-                        var markerOptions = {
-                            markerLocation: [lat, lng],
-                            popup: $('#popup' + site.siteId).html()
-                        };
+    //                     var markerOptions = {
+    //                         markerLocation: [lat, lng],
+    //                         popup: $('#popup' + site.siteId).html()
+    //                     };
 
-                        // display name and fetch the id (hidden field) of selected site
-                        var displaySiteDetails = function(){
-                            self.selectedSiteId = site.siteId;
-                            self.siteName = site.name;
-                            $("#siteNameAdmin").val(site.name);
-                            $("#siteName").val(site.name);
+    //                     // display name and fetch the id (hidden field) of selected site
+    //                     var displaySiteDetails = function(){
+    //                         self.selectedSiteId = site.siteId;
+    //                         self.siteName = site.name;
+    //                         $("#siteNameAdmin").val(site.name);
+    //                         $("#siteName").val(site.name);
 
-                            if (site.bookedBy != undefined && site.bookedBy != ''){
-                                $('#btnRequestBooking').css("visibility", "hidden");
-                                $('#bookedByLink').html("");
-                                $('#bookedByLink').append(
-                                    $(document.createElement('a')).prop({
-                                    target: '_blank',
-                                    href:'/person/index/' + site.bookedBy,
-                                    innerText: 'See who booked this site'
-                                    })
-                                )
-                            } else {
-                                $('#bookedByLink').html("Site is not booked. Type in the person ID in the field 'Book for'") 
-                                $('#btnRequestBooking').css("visibility", "visible");
-                            }
-                        };
+    //                         if (site.bookedBy != undefined && site.bookedBy != ''){
+    //                             $('#btnRequestBooking').css("visibility", "hidden");
+    //                             $('#bookedByLink').html("");
+    //                             $('#bookedByLink').append(
+    //                                 $(document.createElement('a')).prop({
+    //                                 target: '_blank',
+    //                                 href:'/person/index/' + site.bookedBy,
+    //                                 innerText: 'See who booked this site'
+    //                                 })
+    //                             )
+    //                         } else {
+    //                             $('#bookedByLink').html("Site is not booked. Type in the person ID in the field 'Book for'") 
+    //                             $('#btnRequestBooking').css("visibility", "visible");
+    //                         }
+    //                     };
 
-                        var siteProperties = {
-                            id: site.siteId, 
-                            name: site.name, 
-                            bookedBy: site.bookedBy,
-                            displaySiteDetails: displaySiteDetails,
-                            layerOptions: markerOptions
-                        }
+    //                     var siteProperties = {
+    //                         id: site.siteId, 
+    //                         name: site.name, 
+    //                         bookedBy: site.bookedBy,
+    //                         displaySiteDetails: displaySiteDetails,
+    //                         layerOptions: markerOptions
+    //                     }
 
-                        if (feature.geometry.type == 'Point') {
-                            map.setGeoJSONAsCircleMarker(geoJson, siteProperties);
-                        } 
-                    }
-                } catch (exception){
-                    console.log("Site: "+ site.siteId +" reports exception, on: " + exception)
-                }
-            }
-        });
-    }
+    //                     if (feature.geometry.type == 'Point') {
+    //                         map.setGeoJSONAsCircleMarker(geoJson, siteProperties);
+    //                     } 
+    //                 }
+    //             } catch (exception){
+    //                 console.log("Site: "+ site.siteId +" reports exception, on: " + exception)
+    //             }
+    //         }
+    //     });
+    // }
 
-    self.initMap = function(params, id) {
-        var overlayLayersMapControlConfig = Biocollect.MapUtilities.getOverlayConfig();
-        var baseLayersAndOverlays = Biocollect.MapUtilities.getBaseLayerAndOverlayFromMapConfiguration(fcConfig.mapLayersConfig);
+    // self.initMap = function(params, id) {
+    //     var overlayLayersMapControlConfig = Biocollect.MapUtilities.getOverlayConfig();
+    //     var baseLayersAndOverlays = Biocollect.MapUtilities.getBaseLayerAndOverlayFromMapConfiguration(fcConfig.mapLayersConfig);
 
-        var mapOptions = $.extend({
-            autoZIndex: false,
-            preserveZIndex: true,
-            addLayersControlHeading: true,
-            allowSearchLocationByAddress: false,
-            drawControl: false,
-            singleMarker: false,
-            singleDraw: false,
-            useMyLocation: false,
-            allowSearchByAddress: false,
-            draggableMarkers: false,
-            showReset: false,
-            zoomToObject: true,
-            markerOrShapeNotBoth: false,
-            trackWindowHeight: true,
-            baseLayer: baseLayersAndOverlays.baseLayer,
-            overlayLayersSelectedByDefault: baseLayersAndOverlays.overlayLayersSelectedByDefault,
-            wmsFeatureUrl: overlayLayersMapControlConfig.wmsFeatureUrl,
-            wmsLayerUrl: overlayLayersMapControlConfig.wmsLayerUrl
-        }, params);
+    //     var mapOptions = $.extend({
+    //         autoZIndex: false,
+    //         preserveZIndex: true,
+    //         addLayersControlHeading: true,
+    //         allowSearchLocationByAddress: false,
+    //         drawControl: false,
+    //         singleMarker: false,
+    //         singleDraw: false,
+    //         useMyLocation: false,
+    //         allowSearchByAddress: false,
+    //         draggableMarkers: false,
+    //         showReset: false,
+    //         zoomToObject: true,
+    //         markerOrShapeNotBoth: false,
+    //         trackWindowHeight: true,
+    //         baseLayer: baseLayersAndOverlays.baseLayer,
+    //         overlayLayersSelectedByDefault: baseLayersAndOverlays.overlayLayersSelectedByDefault,
+    //         wmsFeatureUrl: overlayLayersMapControlConfig.wmsFeatureUrl,
+    //         wmsLayerUrl: overlayLayersMapControlConfig.wmsLayerUrl
+    //     }, params);
 
-        var map = new ALA.Map(id, mapOptions);
+    //     var map = new ALA.Map(id, mapOptions);
 
-        L.Icon.Default.imagePath = $('#' + id).attr('data-leaflet-img');
+    //     L.Icon.Default.imagePath = $('#' + id).attr('data-leaflet-img');
 
-        map.addButton("<span class='fa fa-refresh reset-map' title='${message(code: 'site.map.resetZoom')}'></span>", map.fitBounds, "bottomright");
-        return map;
-    }
+    //     map.addButton("<span class='fa fa-refresh reset-map' title='${message(code: 'site.map.resetZoom')}'></span>", map.fitBounds, "bottomright");
+    //     return map;
+    // }
 
     self.requestBooking= function(){
         var data = {

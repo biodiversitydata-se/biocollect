@@ -246,17 +246,12 @@
         params.vocabList = vocabList;
         params.projectArea = projectArea;
         params.licences = licences;
-        <g:if test="${!project.isExternal && !projectContent.admin.visible && siteBookingRequired}">
-            initialiseSiteBookingRequest(project, [${emailNotificationAddresses}]);
-        </g:if>
 
         <g:if test="${projectContent.admin.visible}">
             initialiseData('project');
             initialiseSites(facets);
             initialiseInternalSystematicCSAdmin();
-            <g:if test="${siteBookingRequired}">
-                initialiseSiteBookingAdmin(project);
-            </g:if>
+
         </g:if>
 
         $('.validationEngineContainer').validationEngine({promptPosition: 'topLeft'});
@@ -269,9 +264,9 @@
             $('#about-tab').tab('show');
         }
         <%-- If redirected from homepage, open SITE tab for bookings --%>
-        <g:if test="${params.sitesTabDefault}">
+        <%-- <g:if test="${params.sitesTabDefault}">
             $('#sites-tab').tab('show');
-        </g:if>
+        </g:if> --%>
     });
 </asset:script>
 </body>
