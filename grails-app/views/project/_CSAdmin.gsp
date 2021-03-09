@@ -26,9 +26,6 @@
                 </g:if>
 
                 <li><a href="#permissions" id="permissions-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.members"/></a></li>
-                <g:if test="${siteBookingRequired}">
-                    <li><a href="#bookings" id="bookings-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="project.admin.siteBooking"/></a></li>
-                </g:if>
                 <g:if test="${fc.userInRole(role: grailsApplication.config.security.cas.alaAdminRole) || fc.userInRole(role: grailsApplication.config.security.cas.adminRole) || user.isAdmin}">
                     <g:if test="${grailsApplication.config.notification.enabled?.toBoolean()}">
                     <li><a href="#project-notification" id="project-notification-tab" data-toggle="tab"><i class="icon-chevron-right"></i> <g:message code="notification.tabTitle"/></a></li>
@@ -95,12 +92,6 @@
                     </g:else>
                     
                 </div>
-                <g:if test="${project?.requiresVolManagement}">
-                <div id="bookings" class="pill-pane">
-                    <h3><g:message code="project.admin.siteBooking"/></h3>
-                    <g:render template="/site/siteBookingAdmin" model="[projectActivities:projectActivities]"/>
-                </div>
-                </g:if>    
                 <!--AUDIT-->
                 <g:if test="${fc.userInRole(role: grailsApplication.config.security.cas.alaAdminRole) || fc.userInRole(role: grailsApplication.config.security.cas.adminRole) || user.isAdmin}">
                     <div id="project-audit" class="pill-pane">

@@ -25,6 +25,7 @@ class SiteService {
     ProjectActivityService projectActivityService
     SiteService siteService
     EmailService emailService
+    PersonService personService
 
     def list() {
         webService.getJson(grailsApplication.config.ecodata.service.url + '/site/').list
@@ -630,13 +631,15 @@ class SiteService {
     }
 
     def submitBookingRequest(params, body){
-        String userName = userService.getCurrentUserDisplayName()
+        def user = userService.getUser()
+        String userName = user.displayName
+        String personId = personService.getPersonIdForUser(user.userId)
         List emailAddresses = body?.emailAddresses ?: grailsApplication.config.biocollect.support.email.address
 
         def subject = "BioCollect update: Site booking requested for ${params?.projectName}"
         def emailBody = "${userName} would like to book the site ${body?.siteName} for ${params?.projectName}. This site isn't currently booked by anyone else. <br>" + 
             "You can view the site <a href='${grailsApplication.config.server.serverURL}${body?.viewSiteUrl}/${body?.siteId}'>here</a><br>" +
-            "You can confirm the booking <a href='${grailsApplication.config.server.serverURL}${body?.personEditUrl}/${params?.personId}?defaultTab=sites&siteName=${body?.siteName}'>here</a>"
+            "You can confirm the booking <a href='${grailsApplication.config.server.serverURL}${body?.personEditUrl}/${personId}?defaultTab=sites&siteName=${body?.siteName}'>here</a>"
         if (body?.message){
              emailBody += "<br>The user attached a message: ${body?.message}<br>"
         }

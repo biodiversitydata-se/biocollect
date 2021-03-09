@@ -31,7 +31,7 @@
         siteDeleteUrl: "${createLink(controller: 'site', action: 'ajaxDeleteSiteFromProject', id:project.projectId)}",
         siteViewUrl: "${createLink(controller: 'site', action: 'index')}",
         siteEditUrl: "${createLink(controller: 'site', action: 'edit')}",
-        bookSiteUrl: "${createLink(controller: 'site', action: 'bookSites')}",
+        bookSiteUrl: "${createLink(controller: 'site', action: 'bookSites', params:[projectId: project.projectId])}",
         removeSiteUrl: "${createLink(controller: 'site', action: '')}",
         activityBulkDeleteUrl: "${createLink(controller: 'bioActivity', action: 'bulkDelete')}",
         activityBulkEmbargoUrl: "${createLink(controller: 'bioActivity', action: 'bulkEmbargo')}",
@@ -118,7 +118,7 @@
         personCreateUrl: "${createLink(controller: 'person', action: 'create', params: [relatedProjectIds: relatedProjectIds])}",
         personSearchUrl: "${createLink(controller: 'person', action: 'searchPerson')}",
         viewSiteUrl: "${createLink(controller: 'site', action: 'index')}",
-        submitBookingRequestUrl: "${createLink(controller: 'site', action: 'submitBookingRequest', params: [projectName: project?.name, personId: params?.personId])}",
+        submitBookingRequestUrl: "${createLink(controller: 'site', action: 'submitBookingRequest', params: [projectName: project?.name])}",
         absenceIconUrl:"${asset.assetPath(src: 'triangle.png')}",
         projectNotificationUrl: "${createLink(controller: 'project', action: 'sendEmailToMembers', params: [id: project.projectId])}",
         projectTestNotificationUrl: "${createLink(controller: 'project', action: 'sendTestEmail', params: [id: project.projectId])}",
@@ -251,7 +251,6 @@
             initialiseData('project');
             initialiseSites(facets);
             initialiseInternalSystematicCSAdmin();
-
         </g:if>
 
         $('.validationEngineContainer').validationEngine({promptPosition: 'topLeft'});

@@ -49,7 +49,13 @@
                                     </div>
 
                                     <div class="tab-pane" id="booking">
-                                        <g:render template="/site/siteBookingRequest" model="${[id: 'bookingMap']}"></g:render>
+                                        <g:if test="${projectContent.admin.visible}">
+                                            <g:render template="/site/siteBookingAdmin"></g:render>
+                                        </g:if>
+                                        <g:else>
+                                            <g:render template="/site/siteBookingRequest"></g:render>
+                                        </g:else>
+                                        <g:render template="/site/siteBookingMap" model="${[id: 'bookingMap']}"></g:render>
                                     </div>
 
                                     <div class="tab-pane" id="admin">
@@ -135,23 +141,21 @@ function initialiseSites(facets) {
 
                         var markerOptions = {
                             markerLocation: [lat, lng]
-                            // popup: $('#popup' + site.siteId).html()
                         };
 
                         // display name and fetch the id (hidden field) of selected site
                         var displaySiteDetails = function(){
-                            self.selectedSiteId = site.siteId();
-                            self.siteName = site.name();
                             $("#siteNameAdmin").val(site.name());
                             $("#siteName").val(site.name());
+                            $("#siteId").val(site.siteId());
 
-                            if (site.bookedBy() != undefined && site.bookedBy != '' && site.bookedBy() != null){
+                            if (site.bookedBy() != undefined && site.bookedBy() != '' && site.bookedBy() != null){
                                 $('#btnRequestBooking').css("visibility", "hidden");
                                 $('#bookedByLink').html("");
                                 $('#bookedByLink').append(
                                     $(document.createElement('a')).prop({
                                     target: '_blank',
-                                    href:'/person/index/' + site.bookedBy,
+                                    href:'/person/index/' + site.bookedBy(),
                                     innerText: 'See who booked this site'
                                     })
                                 )

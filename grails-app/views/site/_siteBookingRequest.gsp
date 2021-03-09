@@ -1,25 +1,23 @@
-<!-- ko stopBinding: true -->
-<div id="siteBookingRequest" class="well">
-
  <%-- Start of site request form  --%>
+<div id="siteBookingRequest" class="well">
     <form inline="true" class="form-horizontal">
         <h4><g:message code="project.admin.siteBooking.clickOnMap"/></h4>
         <div class="control-group">
             <label class="control-label" for="siteName"><g:message code="project.admin.siteBooking.siteName"/></label>
             <div class="controls">
-                <input class="input-xlarge" disabled id="siteName" data-bind="value: siteName"/>
-                <g:hiddenField name="siteId" id="siteId" data-bind="value: siteId"/>
+                <input class="input-xlarge" disabled id="siteName"/>
+                <g:hiddenField name="siteId" id="siteId"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label"><g:message code='project.admin.siteBooking.requestMsg'/></label>
             <div class="controls">
-                <textarea class="input-xlarge" data-bind="value: message" type="text"></textarea>
+                <textarea class="input-xlarge" type="text"></textarea>
             </div>
         </div>
         <div class="control-group">
             <div class="controls">
-                <button id="btnRequestBooking" style="visibility:hidden" class="btn btn-primary form-control" data-bind="click: requestBooking"><g:message code="btn.book"/></button>
+                <button id="btnRequestBooking" style="visibility:hidden" class="btn btn-primary form-control" onclick="requestBooking()"><g:message code="btn.book"/></button>
             </div>
         </div>
     </form> 
@@ -28,50 +26,32 @@
         <span></span>
     </div>
 </div>   
-<!-- /ko -->
  <%-- End of site booking form --%>
 
-    <m:map id="${id}" width="80%"></m:map>
-
 <script>
-    $(document).ready(function () {
-        var siteBookingVM = new SiteBookingViewModel(${project.alertConfig.emailAddresses});
-        ko.applyBindings(siteBookingVM, document.getElementById('siteBookingRequest'));
-    }); 
 
-    function initMap(params, id) {
-        var overlayLayersMapControlConfig = Biocollect.MapUtilities.getOverlayConfig();
-        var baseLayersAndOverlays = Biocollect.MapUtilities.getBaseLayerAndOverlayFromMapConfiguration(fcConfig.mapLayersConfig);
-
-        var mapOptions = $.extend({
-            autoZIndex: false,
-            preserveZIndex: true,
-            addLayersControlHeading: true,
-            allowSearchLocationByAddress: false,
-            drawControl: false,
-            singleMarker: false,
-            singleDraw: false,
-            useMyLocation: false,
-            allowSearchByAddress: false,
-            draggableMarkers: false,
-            showReset: false,
-            zoomToObject: true,
-            markerOrShapeNotBoth: false,
-            trackWindowHeight: true,
-            baseLayer: baseLayersAndOverlays.baseLayer,
-            otherLayers: baseLayersAndOverlays.otherLayers,
-            overlays: baseLayersAndOverlays.overlays,
-            overlayLayersSelectedByDefault: baseLayersAndOverlays.overlayLayersSelectedByDefault,
-            wmsFeatureUrl: overlayLayersMapControlConfig.wmsFeatureUrl,
-            wmsLayerUrl: overlayLayersMapControlConfig.wmsLayerUrl
-        }, params);
-
-        var map = new ALA.Map(id, mapOptions);
-
-        L.Icon.Default.imagePath = $('#' + id).attr('data-leaflet-img');
-
-        map.addButton("<span class='fa fa-refresh reset-map' title='${message(code: 'site.map.resetZoom')}'></span>", map.fitBounds, "bottomright");
-
-        return map;
-    }
+var requestBooking = function(){
+    var data = {
+        siteId: $("#siteId").val(),
+        siteName:$("#siteName").val(),
+        message: $("#message").val(),
+        personEditUrl: fcConfig.personEditUrl,
+        viewSiteUrl: fcConfig.viewSiteUrl,
+        emailAddresses: ${project.alertConfig.emailAddresses}
+    };
+    $.ajax({
+        url: fcConfig.submitBookingRequestUrl,
+        type: 'POST',
+        data:  JSON.stringify(data),
+        contentType: 'application/json',
+        success: function (data) {
+            bootbox.alert("Your request has been sent to the admin. When the site is booked it will show on your homepage and you will receive a confirmation to your email address.");
+            $("#messageSuccessfulRequest span").html(data.message).parent().fadeIn();
+        },
+        error: function (data) {
+            var errorMessage = data.responseText || 'There was a problem while requesting this site'
+            bootbox.alert(errorMessage);
+        }
+    })
+}
 </script>

@@ -692,7 +692,7 @@ class SiteController {
         }
     }
 
-    @PreAuthorise(accessLevel = "editSite")
+    // @PreAuthorise(accessLevel = "editSite")
     def bookSites(){
         def values = request.JSON
         def result = siteService.bookSites(values)
