@@ -1,4 +1,13 @@
 <m:map id="${id}" width="80%"></m:map>
+<div class="hide">
+    <!-- ko foreach: sites -->
+    <div class="margin-left-20" data-bind="attr:{id: 'popup'+siteId()}">
+        <div><i class="icon-map-marker"></i> <a
+                href="" data-bind="attr:{href: getSiteUrl()}, text: name"></a></div>
+        <div data-bind="visible: type"><span><i class="icon-star-empty"></i> <g:message code='site.metadata.type'/>:</span> <span data-bind="text: type"></span></div>
+    </div>
+    <!-- /ko -->
+</div>
 
 <script>
 function initMap(params, id) {

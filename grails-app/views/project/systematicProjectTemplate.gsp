@@ -249,7 +249,6 @@
 
         <g:if test="${projectContent.admin.visible}">
             initialiseData('project');
-            initialiseSites(facets);
             initialiseInternalSystematicCSAdmin();
         </g:if>
 
@@ -262,10 +261,11 @@
             amplify.store('traffic-from-project-finder-page',false)
             $('#about-tab').tab('show');
         }
+        $('#about-tab').tab('show');
         <%-- If redirected from homepage, open SITE tab for bookings --%>
-        <%-- <g:if test="${params.sitesTabDefault}">
-            $('#sites-tab').tab('show');
-        </g:if> --%>
+        <g:if test="${params.sitesTabDefault}">
+            $('#sites-tab').trigger('click');
+        </g:if>
     });
 </asset:script>
 </body>

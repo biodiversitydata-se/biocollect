@@ -39,8 +39,14 @@
                                 </div>
                                 <ul class="nav nav-tabs" id="siteListResultTab">
                                     <li><a href="#list" id="list-tab" data-toggle="tab"><g:message code="g.list"/></a></li>
-                                    <li><a href="#booking" id="booking-tab" data-toggle="tab"><g:message code="project.admin.siteBooking"/></a></li>
-                                    <li><a href="#admin" id="admin-tab" data-toggle="tab"><g:message code="g.admin"/></a></li>
+                                    <g:if test="${siteBookingRequired}">
+                                        <li><a href="#booking" id="booking-tab" data-toggle="tab">
+                                            <g:message code="project.admin.siteBooking"/>
+                                        </a></li>
+                                    </g:if>
+                                    <g:else>
+                                        <li><a href="#map" id="map-tab" data-toggle="tab"><g:message code="g.map"/></a></li>
+                                    </g:else>
                                 </ul>
 
                                 <div class="tab-content">
@@ -58,8 +64,8 @@
                                         <g:render template="/site/siteBookingMap" model="${[id: 'bookingMap']}"></g:render>
                                     </div>
 
-                                    <div class="tab-pane" id="admin">
-                                        <%-- <g:render template="" model="${[]}"></g:render> --%>
+                                    <div class="tab-pane" id="map">
+                                        <g:render template="/site/siteBookingMap" model="${[id: 'leafletMap']}"></g:render>
                                     </div>
 
                                 </div>
@@ -82,24 +88,37 @@
 
 
 var SITES_TAB_AMPLIFY_VAR = 'site-list-result-tab'
-function initialiseSites(facets) {
+$('#sites-tab').click(
+
+function initialiseSites() {
+    var facets = <fc:modelAsJavascript model="${facets}"/>;
     RestoreTab('siteListResultTab', 'list-tab')
     var sites = new SitesListViewModel(params, facets);
     var params = {
         loadOnInit: false
     }
+    var mapId, tabId, plotFunc;
     ko.applyBindings(sites, document.getElementById('siteSearch'));
-    
-    sites.sites.subscribe(plotGeoJSON);
+    // if site booking is required plot points as circles 
+    // color describes if they are booked or not
+    if (${siteBookingRequired}){
+        mapId = 'bookingMap';
+        tabId = "#booking-tab";
+        plotFunc = plotGeoJSONAsCircles;
+    } else {
+        mapId = 'leafletMap';
+        tabId = "#map-tab";
+        plotFunc = plotGeoJSON;
+    }
+    var map = initMap({}, mapId);
+    sites.sites.subscribe(plotFunc);
 
-    var map = initMap({}, 'bookingMap');
-
-    $("body").on("shown.bs.tab", "#booking-tab", function () {
+    $("body").on("shown.bs.tab", tabId, function () {
         map.getMapImpl().invalidateSize();
         map.fitBounds()
     });
 
-    function plotGeoJSON() {
+    function plotGeoJSONAsCircles() {
         var siteList = sites.sites();
         map.clearMarkers();
         map.clearLayers();
@@ -183,5 +202,44 @@ function initialiseSites(facets) {
             }
         });
     }
+
+    function plotGeoJSON() {
+        var siteList = sites.sites();
+        map.clearMarkers();
+        map.clearLayers();
+
+        siteList.forEach(function (site) {
+            var feature = site.extent
+            if (feature && feature.source != 'none' && feature.geometry) {
+                var lng, lat, geometry, options;
+                try {
+
+                    if (feature.geometry.centre && feature.geometry.centre.length) {
+                        lng = parseFloat(feature.geometry.centre[0]);
+                        lat = parseFloat(feature.geometry.centre[1]);
+                        if (!feature.geometry.coordinates ) {
+                            feature.geometry.coordinates = [lng, lat];
+                            if (feature.geometry.aream2 > 0){
+                                //ONLY apply on site list which show a marker instead of polygon
+                                //Change from Polygon to Point for geojson validation
+                                feature.geometry.type = 'Point'
+                            }
+                        }
+
+                        geometry = Biocollect.MapUtilities.featureToValidGeoJson(feature.geometry);
+                        var options = {
+                            markerWithMouseOver: true,
+                            markerLocation: [lat, lng],
+                            popup: $('#popup' + site.siteId()).html()
+                        };
+                        map.setGeoJSON(geometry, options);
+                    }
+                }catch(exception){
+                    console.log("Site:"+site.siteId() +" reports exception: " + exception)
+                }
+            }
+        });
+    }
 }
+);
 </script>

@@ -230,7 +230,7 @@ class ProjectController {
          news:[label:message(code: 'project.tab.blog'), template:'projectBlog', visible: true, type:'tab', blog:blog, hasNewsAndEvents: hasNewsAndEvents, hasProjectStories:hasProjectStories, hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false],
          documents:[label:message(code: 'project.tab.resources'), template:'/shared/listDocuments', useExistingModel: true, editable:false, filterBy: 'all', visible: true, containerId:'overviewDocumentList', type:'tab'],
          data:[label:message(code: 'project.tab.data'), visible:user?.isAdmin, userIsProjectAdmin:user?.isAdmin, template:'/bioActivity/activities_short', showSites:false, wordForActivity:'Data', type:'tab'],
-         sites: [label:message(code: 'g.sites'), template:'/site/listSystematic', visible:true, editable:false, type:'tab'],
+         sites: [label:message(code: 'g.sites'), template:'/site/listSystematic', visible:true, editable:false, type:'tab', siteBookingRequired: siteBookingRequired],
          admin:[label:message(code: 'project.tab.admin'), template:'CSAdmin', visible:(user?.isAdmin) && !params.version, type:'tab', hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false]]
 
         HubSettings hubConfig = SettingService.hubConfig
