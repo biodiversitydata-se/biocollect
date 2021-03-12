@@ -5,8 +5,10 @@
 <head>
     <meta name="layout" content="${mobile ? 'mobile' : hubConfig.skin}"/>
     <title>${project?.name.encodeAsHTML()} | Project | BioCollect</title>
-    <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},${message(code: "g.home")}"/>
+    <meta name="breadcrumbParent1" content="${createLink(controller: 'project', action: 'homePage')},Home"/>
     <meta name="breadcrumb" content="${project?.name}"/>
+    <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700"/>
+    <link rel="stylesheet" src="https://fonts.googleapis.com/css?family=Oswald:300"/>
     <asset:stylesheet src="forms-manifest.css"/>
     <asset:stylesheet src="projects.css"/>
     <asset:script type="text/javascript">
@@ -17,11 +19,6 @@
         spatialWms: "${grailsApplication.config.spatial.geoserverUrl}",
         layersStyle: "${createLink(controller: 'regions', action: 'layersStyle')}",
         serverUrl: "${grailsApplication.config.grails.serverURL}",
-        wmsActivityURL: "${createLink(controller: 'geoServer', action: 'wms', params: [projectId: project.projectId, maxFeatures: grailsApplication.config.map.wms.maxFeatures, tiled: true])}",
-        createStyleURL: "${createLink(controller: 'geoServer', action: 'createStyle')}",
-        dateRangeURL: "${createLink(controller: 'bioActivity', action: 'getMinMaxYearForQuery', params: [projectId: projectId])}",
-        getLayerNameURL: "${createLink(controller: 'geoServer', action: 'getLayerName')}",
-        heatmapURL: "${createLink(controller: 'geoServer', action: 'getHeatmap', params: [projectId: project.projectId])}",
         homePagePath: "${createLink(controller: 'home', action: 'index')}",
         projectIndexUrl: "${createLink(controller: 'project', action: 'index')}",
         projectUpdateUrl:"${createLink(action:'ajaxUpdate', id:project.projectId)}",
@@ -30,7 +27,6 @@
         siteDeleteUrl: "${createLink(controller: 'site', action: 'ajaxDeleteSiteFromProject', id:project.projectId)}",
         siteViewUrl: "${createLink(controller: 'site', action: 'index')}",
         siteEditUrl: "${createLink(controller: 'site', action: 'edit')}",
-        bookSiteUrl: "${createLink(controller: 'site', action: 'bookSites')}",
         removeSiteUrl: "${createLink(controller: 'site', action: '')}",
         activityBulkDeleteUrl: "${createLink(controller: 'bioActivity', action: 'bulkDelete')}",
         activityBulkEmbargoUrl: "${createLink(controller: 'bioActivity', action: 'bulkEmbargo')}",
@@ -46,8 +42,8 @@
         speciesPage: "${grailsApplication.config.bie.baseURL}/species/",
         searchProjectActivitiesUrl: "${createLink(controller: 'bioActivity', action: 'searchProjectActivities',params: [projectId:project.projectId, version: params.version])}",
         downloadProjectDataUrl: "${createLink(controller: 'bioActivity', action: 'downloadProjectData',params: [projectId:project.projectId])}",
+        getRecordsForMapping: "${createLink(controller: 'bioActivity', action: 'getProjectActivitiesRecordsForMapping', params:[version: params.version])}",
         siteCreateUrl: "${createLink(controller: 'site', action: 'createForProject', params: [projectId:project.projectId])}",
-        siteCreateSystematicUrl: "${createLink(controller: 'site', action: 'createSystematic', params: [projectId:project.projectId])}",
         siteSelectUrl: "${createLink(controller: 'site', action: 'select', params:[projectId:project.projectId])}&returnTo=${createLink(controller: 'project', action: 'index', id: project.projectId)}",
         siteUploadUrl: "${createLink(controller: 'site', action: 'uploadShapeFile', params:[projectId:project.projectId])}&returnTo=${createLink(controller: 'project', action: 'index', id: project.projectId)}",
         starProjectUrl: "${createLink(controller: 'project', action: 'starProject')}",
@@ -111,12 +107,6 @@
         getMembersForProjectIdPaginatedUrl: "${createLink(controller: 'project', action: 'getMembersForProjectIdPaginated')}",
         getProjectMembersURL: "${createLink(controller: 'project', action: 'getMembersForProjectIdPaginated')}/${project.projectId}",
         removeUserRoleUrl:"${createLink(controller:'user', action:'removeUserWithRoleFromProject')}",
-        personViewUrl: "${createLink(controller: 'person', action: 'index')}",
-        personEditUrl: "${createLink(controller: 'person', action: 'edit')}",
-        personCreateUrl: "${createLink(controller: 'person', action: 'create', params: [relatedProjectIds: relatedProjectIds])}",
-        personSearchUrl: "${createLink(controller: 'person', action: 'searchPerson')}",
-        viewSiteUrl: "${createLink(controller: 'site', action: 'index')}",
-        submitBookingRequestUrl: "${createLink(controller: 'site', action: 'submitBookingRequest', params: [projectName: project?.name, personId: params?.personId])}",
         absenceIconUrl:"${asset.assetPath(src: 'triangle.png')}",
         projectNotificationUrl: "${createLink(controller: 'project', action: 'sendEmailToMembers', params: [id: project.projectId])}",
         projectTestNotificationUrl: "${createLink(controller: 'project', action: 'sendTestEmail', params: [id: project.projectId])}",
@@ -124,23 +114,7 @@
         mapLayersConfig: ${mapService.getMapLayersConfig(project, null) as JSON},
         allBaseLayers: ${grailsApplication.config.map.baseLayers as grails.converters.JSON},
         allOverlays: ${grailsApplication.config.map.overlays as grails.converters.JSON},
-        allMapDisplays: ${grailsApplication.config.map.data.displays as grails.converters.JSON},
-        surveyMethods: <fc:getSurveyMethods/>,
-        timeSeriesOnIndex: "${hubConfig.timeSeriesOnIndex}",
-        mapDisplays: ${mapService.getMapDisplays(project) as JSON},
-        mapDisplayHelpText: "<g:message code="map.style.help"/>",
-        mapDisplayColourByHelpText: "<g:message code="map.colour.by.help"/>",
-        mapDisplayFilterByHelpText: "<g:message code="map.filter.by.help"/>",
-        clusterLegendTitle: "<g:message code="map.cluster.legend.title"/>",
-        heatmapLegendTitle: "<g:message code="map.heatmap.legend.title"/>",
-        pointLegendTitle: "<g:message code="map.point.legend.title"/>",
-        polygonLegendTitle: "<g:message code="map.polygon.legend.title"/>",
-        lineLegendTitle: "<g:message code="map.line.legend.title"/>",
-        heatmapHelpText: "<g:message code="map.heatmap.help.text"/>",
-        clusterHelpText: "<g:message code="map.cluster.help.text"/>",
-        lineHelpText: "<g:message code="map.line.help.text"/>",
-        pointHelpText: "<g:message code="map.point.help.text"/>",
-        polygonHelpText: "<g:message code="map.polygon.help.text"/>"
+        surveyMethods: <fc:getSurveyMethods/>
         },
         here = window.location.href;
 
@@ -247,20 +221,9 @@
 
         <g:if test="${!project.isExternal}">
             var pActivitiesVM = new ProjectActivitiesViewModel(params, projectViewModel);
-             <g:if test="${project.isSystematicMonitoring && projectContent.sites.visible}">
-                initialiseSiteBookingRequest(pActivitiesVM);
-            </g:if>
-            <g:elseif test="${!project.isSystematicMonitoring}">
-                initialiseProjectActivitiesList(pActivitiesVM);
-                initialiseData('project');
-            </g:elseif>
-            <g:if test="${projectContent.admin.visible}">
-                initialiseProjectActivitiesSettings(pActivitiesVM);
-                <g:if test="${project.isSystematicMonitoring}">
-                    initialiseSiteBookingAdmin(pActivitiesVM);
-                    initialiseData('project');
-                </g:if>
-            </g:if>
+            initialiseProjectActivitiesList(pActivitiesVM);
+            initialiseData('project');
+            <g:if test="${projectContent.admin.visible}">initialiseProjectActivitiesSettings(pActivitiesVM);</g:if>
         </g:if>
         <g:if test="${projectContent.admin.visible}">
             <g:if test="${!project.isExternal}">
@@ -286,10 +249,6 @@
             amplify.store('traffic-from-project-finder-page',false)
             $('#about-tab').tab('show');
         }
-        <%-- If redirected from homepage, open SITE tab for bookings --%>
-        <g:if test="${params.sitesTabDefault}">
-            $('#sites-tab').tab('show');
-        </g:if>
 
         <g:if test="${(fc.userIsAlaOrFcAdmin() || projectContent.admin.visible) && !project.isExternal}">
             projectViewModel.showBushfireBanner()
