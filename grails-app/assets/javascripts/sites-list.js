@@ -256,6 +256,7 @@ function SiteListViewModel(prop) {
     self.showRemoveFromFavourites = ko.observable(prop.removeFromFavourites);
     self.extent = prop.extent;
     self.sites = prop.sites
+    self.isBooked = (self.bookedBy() != undefined && self.bookedBy() != '' && self.bookedBy() != null) ? true : false;
 
     /**
      * constructs url to site

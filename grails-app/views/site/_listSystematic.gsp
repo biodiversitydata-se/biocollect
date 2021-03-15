@@ -138,28 +138,13 @@ function initialiseSites() {
                                 feature.geometry.type = 'Point'
                             }
                         }
-                        // construct elements for point popup  
-                        var url = fcConfig.viewSiteUrl + '/' + site.siteId();
-                        var isBooked = (site.bookedBy() != undefined && site.bookedBy() != '' && site.bookedBy() != null) ? true : false;
-                        var message1 = "";
-                        var message2 = "";
-
-                        message1 = "<i class='icon-map-marker'></i> <a href=" 
-                            + url + ">" + site.name() + "</a>"
-                        
-                        if (!isBooked){
-                            message2 = "<br>Är du intresserad av att göra rutten, klicka på den gröna knappen Boka"
-                        } else {
-                            message2 = "<br>Rutten är bokad";
-                        } 
-
                         // use map plugin to display point sites as circle markers color-coded dependent on the booking state 
                         geoJson = Biocollect.MapUtilities.featureToValidGeoJson(feature.geometry);
-                        geoJson.properties.isBooked = isBooked;
-                        geoJson.properties.popupContent = message1 + message2;
+                        geoJson.properties.isBooked = site.isBooked;
 
                         var markerOptions = {
-                            markerLocation: [lat, lng]
+                            markerLocation: [lat, lng],
+                            popup: $('#popup' + site.siteId()).html()
                         };
 
                         // display name and fetch the id (hidden field) of selected site
@@ -168,7 +153,7 @@ function initialiseSites() {
                             $("#siteName").val(site.name());
                             $("#siteId").val(site.siteId());
 
-                            if (site.bookedBy() != undefined && site.bookedBy() != '' && site.bookedBy() != null){
+                            if (site.isBooked){
                                 $('#btnRequestBooking').css("visibility", "hidden");
                                 $('#bookedByLink').html("");
                                 $('#bookedByLink').append(
