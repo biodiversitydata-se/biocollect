@@ -11,6 +11,7 @@
     <asset:stylesheet src="projects.css"/>
     <asset:script type="text/javascript">
     var fcConfig = {
+        listSitesUrl: '${createLink(controller: 'site', action: 'elasticsearch', params: [projectId: project.projectId, view: 'projectSites'])}',
         intersectService: "${createLink(controller: 'proxy', action: 'intersect')}",
         featuresService: "${createLink(controller: 'proxy', action: 'features')}",
         featureService: "${createLink(controller: 'proxy', action: 'feature')}",
@@ -30,7 +31,7 @@
         siteDeleteUrl: "${createLink(controller: 'site', action: 'ajaxDeleteSiteFromProject', id:project.projectId)}",
         siteViewUrl: "${createLink(controller: 'site', action: 'index')}",
         siteEditUrl: "${createLink(controller: 'site', action: 'edit')}",
-        bookSiteUrl: "${createLink(controller: 'site', action: 'bookSites')}",
+        bookSiteUrl: "${createLink(controller: 'site', action: 'bookSites', params:[projectId: project.projectId])}",
         removeSiteUrl: "${createLink(controller: 'site', action: '')}",
         activityBulkDeleteUrl: "${createLink(controller: 'bioActivity', action: 'bulkDelete')}",
         activityBulkEmbargoUrl: "${createLink(controller: 'bioActivity', action: 'bulkEmbargo')}",
@@ -117,7 +118,7 @@
         personCreateUrl: "${createLink(controller: 'person', action: 'create', params: [relatedProjectIds: relatedProjectIds])}",
         personSearchUrl: "${createLink(controller: 'person', action: 'searchPerson')}",
         viewSiteUrl: "${createLink(controller: 'site', action: 'index')}",
-        submitBookingRequestUrl: "${createLink(controller: 'site', action: 'submitBookingRequest', params: [projectName: project?.name, personId: params?.personId])}",
+        submitBookingRequestUrl: "${createLink(controller: 'site', action: 'submitBookingRequest', params: [projectName: project?.name])}",
         absenceIconUrl:"${asset.assetPath(src: 'triangle.png')}",
         projectNotificationUrl: "${createLink(controller: 'project', action: 'sendEmailToMembers', params: [id: project.projectId])}",
         projectTestNotificationUrl: "${createLink(controller: 'project', action: 'sendTestEmail', params: [id: project.projectId])}",
@@ -165,7 +166,7 @@
     <asset:javascript src="common.js"/>
     <asset:javascript src="project-activity-manifest.js"/>
     <asset:javascript src="projects-manifest.js"/>
-    <script src="${grailsApplication.config.google.maps.url}" async defer></script>
+    <%-- <script src="${grailsApplication.config.google.maps.url}" async defer></script> --%>
 </head>
 <body>
 
@@ -222,6 +223,7 @@
         var vocabList = <fc:modelAsJavascript model="${vocabList}" />;
         var projectArea = <fc:modelAsJavascript model="${projectSite?.extent?.geometry}"/>;
         var licences = <fc:modelAsJavascript model="${licences}"/>;
+        var facets = <fc:modelAsJavascript model="${facets}"/>;
         var ViewModel = function() {
             var self = this;
             $.extend(this, projectViewModel);
@@ -244,16 +246,10 @@
         params.vocabList = vocabList;
         params.projectArea = projectArea;
         params.licences = licences;
-        <g:if test="${!project.isExternal && !projectContent.admin.visible && siteBookingRequired}">
-            initialiseSiteBookingRequest(project, [${emailNotificationAddresses}]);
-        </g:if>
 
         <g:if test="${projectContent.admin.visible}">
             initialiseData('project');
             initialiseInternalSystematicCSAdmin();
-            <g:if test="${siteBookingRequired}">
-                initialiseSiteBookingAdmin(project);
-            </g:if>
         </g:if>
 
         $('.validationEngineContainer').validationEngine({promptPosition: 'topLeft'});
@@ -265,9 +261,10 @@
             amplify.store('traffic-from-project-finder-page',false)
             $('#about-tab').tab('show');
         }
+        $('#about-tab').tab('show');
         <%-- If redirected from homepage, open SITE tab for bookings --%>
         <g:if test="${params.sitesTabDefault}">
-            $('#sites-tab').tab('show');
+            $('#sites-tab').trigger('click');
         </g:if>
     });
 </asset:script>
