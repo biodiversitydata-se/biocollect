@@ -155,6 +155,7 @@ function initialiseSites() {
 
                             if (site.isBooked){
                                 $('#btnRequestBooking').css("visibility", "hidden");
+                                $('#btnSubmitBooking').css("visibility", "hidden");
                                 $('#bookedByLink').html("");
                                 $('#bookedByLink').append(
                                     $(document.createElement('a')).prop({
@@ -166,6 +167,7 @@ function initialiseSites() {
                             } else {
                                 $('#bookedByLink').html("Site is not booked. Type in the person ID in the field 'Book for'") 
                                 $('#btnRequestBooking').css("visibility", "visible");
+                                $('#btnSubmitBooking').css("visibility", "visible");
                             }
                         };
 

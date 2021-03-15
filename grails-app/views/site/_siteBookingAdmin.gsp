@@ -17,7 +17,7 @@
         </div>
         <div class="control-group">
             <div class="controls">
-                <input type="submit" id="btnBookForVolunteer" class="btn btn-primary form-control" value="${message(code:'btn.book')}"/>
+                <input type="submit" id="btnSubmitBooking" style="visibility:hidden" class="btn btn-primary form-control" value="${message(code:'btn.book')}"/>
             </div>
         </div>
     </form> 
