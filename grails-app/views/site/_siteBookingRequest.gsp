@@ -1,6 +1,6 @@
  <%-- Start of site request form  --%>
 <div id="siteBookingRequest" class="well">
-    <form inline="true" class="form-horizontal">
+    <form inline="true" class="form-horizontal" id="formSiteBookingRequest">
         <h4><g:message code="project.admin.siteBooking.clickOnMap"/></h4>
         <div class="control-group">
             <label class="control-label" for="siteName"><g:message code="project.admin.siteBooking.siteName"/></label>
@@ -17,7 +17,7 @@
         </div>
         <div class="control-group">
             <div class="controls">
-                <button id="btnRequestBooking" style="visibility:hidden" class="btn btn-primary form-control" onclick="requestBooking()"><g:message code="btn.book"/></button>
+                <input type="submit" id="btnRequestBooking" style="visibility:hidden" class="btn btn-primary form-control" value="${message(code:'btn.book')}"/>
             </div>
         </div>
     </form> 
@@ -30,7 +30,8 @@
 
 <script>
 
-var requestBooking = function(){
+$('#formSiteBookingRequest').on('submit', function(e){
+    e.preventDefault();
     var data = {
         siteId: $("#siteId").val(),
         siteName:$("#siteName").val(),
@@ -45,7 +46,7 @@ var requestBooking = function(){
         data:  JSON.stringify(data),
         contentType: 'application/json',
         success: function (data) {
-            bootbox.alert("Your request has been sent to the admin. When the site is booked it will show on your homepage and you will receive a confirmation to your email address.");
+            // bootbox.alert("Your request has been sent to the admin. When the site is booked it will show on your homepage and you will receive a confirmation to your email address.");
             $("#messageSuccessfulRequest span").html(data.message).parent().fadeIn();
         },
         error: function (data) {
@@ -53,5 +54,6 @@ var requestBooking = function(){
             bootbox.alert(errorMessage);
         }
     })
-}
+});
+
 </script>

@@ -1,5 +1,5 @@
 <div id="siteBookingAdmin" class="well">
-    <form inline="true" class="form-horizontal">
+    <form inline="true" class="form-horizontal" id="formSiteBookingAdmin">
     <h4><g:message code="project.admin.siteBooking.clickOnMap"/></h4>
         <div class="control-group">
             <%-- This value will update the site object's field 'bookedBy'  --%>
@@ -17,7 +17,7 @@
         </div>
         <div class="control-group">
             <div class="controls">
-                <button id="btnBookForVolunteer" class="btn btn-primary form-control" onclick="bookSite()"><g:message code="btn.book"/></button>
+                <input type="submit" id="btnBookForVolunteer" class="btn btn-primary form-control" value="${message(code:'btn.book')}"/>
             </div>
         </div>
     </form> 
@@ -36,7 +36,8 @@
 
 <script>
 
-var bookSite = function(){
+$('#formSiteBookingAdmin').on('submit', function(e){
+    e.preventDefault();
     var data = {
         internalPersonId: $("#bookedBy").val(),
         siteId: $("#siteId").val(),
@@ -56,11 +57,12 @@ var bookSite = function(){
             }
         },
         error: function (data) {
+            e.preventDefault();
             var errorMessage = data.responseText || 'There was a problem saving this site'
             bootbox.alert(errorMessage);
         }
     });
-}
+});
 </script>
 
 
