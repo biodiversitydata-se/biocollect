@@ -116,7 +116,7 @@
         personViewUrl: "${createLink(controller: 'person', action: 'index')}",
         personEditUrl: "${createLink(controller: 'person', action: 'edit')}",
         personCreateUrl: "${createLink(controller: 'person', action: 'create', params: [relatedProjectIds: relatedProjectIds])}",
-        personSearchUrl: "${createLink(controller: 'person', action: 'searchPerson')}",
+        personSearchUrl: "${createLink(controller: 'person', action: 'elasticsearch')}",
         viewSiteUrl: "${createLink(controller: 'site', action: 'index')}",
         submitBookingRequestUrl: "${createLink(controller: 'site', action: 'submitBookingRequest', params: [projectName: project?.name])}",
         absenceIconUrl:"${asset.assetPath(src: 'triangle.png')}",
