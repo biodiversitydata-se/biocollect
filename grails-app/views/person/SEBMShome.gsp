@@ -32,27 +32,6 @@
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
-                    Rapportera resultat
-                </a>
-            </div>
-            <div id="collapseOne" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                        <div class="control-group">
-                            <label>Du kan rapportera för:</label>
-                            <ul>
-                                <g:each in="${surveys}">
-                                    <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: it?.projectActivityId, 
-                                        params: [personId: person.personId])}">${it?.name}</a>
-                                    </li>
-                                </g:each>
-                            </ul>
-                        </div>
-                    </div>
-            </div>
-        </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" href="#collapseTwo">
                 Skapa en rutt/ sektor</a>
             </div>
@@ -71,6 +50,27 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
+                    Rapportera resultat
+                </a>
+            </div>
+            <div id="collapseOne" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <div class="control-group">
+                            <label>Du kan rapportera för:</label>
+                            <ul>
+                                <g:each in="${surveys}">
+                                    <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: it?.projectActivityId, 
+                                        params: [personId: person.personId])}">${it?.name}</a>
+                                    </li>
+                                </g:each>
+                            </ul>
+                        </div>
+                    </div>
             </div>
         </div>
         <div class="accordion-group">

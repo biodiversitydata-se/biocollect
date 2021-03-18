@@ -32,31 +32,6 @@
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
-                    Rapportera resultat
-                </a>
-            </div>
-            <div id="collapseOne" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                        <div class="control-group">
-                            <label>Du kan rapportera för:</label>
-                            <ul>
-                                <%-- <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'a14cf615-a26b-48a7-87fd-00360f3d03d6', params: [personId: person.personId])}">Standardrutt</a></li>
-                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'eb7e3708-f1ff-4114-b1c3-84ed93ec7a8d', params: [personId: person.personId])}">Nattrutt</a></li>
-                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'ccace44f-c37a-44de-a586-7880128046d3', params: [personId: person.personId])}">Vinterrutt</a></li>
-                                <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: 'd47b0d4e-6353-4bb8-94cb-400a5f07f21d', params: [personId: person.personId])}">Kustfågelrutor</a></li> --%>
-                                <g:each in="${surveys}">
-                                    <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: it?.projectActivityId, 
-                                        params: [personId: person.personId])}">${it?.name}</a>
-                                    </li>
-                                </g:each>
-                            </ul>
-                        </div>
-                    </div>
-            </div>
-        </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" href="#collapseTwo">
                 Skapa en rutt/ sektor</a>
             </div>
@@ -76,6 +51,27 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
+                    Rapportera resultat
+                </a>
+            </div>
+            <div id="collapseOne" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <div class="control-group">
+                            <label>Du kan rapportera för:</label>
+                            <ul>
+                                <g:each in="${surveys}">
+                                    <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: it?.projectActivityId, 
+                                        params: [personId: person.personId])}">${it?.name}</a>
+                                    </li>
+                                </g:each>
+                            </ul>
+                        </div>
+                    </div>
             </div>
         </div>
         <div class="accordion-group">
