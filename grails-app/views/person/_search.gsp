@@ -1,110 +1,54 @@
 <div class="pill-pane">
-<div class="control-group">
-    <button class="btn btn-primary" onclick="addPerson()"><g:message code="project.admin.members.addNew" /></button>
-</div>
-    <form class="form-horizontal input-append">
-        <div class="well">
-            <label><g:message code="project.admin.members.searchLabel"/></label>
-            <input class="input input-append pull-left" type="text" class="span6" id="searchTerm"/>
-            <button class="btn btn-primary form-control" id="searchPersonBtn">
-                <i class="icon-search icon-white"></i> <g:message code="g.search" />
-            </button>       
-        </div>
-    </form>
-
-    <div class="well well-small" id="person-search" hidden>
-        <table class="table table-striped table-bordered table-hover" id="person-search-table">
-            <thead>
-            <th><g:message code="site.metadata.name"/></th>
-            <th><g:message code="person.personalInfo.internalId"/></th>
-            <th><g:message code="person.personalInfo.town"/></th>
-            <th width="3%"><g:message code="g.edit"/></th>
-            </thead>
-        </table>
+    <div class="control-group">
+        <button class="btn btn-primary" onclick="addPerson()"><g:message code="project.admin.members.addNew" /></button>
     </div>
+    <!-- ko stopBinding: true-->
+        <div id="person-search-div" >
+            <form class="form-horizontal input-append">
+                <div class="well">
+                    <label><g:message code="project.admin.members.searchLabel"/></label>
+                    <input class="input input-append pull-left" type="text" class="span6" data-bind="value: searchTerm"/>
+                    <button class="btn btn-primary form-control" data-bind="click: loadPersons">
+                        <i class="icon-search icon-white"></i> <g:message code="g.search" />
+                    </button>
+                </div>
+            </form>
+
+            <div class="well well-small" data-bind="visible: displayTable">
+                <table class="table table-striped table-bordered table-hover" id="person-search-table">
+                    <thead>
+                        <th><g:message code="site.metadata.name"/></th>
+                        <th><g:message code="person.personalInfo.town"/></th>
+                        <th><g:message code="person.personalInfo.email"/></th>
+                        <th><g:message code="person.personalInfo.mobile"/></th>
+                        <th>ID</th>
+                        <th><g:message code="person.personalInfo.internalId"/></th>            
+                        <th width="3%"><g:message code="g.edit"/></th>
+                    </thead>
+                    <tbody data-bind="foreach: persons">
+                        <tr>
+                            <td><a href="#" data-bind="click: $parent.editPerson"><span data-bind="text: name"></a></td>
+                            <td data-bind="text: town"></td>
+                            <td data-bind="text: email"></td>
+                            <td data-bind="text: mobileNum"></td>
+                            <td data-bind="text: internalPersonId"></td>
+                            <td data-bind="text: personId"></td>
+                            <td><a href="#" data-bind="click: $parent.editPerson"><i class="fa fa-pencil"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <!-- /ko -->
 </div>
+<asset:javascript src="persons.js"/>
 <asset:script type="text/javascript">
-function addPerson(){
-    document.location.href = fcConfig.personCreateUrl + '&returnTo=' + fcConfig.returnTo; 
-}
-
 $(document).ready(function () {
+    var personsListVM = new PersonsListViewModel;
+    ko.applyBindings(personsListVM, document.getElementById("person-search-div"));
 
-    var viewPerson = function (personId) {
-        document.location.href = fcConfig.personViewUrl + '/' + personId; 
+    function addPerson(){
+        document.location.href = fcConfig.personCreateUrl + '&returnTo=' + fcConfig.returnTo; 
     }
-    var editPerson = function(personId) {
-        document.location.href = fcConfig.personEditUrl + '/' + personId + '/?returnTo=' + fcConfig.returnTo; 
-    }
-    
-    var tableSearchResults;
-    $('#searchPersonBtn').click(function(e){
-        e.preventDefault();
-        var searchTerm = document.getElementById("searchTerm").value;
-        var url = fcConfig.personSearchUrl + "&searchTerm=" + searchTerm;
-
-            if (! $.fn.DataTable.isDataTable( '#person-search-table' )){
-    
-            $('#person-search').attr("hidden", false); 
-
-            tableSearchResults = $('#person-search-table').DataTable({
-                "ajax": {url: url, dataSrc: ''},
-                "bFilter": false,
-                "info": "",
-                "infoEmpty": "",
-                "infoFiltered": "",
-                "processing": true,
-                "serverSide": true,
-                "paging": false,
-                "columns": [
-                    {
-                    mData: function (data, type, row) {
-                        return '<div>' + 
-                        '<a class="margin-left-10" href="#" title="Edit personal details or book sites">' 
-                        + data.firstName + ' ' + data.lastName +
-                        '</a></div>'; 
-                        },
-                    bSortable: false
-                    },
-                    {
-                        data: 'internalPersonId',
-                        name: 'internalPersonId'
-                    },
-                    {
-                        data: 'town',
-                        name: 'town',
-                        bSortable: false
-                    },
-                    {
-                    render: function (data, type, row) {
-                        return '<div class="pull-right margin-right-20">' + 
-                        '<a class="margin-left-10" href="" title="Edit personal details or book sites"><i class="fa fa-edit"></i></a>' 
-                        + '</div>';
-                        },
-                    bSortable: false
-                    }
-                    ]
-                });
-            } else {        
-                tableSearchResults.ajax.url(url).load()
-            } 
-    
-            $('#person-search-table').on("click", "tbody td:nth-child(1)", function (e) {
-                e.preventDefault();
-                var row = this.parentElement,
-                 data = tableSearchResults.row(row).data(),
-                 personId = data.personId;
-                editPerson(personId);
-            });
-
-            $('#person-search-table').on("click", "tbody td:nth-child(4)", function (e) {
-                e.preventDefault();
-                var row = this.parentElement,
-                 data = tableSearchResults.row(row).data(),
-                 personId = data.personId;
-                editPerson(personId);
-            });
-    });
 });
-
 </asset:script>

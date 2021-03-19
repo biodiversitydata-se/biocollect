@@ -152,87 +152,45 @@ function PersonViewModel(savedPerson, create, hubProjectIds) {
 
 }
 
+function PersonsListViewModel(){
+    var self = this;
+    self.searchTerm = ko.observable();
+    self.persons = ko.observableArray();
+    self.displayTable = ko.observable(false);
 
-/* This view model lists all observers registered for this project, 
- it displays links on each name so that person can be viewed in detail and edited  */
-// function PersonsListViewModel(projectId){
-//     var self = this;
-
-//     // list persons for project
-//     self.loadPersons = function(){
-
-//         // START of temporary list 
-
-//         var table = $('#person-list').DataTable({
-//             "bFilter": false,
-//             "processing": true,
-//             "serverSide": true,
-//             "paging": false,
-//             "ajax": fcConfig.getPersonsForProjectIdPaginatedUrl + "/" + projectId,
-//             "columns": [
-//                 {
-//                     data: 'personId',
-//                     name: 'personId'
-//                 },
-//                 {
-//                     data: 'firstName',
-//                     name: 'firstName',
-//                     bSortable: false
-//                 },
-//                 {
-//                     data: 'lastName',
-//                     name: 'lastName',
-//                     bSortable: true
-//                 },
-//                 {
-//                     data: 'email',
-//                     name: 'email',
-//                     bSortable: false
-//                 },
-//                 {
-//                     data: 'town',
-//                     name: 'town',
-//                     bSortable: false
+           /**
+     * creates an object what will be sent as parameters
+     * @param tOffset
+     * @returns {{max: *, offset: *, query: *, fq: *}}
+     */
+    self.constructQueryParams = function(){
+        var params = {
+            max: 10,
+            offset: 0,
+            query: self.searchTerm(),
+            fq: $.map('', ''),
+            sort: '_score'
+        }
+        return params;
+    }
     
-//                 },
-//                 {
-//                     render: function (data, type, row) {
-//                         return '<div class="pull-right margin-right-20">' + 
-//                         '<a class="margin-left-10" href="" title="edit this user and role combination"><i class="fa fa-edit"></i></a>' 
-//                         + '</div>';
-//                     },
-//                     bSortable: false
-//                 }
-//             ]
-//         });
+    self.loadPersons = function(){
+        $.ajax({
+            url: fcConfig.personSearchUrl + "/?searchTerm=" + self.searchTerm(), 
+            data: self.constructQueryParams(),
+            traditional:true,
+            success: function(data){
+                self.persons(data.persons);
+                self.displayTable(true);
+            }, 
+            error: function(){
+                alert("error")
+            }
+        });
+    }
 
-//         $('#person-list').on("click", "tbody td:nth-child(1)", function (e) {
-//             e.preventDefault();
-//             var row = this.parentElement;
-//             var data = table.row(row).data();
-//             var personId = data.personId;
-//             self.viewPerson(personId);
-//         });
+    self.editPerson = function() {
+        document.location.href = fcConfig.personEditUrl + '/' + this.personId + '/?returnTo=' + fcConfig.returnTo;
+    }
+}
 
-//         $('#person-list').on("click", "tbody td:nth-child(6)", function (e) {
-//             e.preventDefault();
-//             var row = this.parentElement;
-//             var data = table.row(row).data();
-//             var personId = data.personId;
-//             console.log(personId)
-//             self.editPerson(personId);
-//         });
-//         // END of temporary list
-
-//     }
-
-//     self.viewPerson = function (personId) {
-//         document.location.href = fcConfig.personViewUrl + '&id=' + personId; 
-//     }
-
-//     self.editPerson = function(personId) {
-//         document.location.href = fcConfig.personEditUrl + '&id=' + personId; 
-//     }
-
-//     self.loadPersons();
-// }

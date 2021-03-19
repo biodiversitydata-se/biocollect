@@ -6,6 +6,8 @@ import au.org.ala.biocollect.merit.UserService
 import au.org.ala.biocollect.merit.ProjectService
 import au.org.ala.biocollect.merit.OutputService
 import au.org.ala.biocollect.merit.SiteService
+import grails.web.servlet.mvc.GrailsParameterMap
+import org.apache.http.HttpStatus
 
 import grails.converters.JSON
 
@@ -21,6 +23,8 @@ class PersonController {
     ActivityService activityService
     SiteService siteService
     SettingService settingService
+    CommonService commonService
+    SearchService searchService
 
     /*
      * Show actions specific to the logged in person 
@@ -146,27 +150,6 @@ class PersonController {
         render result as JSON
     }
 
-    // def getPersonsForProjectIdPaginated() {
-    //     String projectId = params.id
-    //     log.debug "Project ID " + projectId
-    //     def adminUserId = userService.getCurrentUserId()
-
-    //     if (projectId && adminUserId) {
-    //         if (projectService.isUserAdminForProject(adminUserId, projectId) || projectService.isUserCaseManagerForProject(adminUserId, projectId)) {
-    //             def results = personService.getPersonsForProjectPerPage(projectId)
-                
-    //             asJson results
-    //         } else {
-    //             response.sendError(SC_FORBIDDEN, 'Permission denied')
-    //         }
-    //     } else if (adminUserId) {
-    //         response.sendError(SC_BAD_REQUEST, 'Required params not provided: id')
-    //     } else if (projectId) {
-    //         response.sendError(SC_FORBIDDEN, 'User not logged-in or does not have permission')
-    //     } else {
-    //         response.sendError(SC_INTERNAL_SERVER_ERROR, 'Unexpected error')
-    //     }
-    // }
 
     @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def delete(String id) {
@@ -187,5 +170,53 @@ class PersonController {
     def asJson(json) {
         render(contentType: 'application/json', text: json as JSON)
     }
+    
+    /**
+     * This function does an elastic search for persons. All elastic search parameters are supported like fq, max etc.
+     * used in project's Admin tab
+     * @return
+     */
+    @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
+    def elasticsearch() {
+        log.debug "elasticsearch params " + params
+        log.debug "request " + request.JSON
+        
+    try {
+        List query = ['className:au.org.ala.ecodata.Person']
+        String userId = userService.getCurrentUserId()
+        GrailsParameterMap queryParams = commonService.constructDefaultSearchParams(params, request, userId)
 
+        if (queryParams.fq && (queryParams.fq instanceof String)) {
+            queryParams.fq = [queryParams.fq]
+        } else if (queryParams.fq instanceof String[]) {
+            queryParams.fq = queryParams.fq as List
+        } else if (!queryParams.fq) {
+            queryParams.fq = []
+        }
+
+        queryParams.remove('hub')
+        queryParams.remove('hubFq')
+        Map searchResult = searchService.searchForSites(queryParams)
+        List persons = searchResult?.hits?.hits
+        log.debug "persons " + persons
+
+        persons = persons?.collect {
+            Map doc = it._source
+            [
+                name : doc?.firstName + " " + doc?.lastName,
+                town: doc?.town,
+                mobileNum: doc?.mobileNum,
+                email : doc?.email,
+                internalPersonId : doc?.internalPersonId,
+                personId : doc?.personId 
+            ]
+        }
+
+            render([persons: persons, total: searchResult.hits?.total ?: 0] as JSON)
+        } catch (SocketTimeoutException sTimeout) {
+            render(text: sTimeout.message, status: HttpStatus.SC_REQUEST_TIMEOUT);
+        } catch (Exception e) {
+            render(text: e.message, status: HttpStatus.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
