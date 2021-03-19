@@ -181,7 +181,15 @@ function PersonsListViewModel(){
             traditional:true,
             success: function(data){
                 self.persons(data.persons);
-                self.displayTable(true);
+                if (data.persons.length !== 0){
+                    $('#personNotFound').hide();
+                    self.displayTable(true);
+                } else {
+                    self.displayTable(false);
+                    $('#personNotFound').show();
+                    $('#personNotFound span').text(''); // clear previous message
+                    $('#personNotFound span').text('No person matched this search').parent().fadeIn();
+                }
             }, 
             error: function(){
                 alert("error")

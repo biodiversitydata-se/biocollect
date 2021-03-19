@@ -3,7 +3,7 @@
         <button class="btn btn-primary" onclick="addPerson()"><g:message code="project.admin.members.addNew" /></button>
     </div>
     <!-- ko stopBinding: true-->
-        <div id="person-search-div" >
+        <div id="person-search-div">
             <form class="form-horizontal input-append">
                 <div class="well">
                     <label><g:message code="project.admin.members.searchLabel"/></label>
@@ -13,7 +13,10 @@
                     </button>
                 </div>
             </form>
-
+            </br>
+            <div id="personNotFound" class="offset2 span7 hide alert">
+                <button class="close" onclick="$('.alert').fadeOut();" href="#">×</button><span></span>
+            </div>
             <div class="well well-small" data-bind="visible: displayTable">
                 <table class="table table-striped table-bordered table-hover" id="person-search-table">
                     <thead>
