@@ -42,9 +42,9 @@
                             <g:each in="${surveys}">
                                 <g:if test="${it?.surveySiteOption == 'sitecreatesystematic'}">
                                     <li><a href="${createLink(controller: 'site', action: 'createSystematic', 
-                                            params: [projectId:it?.projectId, pActivityId:it?.projectActivityId, 
-                                            personId: person?.personId])}">${it?.name}</a>
-                                            (se <a href="${it?.methodUrl}">metoder</a>) 
+                                            params: [projectId:it?.projectId, pActivityId:it?.projectActivityId])}">
+                                            ${it?.name}
+                                            </a>(se <a href="${it?.methodUrl}">metoder</a>) 
                                     </li>
                                 </g:if>
                             </g:each>
