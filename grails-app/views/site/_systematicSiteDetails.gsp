@@ -2,8 +2,9 @@
 <div class="well" id="sitemap">
 
 <%-- This assigns a site owner - it is only accessible via the link sent to the admin when a new site is created --%>
-<g:if test="${userCanEdit}">
-    <h4><input type="checkbox" data-bind="click: assignOwner" /> Assign owner</h4>
+<g:if test="${userIsAlaOrFcAdmin}">
+    <h4><g:message code="record.edit.verificationStatus"/>
+    <fc:select data-bind="options:verificationStatusOptions, value: site().verificationStatus"/></h4>
 </g:if>
 
     <div class="row-fluid">

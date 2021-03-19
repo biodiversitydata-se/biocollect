@@ -62,7 +62,9 @@ class SiteController {
         def survey = projectActivityService.get(params?.pActivityId, 'brief')
         // permissions check
         def projectMembers = projectService.getMembersForProjectId(params.projectId)
-        def userCanCreateSite = projectMembers.find{it.userId == userService.getCurrentUserId()} ?: false
+        String userId = userService.getCurrentUserId()
+        String personId = personService.getPersonIdForUser(userId)
+        Boolean userCanCreateSite = projectMembers.find{it.userId == userId} ?: false
         if (!userCanCreateSite) {
             flash.message = "Access denied: User is not en editor or is not allowed to manage sites for projectId ${params.projectId}"
             redirect(controller:'project', action:'index', id: params.projectId)
@@ -76,9 +78,9 @@ class SiteController {
             projectSite: project?.projectSite,
             pActivityId: params?.pActivityId,
             survey: survey, 
-            userCanEdit: userCanCreateSite, 
-            ownerId: params?.ownerId, 
-            personId: params?.personId,
+            userIsAlaOrFcAdmin: userService.userIsAlaOrFcAdmin(), 
+            userCanEdit: userCanCreateSite,
+            personId: personId,
             allowSegmentMetadata: survey?.allowSegmentMetadata
             ]
         render view: 'editSystematic', model: model
@@ -178,7 +180,7 @@ class SiteController {
             def survey = projectActivityService.getAllByProject(projectId, 'brief')
             String projectIds = result.site.projects.toList().join(',')
             String userId = authService.getUserId()
-            result.userCanEdit = userService.userIsAlaOrFcAdmin()
+            result.userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
             // not ideal but getting the first projectId as for systematic we only have one anyway
             result.survey = survey
             result.allowSegmentMetadata = survey.allowSegmentMetadata[0]

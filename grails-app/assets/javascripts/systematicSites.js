@@ -4,7 +4,7 @@ var SystematicSiteViewModel = function (valuesForVM) {
     var site = valuesForVM.site,
      mapOptions = valuesForVM.mapOptions,
      mapContainerId = valuesForVM.mapContainerId,
-     ownerId = valuesForVM.ownerId,
+     ownerId = valuesForVM.personId,
      self = $.extend(this, new Documents());
 
     // create model for a new site
@@ -17,8 +17,9 @@ var SystematicSiteViewModel = function (valuesForVM) {
         area: ko.observable(),
         description: ko.observable(),
         notes: ko.observable(),
-        owner: ko.observable(),
+        owner: ko.observable(ownerId),
         projects: ko.observableArray(),
+        verificationStatus: ko.observable('not verified'),
         extent: ko.observable({
             source: ko.observable(),
             geometry:  ko.observable({
@@ -41,21 +42,24 @@ var SystematicSiteViewModel = function (valuesForVM) {
     });
     self.pointsOfInterest = ko.observableArray();
     self.transectParts = ko.observableArray();
+    self.verificationStatusOptions = ['not approved', 'not verified', 'approved'];
     self.showPointAttributes = ko.observable(false);
     self.allowPointsOfInterest = ko.observable(mapOptions.allowPointsOfInterest || false);
-    self.displayAreaInReadableFormat = null; // not needed because the extention is a centroid - a point
+    self.displayAreaInReadableFormat = null; // not needed because extent is a centroid - a point
 
+debugger;
     // to edit existing site load saved values
     self.loadSite = function (site) {
         var siteModel = self.site();
         siteModel.name(exists(site, "name"));
+        siteModel.verificationStatus(site.verificationStatus || 'not verified');
         siteModel.siteId(exists(site, "siteId"));
         siteModel.externalId(exists(site, "externalId"));
         siteModel.type(exists(site, "type"));
         siteModel.area(exists(site, "area"));
         siteModel.description(exists(site, "description"));
         siteModel.notes(exists(site, "notes"));
-        siteModel.owner(exists(site, "owner"));
+        siteModel.owner(site.owner || ownerId);
         siteModel.projects(site.projects || []);
 
         if (site.extent) {
@@ -93,13 +97,6 @@ var SystematicSiteViewModel = function (valuesForVM) {
 
         return geometryObservable;
     };
-
-    self.assignOwner = function(){
-        if (ownerId){
-            self.site().owner(ownerId);
-        }
-        return true
-    }
 
     self.addTransectPartFromMap = function () {
         var featuresAreDrawn = transformDrawnFeaturesToTransectParts(),

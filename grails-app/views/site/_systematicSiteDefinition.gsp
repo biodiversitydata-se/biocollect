@@ -123,6 +123,7 @@ function initSiteViewModel(allowPointsOfInterest, edit, drawOptions) {
         transectParts: ${site?.transectParts ?: '[]'},
         area : "${site?.area}",
         owner: "${site?.owner}",
+        verificationStatus: "${site?.verificationStatus}",
         description : "${site?.description?.encodeAsJavaScript()}",
         notes : "${site?.notes?.encodeAsJavaScript()}",
         documents : JSON.parse('${(siteDocuments ?: documents).encodeAsJavaScript() ?: '{}'}'),
@@ -138,7 +139,7 @@ function initSiteViewModel(allowPointsOfInterest, edit, drawOptions) {
         "mapContainerId": "mapForSystematic",
         "site": savedSiteData,
         "mapOptions": SERVER_CONF,
-        "ownerId": "${ownerId}"
+        "personId": "${personId}"
     }
 
     var siteViewModel = new SystematicSiteViewModel(valuesForVM)
