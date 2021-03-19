@@ -2,7 +2,7 @@
 <div class="well" id="sitemap">
 
 <%-- This assigns a site owner - it is only accessible via the link sent to the admin when a new site is created --%>
-<g:if test="${ownerId}">
+<g:if test="${userCanEdit}">
     <h4><input type="checkbox" data-bind="click: assignOwner" /> Assign owner</h4>
 </g:if>
 

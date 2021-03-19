@@ -178,7 +178,7 @@ class SiteController {
             def survey = projectActivityService.getAllByProject(projectId, 'brief')
             String projectIds = result.site.projects.toList().join(',')
             String userId = authService.getUserId()
-            result.userCanEdit = projectService.isUserEditorForProjects(userId, projectIds)
+            result.userCanEdit = userService.userIsAlaOrFcAdmin()
             // not ideal but getting the first projectId as for systematic we only have one anyway
             result.survey = survey
             result.allowSegmentMetadata = survey.allowSegmentMetadata[0]
