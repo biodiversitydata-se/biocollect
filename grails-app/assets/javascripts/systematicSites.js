@@ -47,7 +47,6 @@ var SystematicSiteViewModel = function (valuesForVM) {
     self.allowPointsOfInterest = ko.observable(mapOptions.allowPointsOfInterest || false);
     self.displayAreaInReadableFormat = null; // not needed because extent is a centroid - a point
 
-debugger;
     // to edit existing site load saved values
     self.loadSite = function (site) {
         var siteModel = self.site();
