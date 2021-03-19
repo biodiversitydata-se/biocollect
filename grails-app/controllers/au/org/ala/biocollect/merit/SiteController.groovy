@@ -903,7 +903,6 @@ class SiteController {
             String userId = userService.getCurrentUserId()
             Boolean isAlaAdmin = userService.userIsAlaAdmin()
 
-
             GrailsParameterMap queryParams = commonService.constructDefaultSearchParams(params, request, userId)
 
             def favouriteSiteIds
@@ -978,8 +977,6 @@ class SiteController {
                         name             : doc.name,
                         description      : doc.description,
                         numberOfPoi      : doc.poi?.size(),
-                        numberOfTransectParts: doc.transectParts?.size(),
-                        bookedBy         : doc.bookedBy,
                         projects         : doc.projects,
                         numberOfProjects : doc.projects?.size(),
                         lastUpdated      : doc.lastUpdated,
