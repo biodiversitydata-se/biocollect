@@ -233,8 +233,6 @@ function Master(activityId, config) {
 function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, config) {
     var self = this;
     self.activityId = act.activityId;
-    self.verificationStatus = ko.observable(act.verificationStatus || 0);
-    self.verificationStatusOptions = [0, 1, 2];
     self.notes = ko.observable(act.notes);
     self.eventPurpose = ko.observable(act.eventPurpose);
     self.fieldNotes = ko.observable(act.fieldNotes);
