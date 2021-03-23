@@ -167,16 +167,16 @@
                         <button id="downloadBtn" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span>Download</button>
                                 <table class="table table-striped table-bordered table-hover dataTable no-footer">
                                     <th><g:message code="site.metadata.name"/></th>
-                                    <th>WGS84</th>
-                                    <th>SWEREF99 TM</th>
                                     <th>RT90 2.5 gon V</th>
+                                    <th>SWEREF99 TM</th>
+                                    <th>WGS84</th>
                                     <%-- if transectParts have otherCRS then print the value --%>
                                     <g:each in="${site?.transectParts}">
                                         <tr>
                                             <td>${it?.name}</td>
-                                            <td>${it?.geometry.coordinates}</td>
-                                            <td>${it?.otherCRS?.coords_3006}</td>
                                             <td>${it?.otherCRS?.coords_3021}</td>
+                                            <td>${it?.otherCRS?.coords_3006}</td>
+                                            <td>${it?.geometry.coordinates}</td>
                                         </tr>
                                     </g:each>
                                 </table>
