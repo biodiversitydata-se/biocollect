@@ -40,7 +40,7 @@ class UrlMappings {
 
                 "/person/searchPerson/" (controller: "person", action: 'searchPerson')
                 "/person/getDataForPersonHomepage/$id"(controller: "person", action: "getDataForPersonHomepage")
-                "/person/addSiteOwnership/$id"(controller: "person"){action = [POST: "addSiteOwnership"]}
+                "/person/addOwnedSite/$id"(controller: "person"){action = [POST: "addOwnedSite"]}
                 "/site/getSitesForPerson"(controller: "site", action: "getSitesForPerson")
                 "/site/submitBookingRequest"(controller: "site", action: "submitBookingRequest")
 

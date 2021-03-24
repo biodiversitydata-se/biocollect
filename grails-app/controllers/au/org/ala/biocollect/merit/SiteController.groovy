@@ -680,16 +680,14 @@ class SiteController {
             render status: HttpStatus.SC_INTERNAL_SERVER_ERROR, text: "${result.message}"
         } else {
             // if site is created send a notification to the addresses defined in survey alert configuration
+            // and assign an owner
             if (isCreateSiteRequest){
+                personService.addOwnedSite(postBody.site?.owner, result.id)
                 def subject = "BioCollect update: New site created for ${projectActivity.name}"
-                def emailBody = "${userName} has just created a new site. Check it and edit if necessary <a href='${grailsApplication.config.server.serverURL}${siteEditUrl}/${result.id}/?ownerId=${personId}'>here</a>"
+                def emailBody = "${userName} has just created a new site. Check it and edit if necessary <a href='${grailsApplication.config.server.serverURL}${siteEditUrl}/${result.id}'>here</a>"
                 emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
-            } else {
-                // if site is updated only add the id of the site to person's ownedSites, no emails
-                log.debug "assigning ownership of this site to person with person Id: " + postBody.site?.owner
-                personService.addSiteOwnership(postBody.site?.owner, id)
             }
-            
+
             render status: HttpStatus.SC_OK, text: result as JSON, contentType: "application/json"
         }
     }
