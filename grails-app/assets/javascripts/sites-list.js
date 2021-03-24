@@ -145,6 +145,8 @@ function SitesListViewModel(params, facets) {
             max: self.pagination.resultsPerPage(),
             offset: offset,
             query: self.searchTerm(),
+            sort: "name",
+            order: "ASC",
             fq: $.map(self.selectedFacets(), function(fq){
                 return fq.getQueryText();
             }),
