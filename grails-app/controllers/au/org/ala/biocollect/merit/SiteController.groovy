@@ -917,7 +917,7 @@ class SiteController {
             }
 
             if (!queryParams.facets) {
-                queryParams.facets = "typeFacet,className,organisationFacet,stateFacet,lgaFacet,nrmFacet,siteSurveyNameFacet,siteProjectNameFacet,photoType"
+                queryParams.facets = "typeFacet,className,organisationFacet,stateFacet,lgaFacet,nrmFacet,siteSurveyNameFacet,siteProjectNameFacet,photoType,isBooked,kartaTx,verificationStatusFacet"
             }
             if (queryParams.query) {
                 query.push(queryParams.query);
@@ -984,6 +984,9 @@ class SiteController {
                         lastUpdated      : doc.lastUpdated,
                         type             : doc.type,
                         extent           : doc.extent,
+                        bookedBy         : doc?.bookedBy,
+                        kartaTx          : doc?.kartaTx,
+                        verificationStatus : doc?.verificationStatus,
                         // does a logical OR reduce operation on permissions for each projects
                         canEdit             : canEdit,
                         // only sites with no projects can be deleted

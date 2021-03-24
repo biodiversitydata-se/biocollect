@@ -1,11 +1,12 @@
 {
     "navTree": {
       "nodes": [
-    {"name": "siteProjectNameFacet", "displayName": "Projekt"},
     {"name": "siteSurveyNameFacet", "displayName": "Delprogram"},
-    {"name": "typeFacet", "displayName": "Typ"},
-    {"name": "stateFacet", "displayName": "LSK"},
-    {"name": "lgaFacet", "displayName": "LAN"}
+    {"name": "LSK", "displayName": "Landskap"},
+    {"name": "LAN", "displayName": "Län"},
+    {"name": "kartaTxFacet", "displayName": "Karta TX"},
+    {"name": "bookedBy", "displayName": "Booked"},
+    {"name": "verificationStatusFacet", "displayName": "Verification Status", "terms": ["not verified", "approved", "not approved"]}
         ]
     }
 }
