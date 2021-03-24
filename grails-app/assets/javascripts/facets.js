@@ -994,7 +994,10 @@ function generateTermIdForFacetTerm(facetTerm) {
  */
 function decodeCamelCase(text) {
     if(typeof text == 'string'){
-        var result = text.replace( /([A-Z])/g, " $1" );
+        // TODO
+        // replacing should be limited to whatever these roles are - otherwise it breaks site names for systematic monitoring
+        // var result = text.replace( /([A-Z])/g, " $1" );
+        var result = text
         return result.charAt(0).toUpperCase() + result.slice(1); // capitalize the first letter - as an example.
     }
 }
