@@ -154,7 +154,7 @@ function initialiseSites() {
                             $("#siteId").val(site.siteId());
 
                             if (site.isBooked){
-                                $('#btnRequestBooking').css("visibility", "hidden");
+                                $('#btnAddToRequest').attr("disabled", "disabled");
                                 $('#btnSubmitBooking').css("visibility", "hidden");
                                 $('#bookedByLink').html("");
                                 $('#bookedByLink').append(
@@ -166,7 +166,7 @@ function initialiseSites() {
                                 )
                             } else {
                                 $('#bookedByLink').html("Site is not booked. Type in the person ID in the field 'Book for'") 
-                                $('#btnRequestBooking').css("visibility", "visible");
+                                $('#btnAddToRequest').removeAttr('disabled');
                                 $('#btnSubmitBooking').css("visibility", "visible");
                             }
                         };

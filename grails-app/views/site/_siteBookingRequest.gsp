@@ -1,23 +1,32 @@
  <%-- Start of site request form  --%>
 <div id="siteBookingRequest" class="well">
     <form inline="true" class="form-horizontal" id="formSiteBookingRequest">
-        <h4><g:message code="project.admin.siteBooking.clickOnMap"/></h4>
+        <h4><g:message code="project.admin.siteBooking.header"/></h4>
+        <p><g:message code="project.admin.siteBooking.clickOnMap"/></p>
         <div class="control-group">
             <label class="control-label" for="siteName"><g:message code="project.admin.siteBooking.siteName"/></label>
             <div class="controls">
                 <input class="input-xlarge" disabled id="siteName"/>
-                <g:hiddenField name="siteId" id="siteId"/>
+                <input type="button" id="btnAddToRequest" onclick="addSiteToRequest()" value="${message(code:'project.admin.siteBooking.addBtnLbl')}" class="btn btn-primary"/></button>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label"><g:message code='project.admin.siteBooking.requestMsg'/></label>
+            <label class="control-label" for="requestedSitesList"><g:message code="project.admin.siteBooking.requestedSitesLbl"/></label>
+            <div class="controls">
+                <div>
+                    <div class="table table-striped table-hover responsive-table-stacked no-footer" id="requestedSitesList" width="70%"></div>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label"><g:message code='project.admin.siteBooking.requestMsgLbl'/></label>
             <div class="controls">
                 <textarea class="input-xlarge" type="text"></textarea>
             </div>
         </div>
         <div class="control-group">
             <div class="controls">
-                <input type="submit" id="btnRequestBooking" style="visibility:hidden" class="btn btn-primary form-control" value="${message(code:'btn.book')}"/>
+                <input type="submit" id="btnRequestBooking" class="btn btn-primary form-control" value="${message(code:'g.submit')}"/>
             </div>
         </div>
     </form> 
@@ -29,31 +38,68 @@
  <%-- End of site booking form --%>
 
 <script>
+var requestedSitesList = [];
+var list = document.getElementById("requestedSitesList");
+
+function addSiteToRequest(){
+    var siteName = $("#siteName").val();
+    if (!requestedSitesList.includes(siteName)){
+        requestedSitesList.push(siteName);
+        var row = document.createElement("tr");
+        list.appendChild(row);
+        var nameCell = document.createElement("td");
+        nameCell.innerHTML = siteName;
+        nameCell.value = siteName;
+        row.appendChild(nameCell);
+        var btnCell = document.createElement("td");
+        row.appendChild(btnCell);
+        var removeBtn = document.createElement("button");
+        removeBtn.classList.add("btn", "btn-small");
+        removeBtn.innerHTML = 'x';
+        removeBtn.value = siteName
+        btnCell.appendChild(removeBtn);
+        removeBtn.addEventListener('click', removeSiteFromList)
+    }
+    return requestedSitesList;
+}
+
+function removeSiteFromList(){
+    var cell = this.parentNode;
+    cell.parentNode.remove();
+    var currentSiteName = this.value;
+    requestedSitesList = requestedSitesList.filter(function(item){
+        return item != currentSiteName;
+    })
+}
 
 $('#formSiteBookingRequest').on('submit', function(e){
     e.preventDefault();
     var data = {
-        siteId: $("#siteId").val(),
-        siteName:$("#siteName").val(),
+        requestedSitesList: requestedSitesList.join(','),
         message: $("#message").val(),
         personEditUrl: fcConfig.personEditUrl,
         viewSiteUrl: fcConfig.viewSiteUrl,
         emailAddresses: ${project.alertConfig.emailAddresses}
     };
-    $.ajax({
-        url: fcConfig.submitBookingRequestUrl,
-        type: 'POST',
-        data:  JSON.stringify(data),
-        contentType: 'application/json',
-        success: function (data) {
-            // bootbox.alert("Your request has been sent to the admin. When the site is booked it will show on your homepage and you will receive a confirmation to your email address.");
-            $("#messageSuccessfulRequest span").html(data.message).parent().fadeIn();
-        },
-        error: function (data) {
-            var errorMessage = data.responseText || 'There was a problem while requesting this site'
-            bootbox.alert(errorMessage);
-        }
-    })
+
+    if (data.requestedSitesList == ""){
+        bootbox.alert("Du måste välja en rutt och klicka på knappen Lägg till ");
+    } else {
+        $.ajax({
+            url: fcConfig.submitBookingRequestUrl,
+            type: 'POST',
+            data:  JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (data) {
+                list.innerHTML = "";
+                $("#messageSuccessfulRequest span").html(data.message).parent().fadeIn();
+            },
+            error: function (data) {
+                var errorMessage = data.responseText || 'Tyvärr gick inte bokningsönskan att skicka'
+                bootbox.alert(errorMessage);
+            }
+        })
+    }
 });
 
 </script>

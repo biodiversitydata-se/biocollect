@@ -12,7 +12,7 @@
             </div>
             <div class="input-append">
                 <label><g:message code="project.admin.members.batchBookSites"/></label>
-                <input id="bookedSitesInput" data-bind="value: person().sitesToBook, event: { change: splitSitesToBook }"  type="text" class="span10"/>
+                <input id="bookedSitesInput" data-bind="value: person().sitesToBook"  type="text" class="span10"/>
                 <button class="btn btn-primary form-control" data-bind="click: bookSite"><g:message code="btn.book"/></button>
             </div>
         </div>

@@ -636,15 +636,15 @@ class SiteService {
         String personId = personService.getPersonIdForUser(user.userId)
         List emailAddresses = body?.emailAddresses ?: grailsApplication.config.biocollect.support.email.address
 
-        def subject = "BioCollect update: Site booking requested for ${params?.projectName}"
-        def emailBody = "${userName} would like to book the site ${body?.siteName} for ${params?.projectName}. This site isn't currently booked by anyone else. <br>" + 
-            "You can view the site <a href='${grailsApplication.config.server.serverURL}${body?.viewSiteUrl}/${body?.siteId}'>here</a><br>" +
-            "You can confirm the booking <a href='${grailsApplication.config.server.serverURL}${body?.personEditUrl}/${personId}?defaultTab=sites&siteName=${body?.siteName}'>here</a>"
+        def subject = "BioCollect uppdatering: bokningsönskan för ${params?.projectName}"
+        def emailBody = userName + " vill boka rutterna: ${body?.requestedSitesList} for ${params?.projectName}. De är ännu inte bokade av någon. <br>" + 
+            // "You can view the site <a href='${grailsApplication.config.server.serverURL}${body?.viewSiteUrl}/${body?.siteId}'>here</a><br>" +
+            "De är ännu inte bokade av någon. Vill du godkänna bokningen, klicka <a href='${grailsApplication.config.server.serverURL}${body?.personEditUrl}/${personId}?defaultTab=sites&requestedSitesList=${body?.requestedSitesList}'>här</a>"
         if (body?.message){
              emailBody += "<br>The user attached a message: ${body?.message}<br>"
         }
         emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
-        def result = [message: "Request to book ${body?.siteName} has been sent. You will get a notification from the admin if the booking was successfull and you will be able to access the site from your homepage"]
+        def result = [message: "Din önskan att boka ${body?.requestedSitesList} är nu skickad. Du kommer få en bekräftelse via mail på ifall din bokning blev godkänd och kommer då att få tillgång till rutten på din personliga sida"]
         result
     }
 

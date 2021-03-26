@@ -92,7 +92,7 @@ class PersonController {
                 activityCount: person?.activityCount, 
                 returnTo: params?.returnTo, 
                 defaultTab: params?.defaultTab, 
-                siteName: params?.siteName,
+                requestedSitesList: params?.requestedSitesList,
                 userIsAlaOrFcAdmin: userIsAlaOrFcAdmin
             ]
             render view: 'edit', model: model

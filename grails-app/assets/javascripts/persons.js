@@ -16,18 +16,10 @@ function PersonViewModel(savedPerson, create, hubProjectIds) {
         birthDate : ko.observable(),
         extra : ko.observable(),
         bookedSites: ko.observableArray(),
-        sitesToBook: ko.observableArray()
+        sitesToBook: ko.observable()
     });
 
     self.person().projects = hubProjectIds;
-    self.splitSitesToBook = function () {
-        if (typeof self.person().sitesToBook() == 'string'){
-            var array = self.person().sitesToBook().split(",");
-            var siteNames = array.map(function(name){ return name.trim() })
-            self.person().sitesToBook(siteNames);
-        }
-        return self.person().sitesToBook();
-    }
 
     self.loadPerson = function (person){
         var personModel = self.person();
@@ -117,7 +109,8 @@ function PersonViewModel(savedPerson, create, hubProjectIds) {
                 personId: self.person().personId(),
                 bookMany: true
                 };
-                console.log(data);
+            // clear the input field with site names    
+            self.person().sitesToBook("")
             $.ajax({
                 url: fcConfig.bookSiteUrl,
                 type: 'POST',
