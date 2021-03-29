@@ -184,62 +184,66 @@
                         </div>
                     </div>
                 </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" href="#collapse2">
-                            <g:message code= "site.transect.displayOtherDetails"/>
-                        </a>
-                    </div>
-                    <div id="collapse2" class="accordion-body collapse">
-                        <div class="accordion-inner">
-                            <div class="control-group">
-                                <table class="table table-striped table-bordered table-hover dataTable no-footer">
-                                    <th><g:message code="site.metadata.name" /></th>
-                                    <th><g:message code="site.details.description" /></th>
-                                    <th><g:message code="site.transect.transectPart.habitat" /></th>
-                                    <th><g:message code="site.transect.transectPart.detail" /></th>
-                                    <g:each var="segment" in="${site?.transectParts}">
-                                        <tr>
-                                            <td>${segment?.name}</td>
-                                            <td>${segment?.description}</td>
-                                            <td><g:each in="${segment?.displayProperties?.habitat}">${it}</br></g:each></td>
-                                            <td><g:each in="${segment?.displayProperties?.detail}">${it}</br></g:each></td>
-                                        </tr>
-                                    </g:each>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <g:if test="${!site?.transectParts?.isEmpty() && userIsAlaOrFcAdmin && !site?.adminProperties}">
+                <g:if test="${!site?.transectParts?.isEmpty()}">
                     <div class="accordion-group">
                         <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" href="#collapse3">
-                                <g:message code= "site.transect.displayAdminProps"/>
+                            <a class="accordion-toggle" data-toggle="collapse" href="#collapse2">
+                                <g:message code= "site.transect.displayOtherDetails"/>
                             </a>
                         </div>
-                        <div id="collapse3" class="accordion-body collapse">
+                        <div id="collapse2" class="accordion-body collapse">
                             <div class="accordion-inner">
                                 <div class="control-group">
-                                <table>
-                                <g:each var="property" in="${site?.adminProperties}">
-                                    <tr>
-                                        <td>${property.key}</td> 
-                                        <td>${property.value}</td>
-                                    </tr>
-                                </g:each>
-                                </table>
+                                    <table class="table table-striped table-bordered table-hover dataTable no-footer">
+                                        <th><g:message code="site.metadata.name" /></th>
+                                        <th><g:message code="site.details.description" /></th>
+                                        <g:each var="property" in="${site?.transectParts[0]?.displayProperties}">
+                                            <th>${property.key}</th>
+                                        </g:each>
+                                        <g:each var="segment" in="${site?.transectParts}">
+                                            <tr>
+                                                <td>${segment?.name}</td>
+                                                <td>${segment?.description}</td>
+                                                <g:each in="${segment?.displayProperties}">
+                                                    <td>${it.value}</td>
+                                                </g:each>
+                                            </tr>
+                                        </g:each>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <g:if test="${userIsAlaOrFcAdmin && !site?.adminProperties}">
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" href="#collapse3">
+                                    <g:message code= "site.transect.displayAdminProps"/>
+                                </a>
+                            </div>
+                            <div id="collapse3" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    <div class="control-group">
+                                    <table>
+                                    <g:each var="property" in="${site?.adminProperties}">
+                                        <tr>
+                                            <td><b>${property.key}</b></td> 
+                                            <td>${property.value}</td>
+                                        </tr>
+                                    </g:each>
+                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </g:if>
                 </g:if>
 
 
                 <%-- end --%>
 
-                <g:if test="${site.notes}">
+                <g:if test="${site?.notes}">
                     <dt><g:message code="site.details.notes"/></dt>
                     <dd>${site.notes?.encodeAsHTML()}</dd>
                 </g:if>
