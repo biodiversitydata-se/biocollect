@@ -215,7 +215,7 @@
                         </div>
                     </div>
 
-                    <g:if test="${userIsAlaOrFcAdmin && !site?.adminProperties}">
+                    <g:if test="${userIsAlaOrFcAdmin && site?.adminProperties}">
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" href="#collapse3">
