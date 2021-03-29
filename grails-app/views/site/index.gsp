@@ -164,7 +164,7 @@
                     <div id="collapse1" class="accordion-body collapse">
                         <div class="accordion-inner">
                             <div class="control-group">
-                        <button id="downloadBtn" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span>Download</button>
+                        <button id="downloadBtn" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span><g:message code="g.download"/></button>
                                 <table class="table table-striped table-bordered table-hover dataTable no-footer">
                                     <th><g:message code="site.metadata.name"/></th>
                                     <th>RT90 2.5 gon V</th>
@@ -211,6 +211,32 @@
                         </div>
                     </div>
                 </div>
+
+                <g:if test="${!site?.transectParts?.isEmpty() && userIsAlaOrFcAdmin && !site?.adminProperties}">
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" href="#collapse3">
+                                <g:message code= "site.transect.displayAdminProps"/>
+                            </a>
+                        </div>
+                        <div id="collapse3" class="accordion-body collapse">
+                            <div class="accordion-inner">
+                                <div class="control-group">
+                                <table>
+                                <g:each var="property" in="${site?.adminProperties}">
+                                    <tr>
+                                        <td>${property.key}</td> 
+                                        <td>${property.value}</td>
+                                    </tr>
+                                </g:each>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </g:if>
+
+
                 <%-- end --%>
 
                 <g:if test="${site.notes}">
@@ -465,7 +491,7 @@
         </div>
     </g:if>
 </div>
-<asset:script type="text/javascript">
+<asset:script type="text/javascript">    
 
     var downloadBtn = document.getElementById('downloadBtn');
     downloadBtn.addEventListener('click', function () {
