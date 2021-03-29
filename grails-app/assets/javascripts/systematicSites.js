@@ -20,6 +20,7 @@ var SystematicSiteViewModel = function (valuesForVM) {
         owner: ko.observable(ownerId),
         projects: ko.observableArray(),
         verificationStatus: ko.observable('not verified'),
+        adminProperties: ko.observable({}),
         extent: ko.observable({
             source: ko.observable(),
             geometry:  ko.observable({
@@ -60,6 +61,7 @@ var SystematicSiteViewModel = function (valuesForVM) {
         siteModel.notes(exists(site, "notes"));
         siteModel.owner(site.owner || ownerId);
         siteModel.projects(site.projects || []);
+        siteModel.adminProperties(site.adminProperties || {});
 
         if (site.extent) {
             self.site().extent().source(exists(site.extent, "source"));
