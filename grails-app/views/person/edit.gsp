@@ -17,7 +17,7 @@
         viewActivityUrl: "${createLink(controller: 'bioActivity', action: 'index')}",
         getSiteNamesUrl: "${createLink(controller: 'site', action:'getSiteNames', params: [siteIds: person?.bookedSites])}",
         getActivitiesForPersonByTypeUrl: "${createLink(controller: 'activity', action:'getActivitiesForPersonByType')}",
-        returnTo: "${returnTo}"
+        returnTo: "${params.returnTo}"
         };
         here = window.location.href;
     </asset:script>

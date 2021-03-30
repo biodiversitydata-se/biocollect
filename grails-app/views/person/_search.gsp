@@ -46,12 +46,12 @@
 </div>
 <asset:javascript src="persons.js"/>
 <asset:script type="text/javascript">
+function addPerson(){
+    document.location.href = fcConfig.personCreateUrl + '&returnTo=' + fcConfig.returnTo; 
+}
+
 $(document).ready(function () {
     var personsListVM = new PersonsListViewModel;
     ko.applyBindings(personsListVM, document.getElementById("person-search-div"));
-
-    function addPerson(){
-        document.location.href = fcConfig.personCreateUrl + '&returnTo=' + fcConfig.returnTo; 
-    }
 });
 </asset:script>
