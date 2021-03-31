@@ -78,7 +78,7 @@
                     <fc:iconHelp><g:message code=""/>Use volunteer management tools for admins of the project, including storing data of unregistered users</fc:iconHelp>
                 </label>
                 <div class="controls span4">
-                    <select id="requiresVolManagement" data-bind="booleanValue:requiresVolManagement, options:[{label:'Yes', value:'false'}, {label:'No', value:'true'}], optionsText:'label', optionsValue:'value', optionsCaption:'Select...'" data-validation-engine="validate[required]">
+                    <select id="requiresVolManagement" data-bind="booleanValue:requiresVolManagement, options:[{label:'Yes', value:'true'}, {label:'No', value:'false'}], optionsText:'label', optionsValue:'value', optionsCaption:'Select...'" data-validation-engine="validate[required]">
                     </select>
                 </div>
             </div>
