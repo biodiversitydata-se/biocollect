@@ -10,20 +10,6 @@
                 </div>
             </div>
         </div>
-
-        <div data-bind="visible:isSystematicMonitoring()" class="row-fluid">
-            <div class="clearfix control-group">
-                <%-- Should personal data be stored on ecodata --%>
-                <label class="control-label span3">
-                    <g:message code=""/>Store personal data of unregistered members?<fc:iconHelp><g:message code=""/>Use volunteer management tools for admins of the project, including storing data of unregistered users</fc:iconHelp><i class="req-field"></i>
-                </label>
-                <div class="controls span4">
-                    <select id="requiresVolManagement" data-bind="booleanValue:requiresVolManagement, options:[{label:'Yes', value:'false'}, {label:'No', value:'true'}], optionsText:'label', optionsValue:'value', optionsCaption:'Select...'" data-validation-engine="validate[required]">
-                    </select>
-                </div>
-            </div>
-        </div>
-
         <div data-bind="visible:!isWorks()" class="row-fluid">
             <div class="clearfix control-group">
                 <label class="control-label span3" for="isExternal"><g:message code="project.details.useALA"/><fc:iconHelp><g:message code="project.details.useALA.help"/></fc:iconHelp><i class="req-field"></i></label>
@@ -80,6 +66,76 @@
             </div>
         </div>
     </div>
+
+        <div class="well">
+            <div data-bind="visible:isSystematicMonitoring()" class="row-fluid">
+            <h4 class="block-header">Systematic monitoring options</h4>
+
+            <div class="clearfix control-group">
+                <%-- Should personal data be stored on ecodata --%>
+                <label class="control-label span3" for="requiresVolManagement">
+                    <g:message code=""/>Store personal data of unregistered members?
+                    <fc:iconHelp><g:message code=""/>Use volunteer management tools for admins of the project, including storing data of unregistered users</fc:iconHelp>
+                </label>
+                <div class="controls span4">
+                    <select id="requiresVolManagement" data-bind="booleanValue:requiresVolManagement, options:[{label:'Yes', value:'false'}, {label:'No', value:'true'}], optionsText:'label', optionsValue:'value', optionsCaption:'Select...'" data-validation-engine="validate[required]">
+                    </select>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="clearfix control-group">
+                    <label class="control-label span3">
+                        <g:message code=""/>What type of user activity would you like to receive email notifications about?
+                    </label>
+                    <div class="span6">
+                        <label class="checkbox">
+                        <input type="checkbox" value="siteBooking" data-bind="checked: alertConfig.ctx"/>
+                                Site booking<g:message code=""/>
+                        </label>
+                    </div>
+                    <div class="span6">
+                        <label class="checkbox">
+                        <input type="checkbox" value="surveySubmitted" data-bind="checked: alertConfig.ctx"/>
+                                Survey submitted<g:message code=""/>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-fluid">
+                <div class="clearfix control-group">
+                   <label class="control-label span3">
+                        Who should be notified?
+                    </label>
+                    <div class="controls span8">
+                        <input id="alertEmailAddress" class="input-xlarge" type="text" data-bind="value: alertConfig.transients.emailAddress, valueUpdate:'afterkeyup'" placeholder="Enter email address"/>
+                        <div class="margin-bottom-5"></div>
+                        <button class="btn-default btn block btn-small" data-toggle="tooltip" title="Enter valid email address"
+                                data-bind="click: alertConfig.addEmail, disable: alertConfig.disableAddEmail"><i class="icon-plus" ></i>  Add</button>
+                    </div>
+                </div>
+            </div>
+            <!-- ko if: alertConfig.emailAddresses().length > 0 -->
+            <div class="row-fluid">
+                <div class="clearfix control-group">
+                    <label class="control-label span3">Email Addresses:</label>
+                        <!-- ko foreach: alertConfig.emailAddresses -->
+                        <div class="controls span8">
+                            <div class="span4 text-left">
+                                <span data-bind="text: $index()+1">. </span>
+                                <span data-bind="text: $data"></span>
+                            </div>
+                            <div class="span2 text-left">
+                                <a href="#" data-bind="click: $parent.alertConfig.deleteEmail"><span class="fa fa-close"></span></a>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+
 
     <div data-bind="visible:isCitizenScience() || isEcoScience() || !isExternal()" class="row-fluid">
         <div class="well">

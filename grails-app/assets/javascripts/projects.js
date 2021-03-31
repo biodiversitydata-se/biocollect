@@ -437,8 +437,11 @@ function ProjectViewModel(project, isUserEditor) {
     self.mobileApp = ko.observable(project.mobileApp);
     self.isWorks = ko.observable(project.isWorks);
     self.isEcoScience = ko.observable(project.isEcoScience);
+    // LU project properties
     self.isSystematicMonitoring = ko.observable(project.isSystematicMonitoring);
     self.requiresVolManagement = ko.observable(project.requiresVolManagement);
+    self.alertConfig = new AlertConfigViewModel(project.alertConfig);
+
     self.isExternal = ko.observable(project.isExternal);
     self.isSciStarter = ko.observable(project.isSciStarter);
     self.isMERIT = ko.observable(project.isMERIT);
@@ -459,6 +462,7 @@ function ProjectViewModel(project, isUserEditor) {
     self.alaHarvest = ko.observable(project.alaHarvest ? true : false);
     self.industries = ko.observableArray(project.industries);
     self.bushfireCategories = ko.observableArray(project.bushfireCategories);
+    self.transients.emailAddress = ko.observable();
     self.transients.notification = new EmailViewModel(fcConfig);
     self.transients.yesNoOptions = ["Yes","No"];
     self.transients.alaHarvest = ko.computed({
@@ -1699,4 +1703,52 @@ var SiteViewModel = function (site, feature) {
         return result;
 
     });
+
+
 };
+var AlertConfigViewModel = function(alertConfig){
+    var self = this;
+    if (!alertConfig) alertConfig = {};
+    self.ctx = ko.observableArray(alertConfig.ctx || []);
+
+    self.transients = {};
+    self.transients.emailAddress = ko.observable();
+    self.transients.disableAddEmail  = ko.observable(true);
+    self.transients.emailAddress.subscribe(function(email) {
+        return email ? self.transients.disableAddEmail(false): self.transients.disableAddEmail(true);
+    });
+
+    self.emailAddresses = ko.observableArray();
+
+    self.addEmail = function () {
+        var emails = [];
+        emails = self.transients.emailAddress().split(",");
+        var invalidEmail = false;
+        var message = "";
+        $.each(emails, function (index, email) {
+            invalidEmail = true;
+            message = email;
+            return false;
+        });
+
+        $.each(emails, function (index, email) {
+            if (self.emailAddresses.indexOf(email) < 0) {
+                self.emailAddresses.push(email);
+            }
+        });
+        self.transients.emailAddress('');
+    };
+
+    self.deleteEmail = function (email) {
+        self.emailAddresses.remove(email);
+    };
+
+    self.loadAlert = function (alertConfig) {
+        self.emailAddresses($.map(alertConfig.emailAddresses ? alertConfig.emailAddresses : [], function (obj, i) {
+                return obj;
+            })
+        );
+};
+
+self.loadAlert(alertConfig);
+}
