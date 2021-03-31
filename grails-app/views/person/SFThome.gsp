@@ -62,7 +62,7 @@
             <div id="collapseOne" class="accordion-body collapse">
                     <div class="accordion-inner">
                         <div class="control-group">
-                            <label>Du kan rapportera för:</label>
+                            <label>Du måste boka eller skapa en rutt innan du kan rapportera från den. Rapportera för:</label>
                             <ul>
                                 <g:each in="${surveys}">
                                     <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: it?.projectActivityId, 
@@ -96,7 +96,7 @@
         <div class="accordion-group">
             <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" href="#collapseFour">
-                Läs om de olika delprogrammen</a>
+                Läsa om de olika delprogrammen</a>
             </div>
             <div id="collapseFour" class="accordion-body collapse">
                 <div class="accordion-inner">
