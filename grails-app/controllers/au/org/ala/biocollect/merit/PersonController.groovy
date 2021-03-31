@@ -35,6 +35,7 @@ class PersonController {
         HubSettings hubConfig = SettingService.hubConfig
         def userName = userService.currentUserDisplayName
         String userId = userService.currentUserId
+        Boolean userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
         def data = personService.getDataForPersonHomepage(userId)
         def view
         if (data.statusCode == 500){
@@ -51,7 +52,8 @@ class PersonController {
             }
             render view: view, model: [
                 personStatus: data?.personStatus,
-                userName: userName, 
+                userName: userName,
+                userIsAlaOrFcAdmin: userIsAlaOrFcAdmin, 
                 person: data?.person,
                 sites: data?.sites, 
                 siteStatus: data?.siteStatus, 

@@ -125,13 +125,15 @@
                 </a>
             </div>
         </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <a class="accordion-toggle" href="${createLink(controller: 'project', action: 'create', params: [systematicMonitoring: true])}">
-                    Lägg till ny projekt
-                </a>
+        <g:if test="${userIsAlaOrFcAdmin}">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" href="${createLink(controller: 'project', action: 'create', params: [systematicMonitoring: true])}">
+                        Lägg till ny projekt
+                    </a>
+                </div>
             </div>
-        </div>
+        </g:if>
     </div>
 
 </g:if>
