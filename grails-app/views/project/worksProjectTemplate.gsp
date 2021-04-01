@@ -308,7 +308,7 @@
 
                     $('#site-photo-points a').click(function(e) {
                         e.preventDefault();
-                        $('#site-photo-points').html('<span class="search-spinner spinner margin-left-1"> <i class="fa fa-spin fa-spinner"></i> Loading...</span>');
+                        $('#site-photo-points').html('<span class="search-spinner spinner margin-left-1"> <i class="fa fa-spin fa-spinner"></i> <g:message code='g.loading'/>...</span>');
                         $.get(fcConfig.sitesPhotoPointsUrl).done(function(data) {
 
                             $('#site-photo-points').html($(data));

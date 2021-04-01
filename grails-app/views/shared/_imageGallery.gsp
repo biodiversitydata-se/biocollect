@@ -30,7 +30,7 @@
         <div class="margin-top-2"></div>
         <g:render template="/shared/pagination"/>
 
-        <span data-bind="if: transients.loading()"><span class="fa fa-spin fa-spinner"></span>&nbsp;Loading...</span>
+        <span data-bind="if: transients.loading()"><span class="fa fa-spin fa-spinner"></span>&nbsp;<g:message code='g.loading'/>...</span>
         <!-- ko if: recordImages().length == 0 && !error() -->
         <span data-bind="if: !transients.loading()">No images found</span>
         <!-- /ko -->

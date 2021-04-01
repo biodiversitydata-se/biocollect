@@ -1,5 +1,5 @@
 <h3><g:message code='g.search.refineResults'/></h3>
-<span data-bind="if: $root.transients.loading()">Loading...</span>
+<span data-bind="if: $root.transients.loading()"><g:message code='g.loading'/>...</span>
 <!-- ko if: selectedFilters().length > 0 -->
 <div class="row-fluid">
     <div class="span12">

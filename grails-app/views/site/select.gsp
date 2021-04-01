@@ -50,7 +50,7 @@
                     <!-- ko if: loading -->
                     <div class="span5">
                         <div>
-                            <span class="fa fa-spin fa-spinner"></span>&nbsp;Loading...
+                            <span class="fa fa-spin fa-spinner"></span>&nbsp;<g:message code='g.loading'/>...
                         </div>
                     </div>
                     <!-- /ko -->

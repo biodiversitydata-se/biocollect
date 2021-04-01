@@ -16,7 +16,7 @@
 
                 <!-- ko if: projectActivities().length > 0 -->
                  <div id="pActivity-spinner">
-                    <span class="fa fa-spin fa-spinner"></span><p>Loading...</p>
+                    <span class="fa fa-spin fa-spinner"></span><p><g:message code='g.loading'/>...</p>
                 </div>
                  <span> <b> Select survey: </b></span>
                  

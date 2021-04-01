@@ -20,12 +20,12 @@
 
         <div class="span8">
            %{-- <span data-bind="visible: transients.loadingMap()">
-                <span class="fa fa-spin fa-spinner"></span>&nbsp;Loading...
+                <span class="fa fa-spin fa-spinner"></span>&nbsp;<g:message code='g.loading'/>...
             </span>
             <span data-bind="visible: transients.totalPoints() == 0 && !transients.loadingMap()">
                 <span class="text-left margin-bottom-five">
                     <span data-bind="if: transients.loading()">
-                        <span class="fa fa-spin fa-spinner"></span>&nbsp;Loading...
+                        <span class="fa fa-spin fa-spinner"></span>&nbsp;<g:message code='g.loading'/>...
                     </span>
                     <span data-bind="if: !transients.loading()">No Results</span>
                 </span>
