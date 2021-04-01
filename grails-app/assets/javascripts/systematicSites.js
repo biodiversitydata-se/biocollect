@@ -19,7 +19,7 @@ var SystematicSiteViewModel = function (valuesForVM) {
         notes: ko.observable(),
         owner: ko.observable(ownerId),
         projects: ko.observableArray(),
-        verificationStatus: ko.observable('not verified'),
+        verificationStatus: ko.observable('inkommen'),
         adminProperties: ko.observable({}),
         extent: ko.observable({
             source: ko.observable(),
@@ -43,7 +43,7 @@ var SystematicSiteViewModel = function (valuesForVM) {
     });
     self.pointsOfInterest = ko.observableArray();
     self.transectParts = ko.observableArray();
-    self.verificationStatusOptions = ['not approved', 'not verified', 'approved'];
+    self.verificationStatusOptions = ["ej relevant", "inkommen", "godkänd", "ej godkänd"];
     self.showPointAttributes = ko.observable(false);
     self.allowPointsOfInterest = ko.observable(mapOptions.allowPointsOfInterest || false);
     self.displayAreaInReadableFormat = null; // not needed because extent is a centroid - a point
@@ -52,7 +52,7 @@ var SystematicSiteViewModel = function (valuesForVM) {
     self.loadSite = function (site) {
         var siteModel = self.site();
         siteModel.name(exists(site, "name"));
-        siteModel.verificationStatus(site.verificationStatus || 'not verified');
+        siteModel.verificationStatus(site.verificationStatus || "inkommen");
         siteModel.siteId(exists(site, "siteId"));
         siteModel.externalId(exists(site, "externalId"));
         siteModel.type(exists(site, "type"));
