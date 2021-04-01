@@ -108,7 +108,8 @@
                         <g:message code="project.details.systematic.notificationEmails.header"/>
                     </label>
                     <div class="controls span8">
-                        <input id="alertEmailAddress" class="input-xlarge" type="text" data-bind="value: alertConfig.transients.emailAddress, valueUpdate:'afterkeyup'" placeholder="Enter email address"/>
+                        <input id="alertEmailAddress" class="input-xlarge" type="text" data-bind="value: alertConfig.transients.emailAddress, valueUpdate:'afterkeyup'" 
+                        placeholder="${message(code:'project.details.systematic.email.inputPlaceholder')}"/>
                         <div class="margin-bottom-5"></div>
                         <button class="btn-default btn block btn-small" data-toggle="tooltip" title="Enter valid email address"
                                 data-bind="click: alertConfig.addEmail, disable: alertConfig.disableAddEmail"><i class="icon-plus" ></i>  Add</button>
