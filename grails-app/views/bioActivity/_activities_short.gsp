@@ -56,7 +56,7 @@
 
                             <div class="row-fluid" data-bind="visible: version().length == 0">
                                 <div class="span12">
-                                    <h3 class="text-left margin-bottom-2">Found <span data-bind="text: total()"></span> activities</h3>
+                                    <h3 class="text-left margin-bottom-2"><g:message code="g.found"/> <span data-bind="text: total()"></span> <g:message code="g.surveys"/></h3>
                                     <div class="pull-right margin-bottom-2 margin-top-1">
                                         <!-- ko if:  transients.isBulkActionsEnabled -->
                                         <span>Bulk actions -

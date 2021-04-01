@@ -1,7 +1,7 @@
 <%@ page import="grails.converters.JSON" contentType="text/html;charset=UTF-8" %>
 <bc:koLoading>
     <div class="well">
-        <h4 class="block-header">Project metadata</h4>
+        <h4 class="block-header"><g:message code="project.details.metadata.header"/></h4>
         <div class="row-fluid">
             <div class="clearfix control-group">
                 <label class="control-label span3"><g:message code="project.details.type"/><fc:iconHelp><g:message code="project.details.type.help"/></fc:iconHelp><i class="req-field"></i></label>
@@ -37,7 +37,7 @@
                 <div class="row-fluid">
                     <div class="span3"></div>
                     <div class="span8">
-                        <div><b>Organisation Search Results</b> (Click an organisation to select it)</div>
+                        <div><b><g:message code="project.details.organisationResults"/></b> (<g:message code="project.details.organisationResults.subtitle"/>)</div>
                         <div class="organisation-list" >
                             <ul class="nav nav-list">
                                 <!-- ko foreach : organisations -->
@@ -69,13 +69,13 @@
 
         <div class="well">
             <div data-bind="visible:isSystematicMonitoring()" class="row-fluid">
-            <h4 class="block-header">Systematic monitoring options</h4>
+            <h4 class="block-header"><g:message code="project.details.systematic.header"/></h4>
 
             <div class="clearfix control-group">
                 <%-- Should personal data be stored on ecodata --%>
                 <label class="control-label span3" for="requiresVolManagement">
-                    <g:message code=""/>Store personal data of unregistered members?
-                    <fc:iconHelp><g:message code=""/>Use volunteer management tools for admins of the project, including storing data of unregistered users</fc:iconHelp>
+                    <g:message code="project.details.systematic.storePersonData"/>
+                    <fc:iconHelp><g:message code="project.details.systematic.storePersonData.help"/></fc:iconHelp>
                 </label>
                 <div class="controls span4">
                     <select id="requiresVolManagement" data-bind="booleanValue:requiresVolManagement, options:[{label:'Yes', value:'true'}, {label:'No', value:'false'}], optionsText:'label', optionsValue:'value', optionsCaption:'Select...'" data-validation-engine="validate[required]">
@@ -85,18 +85,18 @@
             <div class="row-fluid">
                 <div class="clearfix control-group">
                     <label class="control-label span3">
-                        <g:message code=""/>What type of user activity would you like to receive email notifications about?
+                        <g:message code="project.details.systematic.notificationType"/>
                     </label>
                     <div class="span6">
                         <label class="checkbox">
                         <input type="checkbox" value="siteBooking" data-bind="checked: alertConfig.ctx"/>
-                                Site booking<g:message code=""/>
+                                <g:message code="project.details.systematic.siteBooking"/>
                         </label>
                     </div>
                     <div class="span6">
                         <label class="checkbox">
                         <input type="checkbox" value="surveySubmitted" data-bind="checked: alertConfig.ctx"/>
-                                Survey submitted<g:message code=""/>
+                                <g:message code="project.details.systematic.surveySubmitted"/>
                         </label>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
             <div class="row-fluid">
                 <div class="clearfix control-group">
                    <label class="control-label span3">
-                        Who should be notified?
+                        <g:message code="project.details.systematic.notificationEmails.header"/>
                     </label>
                     <div class="controls span8">
                         <input id="alertEmailAddress" class="input-xlarge" type="text" data-bind="value: alertConfig.transients.emailAddress, valueUpdate:'afterkeyup'" placeholder="Enter email address"/>
@@ -118,7 +118,7 @@
             <!-- ko if: alertConfig.emailAddresses().length > 0 -->
             <div class="row-fluid">
                 <div class="clearfix control-group">
-                    <label class="control-label span3">Email Addresses:</label>
+                    <label class="control-label span3"><g:message code="project.details.systematic.notificationEmails"/>:</label>
                         <!-- ko foreach: alertConfig.emailAddresses -->
                         <div class="controls span8">
                             <div class="span4 text-left">
@@ -277,7 +277,7 @@
                                     <div class="span3"></div>
 
                                     <div class="span8">
-                                        <div><b>Organisation Search Results</b> (Click an organisation to select it)
+                                        <div><b><g:message code=""/>Organisation Search Results</b> (Click an organisation to select it)
                                         </div>
 
                                         <div class="organisation-list">

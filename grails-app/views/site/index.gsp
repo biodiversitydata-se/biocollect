@@ -126,39 +126,10 @@
 
                 <dl class="dl-horizontal">
 
-                <%-- start --%>
-                <%-- Display EPSG 4326 coordinates --%>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" href="#collapse">
-                            <g:message code= "site.transect.displayCoordinates"/>
-                        </a>
-                    </div>
-                    <div id="collapse" class="accordion-body collapse">
-                        <div class="accordion-inner">
-                            <div class="control-group">
-                                <table class="table table-striped table-bordered table-hover dataTable no-footer">
-                                    <th><g:message code="site.metadata.name" /></th>
-                                    <th><g:message code="site.transect.transectPart.length" /> (m)</th>
-                                    <th><g:message code="g.coordinates"/></th>
-                                    <g:each in="${site?.transectParts}">
-                                        <tr>
-                                            <td>${it?.name}</td>
-                                            <td><g:formatNumber number="${it?.length}" type="number" maxFractionDigits="2"/></td>
-                                            <td>${it?.geometry?.coordinates}</td>
-                                        </tr>
-                                    </g:each>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <%-- If available display coordinates in other CRS --%>
-
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" href="#collapse1">
-                            <g:message code= "site.transect.displayCoordinatesInOtherCRS"/>
+                            <g:message code= "site.transect.displayCoordinates"/>
                         </a>
                     </div>
                     <div id="collapse1" class="accordion-body collapse">
@@ -197,6 +168,7 @@
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer">
                                         <th><g:message code="site.metadata.name" /></th>
                                         <th><g:message code="site.details.description" /></th>
+                                        <th><g:message code="site.transect.transectPart.length" /> (m)</th>
                                         <g:each var="property" in="${site?.transectParts[0]?.displayProperties}">
                                             <th>${property.key}</th>
                                         </g:each>
@@ -204,6 +176,7 @@
                                             <tr>
                                                 <td>${segment?.name}</td>
                                                 <td>${segment?.description}</td>
+                                                <td><g:formatNumber number="${it?.length}" type="number" maxFractionDigits="2"/></td>
                                                 <g:each in="${segment?.displayProperties}">
                                                     <td>${it.value}</td>
                                                 </g:each>
