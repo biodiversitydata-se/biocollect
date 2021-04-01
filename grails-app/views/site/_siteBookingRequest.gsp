@@ -83,7 +83,7 @@ $('#formSiteBookingRequest').on('submit', function(e){
     };
 
     if (data.requestedSitesList == ""){
-        bootbox.alert("Du måste välja en rutt och klicka på knappen Lägg till ");
+        bootbox.alert("Du måste välja en rutt och klicka på knappen Lägg till");
     } else {
         $.ajax({
             url: fcConfig.submitBookingRequestUrl,
@@ -92,6 +92,9 @@ $('#formSiteBookingRequest').on('submit', function(e){
             contentType: 'application/json',
             success: function (data) {
                 list.innerHTML = "";
+                $("#siteName").val("");
+                $('#btnAddToRequest').attr("disabled", "disabled");
+                requestedSitesList = [];
                 $("#messageSuccessfulRequest span").html(data.message).parent().fadeIn();
             },
             error: function (data) {
