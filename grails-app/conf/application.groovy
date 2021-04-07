@@ -344,6 +344,25 @@ if(!map.overlays) {
                         style       : [:],
                         bounds      : bounds,
                         restrictions: [:]
+                ],
+                [
+                        alaId       : 'Indexrutor_25',
+                        alaName     : 'Indexrutor_25',
+                        layerName   : 'Indexrutor_25',
+                        title         : '#Grid RT90',
+                        defaultSelected: false,
+                        boundaryColour  : '#fdb863',
+                        showPropertyName: false,
+                        fillColour      : '',
+                        textColour      : '',
+                        userAccessRestriction: 'anyUser',
+                        inLayerShapeList     : true,
+                        opacity: 0.5,
+                        
+                        display     : [
+                                cqlFilter     : defaultCqlFilter,
+                                propertyName  : 'NAME_1'
+                        ]
                 ]
         ]
 }
