@@ -24,7 +24,6 @@
         intersectService: "${createLink(controller: 'proxy', action: 'intersect')}",
         featuresService: "${createLink(controller: 'proxy', action: 'features')}",
         featureService: "${createLink(controller: 'proxy', action: 'feature')}",
-        spatialWms: "${grailsApplication.config.spatial.geoserverUrl}",
         geocodeUrl: "${grailsApplication.config.google.geocode.url}",
         siteMetaDataUrl: "${createLink(controller:'site', action:'locationMetadataForPoint')}",
         deleteSiteUrl: "${createLink(controller:'site', action:'delete')}",
