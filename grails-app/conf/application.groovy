@@ -317,7 +317,23 @@ if (!map.baseLayers) {
                         'code': 'googleterrain',
                         'displayText': 'Google terrain',
                         'isSelected': false
+                ],
+                [
+                        'code': 'landscape',
+                        'displayText': 'Thunderforest landskap',
+                        'isSelected': false
+                ],
+                [
+                        'code': 'lantmateriettopo',
+                        'displayText': 'Lantmateriet topografisk',
+                        'isSelected': false
                 ]
+                // ,
+                // [
+                //         'code': 'lantmaterietortofoto',
+                //         'displayText': 'Lantmateriet ortofoto',
+                //         'isSelected': false
+                // ]
         ]
 }
 
