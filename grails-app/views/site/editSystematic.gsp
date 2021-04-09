@@ -47,7 +47,6 @@
         spatialService: '${createLink(controller:'proxy',action:'feature')}',
         featuresService: "${createLink(controller: 'proxy', action: 'features')}",
         featureService: "${createLink(controller: 'proxy', action: 'feature')}",
-        spatialWms: "${grailsApplication.config.spatial.geoserverUrl}",
         geocodeUrl: "${grailsApplication.config.google.geocode.url}",
         siteIndexUrl: "${createLink(controller: 'site', action: 'index')}",
         siteEditUrl: "${createLink(controller: 'site', action: 'editSystematic')}",
@@ -66,7 +65,7 @@
         homePageUrl : "${createLink(controller: 'home', action: 'index')}",
         ajaxUpdateSystematicUrl: "${createLink(action: 'ajaxUpdateSystematic', id: site?.siteId)}",
         mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
-        drawOptionsConfig: ${mapService.getDrawOptions(survey) as JSON},
+        drawOptionsConfig: ${mapService.getDrawOptions(pActivity) as JSON},
         returnTo: "${createLink(controller: 'project', action: 'index', id: project?.projectId)}"
         },
         here = window.location.href;

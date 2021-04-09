@@ -59,7 +59,7 @@ class SiteController {
     }
     def createSystematic(){
         def project = projectService.getRich(params.projectId)
-        def survey = projectActivityService.get(params?.pActivityId, 'brief')
+        def pActivity = projectActivityService.get(params?.pActivityId, 'brief')
         // permissions check
         def projectMembers = projectService.getMembersForProjectId(params.projectId)
         String userId = userService.getCurrentUserId()
@@ -77,11 +77,11 @@ class SiteController {
             documents: [], 
             projectSite: project?.projectSite,
             pActivityId: params?.pActivityId,
-            survey: survey, 
+            pActivity: pActivity, 
             userIsAlaOrFcAdmin: userService.userIsAlaOrFcAdmin(), 
             userCanEdit: userCanCreateSite,
             personId: personId,
-            allowSegmentMetadata: survey?.allowSegmentMetadata
+            allowSegmentMetadata: pActivity?.allowSegmentMetadata
             ]
         render view: 'editSystematic', model: model
     }
@@ -177,13 +177,13 @@ class SiteController {
         } else {
             // getting projectId to get pActivity to see setting for the site
             String projectId = result.site.projects[0]
-            def survey = projectActivityService.getAllByProject(projectId, 'brief')
+            def pActivity = projectActivityService.getAllByProject(projectId, 'brief')
             String projectIds = result.site.projects.toList().join(',')
             String userId = authService.getUserId()
             result.userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
             // not ideal but getting the first projectId as for systematic we only have one anyway
-            result.survey = survey
-            result.allowSegmentMetadata = survey.allowSegmentMetadata[0]
+            result.pActivity = pActivity
+            result.allowSegmentMetadata = pActivity.allowSegmentMetadata[0]
             result
         }
     }

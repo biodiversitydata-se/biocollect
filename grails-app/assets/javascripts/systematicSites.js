@@ -199,6 +199,7 @@ var SystematicSiteViewModel = function (valuesForVM) {
             singleMarker: mapOptions.singleMarker,
             showReset: false,
             baseLayer: baseLayersAndOverlays.baseLayer,
+            overlays: baseLayersAndOverlays.overlays,
             otherLayers: baseLayersAndOverlays.otherLayers
         };
 
