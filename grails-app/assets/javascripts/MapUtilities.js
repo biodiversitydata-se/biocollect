@@ -243,23 +243,11 @@ Biocollect.MapUtilities = {
                     // see https://opendata.lantmateriet.se/#apis?api=OpenDataWMTS&version=v1
                     url: 'https://api.lantmateriet.se/open/topowebb-ccby/v1/wmts/token/'+ token +'/?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=topowebb&STYLE=default&TILEMATRIXSET=3857&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fpng',
                     options: {
-                        maxNativeZoom: 17,
                         attribution: '&copy; <a href="https://www.lantmateriet.se/en/">Lantmäteriet</a> Topografisk Webbkarta Visning, CCB'
                     }
                 };
                 layer = L.tileLayer(option.url, option.options);
                 break;
-            // case 'lantmaterietortofoto':
-            //     option = {
-            //         // see https://opendata.lantmateriet.se/#apis?api=OpenDataWMTS&version=v1
-            //         url: 'https://api.lantmateriet.se/historiska-ortofoton/wms/v1/token/' + token + '/?request=GetMap&version=1.1.1&service=WMS&srs=3857&layers=&',
-            //         options: {
-            //             maxNativeZoom: 17,
-            //             attribution: '&copy; <a href="https://www.lantmateriet.se/en/">Lantmäteriet</a> Ortofoto Webbkarta Visning, CCB'
-            //         }
-            //     };
-            //     layer = L.tileLayer(option.url, option.options);
-            //     break;
         }
 
         return layer;

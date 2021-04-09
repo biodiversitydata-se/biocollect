@@ -328,12 +328,6 @@ if (!map.baseLayers) {
                         'displayText': 'Lantmateriet topografisk',
                         'isSelected': false
                 ]
-                // ,
-                // [
-                //         'code': 'lantmaterietortofoto',
-                //         'displayText': 'Lantmateriet ortofoto',
-                //         'isSelected': false
-                // ]
         ]
 }
 
