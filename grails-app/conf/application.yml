@@ -162,6 +162,8 @@ speciesConfiguration:
             "speciesDisplayFormat": "COMMONNAME"
            ]
 
+spatial:
+   baseURL: "http://ecodata.bioatlas.se/"
 
 upload:
    images:
