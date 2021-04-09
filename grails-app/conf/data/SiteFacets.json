@@ -2,9 +2,6 @@
     "navTree": {
       "nodes": [
     {"name": "siteSurveyNameFacet", "displayName": "Delprogram"},
-    {"name": "LSKFacet", "displayName": "Landskap"},
-    {"name": "LANFacet", "displayName": "Län"},
-    {"name": "kartaTxFacet", "displayName": "Karta TX"},
     {"name": "bookedBy", "displayName": "Bokad"},
     {"name": "verificationStatusFacet", "displayName": "Status", "terms": ["ej relevant", "inkommen", "godkänd", "ej godkänd"]}
         ]
