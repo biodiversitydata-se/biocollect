@@ -163,7 +163,7 @@ speciesConfiguration:
            ]
 
 spatial:
-   baseURL: "http://ecodata.bioatlas.se/"
+   baseURL: "http://ecodata.bioatlas.se"
 
 upload:
    images:
