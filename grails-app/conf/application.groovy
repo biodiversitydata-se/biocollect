@@ -334,35 +334,13 @@ if (!map.baseLayers) {
 if(!map.overlays) {
         map.overlays = [
                 [
-                        alaId       : 'cl22',
-                        alaName     : 'aus1',
-                        layerName   : 'aust_states_territories',
-                        title         : '#',
-                        defaultSelected: false,
-                        boundaryColour  : '#fdb863',
-                        showPropertyName: false,
-                        fillColour      : '',
-                        textColour      : '',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'NAME_1'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
                         alaId       : 'Indexrutor_25',
                         alaName     : 'Indexrutor_25',
                         layerName   : 'Indexrutor_25',
                         title         : '#Grid RT90',
                         defaultSelected: false,
-                        boundaryColour  : '#fdb863',
-                        showPropertyName: false,
+                        boundaryColour  : '#f73c27',
+                        showPropertyName: true,
                         fillColour      : '',
                         textColour      : '',
                         userAccessRestriction: 'anyUser',
@@ -371,7 +349,7 @@ if(!map.overlays) {
                         
                         display     : [
                                 cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'NAME_1'
+                                propertyName  : 'BLAD'
                         ]
                 ]
         ]
@@ -417,16 +395,6 @@ map.data.displays = [
                 showProjectMembers: true,
                 isDefault: "heatmap"
         ]
-//        TODO: fix clustering on GeoServer before enabling.
-//        ,
-//        [
-//                value: "Cluster",
-//                key: "cluster",
-//                showLoggedOut: true,
-//                showLoggedIn: true,
-//                showProjectMembers: true,
-//                isDefault: "heatmap"
-//        ]
 ]
 
 map.projectfinder.displays = [
