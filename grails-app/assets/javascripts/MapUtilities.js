@@ -159,7 +159,7 @@ Biocollect.MapUtilities = {
      * @returns {L.tileLayer | L.Google}
      */
     getBaseLayer: function (code) {
-        let token = "8e55e105-71ff-3816-98eb-86f7979c3650";
+        var token = "8e55e105-71ff-3816-98eb-86f7979c3650";
         var option, layer;
         switch (code) {
             case 'minimal':
