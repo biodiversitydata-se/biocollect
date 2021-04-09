@@ -163,9 +163,6 @@ speciesConfiguration:
            ]
 
 
-spatial:
-   baseURL: "https://spatial.bioatlas.se/"
-
 upload:
    images:
       path: "/data/${appName}/images/"
