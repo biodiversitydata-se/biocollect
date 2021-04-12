@@ -345,7 +345,26 @@ if(!map.overlays) {
                         textColour      : '',
                         userAccessRestriction: 'anyUser',
                         inLayerShapeList     : true,
-                        opacity: 0.5,
+                        opacity: 0,
+                        
+                        display     : [
+                                cqlFilter     : defaultCqlFilter,
+                                propertyName  : 'BLAD'
+                        ]
+                ],
+                [
+                        alaId       : 'archipelago_sq',
+                        alaName     : 'archipelago_sq',
+                        layerName   : 'archipelago_sq',
+                        title         : '#Archipelago squares',
+                        defaultSelected: false,
+                        boundaryColour  : '#f73c27',
+                        showPropertyName: true,
+                        fillColour      : '',
+                        textColour      : '#000000',
+                        userAccessRestriction: 'anyUser',
+                        inLayerShapeList     : true,
+                        opacity: 0,
                         
                         display     : [
                                 cqlFilter     : defaultCqlFilter,
