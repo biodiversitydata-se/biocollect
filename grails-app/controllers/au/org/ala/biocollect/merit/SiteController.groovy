@@ -177,13 +177,15 @@ class SiteController {
         } else {
             // getting projectId to get pActivity to see setting for the site
             String projectId = result.site.projects[0]
+            Map project = projectService.get(projectId)
             def pActivity = projectActivityService.getAllByProject(projectId, 'brief')
             String projectIds = result.site.projects.toList().join(',')
             String userId = authService.getUserId()
             result.userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
             // not ideal but getting the first projectId as for systematic we only have one anyway
-            result.pActivity = pActivity
-            result.allowSegmentMetadata = pActivity.allowSegmentMetadata[0]
+            result.pActivity = pActivity[0]
+            result.project = project
+            result.allowSegmentMetadata = pActivity[0]?.allowSegmentMetadata
             result
         }
     }

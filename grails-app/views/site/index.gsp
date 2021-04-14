@@ -176,7 +176,12 @@
                                             <tr>
                                                 <td>${segment?.name}</td>
                                                 <td>${segment?.description}</td>
-                                                <td><g:formatNumber number="${it?.length}" type="number" maxFractionDigits="2"/></td>
+                                                <g:if test="${segment?.length}">
+                                                    <td><g:formatNumber number="${segment?.length}" type="number" maxFractionDigits="2"/></td>
+                                                </g:if>
+                                                <g:else>
+                                                    <td></td>
+                                                </g:else>
                                                 <g:each in="${segment?.displayProperties}">
                                                     <td>${it.value}</td>
                                                 </g:each>
