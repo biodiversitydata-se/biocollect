@@ -917,7 +917,7 @@ class SiteController {
             }
 
             if (!queryParams.facets) {
-                queryParams.facets = "typeFacet,className,organisationFacet,stateFacet,lgaFacet,nrmFacet,siteSurveyNameFacet,siteProjectNameFacet,photoType,isBooked,verificationStatusFacet"
+                queryParams.facets = "typeFacet,className,organisationFacet,stateFacet,lgaFacet,nrmFacet,siteSurveyNameFacet,siteProjectNameFacet,photoType,bookedByFacet,kartaTxFacet,verificationStatusFacet,lskFacet,lanFacet"
             }
             if (queryParams.query) {
                 query.push(queryParams.query);
@@ -942,6 +942,7 @@ class SiteController {
             queryParams.remove('hub')
             queryParams.remove('hubFq')
             Map searchResult = searchService.searchForSites(queryParams)
+            log.debug "searchResult?.facets " + searchResult?.facets
             List sites = searchResult?.hits?.hits
             List facets = []
             List projectIds = []
