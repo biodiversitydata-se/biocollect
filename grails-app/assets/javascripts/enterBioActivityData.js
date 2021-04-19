@@ -12,7 +12,6 @@ function validateDateField(dateField) {
 /* Master controller for page. This handles saving each model as required. */
 function Master(activityId, config) {
     var self = this;
-    self.verificationStatus = ko.observable();
     self.subscribers = [];
 
     // client models register their name and methods to participate in saving
@@ -116,6 +115,91 @@ function Master(activityId, config) {
 
     }
 
+    /**
+     * LU ONLY - > Makes an ajax call to save a draft of the form. This includes the activity
+     * itself and each output. Works the same as self.save except it saves with verificationStatus set to draft
+     * and doesn't validate mandatory fields
+     *
+     */
+
+    self.saveDraft = function(){
+        
+        if ($('#validation-container').validationEngine('validate')) {
+            debugger;
+            var toSave = this.modelAsJS();
+            toSave.verificationStatus = 'draft';
+            toSave = JSON.stringify(toSave);
+            // Don't allow another save to be initiated.
+            blockUIWithMessage("Saving draft...");
+
+            amplify.store('activity-' + config.activityId, toSave);
+            var unblock = true;
+            var url = config.isMobile ? config.bioActivityMobileUpdate : config.bioActivityUpdate;
+            var ajaxRequestParams = {
+                url: url,
+                type: 'POST',
+                data: toSave,
+
+                contentType: 'application/json',
+                success: function success(data) {
+                    var errorText = "";
+                    var activityId;
+                    if (data.errors) {
+                        errorText = "<span class='label label-important'>Important</span><h4>There was an error while trying to save your changes.</h4>";
+                        $.each(data.errors, function (i, error) {
+                            errorText += "<p>Saving <b>" +
+                                (error.name === 'activity' ? 'the activity context' : error.name) +
+                                "</b> threw the following error:<br><blockquote>" + error.error + "</blockquote></p>";
+                        });
+                        errorText += "<p>Any other changes should have been saved.</p>";
+                        bootbox.alert(errorText);
+                    } else if (data.error) {
+                        bootbox.alert(data.error);
+                    } else {
+                        unblock = false; // We will be transitioning off this page.
+                        activityId = config.activityId || data.resp.activityId;
+                        config.returnTo = config.bioActivityView + activityId;
+                        blockUIWithMessage("Ditt utkast är sparat.");
+                        self.reset();
+                        self.saved();
+                    }
+                    amplify.store('activity-' + config.activityId, null);
+                },
+                error: function (jqXHR, status, error) {
+
+                    // This is to detect a redirect to CAS response due to session timeout, which is not
+                    // 100% reliable using ajax (e.g. no network will give the same response).
+                    if (jqXHR.readyState == 0) {
+                        bootbox.alert($('#timeoutMessage').html());
+                    }
+                    else {
+                        alert('An unhandled error occurred: ' + error);
+                    }
+                },
+                complete: function () {
+                    if (unblock) {
+                        $.unblockUI();
+                    }
+                }
+            };
+
+            if (config.isMobile) {
+                $.extend(ajaxRequestParams, {
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('userName', config.userName);
+                        xhr.setRequestHeader('authKey', config.authKey);
+                    }
+                });
+            }
+
+            $.ajax(ajaxRequestParams);
+        } else {
+            bootbox.alert("För att spara ditt utkast måste du först ha fyllt i alla de obligatoriska fälten.");
+        }
+    }
 
     /**
      * Makes an ajax call to save any sections that have been modified. This includes the activity
@@ -340,6 +424,28 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
         return jsData;
     };
 
+    self.saveFromDraft = function(){
+        debugger;
+        bootbox.confirm({
+            message: "Once you submit you won't be able to make any changes. Are you sure you want to submit?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result){
+                    self.verificationStatus("not verified");
+                    master.save();
+                }
+            }
+        });
+    }
     self.modelAsJSON = function () {
         return JSON.stringify(self.modelForSaving());
     };

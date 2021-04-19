@@ -148,7 +148,7 @@ class BioActivityController {
 
         // START OF SYSTEMATIC MONITORING CHANGES 
         // TODO set a condition is survey settings whether a notification should be sent to admins
-        if (isCreateRecordRequest){
+        if (isCreateRecordRequest && postBody.verificationStatus != "draft"){
             def project = projectService.get(projectId)
             Boolean isSystematicMonitoring = projectService.isSystematicMonitoring(project)
             if (isSystematicMonitoring){

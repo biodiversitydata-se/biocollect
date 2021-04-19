@@ -6,8 +6,9 @@
         <g:if test="${!mobile}">
             <div class="row-fluid">
                 %{--page title--}%
-                <div class="span4">
+                <div class="span8">
                     <h2>${title}</h2>
+                    <h4><g:message code="record.edit.draft.heading"/></h4>
                 </div>
                 %{-- quick links --}%
                 <div class="span8">
@@ -78,12 +79,15 @@
     <div class="form-actions">
         <g:render template="/shared/termsOfUse"/>
         <br>
+        <g:if test="${!activity.verificationStatus || activity.verificationStatus == 'draft'}">
+            <button type="button" id="saveDraft" class="btn btn-primary btn-large"><g:message code="record.edit.saveDraft.btn"/></button>
+        </g:if>
         <g:if test="${!preview}">
-            <button type="button" id="save" class="btn btn-primary btn-large">Submit</button>
+            <button type="button" id="save" class="btn btn-primary btn-large"><g:message code="g.submit"/></button>
         </g:if>
         <g:if test="${showCreate && !mobile}">
             <g:if test="${!preview}">
-                <button type="button" id="cancel" class="btn btn-large">Cancel</button>
+                <button type="button" id="cancel" class="btn btn-large"><g:message code="g.cancel"/></button>
             </g:if>
         </g:if>
     </div>
@@ -164,8 +168,8 @@
 
         $('.helphover').popover({animation: true, trigger:'hover'});
 
-        $('#save').click(function () {
-            master.save();
+        $('#saveDraft').click(function () {
+            master.saveDraft();
             master.removeTemporarySite();
         });
 
@@ -184,6 +188,16 @@
             activityLevelData.metaModel,
             activityLevelData.pActivity,
             fcConfig);
+
+        $('#save').click(function () {
+            debugger;
+            if (activityLevelData.activity.verificationStatus == 'draft'){
+                viewModel.saveFromDraft();
+            } else {
+                master.save();
+            }
+            master.removeTemporarySite();
+        });
 
         var activityId = '${activity.activityId}';
         var projectId = '${activity.projectId}';
