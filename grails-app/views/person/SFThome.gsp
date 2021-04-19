@@ -96,7 +96,7 @@
         <div class="accordion-group">
             <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" href="#collapse4">
-                    Carry on working on your draft form
+                    Fortsätt arbeta med dina utkast
                 </a>
             </div>
             <div id="collapse4" class="accordion-body collapse">
@@ -149,7 +149,7 @@
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" href="${createLink(controller: 'project', action: 'create', params: [systematicMonitoring: true])}">
-                        Lägg till ny projekt
+                        Lägg till nytt projekt
                     </a>
                 </div>
             </div>
