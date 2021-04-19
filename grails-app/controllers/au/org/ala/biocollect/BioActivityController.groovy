@@ -157,8 +157,8 @@ class BioActivityController {
                 String userName = userService.getCurrentUserDisplayName()
                 String bioActivityEditUrl = g.createLink(controller: 'bioActivity', action: 'edit')
                 String bioActivityId = result.resp.activityId
-                def subject = "BioCollect update: New survey added for ${projectActivity?.name}"
-                def emailBody = "${userName} has just added a new survey. Check it and edit if necessary: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>here</a>"
+                def subject =  "En inventering av en ${projectActivity?.name} har rapporterats av ${userName} via BioCollect"
+                def emailBody = "${userName} har just skickat in ett protokoll. Du kan kontrollera och eventuellt ändra i protokollet: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>här</a>"
                 emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
             } 
         }
