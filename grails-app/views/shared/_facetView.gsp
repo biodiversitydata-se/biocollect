@@ -25,7 +25,7 @@
                             </div>
                             <a href="#" role="button" class="moreFacets tooltips" data-toggle="modal" title="" data-target="#${modalName}"
                             data-original-title="View full list of values" data-bind="click: loadMoreTerms, visible: showChooseMore()">
-                                <i class="fa fa-hand-o-right"></i> choose more...
+                                <i class="fa fa-hand-o-right"></i> <g:message code="facet.dialog.more.lbl"/>...
                             </a>
                         </div>
                     </div>
@@ -86,12 +86,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <span class="modal-title" data-bind="text: displayTitle('<g:message code="facet.dialog.more.title" default="Filter by"/>')"></span>
+                <span class="modal-title" data-bind="text: displayTitle('<g:message code="facet.dialog.more.title" default="${message(code:'facet.dialog.more.filterBy')}"/>')"></span>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="input-append control-label pull-right">
-                        <input type="text" placeholder="Search" data-bind="value: searchText"><button class="btn"><i class="icon-filter"></i></button>
+                        <input type="text" placeholder="${message(code:'g.search')}" data-bind="value: searchText"><button class="btn"><i class="icon-filter"></i></button>
                     </div>
                 </div>
                 <!-- ko foreach: showMoreTermList -->
