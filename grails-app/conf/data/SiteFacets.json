@@ -5,7 +5,7 @@
     {"name": "lskFacet", "displayName": "Landskap"},
     {"name": "lanFacet", "displayName": "Län"}, 
     {"name": "kartaTxFacet", "displayName": "Karta TX"},
-    {"name": "bookedByFacet", "displayName": "Bokad"},
+    {"name": "booked", "displayName": "Bokad"},
     {"name": "verificationStatusFacet", "displayName": "Status", "terms": ["ej relevant", "inkommen", "godkänd", "ej godkänd"]}
         ]
     }

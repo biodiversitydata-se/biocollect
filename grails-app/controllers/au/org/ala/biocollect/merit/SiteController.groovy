@@ -917,7 +917,7 @@ class SiteController {
             }
 
             if (!queryParams.facets) {
-                queryParams.facets = "typeFacet,className,organisationFacet,stateFacet,lgaFacet,nrmFacet,siteSurveyNameFacet,siteProjectNameFacet,photoType,bookedByFacet,kartaTxFacet,verificationStatusFacet,lskFacet,lanFacet"
+                queryParams.facets = "typeFacet,className,organisationFacet,stateFacet,lgaFacet,nrmFacet,siteSurveyNameFacet,siteProjectNameFacet,photoType,booked,kartaTxFacet,verificationStatusFacet,lskFacet,lanFacet"
             }
             if (queryParams.query) {
                 query.push(queryParams.query);
