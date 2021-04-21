@@ -147,8 +147,7 @@ class BioActivityController {
         }
 
         // START OF SYSTEMATIC MONITORING CHANGES 
-        // TODO set a condition is survey settings whether a notification should be sent to admins
-        if (isCreateRecordRequest && postBody.verificationStatus != "draft"){
+        if (postBody?.verificationStatus == "not verified"){
             def project = projectService.get(projectId)
             Boolean isSystematicMonitoring = projectService.isSystematicMonitoring(project)
             if (isSystematicMonitoring){
@@ -156,7 +155,7 @@ class BioActivityController {
                 def emailAddresses = projectActivity.alert.emailAddresses ? projectActivity.alert.emailAddresses : grailsApplication.config.biocollect.support.email.address
                 String userName = userService.getCurrentUserDisplayName()
                 String bioActivityEditUrl = g.createLink(controller: 'bioActivity', action: 'edit')
-                String bioActivityId = result.resp.activityId
+                String bioActivityId = (isCreateRecordRequest) ? result.resp.activityId : postBody.activityId
                 def subject = "BioCollect update: New survey added for ${projectActivity?.name}"
                 def emailBody = "${userName} has just added a new survey. Check it and edit if necessary: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>here</a>"
                 emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
