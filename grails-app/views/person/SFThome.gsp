@@ -102,6 +102,10 @@
             <div id="collapse4" class="accordion-body collapse">
                     <div class="accordion-inner">
                         <div class="control-group">
+                        <g:if test="${!drafts}">
+                            You have no drafts saved.
+                        </g:if>
+                        <g:else>
                             <ul>
                                 <g:each in="${drafts}">
                                     <li><a href="${createLink(controller: 'bioActivity', action: 'edit', id: it?.activityId, 
@@ -109,6 +113,7 @@
                                     </li>
                                 </g:each>
                             </ul>
+                        </g:else>
                         </div>
                     </div>
             </div>
