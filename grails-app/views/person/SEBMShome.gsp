@@ -33,7 +33,7 @@
         <div class="accordion-group">
             <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" href="#collapseTwo">
-                Skapa en rutt/ sektor</a>
+                Skapa en rutt</a>
             </div>
             <div id="collapseTwo" class="accordion-body collapse">
                 <div class="accordion-inner">
