@@ -61,6 +61,11 @@
                                         <g:else>
                                             <g:render template="/site/siteBookingRequest"></g:render>
                                         </g:else>
+                                    <div class="row-fluid">
+                                        <div class="span12 text-center margin-top-10">
+                                            <g:render template="/shared/pagination"></g:render>
+                                        </div>
+                                    </div>
                                         <g:render template="/site/siteBookingMap" model="${[id: 'bookingMap']}"></g:render>
                                     </div>
 
