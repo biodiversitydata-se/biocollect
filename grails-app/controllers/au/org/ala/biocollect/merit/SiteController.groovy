@@ -685,8 +685,8 @@ class SiteController {
             // and assign an owner
             if (isCreateSiteRequest){
                 personService.addOwnedSite(postBody.site?.owner, result.id)
-                def subject = "BioCollect update: New site created for ${projectActivity.name}"
-                def emailBody = "${userName} has just created a new site. Check it and edit if necessary <a href='${grailsApplication.config.server.serverURL}${siteEditUrl}/${result.id}'>here</a>"
+                def subject = "Från BioCollect: Ny ${projectActivity.name} skapad"
+                def emailBody = "${userName} har just skapat en ny rutt. Titta på den, ändra och godkänn den <a href='${grailsApplication.config.server.serverURL}${siteEditUrl}/${result.id}'>här</a>"
                 emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
             }
 
