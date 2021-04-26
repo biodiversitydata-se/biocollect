@@ -125,7 +125,6 @@ function Master(activityId, config) {
     self.saveDraft = function(){
         
         if ($('#validation-container').validationEngine('validate')) {
-            debugger;
             var toSave = this.modelAsJS();
             toSave.verificationStatus = 'draft';
             toSave = JSON.stringify(toSave);
@@ -245,7 +244,7 @@ function Master(activityId, config) {
                         bootbox.alert(data.error);
                     } else {
                         unblock = false; // We will be transitioning off this page.
-                        activityId = config.activityId || data.resp.activityId;
+                        activityId = data.resp.activityId || config.activityId;
                         config.returnTo = config.bioActivityView + activityId;
                         blockUIWithMessage("Successfully submitted the record.");
                         self.reset();
@@ -425,7 +424,6 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     };
 
     self.saveFromDraft = function(){
-        debugger;
         bootbox.confirm({
             message: "Once you submit you won't be able to make any changes. Are you sure you want to submit?",
             buttons: {
@@ -441,6 +439,7 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
             callback: function (result) {
                 if (result){
                     self.verificationStatus("not verified");
+                    self.deleteDraftAndSaveNewActivity = true;
                     master.save();
                 }
             }

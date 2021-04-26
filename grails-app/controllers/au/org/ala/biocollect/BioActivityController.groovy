@@ -60,6 +60,7 @@ class BioActivityController {
 
         if (id) {
             activity = activityService.get(id)
+            postBody.personId = activity.personId
             projectId = activity?.projectId
             pActivity = projectActivityService.get(activity?.projectActivityId)
         } else if (pActivityId) {
@@ -155,7 +156,8 @@ class BioActivityController {
                 def emailAddresses = projectActivity.alert.emailAddresses ? projectActivity.alert.emailAddresses : grailsApplication.config.biocollect.support.email.address
                 String userName = userService.getCurrentUserDisplayName()
                 String bioActivityEditUrl = g.createLink(controller: 'bioActivity', action: 'edit')
-                String bioActivityId = (isCreateRecordRequest) ? result.resp.activityId : postBody.activityId
+                // String bioActivityId = (isCreateRecordRequest) ? result.resp.activityId : postBody.activityId
+                String bioActivityId = result.resp.activityId
                 def subject = "BioCollect update: New survey added for ${projectActivity?.name}"
                 def emailBody = "${userName} has just added a new survey. Check it and edit if necessary: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>here</a>"
                 emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")

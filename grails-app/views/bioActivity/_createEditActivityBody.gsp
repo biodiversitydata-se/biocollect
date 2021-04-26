@@ -190,7 +190,6 @@
             fcConfig);
 
         $('#save').click(function () {
-            debugger;
             if (activityLevelData.activity.verificationStatus == 'draft'){
                 viewModel.saveFromDraft();
             } else {
