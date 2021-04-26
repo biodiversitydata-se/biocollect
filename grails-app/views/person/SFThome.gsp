@@ -13,11 +13,11 @@
     <div class="accordion" id="homePageConfiguration">
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" href="#collapseZero">
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapse0">
                     Se mina rutter/ rutor/ sektorer (personliga eller bokade)
                 </a>
             </div>
-            <div id="collapseZero" class="accordion-body collapse">
+            <div id="collapse0" class="accordion-body collapse">
                     <div class="accordion-inner">
                         <div class="control-group">
                             ${siteStatus}
@@ -35,7 +35,7 @@
                 <a class="accordion-toggle" data-toggle="collapse" href="#collapseTwo">
                 Skapa en rutt</a>
             </div>
-            <div id="collapseTwo" class="accordion-body collapse">
+            <div id="collapse3" class="accordion-body collapse">
                 <div class="accordion-inner">
                     <div class="control-group">
                         <ul>
@@ -55,11 +55,30 @@
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapse2">
+                Boka en rutt/ ruta/ sektor</a>
+            </div>
+            <div id="collapse2" class="accordion-body collapse">
+                <div class="accordion-inner">
+                    <div class="control-group">
+                        <ul>
+                            <g:each in="${projects}">
+                                <g:if test="${it.alertConfig?.ctx.contains('siteBooking')}">
+                                    <li><a href="${createLink(controller: 'project', action: 'index', id: it?.projectId, params: [sitesTabDefault: true, personId: person.personId])}">${it?.name}</a></li>
+                                </g:if>
+                            </g:each>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapse1">
                     Rapportera resultat
                 </a>
             </div>
-            <div id="collapseOne" class="accordion-body collapse">
+            <div id="collapse1" class="accordion-body collapse">
                     <div class="accordion-inner">
                         <div class="control-group">
                             <label>Du måste boka eller skapa en rutt innan du kan rapportera från den. Rapportera för:</label>
@@ -76,21 +95,27 @@
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" href="#collapseThree">
-                Boka en rutt/ ruta/ sektor</a>
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapse4">
+                    Fortsätt arbeta med dina utkast
+                </a>
             </div>
-            <div id="collapseThree" class="accordion-body collapse">
-                <div class="accordion-inner">
-                    <div class="control-group">
-                        <ul>
-                            <g:each in="${projects}">
-                                <g:if test="${it.alertConfig?.ctx.contains('siteBooking')}">
-                                    <li><a href="${createLink(controller: 'project', action: 'index', id: it?.projectId, params: [sitesTabDefault: true, personId: person.personId])}">${it?.name}</a></li>
-                                </g:if>
-                            </g:each>
-                        </ul>
+            <div id="collapse4" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <div class="control-group">
+                        <g:if test="${!drafts}">
+                            You have no drafts saved.
+                        </g:if>
+                        <g:else>
+                            <ul>
+                                <g:each in="${drafts}">
+                                    <li><a href="${createLink(controller: 'bioActivity', action: 'edit', id: it?.activityId, 
+                                        params: [personId: person.personId])}">${it?.type} created on ${it?.dateCreated[0..9]}</a>
+                                    </li>
+                                </g:each>
+                            </ul>
+                        </g:else>
+                        </div>
                     </div>
-                </div>
             </div>
         </div>
         <div class="accordion-group">
@@ -129,7 +154,7 @@
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" href="${createLink(controller: 'project', action: 'create', params: [systematicMonitoring: true])}">
-                        Lägg till ny projekt
+                        Lägg till nytt projekt
                     </a>
                 </div>
             </div>

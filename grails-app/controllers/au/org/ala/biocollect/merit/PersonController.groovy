@@ -58,7 +58,8 @@ class PersonController {
                 sites: data?.sites, 
                 siteStatus: data?.siteStatus, 
                 projects: data?.projects,
-                surveys: data?.surveys
+                surveys: data?.surveys,
+                drafts: data?.drafts
                 ]
         }
     }

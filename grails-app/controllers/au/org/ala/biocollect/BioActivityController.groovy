@@ -60,6 +60,7 @@ class BioActivityController {
 
         if (id) {
             activity = activityService.get(id)
+            postBody.personId = activity.personId
             projectId = activity?.projectId
             pActivity = projectActivityService.get(activity?.projectActivityId)
         } else if (pActivityId) {
@@ -147,8 +148,7 @@ class BioActivityController {
         }
 
         // START OF SYSTEMATIC MONITORING CHANGES 
-        // TODO set a condition is survey settings whether a notification should be sent to admins
-        if (isCreateRecordRequest){
+        if (postBody?.verificationStatus == "not verified"){
             def project = projectService.get(projectId)
             Boolean isSystematicMonitoring = projectService.isSystematicMonitoring(project)
             if (isSystematicMonitoring){
@@ -156,6 +156,7 @@ class BioActivityController {
                 def emailAddresses = projectActivity.alert.emailAddresses ? projectActivity.alert.emailAddresses : grailsApplication.config.biocollect.support.email.address
                 String userName = userService.getCurrentUserDisplayName()
                 String bioActivityEditUrl = g.createLink(controller: 'bioActivity', action: 'edit')
+                // String bioActivityId = (isCreateRecordRequest) ? result.resp.activityId : postBody.activityId
                 String bioActivityId = result.resp.activityId
                 def subject =  "En inventering av en ${projectActivity?.name} har rapporterats av ${userName} via BioCollect"
                 def emailBody = "${userName} har just skickat in ett protokoll. Du kan kontrollera och eventuellt ändra i protokollet: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>här</a>"
