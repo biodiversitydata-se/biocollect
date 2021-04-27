@@ -17,7 +17,6 @@
             </div>
         </div>
     
-    <%-- TABLE showing what sites the person has booked and what they own  --%>
     <div class="well span12">
         <g:if test="${person?.bookedSites}">
             <h4><a href="#" onclick="return loadBookedSites()"><g:message code="person.siteBooking.showBooked"/></a></h4>
@@ -37,11 +36,31 @@
             </table>
         </div>
     </div>
+
+    <div class="well span12">
+        <g:if test="${person?.ownedSites}">
+            <h4><a href="#" onclick="return loadOwnedSites()"><g:message code="person.siteBooking.showCreated"/></a></h4>
+        </g:if>
+        <g:else>
+            <h4><g:message code="person.siteBooking.noSites"/></h4>
+        </g:else>
+
+        <div id="owned-sites-div" hidden>
+            <table style="width: 95%;margin:30px" class="table table-striped table-bordered table-hover" id="owned-sites-table">
+                <thead>
+                    <th><g:message code="site.details.siteName"/></th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <asset:script>
-    var table,
-        url = fcConfig.getSiteNamesUrl;
+    var tableBookedSites,
+        tableOwnedSites,
+        url = fcConfig.getBookedSiteNamesUrl;
 
     function reloadSites() {
         location.reload();
@@ -69,7 +88,7 @@
         $('#booked-sites-div').attr("hidden", false); 
 
         if (! $.fn.DataTable.isDataTable( '#booked-sites-table' )){
-         table = $('#booked-sites-table').DataTable({ 
+         tableBookedSites = $('#booked-sites-table').DataTable({ 
             "ajax": {"url": url, "dataSrc": ""},
             "bFilter": false,
             "info": "",
@@ -99,7 +118,7 @@
             ]
             });  
         } else {
-            table.ajax.url(url).load()
+            tableBookedSites.ajax.url(url).load()
         }
     }
 
@@ -109,7 +128,7 @@
         var bookedSites = ${(person?.bookedSites) ? person?.bookedSites : false };
 
         var row = this.parentElement.parentElement,
-            data = table.row(row).data(),
+            data = tableBookedSites.row(row).data(),
             siteId = data.siteId;
 
         if (bookedSites){
@@ -126,11 +145,48 @@
         });
     });
 
+    function loadOwnedSites(){
+        var url = fcConfig.getOwnedSiteNamesUrl;
+        $('#owned-sites-div').attr("hidden", false); 
+
+        if (! $.fn.DataTable.isDataTable( '#owned-sites-table' )){
+         tableOwnedSites = $('#owned-sites-table').DataTable({ 
+            "ajax": {"url": url, "dataSrc": ""},
+            "bFilter": false,
+            "info": "",
+            "infoEmpty": "",
+            "infoFiltered": "",
+            "processing": true,
+            "serverSide": true,
+            "paging": false,
+            "columns": [
+                {
+                    data: 'name',
+                    name: 'name',
+                    render: function (data, type, row) {
+                        return '<a class="margin-left-10" href="#" title="See site details">' 
+                        + data + '</a>';
+                    }
+                }
+            ]
+            });  
+        } else {
+            tableOwnedSites.ajax.url(url).load()
+        }
+    }
+
     // if site name is clicked display site index page
     $('#booked-sites-table').on("click", "tbody td:nth-child(1) a", function (e) {
         e.preventDefault();
         var row = this.parentElement.parentElement,
-            data = table.row(row).data();
+            data = tableBookedSites.row(row).data();
+        document.location.href = fcConfig.viewSiteUrl + '/' + data.siteId; 
+    });
+
+        $('#owned-sites-table').on("click", "tbody td:nth-child(1) a", function (e) {
+        e.preventDefault();
+        var row = this.parentElement.parentElement,
+            data = tableOwnedSites.row(row).data();
         document.location.href = fcConfig.viewSiteUrl + '/' + data.siteId; 
     });
 

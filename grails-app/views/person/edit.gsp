@@ -15,7 +15,8 @@
         removeBookingUrl: "${createLink(controller: 'person', action:'removeBooking')}",
         viewSiteUrl: "${createLink(controller: 'site', action:'index')}",
         viewActivityUrl: "${createLink(controller: 'bioActivity', action: 'index')}",
-        getSiteNamesUrl: "${createLink(controller: 'site', action:'getSiteNames', params: [siteIds: person?.bookedSites])}",
+        getBookedSiteNamesUrl: "${createLink(controller: 'site', action:'getSiteNames', params: [siteIds: person?.bookedSites])}",
+        getOwnedSiteNamesUrl: "${createLink(controller: 'site', action:'getSiteNames', params: [siteIds: person?.ownedSites])}",
         getActivitiesForPersonByTypeUrl: "${createLink(controller: 'activity', action:'getActivitiesForPersonByType')}",
         returnTo: "${params.returnTo}"
         };
