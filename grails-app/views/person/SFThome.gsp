@@ -32,10 +32,10 @@
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" href="#collapseTwo">
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapse1">
                 Skapa en rutt</a>
             </div>
-            <div id="collapse3" class="accordion-body collapse">
+            <div id="collapse1" class="accordion-body collapse">
                 <div class="accordion-inner">
                     <div class="control-group">
                         <ul>
@@ -74,11 +74,11 @@
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" href="#collapse1">
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapse3">
                     Rapportera resultat
                 </a>
             </div>
-            <div id="collapse1" class="accordion-body collapse">
+            <div id="collapse3" class="accordion-body collapse">
                     <div class="accordion-inner">
                         <div class="control-group">
                             <label>Du måste boka eller skapa en rutt innan du kan rapportera från den. Rapportera för:</label>
@@ -120,10 +120,10 @@
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" href="#collapseFour">
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapse5">
                 Läsa om de olika delprogrammen</a>
             </div>
-            <div id="collapseFour" class="accordion-body collapse">
+            <div id="collapse5" class="accordion-body collapse">
                 <div class="accordion-inner">
                     <div class="control-group">
                         <ul>
