@@ -496,6 +496,9 @@ section#breadcrumb {
 #ala-header-bootstrap2 .navbar-default .navbar-nav > li > a:hover {
   color: #111;
 }
+#biocollect-header .ala-icon:before {
+  content: url(${grailsApplication.config.skin.favicon});
+}
 
 #biocollect-header body.nav-getinvolved {
   padding-top: 0px;
