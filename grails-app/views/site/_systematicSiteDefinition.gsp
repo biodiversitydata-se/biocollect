@@ -154,6 +154,7 @@ function initSiteViewModel(allowPointsOfInterest, edit, drawOptions) {
 
     var siteViewModel = new SystematicSiteViewModel(valuesForVM)
     var map = siteViewModel.map;
+    map.addControl(L.control.scale({imperial: false}));
     ko.applyBindings(siteViewModel, document.getElementById("sitemap"));
 
     return siteViewModel;
