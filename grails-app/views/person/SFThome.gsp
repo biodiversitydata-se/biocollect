@@ -81,7 +81,7 @@
             <div id="collapse3" class="accordion-body collapse">
                     <div class="accordion-inner">
                         <div class="control-group">
-                            <label>Du måste boka eller skapa en rutt innan du kan rapportera från den. Rapportera för:</label>
+                            <label>Jag vill rapportera en: :</label>
                             <ul>
                                 <g:each in="${surveys}">
                                     <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: it?.projectActivityId, 
@@ -89,6 +89,7 @@
                                     </li>
                                 </g:each>
                             </ul>
+                            Notera att inventeringen måste vara från en bokad eller nyligen skapad rutt, alternativt från en egen punktrutt du gjort tidigare
                         </div>
                     </div>
             </div>
@@ -103,7 +104,7 @@
                     <div class="accordion-inner">
                         <div class="control-group">
                         <g:if test="${!drafts}">
-                            You have no drafts saved.
+                            Du har inga sparade utkast.
                         </g:if>
                         <g:else>
                             <ul>

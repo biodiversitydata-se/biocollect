@@ -307,10 +307,11 @@ var SystematicSiteViewModel = function (valuesForVM) {
                 // it ends up being doubles with 14 decimal places. This is a roundabout way of limiting decimal places to 5 
                 var geoType = mapFeatures[index].geometry.type,
                  coordinates = extractCoordinates(mapFeatures[index].geometry.coordinates, geoType),
-                 name = self.transectParts().length + 1;
+                 name = self.transectParts().length + 1,
+                 dictionary = {"Point": "Punkt ", "Line": "Linje ", "Area": "Sektor "};
 
                 createTransectPart({
-                    name: determineGeoType(geoType) + String(name),
+                    name: dictionary[determineGeoType(geoType)] + String(name),
                     geometry: {
                         type: geoType,
                         coordinates: coordinates

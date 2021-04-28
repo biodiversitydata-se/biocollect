@@ -575,6 +575,13 @@ function FacetTermViewModel(term) {
     self.term = ko.observable(term.term);
     self.title = term.title;
     self.displayName = ko.computed(function(){
+        if (self.facet.title == 'Month') {
+            // translate months for facets into Swedish:
+            var dictionary = {"January": "januari","February": "februari",
+                "March": "mars","April": "april","May": "maj","June": "juni","July": "juli",
+                "August": "augusti","September": "september","October": "oktober","November": "november","December": "december"};
+            self.title = dictionary[self.term()];
+        } 
         var label = self.title || decodeCamelCase(self.term()) || 'Unknown';
         if(self.count()){
             label += " (" + self.count() + ")";
