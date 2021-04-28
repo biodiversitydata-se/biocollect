@@ -26,7 +26,6 @@
             <thead>
             <th><g:message code="g.date"/></th>
             <th><g:message code="site.details.siteName"/></th>
-            <th><g:message code="site.details.siteName"/></th>
             </thead>
         </table>
     </div>
@@ -55,8 +54,8 @@
             "paging": false,
             "columns": [
                 {
-                    data: 'dateCreated',
-                    name: 'dateCreated',
+                    data: 'surveyDate',
+                    name: 'surveyDate',
                     render: function (data, type, row) {
                         return '<div>' + 
                         '<a class="margin-left-10" href="#">' 
@@ -67,11 +66,6 @@
                 {
                     data: 'siteName',
                     name: 'siteName',
-                    bSortable: false
-                },
-                {
-                    data: 'siteCode',
-                    name: 'siteCode',
                     bSortable: false
                 }
                 ]
