@@ -460,6 +460,16 @@ function FacetViewModel(facet) {
     self.getTerms = function (facet) {
         switch (facet.type){
             case 'terms':
+                // if it's surveyMonthFacet then sort the months in chronological order
+                if (facet.title == "Month"){
+                    var months = ["January", "February", "March", "April", "May", "June",
+                                "July", "August", "September", "October", "November", "December"];
+                    facet.terms.sort(function(a, b){
+                        return months.indexOf(a.term)
+                             - months.indexOf(b.term);
+                    });
+                  }
+
                 var terms = $.map(facet.terms || [], function (term, index) {
                     term.facet = self;
                     return new FacetTermViewModel(term);
