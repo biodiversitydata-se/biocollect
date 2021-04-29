@@ -263,8 +263,11 @@
         }
         $('#about-tab').tab('show');
         <%-- If redirected from homepage, open SITE tab for bookings --%>
-        <g:if test="${params.sitesTabDefault}">
+        <g:if test="${params.defaultTab == 'sites'}">
             $('#sites-tab').trigger('click');
+        </g:if>
+        <g:if test="${params.defaultTab == 'admin'}">
+            $('#admin-tab').trigger('click');
         </g:if>
     });
 </asset:script>

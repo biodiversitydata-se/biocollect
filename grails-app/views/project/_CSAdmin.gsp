@@ -115,7 +115,8 @@
     // for systematic monitoring project activites are obtained through an ajax call only when needed
     if (${project.isSystematicMonitoring}) {
         function initialiseInternalSystematicCSAdmin() {
-            new RestoreTab('members-tab', 'user-permissions-tab');
+            $('#permissions-tab').trigger('click');
+            new RestoreTab('members-tab', 'persons-tab');
         }
         // other types of projects get all project activities on default when opening the project page
     } else {

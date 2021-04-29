@@ -86,7 +86,7 @@
                     <div class="control-group">
                         <ul>
                         <g:each in="${projects}">
-                            <a href="${createLink(controller: 'project', action: 'index', params: [id: it?.projectId, sitesTabDefault: true])}">${it?.name}</a>
+                            <a href="${createLink(controller: 'project', action: 'index', params: [id: it?.projectId, defaultTab: 'sites'])}">${it?.name}</a>
                             <br/>
                         </g:each>
                         </ul>
