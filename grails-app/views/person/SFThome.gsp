@@ -81,7 +81,7 @@
             <div id="collapse3" class="accordion-body collapse">
                     <div class="accordion-inner">
                         <div class="control-group">
-                            <label>Jag vill rapportera en: :</label>
+                            <label>Jag vill rapportera en:</label>
                             <ul>
                                 <g:each in="${surveys}">
                                     <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: it?.projectActivityId, 
