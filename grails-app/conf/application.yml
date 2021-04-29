@@ -4,10 +4,6 @@ appName:
 layout:
   skin: "ala2"
 
-# favicon that shows next to page title
-skin:
-  favicon: "http://canmove-dev.ekol.lu.se:8080/ecodata/document/download?filename=/2021-04/favicon.ico"
-
 loggerLevel: "DEBUG"
 
 environments:
@@ -152,6 +148,10 @@ lists:
 
 pdfgen:
   baseURL: "https://pdfgen.ala.org.au/"
+
+# favicon that shows next to page title
+skin:
+  favicon: "${ecodata.baseURL}/document/download?filename=/2021-04/favicon.ico"
 
 # sld:
 #   polgon:
