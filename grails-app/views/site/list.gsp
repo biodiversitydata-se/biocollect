@@ -17,6 +17,7 @@
             listSitesUrl: '${createLink(controller: 'site', action: 'elasticsearch')}',
             viewSiteUrl: '${createLink(controller: 'site', action: 'index')}',
             editSiteUrl: '${createLink(controller: 'site', action: 'edit')}',
+            editSystematicSiteUrl: '${createLink(controller: 'site', action: 'editSystematic')}',
             addStarSiteUrl: "${createLink(controller: 'site', action: 'ajaxAddToFavourites')}",
             removeStarSiteUrl: "${createLink(controller: 'site', action: 'ajaxRemoveFromFavourites')}",
             poiGalleryUrl: "${createLink(controller: 'site', action: 'getImages')}",

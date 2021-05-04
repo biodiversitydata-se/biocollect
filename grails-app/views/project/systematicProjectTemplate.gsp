@@ -118,6 +118,8 @@
         personCreateUrl: "${createLink(controller: 'person', action: 'create', params: [relatedProjectIds: relatedProjectIds])}",
         personSearchUrl: "${createLink(controller: 'person', action: 'elasticsearch')}",
         viewSiteUrl: "${createLink(controller: 'site', action: 'index')}",
+        editSiteUrl: '${createLink(controller: 'site', action: 'edit')}',
+        editSystematicSiteUrl: '${createLink(controller: 'site', action: 'editSystematic')}',
         submitBookingRequestUrl: "${createLink(controller: 'site', action: 'submitBookingRequest', params: [projectName: project?.name])}",
         absenceIconUrl:"${asset.assetPath(src: 'triangle.png')}",
         projectNotificationUrl: "${createLink(controller: 'project', action: 'sendEmailToMembers', params: [id: project.projectId])}",

@@ -315,8 +315,9 @@ function SiteListViewModel(prop) {
      * constructs url to edit site
      * @returns {string}
      */
-    self.getSiteEditUrl = function () {
-        return fcConfig.editSiteUrl + '/' + self.siteId();
+    self.getSiteEditUrl = function (isSystematic) {
+        var url = isSystematic ? fcConfig.editSystematicSiteUrl : fcConfig.editSiteUrl;
+        return url + '/' + self.siteId();
     }
 
     self.deleteSite = function () {
