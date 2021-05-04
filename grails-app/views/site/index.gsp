@@ -74,11 +74,11 @@
         <li>
             <g:set var="disabled">${(!user) ? "disabled='disabled' title='login required'" : ''}</g:set>
         %{--Favourite functionality only available to authenticated users --}%
-            <g:if test="${!site?.transectParts?.isEmpty() && userIsAlaOrFcAdmin}">
+            <g:if test="${site?.transectParts instanceof List && userIsAlaOrFcAdmin}">
                 <g:link action="editSystematic" id="${site.siteId}" class="btn btn-small"><i
                     class="icon-edit"></i> <g:message code="site.details.editSystematic"/> </g:link>
             </g:if>
-            <g:elseif test="${site?.transectParts?.isEmpty()}">
+            <g:elseif test="${site?.transectParts == null}">
                 <g:link action="edit" id="${site.siteId}" class="btn btn-small">
                     <i class="icon-edit"></i> <g:message code="site.details.editSite"/> 
                 </g:link>
@@ -122,7 +122,7 @@
                 </g:if>
             </div>
 
-            <g:if test="${site?.transectParts}">
+            <g:if test="${site?.transectParts instanceof List}">
 
                 <dl class="dl-horizontal">
 
