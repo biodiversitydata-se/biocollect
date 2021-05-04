@@ -108,7 +108,8 @@ function initSiteViewModel(allowPointsOfInterest, edit, drawOptions) {
         maxAutoZoom: 14,
         maxZoom: 20,
         allowPointsOfInterest: allowPointsOfInterest,
-        readonly: edit? true : false,
+        <%-- readonly: edit? true : false, --%>
+        drawControl: true,
         singleDraw: false,
         markerOrShapeNotBoth: false,
         singleMarker: false,
