@@ -4,6 +4,7 @@
 <asset:javascript src="leaflet-manifest.js"/>
 <asset:javascript src="sites-manifest.js"/>
 <script src="${grailsApplication.config.google.maps.url}" async defer></script>
+
 <!-- ko stopBinding: true -->
     <div id="siteSearch" class="container-fluid margin-top-10">
         <g:render template="/site/searchSite"></g:render>
@@ -159,20 +160,20 @@ function initialiseSites() {
                             $("#siteId").val(site.siteId());
 
                             if (site.isBooked){
-                                $('#btnAddToRequest').attr("disabled", "disabled");
-                                $('#btnSubmitBooking').css("visibility", "hidden");
+                                $('#btnAddToRequest').attr("disabled", true);
+                                $('#btnAddToBooking').attr("disabled", true);
                                 $('#bookedByLink').html("");
                                 $('#bookedByLink').append(
                                     $(document.createElement('a')).prop({
                                     target: '_blank',
-                                    href:'/person/index/' + site.bookedBy(),
-                                    innerText: 'See who booked this site'
+                                    href:'/person/edit/' + site.bookedBy(),
+                                    innerText: 'See who booked this site/ cancel booking'
                                     })
                                 )
                             } else {
                                 $('#bookedByLink').html("Site is not booked. Type in the person ID in the field 'Book for'") 
-                                $('#btnAddToRequest').removeAttr('disabled');
-                                $('#btnSubmitBooking').css("visibility", "visible");
+                                $('#btnAddToRequest').attr("disabled", false);
+                                $('#btnAddToBooking').attr("disabled", false);
                             }
                         };
 

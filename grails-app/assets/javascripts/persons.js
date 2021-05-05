@@ -107,7 +107,7 @@ function PersonViewModel(savedPerson, create, hubProjectIds) {
             var data = {
                 siteNames: self.person().sitesToBook(),
                 personId: self.person().personId(),
-                bookMany: true
+                bookBySiteId: false
                 };
             // clear the input field with site names    
             self.person().sitesToBook("")
@@ -120,6 +120,7 @@ function PersonViewModel(savedPerson, create, hubProjectIds) {
                     if (data.resp.message[0] != ""){
                         $("#messageSuccess span").html(data.resp.message[0]).parent().fadeIn();
                         // document.location.href = here;
+                        $('#individualBookingForm')[0].reset();
                     }
                     if (data.resp.message[1] != ""){
                         $("#messageFail span").html(data.resp.message[1]).parent().fadeIn();

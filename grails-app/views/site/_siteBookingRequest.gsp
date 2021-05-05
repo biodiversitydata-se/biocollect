@@ -96,6 +96,7 @@ $('#formSiteBookingRequest').on('submit', function(e){
                 $('#btnAddToRequest').attr("disabled", "disabled");
                 requestedSitesList = [];
                 $("#messageSuccessfulRequest span").html(data.message).parent().fadeIn();
+                $('#formSiteBookingRequest')[0].reset()
             },
             error: function (data) {
                 var errorMessage = data.responseText || 'Tyvärr gick inte bokningsönskan att skicka'

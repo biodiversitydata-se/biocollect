@@ -942,7 +942,6 @@ class SiteController {
             queryParams.remove('hub')
             queryParams.remove('hubFq')
             Map searchResult = searchService.searchForSites(queryParams)
-            log.debug "searchResult?.facets " + searchResult?.facets
             List sites = searchResult?.hits?.hits
             List facets = []
             List projectIds = []
