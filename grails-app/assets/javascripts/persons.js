@@ -120,12 +120,11 @@ function PersonViewModel(savedPerson, create, hubProjectIds) {
                     if (data.resp.message[0] != ""){
                         $("#messageSuccess span").html(data.resp.message[0]).parent().fadeIn();
                         // document.location.href = here;
-                        $('#individualBookingForm')[0].reset();
                     }
                     if (data.resp.message[1] != ""){
                         $("#messageFail span").html(data.resp.message[1]).parent().fadeIn();
                     }
-                    $("#bookedSitesInput").text("");
+                    $("#bookedSitesInput").html("");
                 },
                 error: function (data) {
                     var errorMessage = data.responseText || 'There was a problem saving this site'
