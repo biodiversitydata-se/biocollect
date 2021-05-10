@@ -109,10 +109,10 @@ facets:
 # acsaUrl: 'http://csna.gaiaresources.com.au/wordpress/'
 
 bie:
-  baseURL: "https://species.bioatlas.se"
+  baseURL: "https://species.biodiversitydata.se"
 
 biocache:
-  baseURL: "https://records.bioatlas.se"
+  baseURL: "https://records.biodiversitydata.se"
 
 biocollect:
   support:
@@ -121,7 +121,7 @@ biocollect:
 
 collectory:
   service:
-    url: "https://collections.bioatlas.se/ws"
+    url: "https://collections.biodiversitydata.se/ws"
 
 
 ecodata:
@@ -137,12 +137,12 @@ google:
     url: "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&latlng="
 
 headerAndFooter:
-  baseURL: "https://beta.bioatlas.se/static/bs3"
+  baseURL: "https://static.biodiversitydata.se/"
 images:
-  baseURL: "https://images.bioatlas.se"
+  baseURL: "https://images.biodiversitydata.se"
 
 lists:
-  baseURL: "https://lists.bioatlas.se" 
+  baseURL: "https://lists.biodiversitydata.se" 
   commonFields: ['rawScientificName', 'matchedName', 'commonName']
 
 
@@ -338,7 +338,7 @@ projectdata:
     enabled: false
 
 userDetails: 
-  url: "https://auth.bioatlas.se/userdetails/"
+  url: "https://auth.biodiversitydata.se/userdetails/"
 
 userDetailsById:
   path: "getUserDetails"
