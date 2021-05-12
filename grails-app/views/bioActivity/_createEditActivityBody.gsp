@@ -1,6 +1,26 @@
 <%@ page import="grails.converters.JSON; org.grails.web.json.JSONArray" contentType="text/html;charset=UTF-8" %>
 <g:set var="showCreate" value="${activity.activityId ||  (!activity.activityId && !hubConfig.content?.hideCancelButtonOnForm)}"></g:set>
 <bc:koLoading>
+<style>
+.overflow-table {
+    overflow-x: visible;
+}
+table .observations {
+    position: relative;
+    height:400px;
+    overflow-x: visible;
+    width:99%;
+}
+table tr td:nth-child(odd), thead th:nth-child(odd) {
+    background:#f5f5f5;
+}
+
+th, th.required {
+    position: sticky;
+    top:0;
+    background: white;
+}
+</style>
 <div class="container-fluid validationEngineContainer" id="validation-container">
     <div id="koActivityMainBlock">
         <g:if test="${!mobile}">
