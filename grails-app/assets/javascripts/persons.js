@@ -18,6 +18,8 @@ function PersonViewModel(savedPerson, create, hubProjectIds) {
         bookedSites: ko.observableArray(),
         sitesToBook: ko.observable()
     });
+    self.transients = {};
+    self.transients.genderOptions = ["annat", "kvinna", "man"];
 
     self.person().projects = hubProjectIds;
 

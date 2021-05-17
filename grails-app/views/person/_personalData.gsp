@@ -33,7 +33,7 @@
                     <label><g:message code="person.personalInfo.town"/><span class="req-field"></span></label>
                     <input data-validation-engine="validate[required]" data-bind="value: person().town"  type="text" class="span10"/>
                     <label><g:message code="person.personalInfo.gender"/></label>
-                    <input data-bind="value: person().gender"  type="text" class="span10"/>
+                    <select data-bind="options: transients.genderOptions, value: person().gender" class="span10"></select>
                     <label><g:message code="person.personalInfo.dob"/></label>
                     <input data-bind="value: person().birthDate"  type="text" class="span10"/>
                     <label><g:message code="person.personalInfo.extra"/></label>
