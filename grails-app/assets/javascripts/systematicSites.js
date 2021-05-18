@@ -151,6 +151,9 @@ var SystematicSiteViewModel = function (valuesForVM) {
             transectPart.feature.on("mouseover", transectPart.highlight);
             transectPart.feature.on("mouseout", transectPart.unhighlight);
         }
+        if (geometry.type == "Polygon"){
+            transectPart.feature.setStyle({fillOpacity: 0});
+        }
         self.transectParts.push(transectPart);
         transectFeatureGroup.addLayer(transectPart.feature);
     }
