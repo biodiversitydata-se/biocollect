@@ -160,7 +160,7 @@ function PersonsListViewModel(){
      */
     self.constructQueryParams = function(){
         var params = {
-            max: 10,
+            max: 50,
             offset: 0,
             query: self.searchTerm(),
             fq: $.map('', ''),
