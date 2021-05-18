@@ -261,7 +261,7 @@ class BioActivityController {
         // userId needed to retrieve only sites booked by this person 
         String userId = userService.getCurrentUserId(request)
         // personId to save in activity 
-        String personId = params.personId
+        String personId = personService.getPersonIdForUser(userId)
         // the pActivity has pre-filtered sites - only ones that were booked/ created by the user
         // this is where the dropdown is populated from and it has the details of transect parts to be displayed on the map
         // we don't want sites in any other objects inside the model because they don't count

@@ -84,8 +84,7 @@
                             <label>Jag vill rapportera en:</label>
                             <ul>
                                 <g:each in="${surveys}">
-                                    <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: it?.projectActivityId, 
-                                        params: [personId: person.personId])}">${it?.name}</a>
+                                    <li><a href="${createLink(controller: 'bioActivity', action: 'create', id: it?.projectActivityId)}">${it?.name}</a>
                                     </li>
                                 </g:each>
                             </ul>
@@ -109,8 +108,7 @@
                         <g:else>
                             <ul>
                                 <g:each in="${drafts}">
-                                    <li><a href="${createLink(controller: 'bioActivity', action: 'edit', id: it?.activityId, 
-                                        params: [personId: person.personId])}">${it?.type} created on ${it?.dateCreated[0..9]}</a>
+                                    <li><a href="${createLink(controller: 'bioActivity', action: 'edit', id: it?.activityId)}">${it?.type} created on ${it?.dateCreated[0..9]}</a>
                                     </li>
                                 </g:each>
                             </ul>
@@ -129,7 +127,7 @@
                     <div class="control-group">
                         <ul>
                         <g:each in="${projects}">
-                            <a href="${createLink(controller: 'project', action: 'index', id: it?.projectId, params: [personId: person.personId])}">${it?.name.encodeAsHTML()}</a>
+                            <a href="${createLink(controller: 'project', action: 'index', id: it?.projectId)}">${it?.name.encodeAsHTML()}</a>
                             <br/>
                         </g:each>
                         </ul>
