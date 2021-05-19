@@ -159,7 +159,7 @@ class BioActivityController {
                 // String bioActivityId = (isCreateRecordRequest) ? result.resp.activityId : postBody.activityId
                 String bioActivityId = result.resp.activityId
                 def subject =  "En inventering av en ${projectActivity?.name} har rapporterats av ${userName} via BioCollect"
-                def emailBody = "${userName} har just skickat in ett protokoll. Du kan kontrollera och eventuellt ändra i protokollet: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>här</a>"
+                def emailBody = "<a href='${grailsApplication.config.server.serverURL}/person/index/${postBody.personId}'>${userName}</a> har just skickat in ett protokoll. Du kan kontrollera och eventuellt ändra i protokollet: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>här</a>"
                 emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
             } 
         }
