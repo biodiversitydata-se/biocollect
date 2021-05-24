@@ -639,7 +639,7 @@ class SiteService {
         def subject = "BioCollect uppdatering: bokningsönskan för ${params?.projectName}"
         def emailBody = userName + " vill boka rutterna: ${body?.requestedSitesList} for ${params?.projectName}. De är ännu inte bokade av någon. <br>" + 
             // "You can view the site <a href='${grailsApplication.config.server.serverURL}${body?.viewSiteUrl}/${body?.siteId}'>here</a><br>" +
-            "De är ännu inte bokade av någon. Vill du godkänna bokningen, klicka <a href='${grailsApplication.config.server.serverURL}${body?.personEditUrl}/${personId}?defaultTab=sites&requestedSitesList=${body?.requestedSitesList}'>här</a>"
+            "Vill du godkänna bokningen, klicka <a href='${grailsApplication.config.server.serverURL}${body?.personEditUrl}/${personId}?defaultTab=sites&requestedSitesList=${body?.requestedSitesList}'>här</a>"
         if (body?.message){
              emailBody += "<br>The user attached a message: ${body?.message}<br>"
         }
