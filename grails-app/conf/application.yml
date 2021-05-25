@@ -51,7 +51,7 @@ environments:
 
            security:
              cas:
-                appServerName: 'https://auth.bioatlas.se'
+                appServerName: 'https://auth.biodiversitydata.se'
         biocollect:
            system:
               email:
@@ -79,10 +79,10 @@ security:
       alaAdminRole : "ROLE_ADMIN"
       officerRole : "ROLE_FC_OFFICER"
       adminRole : "ROLE_FC_ADMIN"
-      casServerName: "https://auth.bioatlas.se"
-      casServerLoginUrl: "https://auth.bioatlas.se/cas/login"
-      casServerUrlPrefix: "https://auth.bioatlas.se/cas"
-      logoutUrl: "https://auth.bioatlas.se/cas/logout"
+      casServerName: "https://auth.biodiversitydata.se"
+      casServerLoginUrl: "https://auth.biodiversitydata.se/cas/login"
+      casServerUrlPrefix: "https://auth.biodiversitydata.se/cas"
+      logoutUrl: "https://auth.biodiversitydata.se/cas/logout"
 
 #External URL
 aekosEnabled: false
