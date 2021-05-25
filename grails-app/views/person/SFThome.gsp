@@ -149,6 +149,7 @@
                 </a>
             </div>
         </div>
+        <g:if test="${userIsAlaOrFcAdmin}">
         <div class="accordion-group">
             <div class="accordion-heading">
             <%-- Note this is a workaround - volunteer management happens on the hub level 
@@ -159,7 +160,6 @@
                 </a>
             </div>
         </div>
-        <g:if test="${userIsAlaOrFcAdmin}">
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" href="${createLink(controller: 'project', action: 'create', params: [systematicMonitoring: true])}">
