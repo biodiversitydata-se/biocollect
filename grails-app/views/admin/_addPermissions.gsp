@@ -52,17 +52,19 @@
         // combobox plugin enhanced select
         $(".combobox").combobox();
 
+        // if user requested access via website the input will be pre-filled
+        if ("${params?.email}" != ""){
+            $("#emailAddress").val("${params?.email}");
+        }
+
         // Click event on "add" button to add new user to project
         $('#addUserRoleBtn').click(function(e) {
             e.preventDefault();
             var email = $('#emailAddress').val();
-            var role = $('#addUserRole').val();
-            var entityId = $('#entityId').val();
-            var relatedProjectIdsJSON = $('#relatedProjectIds').val();
-            var relatedProjectIds = JSON.parse(relatedProjectIdsJSON);
-            console.log(typeof entityId);
-            console.log(typeof relatedProjectIds)
-            console.log(relatedProjectIds)
+            var role = $('#addUserRole').val(),
+             entityId = $('#entityId').val(),
+             relatedProjectIdsJSON = $('#relatedProjectIds').val(),
+             relatedProjectIds = JSON.parse(relatedProjectIdsJSON);
             if (relatedProjectIds == undefined) {
                 relatedProjectIds = [entityId]
             }

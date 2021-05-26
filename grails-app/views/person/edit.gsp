@@ -25,7 +25,6 @@
 
     <asset:javascript src="common.js"/>
     <asset:javascript src="persons.js"/>
-    <asset:javascript src="datatables-manifest.js"/>
 
 </head>
 <body>

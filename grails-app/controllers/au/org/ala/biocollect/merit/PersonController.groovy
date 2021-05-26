@@ -6,6 +6,7 @@ import au.org.ala.biocollect.merit.UserService
 import au.org.ala.biocollect.merit.ProjectService
 import au.org.ala.biocollect.merit.OutputService
 import au.org.ala.biocollect.merit.SiteService
+import au.org.ala.biocollect.EmailService
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.apache.http.HttpStatus
 
@@ -20,11 +21,11 @@ class PersonController {
     PersonService personService 
     UserService userService
     ProjectService projectService
-    ActivityService activityService
     SiteService siteService
     SettingService settingService
     CommonService commonService
     SearchService searchService
+    EmailService emailService
 
     /*
      * Show actions specific to the logged in person 
@@ -33,35 +34,41 @@ class PersonController {
      */
     def home(){
         HubSettings hubConfig = SettingService.hubConfig
-        def userName = userService.currentUserDisplayName
-        String userId = userService.currentUserId
+        def user = userService.getUser()
         Boolean userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
-        def data = personService.getDataForPersonHomepage(userId)
-        def view
+        def data = personService.getDataForPersonHomepage(user.userId, user.userName)
+
+        String view
+        String hub
         if (data.statusCode == 500){
             render view: 'SFThome', model: [
-                personStatus: "This user is not linked to a person. Ask the admin to link user ID to person ID"
+                message: "You have not been added as a participant to any projects. Please fill out this form with your contact details and send a request to the admins"
                 ]
         } else {
             if (hubConfig?.defaultFacetQuery.contains('isSft:true')){
                 view = 'SFThome'
+                hub = 'sft'
             } else if (hubConfig?.defaultFacetQuery.contains('isSebms:true')) {
                 view = 'SEBMShome'
+                hub = 'sebms'
             } else {
                 view = 'home'
             }
-            render view: view, model: [
-                personStatus: data?.personStatus,
-                userName: userName,
-                userIsAlaOrFcAdmin: userIsAlaOrFcAdmin, 
-                person: data?.person,
-                sites: data?.sites, 
-                siteStatus: data?.siteStatus, 
-                projects: data?.projects,
-                surveys: data?.surveys,
-                drafts: data?.drafts
-                ]
         }
+        
+        render view: view, model: [
+            personStatus: data?.personStatus,
+            userName: user?.displayName,
+            userId: user?.userId,
+            userIsAlaOrFcAdmin: userIsAlaOrFcAdmin, 
+            person: data?.person,
+            sites: data?.sites, 
+            siteStatus: data?.siteStatus, 
+            projects: data?.projects,
+            surveys: data?.surveys,
+            drafts: data?.drafts,
+            hub: hub
+            ]
     }
 
     /*
@@ -75,17 +82,14 @@ class PersonController {
         render view: 'index', model: [person: person?.person, activityCount: person?.activityCount]
     }
     
-    @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def create(){
         def userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
         render view: 'edit', model: [create:true, relatedProjectIds: params?.relatedProjectIds, userIsAlaOrFcAdmin: userIsAlaOrFcAdmin]  
     }
 
-    // TODO - what access level should dictate this? 
     def edit(String id) {
         def person = personService.get(id)
         def userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
-        // TODO - check if person is owner of profile (now anyone with a link could change it)
         String userId = userService.currentUserId
         Boolean userIsOwnerOfProfile = (person?.person?.userId == userId) ?: false
         if (userIsAlaOrFcAdmin || userIsOwnerOfProfile) {
@@ -106,10 +110,8 @@ class PersonController {
         }
     }
 
-    // TODO - what access level should dictate this? 
     def update(String id){
         def values = request.JSON
-        // TODO check if user is admin
         def resp = personService.update(id, values)  
         if (resp.error) {
             resp.status = 500
@@ -128,7 +130,22 @@ class PersonController {
         }
     }
 
-    @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
+    def sendMemembershipRequest(){
+        def values = request.JSON
+        // change email
+        def emailAddresses = ["aleksandra.magdziarek@biol.lu.se"]
+        def subject = "Från BioCollect: Volunteer requested membership"
+        def emailBody = "${values.displayName} has requested to be a member of your projects. To confirm go " +
+        //change projectId
+         "<a href='${grailsApplication.config.server.serverURL}/project/index/d0b2f329-c394-464b-b5ab-e1e205585a7c?defaultTab=admin&internalPersonId=${values.internalPersonId}&userId=${values.userId}&email=${values.email}&hub=${values.hub}'>here</a>"
+        def resp = emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
+        if (resp.error) {
+            resp.status = 500
+        } else {
+            render resp as JSON
+        }
+    }
+
     def save() {
         def values = request.JSON
         Map result = personService.create(values)
@@ -181,8 +198,6 @@ class PersonController {
      */
     @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def elasticsearch() {
-        log.debug "elasticsearch params " + params
-        log.debug "request " + request.JSON
         
     try {
         List query = ['className:au.org.ala.ecodata.Person']
@@ -201,7 +216,6 @@ class PersonController {
         queryParams.remove('hubFq')
         Map searchResult = searchService.searchForSites(queryParams)
         List persons = searchResult?.hits?.hits
-        log.debug "persons " + persons
 
         persons = persons?.collect {
             Map doc = it._source

@@ -4,11 +4,19 @@
 <head>
     <title>BioCollect</title>
     <meta name="layout" content="${hubConfig.skin}"/>
+    <asset:javascript src="common.js"/>
+    <asset:javascript src="persons.js"/>
 </head>
 <body>
-
-<g:if test="${personStatus == 'ok'}">
-<h2>Välkommen ${person?.firstName.encodeAsHTML() + ' ' + person?.lastName.encodeAsHTML()}!</h2>
+<script>
+var fcConfig = {
+    requestMembershipUrl : "${createLink(action: 'sendMemembershipRequest')}",
+    personSaveUrl: "${createLink(action: 'save')}",
+    returnTo: window.location.href
+    }
+</script>
+<h2>Välkommen ${userName}!</h2>
+<g:if test="${personStatus == 'registeredVolunteer'}">
     <h3>Vad vill du göra?</h3>
     <div class="accordion" id="homePageConfiguration">
         <div class="accordion-group">
@@ -171,8 +179,58 @@
     </div>
 
 </g:if>
+<g:elseif test="${personStatus == 'existingPerson'}">
+    <%-- if the user registered on CAS and the email address exists in the database but isn't added to any projects --%>
+    <h4>Din e-post finns i vår databas. Klicka på "Skicka" så lägger vi till dig i systemet.</h4>
+    <button class="btn btn-primary form-control" id="btnRequestMembership"><g:message code="g.submit"/></button>
+</g:elseif>
+<g:elseif test="${personStatus == 'notMember'}">
+<h4>Något stämmer inte. Vänligen maila oss på fageltaxering@biol.lu.se för att bli inlagd i systemet.</h4>
+</g:elseif>
 <g:else>
-    ${personStatus}
+    <%-- if the user registered on CAS but isn't added to any projects --%>
+    <h4>Din e-post finns inte i vårt system. Om du tror eller vet att du varit med i Svensk Fågeltaxering förut 
+    (har du kanske en ny e-post adress?), vänligen maila till oss på fageltaxering@biol.lu.se och berätta. 
+    Då kan vi lägga in dig i systemet. Om du är helt ny, vänligen fyll i formuläret nedan och skicka.</h4>
+    <div id="personalDetailsForm">
+        <g:render template="/person/personalData"/>
+    </div>
+    <script>
+    $(function(){
+        var personViewModel = new PersonViewModel(null, true, []);
+        ko.applyBindings(personViewModel, document.getElementById('personal-details-form'));
+    }); 
+    </script>
 </g:else>
+<h4> Undrar du över hur man använder BioCollect? Läs våra instruktioner <a href="#">här.</a></h4>
+
+<asset:script type="text/javascript">
+
+$("#btnRequestMembership").click(function(){
+    var url = fcConfig.requestMembershipUrl;
+    var data = {
+        internalPersonId: "${person?.internalPersonId}",
+        hub: "${hub}",
+        userId: "${userId}",
+        email: "${person?.email}",
+        displayName: "${userName}"
+    }
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        success: function (data) {
+            bootbox.alert('Your request has been sent. The administrator will send you en email to confirm your membership.', function() {location.reload();});
+        },
+        error: function (data) {
+            var errorMessage = data.responseText || 'Något stämmer inte. Vänligen maila oss på fageltaxering@biol.lu.se för att bli inlagd i systemet.'
+            bootbox.alert(errorMessage);
+        }
+    });
+})
+</asset:script>
+
 </body>
 </html>

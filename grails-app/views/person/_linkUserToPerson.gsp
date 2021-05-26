@@ -22,12 +22,18 @@
         // combobox plugin enhanced select
         $(".combobox").combobox();
 
+        // if user requested access via website the input will be pre-filled
+        if ("${params?.internalPersonId}" != ""){
+            $("#linkingPersonId").val("${params?.internalPersonId}");
+            $("#linkingUserId").val("${params?.userId}");
+        }
+
         // Click event on "add" button to link new user to person
         $('#linkUserToPersonBtn').click(function(e) {
             e.preventDefault();
             var internalPersonId = $('#linkingPersonId').val(),
             userId = $('#linkingUserId').val(),
-            data = { "userId": userId,  "internalPersonId": internalPersonId },
+            data = { "userId": userId,  "internalPersonId": internalPersonId, "hub": "${params?.hub}" },
             url = "${linkUserToPersonUrl}";
 
             if ($('#userToPersonForm').validationEngine('validate')) {
@@ -48,7 +54,7 @@
                             updateLinkingStatusMessage("Failed to link person - no such internal id:" + result.resp.internalPersonId);
                         } else if (result.resp.status == 'foundMany') {
                             $('#linkingStatus').removeClass("alert-success").addClass("alert-warning");
-                            updateLinkingStatusMessage("There are multiple users with the same internal ID " + result.resp.internalPersonId);
+                            updateLinkingStatusMessage("There are multiple users with the same internal ID " + result.resp.internalPersonId + " " + result.resp.names);
                         }
                     }, 
                     error: function(result) { 

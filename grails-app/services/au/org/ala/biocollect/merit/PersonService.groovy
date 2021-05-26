@@ -35,15 +35,14 @@ class PersonService {
         webService.getJson(url)
     }
 
-    def getDataForPersonHomepage(String id){
-        def url = grailsApplication.config.ecodata.service.url + "/person/getDataForPersonHomepage/${id}"
+    def getDataForPersonHomepage(String id, String email){
+        def url = grailsApplication.config.ecodata.service.url + "/person/getDataForPersonHomepage/${id}?email=${email}"
         webService.getJson(url)
     }
 
     // when admin agrees upon what a site should look like
     def addOwnedSite(String personId, String siteId){
         def body = [siteId: siteId]
-        log.debug "BODY" + body
         webService.doPost(grailsApplication.config.ecodata.service.url + "/person/addOwnedSite/${personId}", body) 
     }
 
