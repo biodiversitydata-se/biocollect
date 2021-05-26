@@ -510,7 +510,7 @@
         var encodedUri = encodeURI(csvContent);
         var link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "site.csv");
+        link.setAttribute("download", "koordinater.csv");
         document.body.appendChild(link); // Required for FF
 
         link.click();
