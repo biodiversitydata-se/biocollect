@@ -425,14 +425,14 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
 
     self.saveFromDraft = function(){
         bootbox.confirm({
-            message: "Once you submit you won't be able to make any changes. Are you sure you want to submit?",
+            message: "När du väl har skickat dina data kan du själv inte längre göra några ändringar. Säkert att du vill skicka?",
             buttons: {
                 confirm: {
-                    label: 'Yes',
+                    label: 'Ja',
                     className: 'btn-success'
                 },
                 cancel: {
-                    label: 'No',
+                    label: 'Nej',
                     className: 'btn-danger'
                 }
             },
