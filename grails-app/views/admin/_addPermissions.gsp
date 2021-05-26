@@ -9,6 +9,8 @@
         <label class="control-label" for="addUserRole"><g:message code="project.admin.permissions.level"/></label>
         <div class="controls" id="rolesSelect">
             <g:render id="addUserRole" template="/admin/userRolesSelect" model="[roles:roles, includeEmptyOption: true]"/>
+            <%-- TODO - remove the temporary reminder about what role the volunteers should have --%>
+            <p>For volunteers please select "Editor/ Redaktör"</p>
         </div>
     </div>
     <g:if test="${entityId}">
