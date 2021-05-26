@@ -133,7 +133,7 @@ class PersonController {
     def sendMemembershipRequest(){
         def values = request.JSON
         // change email
-        def emailAddresses = ["aleksandra.magdziarek@biol.lu.se"]
+        def emailAddresses = ["aleksandra.magdziarek@biol.lu.se", "fageltaxering@biol.lu.se"]
         def subject = "Från BioCollect: Volunteer requested membership"
         def emailBody = "${values.displayName} has requested to be a member of your projects. To confirm go " +
         //change projectId
