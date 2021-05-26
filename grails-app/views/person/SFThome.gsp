@@ -181,7 +181,7 @@ var fcConfig = {
 </g:if>
 <g:elseif test="${personStatus == 'existingPerson'}">
     <%-- if the user registered on CAS and the email address exists in the database but isn't added to any projects --%>
-    <h4>Din e-post finns i vår databas. Klicka på "Skicka" så lägger vi till dig i systemet.</h4>
+    <h4>Din e-post finns i vår databas. Klicka på "Skicka" så länkar vi dig till systemet.</h4>
     <button class="btn btn-primary form-control" id="btnRequestMembership"><g:message code="g.submit"/></button>
 </g:elseif>
 <g:elseif test="${personStatus == 'notMember'}">
@@ -191,7 +191,7 @@ var fcConfig = {
     <%-- if the user registered on CAS but isn't added to any projects --%>
     <h4>Din e-post finns inte i vårt system. Om du tror eller vet att du varit med i Svensk Fågeltaxering förut 
     (har du kanske en ny e-post adress?), vänligen maila till oss på fageltaxering@biol.lu.se och berätta. 
-    Då kan vi lägga in dig i systemet. Om du är helt ny, vänligen fyll i formuläret nedan och skicka.</h4>
+    Då kan vi länka dig till systemet. <br>Om du är helt ny, vänligen fyll i formuläret nedan och skicka.</h4>
     <div id="personalDetailsForm">
         <g:render template="/person/personalData"/>
     </div>
@@ -222,7 +222,7 @@ $("#btnRequestMembership").click(function(){
         data: JSON.stringify(data),
         contentType: 'application/json',
         success: function (data) {
-            bootbox.alert('Your request has been sent. The administrator will send you en email to confirm your membership.', function() {location.reload();});
+            bootbox.alert('Tack, din förfrågan har nu skickats. Vi kommer höra av oss i ett mail och bekräfta din registrering.”', function() {location.reload();});
         },
         error: function (data) {
             var errorMessage = data.responseText || 'Något stämmer inte. Vänligen maila oss på fageltaxering@biol.lu.se för att bli inlagd i systemet.'
