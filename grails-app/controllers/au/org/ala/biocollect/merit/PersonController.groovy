@@ -130,14 +130,23 @@ class PersonController {
         }
     }
 
+    /*
+     * Send an email to the project admin when a new person registers 
+     *
+     * All volunteer management should happen on the hub level but for now we stick with project
+     * so the first project in the hub is taken and its ID and manager address is used
+     */
+
     def sendMemembershipRequest(){
         def values = request.JSON
-        // change email
-        def emailAddresses = ["aleksandra.magdziarek@biol.lu.se", "fageltaxering@biol.lu.se"]
+        // get any project from this hub
+        def project = projectService.getProjectByHubUrl(values.hub)
+        // TODO - fix the source of email addresses
+        List emailAddresses = [project?.manager, "aleksandra.magdziarek@biol.lu.se"]
+        String projectId = project?.projectId
         def subject = "Från BioCollect: Volunteer requested membership"
         def emailBody = "${values.displayName} has requested to be a member of your projects. To confirm go " +
-        //change projectId
-         "<a href='${grailsApplication.config.server.serverURL}/project/index/d0b2f329-c394-464b-b5ab-e1e205585a7c?defaultTab=admin&internalPersonId=${values.internalPersonId}&userId=${values.userId}&email=${values.email}&hub=${values.hub}'>here</a>"
+         "<a href='${grailsApplication.config.server.serverURL}/project/index/${projectId}?defaultTab=admin&internalPersonId=${values.internalPersonId}&userId=${values.userId}&email=${values.email}&hub=${values.hub}'>here</a>"
         def resp = emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
         if (resp.error) {
             resp.status = 500

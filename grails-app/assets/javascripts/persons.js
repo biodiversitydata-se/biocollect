@@ -1,4 +1,4 @@
-function PersonViewModel(savedPerson, create, hubProjectIds) {
+function PersonViewModel(savedPerson, create) {
     var self = this;
     self.person = ko.observable({
         personId : ko.observable(),
@@ -20,8 +20,6 @@ function PersonViewModel(savedPerson, create, hubProjectIds) {
     });
     self.transients = {};
     self.transients.genderOptions = ["annat", "kvinna", "man"];
-
-    self.person().projects = hubProjectIds;
 
     self.loadPerson = function (person){
         var personModel = self.person();

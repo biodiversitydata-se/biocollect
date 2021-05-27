@@ -33,7 +33,11 @@
             e.preventDefault();
             var internalPersonId = $('#linkingPersonId').val(),
             userId = $('#linkingUserId').val(),
-            data = { "userId": userId,  "internalPersonId": internalPersonId, "hub": "${params?.hub}" },
+            data = { 
+                "userId": userId,  
+                "internalPersonId": internalPersonId, 
+                "hub": "${params?.hub}" 
+                },
             url = "${linkUserToPersonUrl}";
 
             if ($('#userToPersonForm').validationEngine('validate')) {

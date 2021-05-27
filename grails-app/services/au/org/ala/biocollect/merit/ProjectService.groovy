@@ -1108,10 +1108,19 @@ class ProjectService {
      */
     
     def getRelatedProjectIds(String hubUrl){
-        Map body = [hubUrl : hubUrl]
-        def result = webService.getJson(grailsApplication.config.ecodata.service.url + '/project/getRelatedProjectIds/?hub=' +hubUrl)
-        def relatedProjectIds = result.relatedProjectIds
-        relatedProjectIds as JSON
+        def result = webService.getJson(grailsApplication.config.ecodata.service.url + '/project/getRelatedProjectIds/?hubUrl=' + hubUrl)
+        result
+    }
+
+    /**
+     * Get the first project belonging to the hub - a temporary solution for volunteer management
+     * which should be on hub level but is on project level
+     * @param hubUrl
+     * @return Project object
+     */
+    
+    def getProjectByHubUrl(String hubUrl){
+        webService.getJson(grailsApplication.config.ecodata.service.url + '/project/getProjectByHubUrl/?hubUrl=' + hubUrl)
     }
     
     GrailsParameterMap buildProjectSearch(GrailsParameterMap params, HttpServletRequest request){

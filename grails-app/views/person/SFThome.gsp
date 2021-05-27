@@ -197,12 +197,12 @@ var fcConfig = {
     </div>
     <script>
     $(function(){
-        var personViewModel = new PersonViewModel(null, true, []);
+        var personViewModel = new PersonViewModel(null, true);
         ko.applyBindings(personViewModel, document.getElementById('personal-details-form'));
     }); 
     </script>
 </g:else>
-<h4> Undrar du över hur man använder BioCollect? Läs våra instruktioner <a href="#">här.</a></h4>
+<%-- <h4> Undrar du över hur man använder BioCollect? Läs våra instruktioner <a href="#">här.</a></h4> --%>
 
 <asset:script type="text/javascript">
 
@@ -210,7 +210,7 @@ $("#btnRequestMembership").click(function(){
     var url = fcConfig.requestMembershipUrl;
     var data = {
         internalPersonId: "${person?.internalPersonId}",
-        hub: "${hub}",
+        hub: "${hub.toString()}",
         userId: "${userId}",
         email: "${person?.email}",
         displayName: "${userName}"
