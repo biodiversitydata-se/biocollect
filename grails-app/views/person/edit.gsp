@@ -67,7 +67,7 @@
             sitesToBook: "${requestedSitesList}"
         }
 
-        var personViewModel = new PersonViewModel(savedPersonDetails, ${create}, ${relatedProjectIds});
+        var personViewModel = new PersonViewModel(savedPersonDetails, ${create});
         return personViewModel;
     }
     $(function(){
