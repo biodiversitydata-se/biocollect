@@ -2,14 +2,18 @@
         <div class="row-fluid">
         <h2><g:message code="project.admin.members.details"/></h2>
         <hr>
-            <div class="col">
+            <g:if test="${userIsAlaOrFcAdmin}">
+            <div class="row-fluid">
                 <div class="well span6">
                     <label><g:message code="person.personalInfo.id"/></label>
                     <input disabled data-bind="value: person().personId" id="personId" type="text" class="span10"/>
-                    <g:if test="${userIsAlaOrFcAdmin}">
-                        <label><g:message code="person.personalInfo.internalId"/></label>
-                        <input data-bind="value: person().internalPersonId" id="internalPersonId" type="text" class="span10"/>
-                    </g:if>
+                    <label><g:message code="person.personalInfo.internalId"/></label>
+                    <input data-bind="value: person().internalPersonId" id="internalPersonId" type="text" class="span10"/>
+                </div>
+            </div>
+            </g:if>
+            <div class="col">
+                <div class="well span6">
                     <label><g:message code="person.personalInfo.first"/><span class="req-field"></span></label>
                     <input data-validation-engine="validate[required]" data-bind="value: person().firstName" id="firstName" type="text" class="span10"/>
                     <label><g:message code="person.personalInfo.last"/><span class="req-field"></span></label>
@@ -20,6 +24,8 @@
                     <input data-bind="value: person().phoneNum"  type="text" class="span10"/>
                     <label><g:message code="person.personalInfo.mobile"/></label>
                     <input data-bind="value: person().mobileNum"  type="text" class="span10"/>
+                    <label><g:message code="person.personalInfo.dob"/></label>
+                    <input data-bind="value: person().birthDate"  type="text" class="span10"/>
                 </div>
             </div>
             <div class="span6">
@@ -34,8 +40,6 @@
                     <input data-validation-engine="validate[required]" data-bind="value: person().town"  type="text" class="span10"/>
                     <label><g:message code="person.personalInfo.gender"/></label>
                     <select data-bind="options: transients.genderOptions, value: person().gender" class="span10"></select>
-                    <label><g:message code="person.personalInfo.dob"/></label>
-                    <input data-bind="value: person().birthDate"  type="text" class="span10"/>
                     <label><g:message code="person.personalInfo.extra"/></label>
                     <input data-bind="value: person().extra"  type="text" class="span10"/>
                 </div>
