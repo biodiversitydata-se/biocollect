@@ -114,7 +114,7 @@
         getProjectMembersURL: "${createLink(controller: 'project', action: 'getMembersForProjectIdPaginated')}/${project.projectId}",
         removeUserRoleUrl:"${createLink(controller:'user', action:'removeUserWithRoleFromProject')}",
         personViewUrl: "${createLink(controller: 'person', action: 'index')}",
-        personEditUrl: "${createLink(controller: 'person', action: 'edit', params: [returnTo:createLink(controller: 'project', action: 'index', id: project.projectId)])}",
+        personEditUrl: "${createLink(controller: 'person', action: 'edit')}",
         personCreateUrl: "${createLink(controller: 'person', action: 'create', params: [returnTo:createLink(controller: 'project', action: 'index', id: project.projectId)])}",
         personSearchUrl: "${createLink(controller: 'person', action: 'elasticsearch')}",
         viewSiteUrl: "${createLink(controller: 'site', action: 'index')}",
