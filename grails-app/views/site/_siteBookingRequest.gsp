@@ -21,7 +21,7 @@
         <div class="control-group">
             <label class="control-label"><g:message code='project.admin.siteBooking.requestMsgLbl'/></label>
             <div class="controls">
-                <textarea class="input-xlarge" type="text"></textarea>
+                <textarea class="input-xlarge" type="text" id="message"></textarea>
             </div>
         </div>
         <div class="control-group">
