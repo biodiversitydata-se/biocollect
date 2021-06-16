@@ -263,7 +263,8 @@
             amplify.store('traffic-from-project-finder-page',false)
             $('#about-tab').tab('show');
         }
-        $('#about-tab').tab('show');
+        <%-- Open project page on "about tab" on default --%>
+        <%-- $('#about-tab').tab('show'); --%>
         <%-- If redirected from homepage, open SITE tab for bookings --%>
         <g:if test="${params.defaultTab == 'sites'}">
             $('#sites-tab').trigger('click');

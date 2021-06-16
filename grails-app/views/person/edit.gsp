@@ -38,9 +38,7 @@
     </div>
 
 <asset:script type="text/javascript">
-    if ("${defaultTab}" == 'surveys'){
-        $('#surveys-tab').tab('show');
-    } else if ("${defaultTab}" == 'sites'){
+    if ("${defaultTab}" == 'sites'){
         $('#booking-tab').tab('show');
     } else {
         $('#personal-tab').tab('show');

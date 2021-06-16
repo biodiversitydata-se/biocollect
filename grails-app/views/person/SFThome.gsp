@@ -73,7 +73,7 @@ var fcConfig = {
                         <ul>
                             <g:each in="${projects}">
                                 <g:if test="${it.alertConfig?.ctx.contains('siteBooking')}">
-                                    <li><a href="${createLink(controller: 'project', action: 'index', id: it?.projectId, params: [defaultTab: 'sites', personId: person.personId])}">${it?.name}</a></li>
+                                    <li><a href="${createLink(controller: 'project', action: 'index', id: it?.projectId, params: [defaultTab: 'sites'])}">${it?.name}</a></li>
                                 </g:if>
                             </g:each>
                         </ul>
@@ -153,7 +153,7 @@ var fcConfig = {
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" href="${createLink(action:'edit', id: person?.personId, params:[defaultTab:'contact'])}&returnTo=${createLink(controller:'person', action:'home')}">
+                <a class="accordion-toggle" href="${createLink(action:'edit', id: person?.personId)}&returnTo=${createLink(controller:'person', action:'home')}">
                     Uppdatera min profil
                 </a>
             </div>
