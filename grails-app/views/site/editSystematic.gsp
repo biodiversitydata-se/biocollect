@@ -10,15 +10,15 @@
     <meta name="breadcrumbParent2"
           content="${createLink(controller: 'site', action: 'list')},${message(code: 'g.sites')}"/>
     <g:if test="${project}">
-        <meta name="breadcrumb" content="Create new site for ${project?.name?.encodeAsHTML()}"/>
+        <meta name="breadcrumb" content="${message(code: 'mapConfiguration.site.create')} - ${project?.name?.encodeAsHTML()}"/>
     </g:if>
     <g:elseif test="${create}">
-        <meta name="breadcrumb" content="Create"/>
+        <meta name="breadcrumb" content="${message(code: 'g.create')}"/>
     </g:elseif>
     <g:else>
         <meta name="breadcrumbParent3"
               content="${createLink(controller: 'site', action: 'index')}/${site?.siteId},${site?.name?.encodeAsHTML()}"/>
-        <meta name="breadcrumb" content="Edit"/>
+        <meta name="breadcrumb" content="${message(code: 'g.edit')}"/>
     </g:else>
 
     <style type="text/css">

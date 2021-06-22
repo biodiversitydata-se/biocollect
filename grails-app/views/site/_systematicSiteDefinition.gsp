@@ -2,7 +2,7 @@
     <div class="span7">
         <m:map id="mapForSystematic" width="100%"/>
         <g:if test="${userIsAlaOrFcAdmin}">
-            <h4>Admin properties</h4>
+            <h4><g:message code="site.details.adminOnly"/></h4>
             <div data-bind="foreach: {data: $data.site().adminProperties, as: '_data'}">
                 <ul data-bind="foreach: {data: Object.keys(_data), as: '_propkey'}">
                     <label data-bind="text: _propkey"></label>
