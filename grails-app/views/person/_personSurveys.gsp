@@ -59,7 +59,7 @@
                     render: function (data, type, row) {
                         return '<div>' + 
                         '<a class="margin-left-10" href="#">' 
-                        + data +
+                        + data.slice(0, data.search('T')) +
                         '</a></div>';
                     }
                 },
