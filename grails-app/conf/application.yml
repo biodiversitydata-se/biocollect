@@ -19,14 +19,6 @@ environments:
       #  security:
       #    cas:
       #       appServerName: 'http://canmove-dev.ekol.lu.se:8087'
-        biocollect:
-           support:
-             email:
-              address: "aleksandra.magdziarek@biol.lu.se"
-           system:
-             email:
-              replyTo: "aleksandra.magdziarek@biol.lu.se"
-              sender: "aleksandra.magdziarek@biol.lu.se"
         debugUI: true
     test:
         grails:
@@ -55,8 +47,8 @@ environments:
         biocollect:
            system:
               email:
-                replyTo: "aleksandra.magdziarek@biol.lu.se"
-                sender: "aleksandra.magdziarek@biol.lu.se"
+                replyTo: "biocollect@biodiversitydata.se"
+                sender: "biocollect@biodiversitydata.se"
         debugUI: false
 
 app:
@@ -114,10 +106,6 @@ bie:
 biocache:
   baseURL: "https://records.biodiversitydata.se"
 
-biocollect:
-  support:
-    email:
-      address: "aleksandra.magdziarek@biol.lu.se"
 
 collectory:
   service:
@@ -167,6 +155,9 @@ speciesConfiguration:
            ]
 
 spatial:
+   baseURL: "https://spatial.biodiversitydata.se"
+
+geoserver:
    baseURL: "http://ecodata.bioatlas.se"
 
 upload:
