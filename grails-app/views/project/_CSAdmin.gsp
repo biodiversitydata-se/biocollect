@@ -116,7 +116,11 @@
     if (${project.isSystematicMonitoring}) {
         function initialiseInternalSystematicCSAdmin() {
             $('#permissions-tab').trigger('click');
-            new RestoreTab('members-tab', 'persons-tab');
+            if (${params.subTab == 'persons'}){
+                $('#persons-tab').tab('show');
+            } else {
+                $('#user-permissions-tab').tab('show');
+            }
         }
         // other types of projects get all project activities on default when opening the project page
     } else {

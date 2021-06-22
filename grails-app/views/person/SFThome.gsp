@@ -153,7 +153,7 @@ var fcConfig = {
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" href="${createLink(action:'edit', id: person?.personId)}&returnTo=${createLink(controller:'person', action:'home')}">
+                <a class="accordion-toggle" href="${createLink(action:'edit', id: person?.personId)}?returnTo=${createLink(controller:'person', action:'home')}">
                     Uppdatera min profil
                 </a>
             </div>
@@ -164,7 +164,7 @@ var fcConfig = {
             <%-- Note this is a workaround - volunteer management happens on the hub level 
             volunteers belong to a hub rather than a project but the members tab is inside a project
             since SFT volunteers are added to all projects on default, it doesn't matter which one we open here --%>
-                <a class="accordion-toggle" href="${createLink(controller: 'project', action: 'index', id: projects[0].projectId, params: [defaultTab: 'admin'])}">
+                <a class="accordion-toggle" href="${createLink(controller: 'project', action: 'index', id: projects[0].projectId, params: [defaultTab: 'admin', subTab: 'persons'])}">
                     Hitta en person
                 </a>
             </div>

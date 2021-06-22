@@ -40,8 +40,6 @@
 <asset:script type="text/javascript">
     if ("${defaultTab}" == 'sites'){
         $('#booking-tab').tab('show');
-    } else {
-        $('#personal-tab').tab('show');
     }
     $('#personal-details-form').validationEngine();
 
