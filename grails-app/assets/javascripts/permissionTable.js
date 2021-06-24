@@ -1,54 +1,55 @@
 /**
  * Render project members and their roles, support pagination.
  */
+
+var table;
 function initialise(roles, currentUserId, projectId) {
-    var table = $('#member-list').DataTable({
-        "bFilter": false,
-        "processing": true,
-        "serverSide": true,
+    table = $('#member-list').DataTable({
+        "searchable": true,
         "ajax": fcConfig.getMembersForProjectIdPaginatedUrl + "/" + projectId,
         "columns": [{
             data: 'userId',
             name: 'userId',
             bSortable: false
         },
-            {
-                data: 'displayName',
-                name: 'displayName',
-                bSortable: false
-            },
-            {
-                data: 'role',
-                render: function (data, type, row) {
-                    var $select = $("<select></select>", {
-                        "id": "role_" + row.userId,
-                        "value": data
+        {
+            data: 'displayName',
+            name: 'displayName',
+            searchable: true,
+            bSortable: true
+        },
+        {
+            data: 'role',
+            bSortable: false,
+            render: function (data, type, row) {
+                var $select = $("<select></select>", {
+                    "id": "role_" + row.userId,
+                    "value": data
+                });
+                $.each(roles, function (i, value) {
+                    var $option = $("<option></option>", {
+                        "text": decodeCamelCase(value).replace('Case', 'Grant'),
+                        "value": value
                     });
-                    $.each(roles, function (i, value) {
-                        var $option = $("<option></option>", {
-                            "text": decodeCamelCase(value).replace('Case', 'Grant'),
-                            "value": value
-                        });
-                        if (data === value) {
-                            $option.attr("selected", "selected")
-                        }
-                        $select.append($option);
-                    });
-                    return $select.prop("outerHTML");
-                },
-                bSortable: false
-            },
-            {
-                render: function (data, type, row) {
-                    // cannot delete the last admin
-                    if (table.ajax.json().totalNbrOfAdmins == 1 && row.role == "admin") {
-                        return '';
-                    } else {
-                        return '<a class="btn btn-small tooltips href="" title="remove this user and role combination"><i class="icon-remove"></i></a>';
+                    if (data === value) {
+                        $option.attr("selected", "selected")
                     }
-                },
-                bSortable: false
-            }]
+                    $select.append($option);
+                });
+                return $select.prop("outerHTML");
+            }
+        },
+        {
+            render: function (data, type, row) {
+                // cannot delete the last admin
+                if (table.ajax.json().totalNbrOfAdmins == 1 && row.role == "admin") {
+                    return '';
+                } else {
+                    return '<a class="btn btn-small tooltips href="" title="remove this user and role combination"><i class="icon-remove"></i></a>';
+                }
+            },
+            bSortable: false
+        }]
     });
 
     $('#member-list').on("change", "tbody td:nth-child(3) select", function (e) {
