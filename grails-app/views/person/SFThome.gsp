@@ -57,6 +57,7 @@ var fcConfig = {
                                     </li>
                                 </g:if>
                             </g:each>
+                            <label>OBS. Vill du skapa en nattrutt, <a href="mailto:fageltaxering@biol.lu.se">kontakta oss</a> först</label>
                         </ul>
                     </div>
                 </div>
@@ -193,7 +194,7 @@ var fcConfig = {
 
 <g:elseif test="${personStatus == 'notMember'}">
 <div class="well">
-    <h4>Något stämmer inte. Vänligen maila oss på fageltaxering@biol.lu.se för att bli inlagd i systemet.</h4>
+    <h4>Något stämmer inte. Vänligen maila oss på <a href="mailto:fageltaxering@biol.lu.se">fageltaxering@biol.lu.se</a> för att bli inlagd i systemet.</h4>
 </div>
 </g:elseif>
 
@@ -202,7 +203,7 @@ var fcConfig = {
     <div class="well">
         <div id="personalDetailsForm">
             <h4>Din e-post finns inte i vårt system. Om du tror eller vet att du varit med i Svensk Fågeltaxering förut 
-            (har du kanske en ny e-post adress?), vänligen maila till oss på fageltaxering@biol.lu.se och berätta. 
+            (har du kanske en ny e-post adress?), vänligen maila till oss på <a href="mailto:fageltaxering@biol.lu.se">fageltaxering@biol.lu.se</a> och berätta. 
             Då kan vi länka dig till systemet. 
             <br>Om du är helt ny, vänligen fyll i formuläret nedan och skicka.</h4>
             <g:render template="/person/personalData"/>
@@ -239,7 +240,7 @@ $("#btnRequestMembership").click(function(){
 
         },
         error: function (data) {
-            var errorMessage = data.responseText || 'Något stämmer inte. Vänligen maila oss på fageltaxering@biol.lu.se för att bli inlagd i systemet.'
+            var errorMessage = data.responseText || 'Något stämmer inte. Vänligen maila oss på <a href="mailto:fageltaxering@biol.lu.se">fageltaxering@biol.lu.se</a> för att bli inlagd i systemet.'
             bootbox.alert(errorMessage);
         }
     });
