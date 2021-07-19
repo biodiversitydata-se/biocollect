@@ -115,6 +115,14 @@
                 </div>
             </div>
         </div>
+        <div class="control-group">
+            <label class="control-label" for="supported-programs">Systematic Monitoring (projects in the hub use systematic monitoring methods)</label>
+            <div class="controls">
+                <ul id="isSystematicMonitoring" data-bind="value:isSystematicMonitoring" class="unstyled">
+                    <li><label><input type="checkbox" data-bind="checked:isSystematicMonitoring"></label></li>
+                </ul>
+            </div>
+        </div>
 
         <div class="tab-pane" id="hubTemplate">
             <div class="control-group">

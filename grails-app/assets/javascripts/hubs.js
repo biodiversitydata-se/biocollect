@@ -98,6 +98,7 @@ var HubSettings = function (settings, config) {
     self.skin = ko.observable();
     self.title = ko.observable();
     self.supportedPrograms = ko.observableArray();
+    self.isSystematicMonitoring = ko.observableArray();
     self.defaultFacetQuery = ko.observableArray();
     self.homePagePath = ko.observable();
     self.bannerUrl = ko.observable();
@@ -240,6 +241,7 @@ var HubSettings = function (settings, config) {
         self.skin(settings.skin);
         self.title(settings.title);
         self.supportedPrograms(self.orEmptyArray(settings.supportedPrograms));
+        self.isSystematicMonitoring(settings.isSystematicMonitoring);
         self.defaultProgram(settings.defaultProgram);
         self.bannerUrl(self.orBlank(settings.bannerUrl));
         self.logoUrl(self.orBlank(settings.logoUrl));
