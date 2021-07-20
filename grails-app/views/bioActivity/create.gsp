@@ -45,6 +45,7 @@
         speciesImageUrl:"${createLink(controller:'species', action:'speciesImage')}",
         bioActivityUpdate: "${createLink(controller: 'bioActivity', action: 'ajaxUpdate', params: [pActivityId: pActivity.projectActivityId])}",
         bioActivityView: "${createLink(controller: 'bioActivity', action: 'index')}/",
+        bioActivityEdit: "${createLink(controller: 'bioActivity', action: 'edit')}/",
         excelDataUploadUrl: "${createLink(controller:'bioActivity', action:'extractDataFromExcelTemplate', params:[pActivityId:pActivity.projectActivityId])}",
         getOutputSpeciesIdUrl : "${createLink(controller: 'output', action: 'getOutputSpeciesIdentifier')}",
         getGuidForOutputSpeciesUrl : "${createLink(controller: 'record', action: 'getGuidForOutputSpeciesIdentifier')}",

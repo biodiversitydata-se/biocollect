@@ -157,7 +157,7 @@ function Master(activityId, config) {
                     } else {
                         unblock = false; // We will be transitioning off this page.
                         activityId = config.activityId || data.resp.activityId;
-                        config.returnTo = config.bioActivityUpdate + activityId;
+                        config.returnTo = config.bioActivityEdit + activityId;
                         blockUIWithMessage("Ditt utkast är sparat.");
                         self.reset();
                         self.saved();
