@@ -20,6 +20,8 @@ environments:
       #    cas:
       #       appServerName: 'http://canmove-dev.ekol.lu.se:8087'
         debugUI: true
+        ecodata:
+          baseURL: "https://canmove-dev.ekol.lu.se:8080/"
     test:
         grails:
           config:
@@ -50,6 +52,8 @@ environments:
                 replyTo: "biocollect@biodiversitydata.se"
                 sender: "biocollect@biodiversitydata.se"
         debugUI: false
+        ecodata: 
+          baseURL: https://ecodata.biodiversitydata.se
 
 app:
   default:
@@ -112,10 +116,6 @@ collectory:
     url: "https://collections.biodiversitydata.se/ws"
 
 
-ecodata:
-  baseURL: "https://canmove-dev.ekol.lu.se:8080/"
-
-
 google:
   maps:
     base: "https://maps.googleapis.com/maps/api/js?key="
@@ -137,7 +137,6 @@ lists:
 pdfgen:
   baseURL: "https://pdfgen.ala.org.au/"
 
-# favicon that shows next to page title
 skin:
   favicon: "${ecodata.baseURL}/document/download?filename=/2021-04/favicon.ico"
 
