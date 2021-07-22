@@ -51,6 +51,7 @@
         getOutputSpeciesIdUrl : "${createLink(controller: 'output', action: 'getOutputSpeciesIdentifier')}",
         getGuidForOutputSpeciesUrl : "${createLink(controller: 'record', action: 'getGuidForOutputSpeciesIdentifier')}",
         bioActivityView: "${createLink(controller: 'bioActivity', action: 'index')}/",
+        bioActivityEdit: "${createLink(controller: 'bioActivity', action: 'edit')}/",
         activityId: "${id}",
         returnTo: "${returnTo}",
         returnToMobile: "${createLink(controller: 'mobile', action: 'status')}#successfully-posted",
