@@ -37,10 +37,33 @@ th, th.required {
                 %{--quick links END--}%
             </div>
         </g:if>
-<g:if test="${isUserAdmin && pActivity?.adminVerification}">
-    <h4><g:message code="record.edit.verificationStatus"/>
-    <fc:select data-bind="options:verificationStatusOptions, value: verificationStatus"/></h4>
-</g:if>
+    <g:if test="${isUserAdmin}">
+        <div class="well">
+            <h3><g:message code="record.edit.adminOnly"/></h3>
+            <g:if test="${pActivity?.adminVerification}">
+                <h4><g:message code="record.edit.verificationStatus"/></h4>
+                    <fc:select data-bind="options:transients.verificationStatusOptions, value: verificationStatus"/>
+            </g:if>
+            <br>
+        <h4><g:message code="record.edit.warning"/></h4>
+        <div class="control-group">
+            <label class="control-label"><g:message code="record.edit.searchTermLbl"/></label>
+                <div class="controls">
+                <input type="text" data-bind="value: transients.searchTerm, event: {blur:searchPersonById}" class="input-large">
+            </div>
+                </br>
+                <label class="control-label"><g:message code="record.edit.resultsDropdownLbl"/></label>
+                <div class="controls">
+                <select class="input-xxlarge" data-bind="options: transients.listOfMatchingPersons, optionsText: function(item) {
+                            return item.name + ', ' + item.town }, optionsValue: 'personId',value: personId, optionsCaption: 'Select the name of the surveyor'"></select>
+                </div>
+                <label class="control-label">ID: </label>
+                <div class="controls">
+                <input type="text" disabled data-bind="value: personId" class="input-xxlarge">
+        </div>
+        </div>
+        </div>
+    </g:if>
 <!-- start model binding -->
 <!-- ko stopBinding: true -->
 <g:set var="user" value="${user}"/>
@@ -167,7 +190,7 @@ th, th.required {
     var speciesConfig = <fc:modelAsJavascript model="${speciesConfig}"/>;
     var outputModels = <fc:modelAsJavascript model="${outputModels}"/>;
     var mobile = ${mobile ?: false};
-
+    console.log(fcConfig)
     var master = new Master(fcConfig.activityId, fcConfig);
     function ActivityLevelData() {
         var self = this;

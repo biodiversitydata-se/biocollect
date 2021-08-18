@@ -81,7 +81,7 @@ function Master(activityId, config) {
             activityData = {};
         }
         activityData.outputs = outputs;
-        activityData.personId = config.personId;
+        activityData.personId = activityData.personId? activityData.personId : config.personId;
         return activityData;
     };
 
@@ -323,12 +323,6 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     self.mainTheme = ko.observable(act.mainTheme);
     self.type = ko.observable(act.type);
     self.projectId = act.projectId;
-
-    // check if project activity requires manual verification by admin 
-    var verificationStatus = pActivity.adminVerification ? 'not verified' : 'not applicable';
-    self.verificationStatus = ko.observable(act.verificationStatus || verificationStatus);
-    self.verificationStatusOptions = ['not approved', 'not verified', 'under review' , 'approved'];
-
     self.transients = {};
     self.transients.pActivity = new pActivityInfo(pActivity);
     self.transients.pActivitySites = pActivity.sites;
@@ -336,6 +330,50 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     self.transients.project = project;
     self.transients.outputs = [];
     self.transients.metaModel = metaModel || {};
+    self.transients.verificationStatusOptions = ['not approved', 'not verified', 'under review' , 'approved'];
+    // check if project activity requires manual verification by admin 
+    var verificationStatus = pActivity.adminVerification ? 'not verified' : 'not applicable';
+    self.verificationStatus = ko.observable(act.verificationStatus || verificationStatus);
+
+    /**
+     * creates an object what will be sent as parameters
+     * @param tOffset
+     * @returns {{max: *, offset: *, query: *, fq: *}}
+     */
+    self.constructQueryParams = function(){
+        var params = {
+            max: 50,
+            offset: 0,
+            query: self.transients.searchTerm(),
+            fq: $.map('', ''),
+            sort: '_score'
+            }
+        return params;
+    }
+
+    self.transients.listOfMatchingPersons = ko.observableArray();
+    self.searchPersonById = function(){
+        $.ajax({
+            url: config.personSearchUrl, 
+            data: self.constructQueryParams(),
+            traditional:true,
+            success: function(data){
+                var list = [];
+                if (data.persons.length !== 0){
+                    data.persons.forEach(function(it){
+                        list.push(it)
+                    })
+                }
+                self.transients.listOfMatchingPersons(list);
+                console.log(self.transients.listOfMatchingPersons())
+            }, 
+            error: function(){
+                alert("error")
+            }
+        });
+    }
+
+
 
     self.confirmSiteChange = function () {
         if (self.transients.photoPointModel && self.transients.photoPointModel().isDirty()) {
@@ -383,6 +421,8 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
             self.updatePhotoPointModel(matchingSite);
         }
     });
+    self.transients.searchTerm = ko.observable();
+    self.personId = ko.observable(act.personId);
 
     self.goToProject = function () {
         if (self.projectId) {
@@ -405,7 +445,7 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
 
     self.modelForSaving = function () {
         // get model as a plain javascript object
-        var jsData = ko.mapping.toJS(self, {'ignore':['transients', 'verificationStatusOptions']});
+        var jsData = ko.mapping.toJS(self, {'ignore':['transients']});
         if (metaModel.supportsPhotoPoints) {
             jsData.photoPoints = self.transients.photoPointModel().modelForSaving();
         }
