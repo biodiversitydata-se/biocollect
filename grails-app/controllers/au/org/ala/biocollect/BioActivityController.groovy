@@ -183,6 +183,7 @@ class BioActivityController {
         Map model = addActivity(id)
         model?.title = messageSource.getMessage('record.create.title', [].toArray(), '', locale)
         model.isUserAdmin = userService.userIsAlaOrFcAdmin()
+        model.isCreate = true
 
         model
     }

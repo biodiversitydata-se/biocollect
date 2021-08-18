@@ -45,24 +45,32 @@ th, th.required {
                     <fc:select data-bind="options:transients.verificationStatusOptions, value: verificationStatus"/>
             </g:if>
             <br>
+    <g:if test="${isCreate}">
         <h4><g:message code="record.edit.warning"/></h4>
         <div class="control-group">
             <label class="control-label"><g:message code="record.edit.searchTermLbl"/></label>
-                <div class="controls">
-                <input type="text" data-bind="value: transients.searchTerm, event: {blur:searchPersonById}" class="input-large">
-            </div>
-                </br>
-                <label class="control-label"><g:message code="record.edit.resultsDropdownLbl"/></label>
-                <div class="controls">
-                <select class="input-xxlarge" data-bind="options: transients.listOfMatchingPersons, optionsText: function(item) {
-                            return item.name + ', ' + item.town + ', ' + item.internalPersonId }, optionsValue: 'personId',value: personId, optionsCaption: 'Select the name of the surveyor'"></select>
-                </div>
-                <label class="control-label">ID: </label>
-                <div class="controls">
+            <input type="text" data-bind="value: transients.searchTerm, event: {blur:searchPersonById}" class="input-large">
+            </br>
+            <label class="control-label"><g:message code="record.edit.resultsDropdownLbl"/></label>
+            <select class="input-xxlarge" data-bind="options: transients.listOfMatchingPersons, optionsText: function(item) {
+                        return item.name + ', ' + item.town + ', ' + item.internalPersonId}, 
+                        optionsValue: 'personId',value: personId, optionsCaption: 'Select the name of the surveyor'"></select>
+            <label class="control-label">ID: </label>
+            <div class="controls">
                 <input type="text" disabled data-bind="value: personId" class="input-xxlarge">
+            </div>
+    </g:if>
+    <g:else>
+        <div class="control-group">
+            <label class="control-label">ID: </label>
+            <input type="text" disabled data-bind="value: personId" class="input-xxlarge pull-left">
+            <%-- <button class="btn btn-primary" data-bind="click: transients.getContactDetails">Get contact details</button> --%>
         </div>
-        </div>
-        </div>
+        </br>
+        <div><ul id="contactDetails"></ul></div>
+    </g:else>
+    </div>
+    </div>
     </g:if>
 <!-- start model binding -->
 <!-- ko stopBinding: true -->
@@ -74,8 +82,6 @@ th, th.required {
         <g:set var="output" value="${activity.outputs.find { it.name == outputName }}"/>
         <g:render template="/output/outputJSModelWithGeodata" plugin="ecodata-client-plugin"
                   model="${[edit:true, readonly: false, model:model, outputName:outputName]}"></g:render>
-
-
         <g:if test="${!output}">
             <g:set var="output" value="[name: outputName]"/>
         </g:if>
