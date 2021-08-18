@@ -38,8 +38,8 @@ th, th.required {
             </div>
         </g:if>
     <g:if test="${isUserAdmin}">
-        <div class="well">
-            <h3><g:message code="record.edit.adminOnly"/></h3>
+        <div class="well" style="border:solid red">
+            <h3 style="color:red"><g:message code="record.edit.adminOnly"/></h3>
             <g:if test="${pActivity?.adminVerification}">
                 <h4><g:message code="record.edit.verificationStatus"/></h4>
                     <fc:select data-bind="options:transients.verificationStatusOptions, value: verificationStatus"/>
@@ -55,7 +55,7 @@ th, th.required {
                 <label class="control-label"><g:message code="record.edit.resultsDropdownLbl"/></label>
                 <div class="controls">
                 <select class="input-xxlarge" data-bind="options: transients.listOfMatchingPersons, optionsText: function(item) {
-                            return item.name + ', ' + item.town }, optionsValue: 'personId',value: personId, optionsCaption: 'Select the name of the surveyor'"></select>
+                            return item.name + ', ' + item.town + ', ' + item.internalPersonId }, optionsValue: 'personId',value: personId, optionsCaption: 'Select the name of the surveyor'"></select>
                 </div>
                 <label class="control-label">ID: </label>
                 <div class="controls">
