@@ -365,7 +365,6 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
                     })
                 }
                 self.transients.listOfMatchingPersons(list);
-                console.log(self.transients.listOfMatchingPersons())
             }, 
             error: function(){
                 alert("error")
@@ -423,6 +422,23 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     });
     self.transients.searchTerm = ko.observable();
     self.personId = ko.observable(act.personId);
+
+    self.transients.getSurveyorContactDetails = function(){
+        $.ajax({
+            url: config.getSurveyorContactDetailsUrl, 
+            success: function(data){                
+                var person = data.person;
+                var contactDetails = "<li>Name: " + person.firstName + " " + person.lastName + "</li>"+
+                    "<li>Email address: " + person.email + "</li>" +
+                    "<li>Phone number: " + person.phoneNum + "</li>" +
+                    "<li>Mobile number: " + person.mobileNum + "</li>";
+                $("#contactDetails").html(contactDetails);
+            }, 
+            error: function(){
+                alert("Error getting contact details")
+            }
+        });
+    };
 
     self.goToProject = function () {
         if (self.projectId) {

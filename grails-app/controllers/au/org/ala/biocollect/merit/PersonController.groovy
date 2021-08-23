@@ -179,6 +179,10 @@ class PersonController {
         render result as JSON
     }
 
+    def getContactDetails(String id){
+        def result = personService.get(id)
+        render result as JSON
+    }
 
     @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def delete(String id) {

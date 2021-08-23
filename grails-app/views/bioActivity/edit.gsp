@@ -57,7 +57,8 @@
         returnToMobile: "${createLink(controller: 'mobile', action: 'status')}#successfully-posted",
         excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
         mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
-        adminVerification: ${pActivity?.adminVerification || false}
+        adminVerification: ${pActivity?.adminVerification || false},
+        getSurveyorContactDetailsUrl: "${createLink(controller: 'person', action: 'getContactDetails', id: activity.personId)}"
         },
         here = document.location.href;
     </asset:script>

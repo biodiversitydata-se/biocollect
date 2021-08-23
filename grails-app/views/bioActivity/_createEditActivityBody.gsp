@@ -64,7 +64,7 @@ th, th.required {
         <div class="control-group">
             <label class="control-label">ID: </label>
             <input type="text" disabled data-bind="value: personId" class="input-xxlarge pull-left">
-            <%-- <button class="btn btn-primary" data-bind="click: transients.getContactDetails">Get contact details</button> --%>
+            <button class="btn btn-primary" data-bind="click: transients.getSurveyorContactDetails"><g:message code="record.edit.getContactDetails"/></button>
         </div>
         </br>
         <div><ul id="contactDetails"></ul></div>

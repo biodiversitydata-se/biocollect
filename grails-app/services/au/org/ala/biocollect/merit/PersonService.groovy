@@ -19,8 +19,8 @@ class PersonService {
         result
     }
 
-    def delete(String personId){
-        def response = webService.doDelete(grailsApplication.config.ecodata.service.url + '/person/' + personId)
+    def delete(String id){
+        def response = webService.doDelete(grailsApplication.config.ecodata.service.url + '/person/' + id)
         response
     }
 
@@ -41,9 +41,9 @@ class PersonService {
     }
 
     // when admin agrees upon what a site should look like
-    def addOwnedSite(String personId, String siteId){
+    def addOwnedSite(String id, String siteId){
         def body = [siteId: siteId]
-        webService.doPost(grailsApplication.config.ecodata.service.url + "/person/addOwnedSite/${personId}", body) 
+        webService.doPost(grailsApplication.config.ecodata.service.url + "/person/addOwnedSite/${id}", body) 
     }
 
     String getPersonIdForUser(String userId){
