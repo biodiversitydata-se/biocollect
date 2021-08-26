@@ -54,7 +54,7 @@ class BioActivityController {
         def activity = null
         def pActivity = null
         String projectId = null
-        Boolean isCreateRecordRequest = !id
+        boolean projectEditor
 
         id = id ?: ''
 
@@ -93,7 +93,7 @@ class BioActivityController {
             response.status = 401
             result = [status: 401, error: flash.message]
         } else {
-            boolean projectEditor = projectService.canUserEditProject(userId, projectId, false)
+            projectEditor = projectService.canUserEditProject(userId, projectId, false)
             Map userAlreadyInRole = userService.isUserInRoleForProject(userId, projectId, "projectParticipant")
 
             if (!userAlreadyInRole.statusCode || userAlreadyInRole.statusCode == SC_OK) {
@@ -103,7 +103,7 @@ class BioActivityController {
 
                 def photoPoints = postBody.remove('photoPoints')
                 postBody.projectActivityId = pActivity.projectActivityId
-                postBody.userId = userId
+                postBody.userId = postBody.userId != "" ? postBody?.userId : userId
                 pActivity?.visibility?.alaAdminEnforcedEmbargo ? postBody.embargoed = true : null
 
                 result = activityService.update(id, postBody)
@@ -148,15 +148,14 @@ class BioActivityController {
         }
 
         // START OF SYSTEMATIC MONITORING CHANGES 
-        if (postBody?.verificationStatus == "not verified"){
+        if (postBody?.verificationStatus == "not verified" && !projectEditor){
             def project = projectService.get(projectId)
-            Boolean isSystematicMonitoring = projectService.isSystematicMonitoring(project)
+            boolean isSystematicMonitoring = projectService.isSystematicMonitoring(project)
             if (isSystematicMonitoring){
                 def projectActivity = projectActivityService.get(pActivityId)
                 def emailAddresses = projectActivity.alert.emailAddresses ? projectActivity.alert.emailAddresses : grailsApplication.config.biocollect.support.email.address
                 String userName = userService.getCurrentUserDisplayName()
                 String bioActivityEditUrl = g.createLink(controller: 'bioActivity', action: 'edit')
-                // String bioActivityId = (isCreateRecordRequest) ? result.resp.activityId : postBody.activityId
                 String bioActivityId = result.resp.activityId
                 def subject =  "En inventering av en ${projectActivity?.name} har rapporterats av ${userName} via BioCollect"
                 def emailBody = "<a href='${grailsApplication.config.server.serverURL}/person/index/${postBody.personId}'>${userName}</a> har just skickat in ett protokoll. Du kan kontrollera och eventuellt ändra i protokollet: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>här</a>"
@@ -180,7 +179,12 @@ class BioActivityController {
      * @return
      */
     def create(String id) {
-        Map model = addActivity(id)
+        Map model
+        if (params?.personId){  
+            model = addActivityForAnotherPerson(id, params.personId, false)
+        } else { 
+            model = addActivity(id)
+        }
         model?.title = messageSource.getMessage('record.create.title', [].toArray(), '', locale)
         model.isUserAdmin = userService.userIsAlaOrFcAdmin()
         model.isCreate = true
@@ -283,6 +287,47 @@ class BioActivityController {
             if (!mobile) redirect(controller: 'project', action: 'index', id: projectId)
         } else {
             Map activity = [activityId: '', siteId: '', projectId: projectId, type: type, personId: personId]
+            Map project = projectService.get(projectId, 'brief') 
+            model = activityModel(activity, projectId)
+            model.pActivity = pActivity
+            model.speciesConfig = [surveyConfig: [speciesFields: pActivity?.speciesFields]]
+            model.projectName = project.name
+            model.returnTo = params.returnTo ? params.returnTo : g.createLink(controller: 'project', id: projectId)
+            model.autocompleteUrl = "${request.contextPath}/search/searchSpecies/${pActivity.projectActivityId}?limit=10"
+            addOutputModel(model) // this is where more stuff is added! 
+            addDefaultSpecies(activity)
+        }
+
+        if (mobile && flash.message) {
+            model?.error = flash.message
+        }
+        model
+    }
+
+    def addActivityForAnotherPerson(String id, String personId, boolean mobile) {
+
+        // userId needed to retrieve only sites booked by this person 
+        def person = personService.get(personId)
+        String userId = person?.person?.userId
+        log.debug "userId " + userId
+        String adminUserId = userService.getCurrentUserId(request)
+        Map pActivity = projectActivityService.get(id, "all", null, userId)
+        // log.debug "sites " + pActivity?.sites
+        String projectId = pActivity?.projectId
+        String type = pActivity?.pActivityFormName
+        Map model = [:]
+
+        if (!pActivity.publicAccess && !projectService.canUserEditProject(adminUserId, projectId, false)) {
+            flash.message = "Only members associated to this project can submit record. For more information, please contact ${grailsApplication.config.biocollect.support.email.address}"
+            if (!mobile) redirect(controller: 'project', action: 'index', id: projectId)
+        } else if (!type) {
+            flash.message = "Invalid activity type"
+            if (!mobile) redirect(controller: 'project', action: 'index', id: projectId)
+        } else if (isProjectActivityClosed(pActivity)) {
+            flash.message = "Access denied: This survey is closed."
+            if (!mobile) redirect(controller: 'project', action: 'index', id: projectId)
+        } else {
+            Map activity = [activityId: '', siteId: '', projectId: projectId, type: type, personId: personId, userId: userId]
             Map project = projectService.get(projectId, 'brief') 
             model = activityModel(activity, projectId)
             model.pActivity = pActivity

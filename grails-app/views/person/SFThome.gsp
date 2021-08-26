@@ -12,6 +12,8 @@
 var fcConfig = {
     requestMembershipUrl : "${createLink(action: 'sendMemembershipRequest')}",
     personSaveUrl: "${createLink(action: 'save')}",
+    personSearchUrl: "${createLink(action: 'elasticsearch')}",
+    addActivityForAnotherPersonUrl: "${createLink(controller: 'bioActivity', action: 'create')}",
     returnTo: window.location.href
     }
 </script>
@@ -159,7 +161,9 @@ var fcConfig = {
                 </a>
             </div>
         </div>
+
         <g:if test="${userIsAlaOrFcAdmin}">
+        <h3>ADMIN</h3>
         <div class="accordion-group">
             <div class="accordion-heading">
             <%-- Note this is a workaround - volunteer management happens on the hub level 
@@ -169,6 +173,35 @@ var fcConfig = {
                     Hitta en person
                 </a>
             </div>
+        </div>
+
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapse6">
+                    Rapportera resultat 
+                </a>
+            </div>
+        <div id="collapse6" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div class="control-group">
+                    <label>Jag vill rapportera en:</label>
+                    <select id="pActivityId">
+                        <g:each in="${surveys}">
+                            <option value="${it?.projectActivityId}">${it?.name} </option>
+                        </g:each>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label"><g:message code="record.edit.searchTermLbl"/></label>
+                    <input type="text" id="searchTerm" class="input-large">
+                    </br>
+                    <label class="control-label"><g:message code="record.edit.resultsDropdownLbl"/></label>
+                    <select class="input-xxlarge" id="listOfMatchingPersons">
+                    </select>
+                </div>
+                <button class="btn btn-primary" id="createBioActivityBtn">Rapportera</button>
+            </div>
+        </div>
         </div>
             <div class="accordion-group">
                 <div class="accordion-heading">
@@ -244,6 +277,44 @@ $("#btnRequestMembership").click(function(){
             bootbox.alert(errorMessage);
         }
     });
+})
+var constructQueryParams = function(){
+    var searchTerm = $("#searchTerm").val();
+    var params = {
+        max: 50,
+        offset: 0,
+        query: searchTerm,
+        fq: $.map('', ''),
+        sort: '_score'
+        }
+    return params;
+}
+
+$("#searchTerm").blur(function(){
+    $.ajax({
+        url: fcConfig.personSearchUrl, 
+        data: constructQueryParams(),
+        traditional:true,
+        success: function(data){
+            var matchingPersons = "";
+            if (data.persons.length !== 0){
+                data.persons.forEach(function(it){
+                    matchingPersons += "<option value='" + it.personId + "'>" 
+                    + it.name + ", " + it.town + ", " + it.internalPersonId +"</option>"
+                })
+            }
+            $("#listOfMatchingPersons").html(matchingPersons);
+        }, 
+        error: function(){
+            alert("error")
+        }
+    });
+})
+
+$("#createBioActivityBtn").click(function(){
+    var personId = $("#listOfMatchingPersons").val(),
+        pActivityId = $("#pActivityId").val();
+    window.location.href = fcConfig.addActivityForAnotherPersonUrl + "/" + pActivityId + "/?personId=" + personId;
 })
 </asset:script>
 

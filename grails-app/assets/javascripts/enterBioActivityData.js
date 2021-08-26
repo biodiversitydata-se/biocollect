@@ -81,7 +81,8 @@ function Master(activityId, config) {
             activityData = {};
         }
         activityData.outputs = outputs;
-        activityData.personId = activityData.personId? activityData.personId : config.personId;
+        activityData.personId = config.personId;
+        activityData.userId = config.userId ? config.userId : "";
         return activityData;
     };
 
@@ -335,45 +336,6 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     var verificationStatus = pActivity.adminVerification ? 'not verified' : 'not applicable';
     self.verificationStatus = ko.observable(act.verificationStatus || verificationStatus);
 
-    /**
-     * creates an object what will be sent as parameters
-     * @param tOffset
-     * @returns {{max: *, offset: *, query: *, fq: *}}
-     */
-    self.constructQueryParams = function(){
-        var params = {
-            max: 50,
-            offset: 0,
-            query: self.transients.searchTerm(),
-            fq: $.map('', ''),
-            sort: '_score'
-            }
-        return params;
-    }
-
-    self.transients.listOfMatchingPersons = ko.observableArray();
-    self.searchPersonById = function(){
-        $.ajax({
-            url: config.personSearchUrl, 
-            data: self.constructQueryParams(),
-            traditional:true,
-            success: function(data){
-                var list = [];
-                if (data.persons.length !== 0){
-                    data.persons.forEach(function(it){
-                        list.push(it)
-                    })
-                }
-                self.transients.listOfMatchingPersons(list);
-            }, 
-            error: function(){
-                alert("error")
-            }
-        });
-    }
-
-
-
     self.confirmSiteChange = function () {
         if (self.transients.photoPointModel && self.transients.photoPointModel().isDirty()) {
             return window.confirm(
@@ -420,7 +382,6 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
             self.updatePhotoPointModel(matchingSite);
         }
     });
-    self.transients.searchTerm = ko.observable();
     self.personId = ko.observable(act.personId);
 
     self.transients.getSurveyorContactDetails = function(){

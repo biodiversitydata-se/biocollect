@@ -45,30 +45,15 @@ th, th.required {
                     <fc:select data-bind="options:transients.verificationStatusOptions, value: verificationStatus"/>
             </g:if>
             <br>
-    <g:if test="${isCreate}">
-        <h4><g:message code="record.edit.warning"/></h4>
-        <div class="control-group">
-            <label class="control-label"><g:message code="record.edit.searchTermLbl"/></label>
-            <input type="text" data-bind="value: transients.searchTerm, event: {blur:searchPersonById}" class="input-large">
-            </br>
-            <label class="control-label"><g:message code="record.edit.resultsDropdownLbl"/></label>
-            <select class="input-xxlarge" data-bind="options: transients.listOfMatchingPersons, optionsText: function(item) {
-                        return item.name + ', ' + item.town + ', ' + item.internalPersonId}, 
-                        optionsValue: 'personId',value: personId, optionsCaption: 'Select the name of the surveyor'"></select>
-            <label class="control-label">ID: </label>
-            <div class="controls">
-                <input type="text" disabled data-bind="value: personId" class="input-xxlarge">
+        <g:if test="${!isCreate}">
+            <div class="control-group">
+                <label class="control-label">ID: </label>
+                <input type="text" disabled data-bind="value: personId" class="input-xxlarge pull-left">
+                <button class="btn btn-primary" data-bind="click: transients.getSurveyorContactDetails"><g:message code="record.edit.getContactDetails"/></button>
             </div>
-    </g:if>
-    <g:else>
-        <div class="control-group">
-            <label class="control-label">ID: </label>
-            <input type="text" disabled data-bind="value: personId" class="input-xxlarge pull-left">
-            <button class="btn btn-primary" data-bind="click: transients.getSurveyorContactDetails"><g:message code="record.edit.getContactDetails"/></button>
-        </div>
-        </br>
-        <div><ul id="contactDetails"></ul></div>
-    </g:else>
+            </br>
+            <div><ul id="contactDetails"></ul></div>
+        </g:if>
     </div>
     </div>
     </g:if>
@@ -196,7 +181,6 @@ th, th.required {
     var speciesConfig = <fc:modelAsJavascript model="${speciesConfig}"/>;
     var outputModels = <fc:modelAsJavascript model="${outputModels}"/>;
     var mobile = ${mobile ?: false};
-    console.log(fcConfig)
     var master = new Master(fcConfig.activityId, fcConfig);
     function ActivityLevelData() {
         var self = this;

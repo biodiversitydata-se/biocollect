@@ -53,8 +53,8 @@
         excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
         uploadImagesUrl: "${createLink(controller: 'image', action: 'upload')}",
         personId: "${activity.personId}",
-        adminVerification: ${pActivity?.adminVerification || false},
-        personSearchUrl: "${createLink(controller: 'person', action: 'elasticsearch')}"
+        userId: "${activity.userId}", 
+        adminVerification: ${pActivity?.adminVerification || false}
         },
         here = document.location.href;
     </asset:script>
