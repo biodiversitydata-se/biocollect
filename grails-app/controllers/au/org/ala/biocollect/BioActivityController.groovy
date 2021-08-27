@@ -271,7 +271,7 @@ class BioActivityController {
         // the pActivity has pre-filtered sites - only ones that were booked/ created by the user
         // this is where the dropdown is populated from and it has the details of transect parts to be displayed on the map
         // we don't want sites in any other objects inside the model because they don't count
-        Map pActivity = projectActivityService.get(id, "all", null, userId)
+        Map pActivity = projectActivityService.get(id, "all", null, personId)
         String projectId = pActivity?.projectId
         String type = pActivity?.pActivityFormName
         Map model = [:]
@@ -309,10 +309,8 @@ class BioActivityController {
         // userId needed to retrieve only sites booked by this person 
         def person = personService.get(personId)
         String userId = person?.person?.userId
-        log.debug "userId " + userId
         String adminUserId = userService.getCurrentUserId(request)
-        Map pActivity = projectActivityService.get(id, "all", null, userId)
-        // log.debug "sites " + pActivity?.sites
+        Map pActivity = projectActivityService.get(id, "all", null, personId)
         String projectId = pActivity?.projectId
         String type = pActivity?.pActivityFormName
         Map model = [:]
