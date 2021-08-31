@@ -148,7 +148,7 @@ class BioActivityController {
         }
 
         // START OF SYSTEMATIC MONITORING CHANGES 
-        if (postBody?.verificationStatus == "not verified" && !projectEditor){
+        if (postBody?.verificationStatus == "not verified"){
             def project = projectService.get(projectId)
             boolean isSystematicMonitoring = projectService.isSystematicMonitoring(project)
             if (isSystematicMonitoring){
