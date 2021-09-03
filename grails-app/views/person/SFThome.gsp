@@ -220,8 +220,13 @@ var fcConfig = {
 <g:elseif test="${personStatus == 'existingPerson'}">
     <%-- if the user registered on CAS and the email address exists in the database but isn't added to any projects --%>
     <div class="well">
-        <h4>Din e-post finns i vår databas. Klicka på "Skicka" så länkar vi dig till systemet.</h4>
-        <button class="btn btn-primary form-control" id="btnRequestMembership"><g:message code="g.submit"/></button>
+        <div id="sendMembershipRequestDiv">
+            <h4>Din e-post finns i vår databas. Klicka på "Skicka" så länkar vi dig till systemet.</h4>
+            <button class="btn btn-primary form-control" id="btnRequestMembership"><g:message code="g.submit"/></button>
+        </div>
+        <div id="membershipRequestSentDiv" hidden>
+            <h4>Tack, din förfrågan har nu skickats. Vi kommer höra av oss i ett mail och bekräfta din registrering.</h4>
+        </div>
     </div>
 </g:elseif>
 
@@ -269,8 +274,8 @@ $("#btnRequestMembership").click(function(){
         data: JSON.stringify(data),
         contentType: 'application/json',
         success: function (data) {
-            bootbox.alert('Tack, din förfrågan har nu skickats. Vi kommer höra av oss i ett mail och bekräfta din registrering.');
-
+            $('#sendMembershipRequestDiv').hide();
+            $('#membershipRequestSentDiv').show();
         },
         error: function (data) {
             var errorMessage = data.responseText || 'Något stämmer inte. Vänligen maila oss på <a href="mailto:fageltaxering@biol.lu.se">fageltaxering@biol.lu.se</a> för att bli inlagd i systemet.'
