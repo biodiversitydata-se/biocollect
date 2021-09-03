@@ -26,6 +26,7 @@
                         <th><g:message code="person.personalInfo.mobile"/></th>
                         <th><g:message code="person.personalInfo.internalId"/></th>            
                         <th>ID</th>
+                        <th><g:message code="person.personalInfo.registeredUser"/></th>
                         <th width="3%"><g:message code="g.edit"/></th>
                     </thead>
                     <tbody data-bind="foreach: persons">
@@ -36,6 +37,7 @@
                             <td data-bind="text: mobileNum"></td>
                             <td data-bind="text: internalPersonId"></td>
                             <td data-bind="text: personId"></td>
+                            <td data-bind="text: isBCUser"></td>
                             <td><a href="#" data-bind="click: $parent.editPerson"><i class="fa fa-pencil"></i></a></td>
                         </tr>
                     </tbody>

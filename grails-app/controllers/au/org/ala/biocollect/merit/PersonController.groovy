@@ -238,7 +238,8 @@ class PersonController {
                 mobileNum: doc?.mobileNum,
                 email : doc?.email,
                 internalPersonId : doc?.internalPersonId,
-                personId : doc?.personId 
+                personId : doc?.personId,
+                isBCUser: doc?.userId ?  "ja" : "nej"
             ]
         }
 
