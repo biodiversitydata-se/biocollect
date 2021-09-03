@@ -3,6 +3,7 @@ function PersonViewModel(savedPerson, create) {
     self.person = ko.observable({
         personId : ko.observable(),
         internalPersonId: ko.observable(),
+        adminComment: ko.observable(),
         firstName : ko.observable(),
         lastName : ko.observable(),
         email : ko.observable(),
@@ -23,7 +24,8 @@ function PersonViewModel(savedPerson, create) {
 
     self.loadPerson = function (person){
         var personModel = self.person();
-        personModel.internalPersonId(exists(person, "internalPersonId"))
+        personModel.internalPersonId(exists(person, "internalPersonId"));
+        personModel.adminComment(exists(person, "adminComment"));
         personModel.firstName(exists(person, "firstName"));
         personModel.lastName(exists(person, "lastName"));
         personModel.email(exists(person, "email"));

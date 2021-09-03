@@ -47,6 +47,7 @@
         var savedPersonDetails = {
             personId: "${person?.personId}",
             internalPersonId: "${person?.internalPersonId}",
+            adminComment: "${person?.adminComment}",
             firstName: "${person?.firstName}",
             lastName:  "${person?.lastName}",
             email:"${person?.email}",
