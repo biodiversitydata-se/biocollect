@@ -5,6 +5,8 @@
 <g:if test="${userIsAlaOrFcAdmin}">
     <h4><g:message code="record.edit.verificationStatus"/>
     <fc:select data-bind="options:verificationStatusOptions, value: site().verificationStatus"/></h4>
+    <h4><g:message code="site.details.bookingComment"/>
+    <input type="text" data-bind="value: site().bookingComment" class="span8"/></h4>
 </g:if>
 
     <div class="row-fluid">

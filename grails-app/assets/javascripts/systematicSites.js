@@ -20,6 +20,7 @@ var SystematicSiteViewModel = function (valuesForVM) {
         owner: ko.observable(ownerId),
         projects: ko.observableArray(),
         verificationStatus: ko.observable('inkommen'),
+        bookingComment: ko.observable(),
         adminProperties: ko.observable({}),
         extent: ko.observable({
             source: ko.observable(),
@@ -53,6 +54,7 @@ var SystematicSiteViewModel = function (valuesForVM) {
         var siteModel = self.site();
         siteModel.name(exists(site, "name"));
         siteModel.verificationStatus(site.verificationStatus || "inkommen");
+        siteModel.bookingComment(exists(site, "bookingComment"));
         siteModel.siteId(exists(site, "siteId"));
         siteModel.externalId(exists(site, "externalId"));
         siteModel.type(exists(site, "type"));
