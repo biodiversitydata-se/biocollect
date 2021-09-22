@@ -357,9 +357,9 @@ class BioActivityController {
             if(!mobile)  redirect(controller: 'project', action: 'index', id: projectId)
         } else if (projectService.canUserModerateProjects(userId, projectId) || activityService.isUserOwnerForActivity(userId, activity?.activityId)) {
             model = activityAndOutputModel(activity, projectId)
-            def pActivity = projectActivityService.get(activity?.projectActivityId, "all", null, userId) 
+            def pActivity = projectActivityService.get(activity?.projectActivityId, "all", null, activity.personId) 
             // don't allow editing sites, only the existing activity site is allowed in the dropdown - so it might as well be non-editable, not dropdown
-            pActivity.sites = [model.site]
+            // pActivity.sites = [model.site]
             model.pActivity = pActivity
             model.projectActivityId = pActivity.projectActivityId
             model.id = id
