@@ -20,8 +20,9 @@ var SystematicSiteViewModel = function (valuesForVM) {
         owner: ko.observable(ownerId),
         projects: ko.observableArray(),
         verificationStatus: ko.observable('inkommen'),
-        bookingComment: ko.observable(),
-        adminProperties: ko.observable({}),
+        adminProperties: ko.observable({
+            bookingComment: ko.observable()
+        }),
         extent: ko.observable({
             source: ko.observable(),
             geometry:  ko.observable({
@@ -54,7 +55,6 @@ var SystematicSiteViewModel = function (valuesForVM) {
         var siteModel = self.site();
         siteModel.name(exists(site, "name"));
         siteModel.verificationStatus(site.verificationStatus || "inkommen");
-        siteModel.bookingComment(exists(site, "bookingComment"));
         siteModel.siteId(exists(site, "siteId"));
         siteModel.externalId(exists(site, "externalId"));
         siteModel.type(exists(site, "type"));
@@ -65,6 +65,9 @@ var SystematicSiteViewModel = function (valuesForVM) {
         siteModel.projects(site.projects || []);
         siteModel.adminProperties(site.adminProperties || {});
 
+        if (!site.adminProperties.bookingComment){
+            site.adminProperties.bookingComment = ko.observable()
+        }
         if (site.extent) {
             self.site().extent().source(exists(site.extent, "source"));
             self.loadGeometry(site.extent.geometry || {});

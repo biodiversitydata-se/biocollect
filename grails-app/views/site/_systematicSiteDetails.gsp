@@ -3,10 +3,18 @@
 
 <%-- This assigns a site owner - it is only accessible via the link sent to the admin when a new site is created --%>
 <g:if test="${userIsAlaOrFcAdmin}">
-    <h4><g:message code="record.edit.verificationStatus"/>
-    <fc:select data-bind="options:verificationStatusOptions, value: site().verificationStatus"/></h4>
-    <h4><g:message code="site.details.bookingComment"/>
-    <input type="text" data-bind="value: site().bookingComment" class="span8"/></h4>
+    <div class="well" style="border:solid red">
+        <h3 style="color:red"><g:message code="site.details.adminOnly"/></h3>
+        <h4><g:message code="record.edit.verificationStatus"/>
+        <fc:select data-bind="options:verificationStatusOptions, value: site().verificationStatus"/></h4>
+        <div data-bind="foreach: {data: $data.site().adminProperties, as: '_data'}">
+            <div data-bind="foreach: {data: Object.keys(_data), as: '_propkey'}">
+                <h4> <span data-bind="text: _propkey"></span>
+                <input type="text" data-bind="value: _data[_propkey]"/>
+                </h4>
+            </div>
+        </div>
+    </div>
 </g:if>
 
     <div class="row-fluid">

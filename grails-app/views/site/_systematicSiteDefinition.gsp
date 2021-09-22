@@ -1,16 +1,7 @@
 <div id="sitedef" class="row-fluid">
     <div class="span7">
         <m:map id="mapForSystematic" width="100%"/>
-        <g:if test="${userIsAlaOrFcAdmin}">
-            <h4><g:message code="site.details.adminOnly"/></h4>
-            <div data-bind="foreach: {data: $data.site().adminProperties, as: '_data'}">
-                <ul data-bind="foreach: {data: Object.keys(_data), as: '_propkey'}">
-                    <label data-bind="text: _propkey"></label>
-                    <input type="text" data-bind="value: _data[_propkey]"/>
-                </ul>
-            </div>
-        </g:if>
-        </div>
+    </div>
 
     <div class="span5">
         <div class="well well-small" data-bind="visible: allowPointsOfInterest()">
@@ -135,7 +126,7 @@ function initSiteViewModel(allowPointsOfInterest, edit, drawOptions) {
         owner: "${site?.owner}",
         verificationStatus: "${site?.verificationStatus}",
         adminProperties: ${site?.adminProperties ?: '{}'},
-        bookingComment: "${site?.bookingComment}",
+        <%-- bookingComment: "${site?.bookingComment}", --%>
         description : "${site?.description?.encodeAsJavaScript()}",
         notes : "${site?.notes?.encodeAsJavaScript()}",
         documents : JSON.parse('${(siteDocuments ?: documents).encodeAsJavaScript() ?: '{}'}'),
