@@ -154,7 +154,7 @@ speciesConfiguration:
            ]
 
 spatial:
-   baseURL: "https://spatial.biodiversitydata.se"
+   baseURL: "http://canmove-dev.ekol.lu.se:8081"
 
 geoserver:
    baseURL: "http://ecodata.biodiversitydata.se"
