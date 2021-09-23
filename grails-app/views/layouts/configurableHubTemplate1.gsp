@@ -89,7 +89,8 @@
     <g:layoutHead/>
     <link rel="stylesheet" type="text/css"
           href="${createLink(controller: 'hub', action: 'getStyleSheet')}?ver=${hubConfig.lastUpdated}">
-    <link href="${grailsApplication.config.skin.favicon}"  rel="icon"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="https://static.biodiversitydata.se/favicon-16x16.png">
+
 </head>
 
 <body class="${pageProperty(name: 'body.class') ?: 'nav-collections'}" id="${pageProperty(name: 'body.id')}"
