@@ -126,7 +126,6 @@ function initSiteViewModel(allowPointsOfInterest, edit, drawOptions) {
         owner: "${site?.owner}",
         verificationStatus: "${site?.verificationStatus}",
         adminProperties: ${site?.adminProperties ?: '{}'},
-        <%-- bookingComment: "${site?.bookingComment}", --%>
         description : "${site?.description?.encodeAsJavaScript()}",
         notes : "${site?.notes?.encodeAsJavaScript()}",
         documents : JSON.parse('${(siteDocuments ?: documents).encodeAsJavaScript() ?: '{}'}'),
