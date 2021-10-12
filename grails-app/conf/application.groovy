@@ -337,7 +337,7 @@ if(!map.overlays) {
                         alaId       : 'Indexrutor_25',
                         alaName     : 'Indexrutor_25',
                         layerName   : 'Indexrutor_25',
-                        title         : '#Grid RT90',
+                        title         : 'Rikets nät (25x25km, RT90)',
                         defaultSelected: false,
                         boundaryColour  : '#f73c27',
                         showPropertyName: true,
@@ -353,10 +353,38 @@ if(!map.overlays) {
                         ]
                 ],
                 [
+                        alaId       : 'inland_polygons',
+                        alaName     : 'inland_polygons',
+                        layerName   : 'inland_polygons',
+                        title         : 'Inlandssektorer – sjöfåglar i januari/september',
+                        defaultSelected: false,
+                        userAccessRestriction: 'anyUser',
+                        inLayerShapeList     : true,
+                        opacity: 0
+                ],
+                [
+                        alaId       : 'coast_polygons',
+                        alaName     : 'coast_polygons',
+                        layerName   : 'coast_polygons',
+                        title         : 'Kustsektorer – sjöfåglar i januari/september',
+                        defaultSelected: false,
+                        boundaryColour  : '#f73c27',
+                        showPropertyName: true,
+                        fillColour      : '',
+                        textColour      : '',
+                        userAccessRestriction: 'anyUser',
+                        inLayerShapeList     : true,
+                        opacity: 0,
+                        display     : [
+                                cqlFilter     : defaultCqlFilter,
+                                propertyName  : 'site'
+                        ]
+                ],
+                [
                         alaId       : 'archipelago_sq',
                         alaName     : 'archipelago_sq',
                         layerName   : 'archipelago_sq',
-                        title         : '#Archipelago squares',
+                        title         : 'Kustrutor – kustfåglar i häckningstid',
                         defaultSelected: false,
                         boundaryColour  : '#f73c27',
                         showPropertyName: true,
