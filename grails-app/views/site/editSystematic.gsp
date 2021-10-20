@@ -138,7 +138,6 @@
         $('#save').click(function () {
             if ($('#validation-container').validationEngine('validate')) {
                 var json = systematicSiteViewModel.toJS();
-
                 var data = {
                     site: json,
                     siteEditUrl: fcConfig.siteEditUrl
