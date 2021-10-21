@@ -308,11 +308,11 @@ class SiteController {
             // permissions check
             // rule ala admin can only delete a site on condition,
             // 1. site is not assoicated with an acitivity(s)
-            if (!userService.userIsAlaAdmin()) {
+            if (!userService.userIsAlaOrFcAdmin()) {
                 render status: HttpStatus.SC_UNAUTHORIZED, text: "Access denied: User not authorised to delete"
                 return
-            } else if (siteService.isSiteAssociatedWithProject(id) || siteService.isSiteAssociatedWithActivity(id)) {
-                render status: HttpStatus.SC_BAD_REQUEST, text: "Site ${id} has projects or activities associated with it. The site cannot be deleted."
+            } else if (siteService.isSiteAssociatedWithActivity(id)) {
+                render status: HttpStatus.SC_BAD_REQUEST, text: "Site ${id} has activities associated with it. The site cannot be deleted."
                 return
             }
 
