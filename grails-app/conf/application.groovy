@@ -81,6 +81,12 @@ datapage.allColumns = datapage.defaultColumns + [
         ,
         [
                 type: "property",
+                propertyName: "surveyDate",
+                displayName: "Survey Date"
+        ]
+        ,
+        [
+                type: "property",
                 propertyName: "projectNameFacet",
                 displayName: "Project name"
         ]
@@ -190,7 +196,6 @@ activitypropertypath = [
         methodType: ['projectActivity', 'methodType'],
         activityOwnerNameFacet: ['projectActivity', 'activityOwnerName'],
         verificationStatusFacet: ['verificationStatus']
-
 ]
 
 
@@ -280,22 +285,22 @@ if (!map.baseLayers) {
         map.baseLayers = [
                 [
                         'code': 'minimal',
-                        'displayText': 'Road map',
+                        'displayText': 'Vägkarta',
                         'isSelected': false
                 ],
                 [
                         'code': 'worldimagery',
-                        'displayText': 'Satellite',
+                        'displayText': 'Satellit',
                         'isSelected': false
                 ],
                 [
                         'code': 'detailed',
-                        'displayText': 'Detailed',
+                        'displayText': 'Detaljerad',
                         'isSelected': false
                 ],
                 [
                         'code': 'topographic',
-                        'displayText': 'ESRI Topographic',
+                        'displayText': 'Topografisk',
                         'isSelected': true
                 ],
                 [
@@ -312,6 +317,16 @@ if (!map.baseLayers) {
                         'code': 'googleterrain',
                         'displayText': 'Google terrain',
                         'isSelected': false
+                ],
+                [
+                        'code': 'landscape',
+                        'displayText': 'Thunderforest landskap',
+                        'isSelected': false
+                ],
+                [
+                        'code': 'lantmateriettopo',
+                        'displayText': 'Lantmateriet topografisk',
+                        'isSelected': false
                 ]
         ]
 }
@@ -319,202 +334,42 @@ if (!map.baseLayers) {
 if(!map.overlays) {
         map.overlays = [
                 [
-                        alaId       : 'cl22',
-                        alaName     : 'aus1',
-                        layerName   : 'aust_states_territories',
-                        title         : 'States and territories',
+                        alaId       : 'Indexrutor_25',
+                        alaName     : 'Indexrutor_25',
+                        layerName   : 'Indexrutor_25',
+                        title         : '#Grid RT90',
                         defaultSelected: false,
-                        boundaryColour  : '#fdb863',
-                        showPropertyName: false,
+                        boundaryColour  : '#f73c27',
+                        showPropertyName: true,
                         fillColour      : '',
                         textColour      : '',
                         userAccessRestriction: 'anyUser',
                         inLayerShapeList     : true,
-                        opacity: 0.5,
+                        opacity: 0,
                         
                         display     : [
                                 cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'NAME_1'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
+                                propertyName  : 'BLAD'
+                        ]
                 ],
                 [
-                        alaId       : 'cl10923',
-                        alaName     : 'psma_lga_2018',
-                        layerName   : 'aust_local_govt_areas',
-                        title         : 'Local government',
+                        alaId       : 'archipelago_sq',
+                        alaName     : 'archipelago_sq',
+                        layerName   : 'archipelago_sq',
+                        title         : '#Archipelago squares',
                         defaultSelected: false,
-                        boundaryColour  : '#b2abd2',
-                        showPropertyName: false,
+                        boundaryColour  : '#f73c27',
+                        showPropertyName: true,
                         fillColour      : '',
-                        textColour      : '',
+                        textColour      : '#000000',
                         userAccessRestriction: 'anyUser',
                         inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
+                        opacity: 0,
+                        
                         display     : [
                                 cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'LGA_NAME'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
-                        alaId       : 'cl1048',
-                        alaName     : 'ibra7_regions',
-                        layerName   : '',
-                        title         : 'Biogeographic regions',
-                        defaultSelected: false,
-                        boundaryColour  : '#b2abd2',
-                        showPropertyName: false,
-                        fillColour      : '',
-                        textColour      : '',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'REG_NAME_7'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
-                        alaId       : 'cl21',
-                        alaName     : 'imcra4_pb',
-                        layerName   : '',
-                        title         : 'Marine regions',
-                        defaultSelected: false,
-                        boundaryColour  : '#b2abd2',
-                        showPropertyName: false,
-                        fillColour      : '',
-                        textColour      : '',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'PB_NAME'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
-                        alaId       : 'cl10930',
-                        alaName     : 'nrm_regions_2017',
-                        layerName   : '',
-                        title         : 'NRM Regions',
-                        defaultSelected: false,
-                        boundaryColour  : '#b2abd2',
-                        showPropertyName: false,
-                        fillColour      : '',
-                        textColour      : '',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'NRM_REGION'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
-                        alaId       : 'cl1059',
-                        alaName     : 'drainage_divisions_level2',
-                        layerName   : '',
-                        title         : 'Major drainage divisions',
-                        defaultSelected: false,
-                        boundaryColour  : '#b2abd2',
-                        showPropertyName: false,
-                        fillColour      : '',
-                        textColour      : '',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'Level2Name'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
-                        alaId       : 'cl901',
-                        alaName     : 'diwa_type_criteria',
-                        layerName   : '',
-                        title         : 'Directory of important wetlands',
-                        defaultSelected: false,
-                        boundaryColour  : '#b2abd2',
-                        showPropertyName: false,
-                        fillColour      : '',
-                        textColour      : '',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'WNAME'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
-                        alaId       : 'cl935',
-                        alaName     : 'ramsar',
-                        layerName   : '',
-                        title         : 'RAMSAR wetland regions',
-                        defaultSelected: false,
-                        boundaryColour  : '#005ce6',
-                        showPropertyName: false,
-                        fillColour      : '#bef7cf',
-                        textColour      : '#FFF',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'RAMSAR_NAM'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
-                        alaId       : 'cl2015',
-                        alaName     : 'ipa_7aug13',
-                        layerName   : '',
-                        title         : 'Indigenous protected areas',
-                        defaultSelected: false,
-                        boundaryColour  : '#5e3c99',
-                        showPropertyName: false,
-                        fillColour      : '',
-                        textColour      : '',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'NAME'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
+                                propertyName  : 'BLAD'
+                        ]
                 ]
         ]
 }
@@ -559,16 +414,6 @@ map.data.displays = [
                 showProjectMembers: true,
                 isDefault: "heatmap"
         ]
-//        TODO: fix clustering on GeoServer before enabling.
-//        ,
-//        [
-//                value: "Cluster",
-//                key: "cluster",
-//                showLoggedOut: true,
-//                showLoggedIn: true,
-//                showProjectMembers: true,
-//                isDefault: "heatmap"
-//        ]
 ]
 
 map.projectfinder.displays = [
