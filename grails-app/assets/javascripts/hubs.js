@@ -820,6 +820,8 @@ function FacetConfigurationViewModel(config, availableFacets) {
             facetVM.helpText(facet.helpText || facetVM.helpText());
             facetVM.interval(facet.interval || facetVM.interval());
             facetVM.adminOnly(facet.adminOnly || facetVM.adminOnly());
+            facetVM.chartjsType(facet.chartjsType);
+            facetVM.chartjsConfig(facet.chartjsConfig);
 
             var index = self.transients.facetList.indexOf(facetVM);
             if(index >= 0){
@@ -843,15 +845,21 @@ function FacetViewModel(config){
     self.facetTermType = ko.observable(config.facetTermType||'Default');
     self.interval = ko.observable(config.interval || 10);
     self.adminOnly = ko.observable(config.adminOnly || false);
+    self.chartjsType = ko.observable(config.chartjsType || 'none');
+    self.chartjsConfig = ko.observable(config.chartjsConfig || ''); 
 
     self.formattedName = ko.computed(function () {
         return self.title() + ' (' + self.name() + ')'
     });
 
     self.isNotHistogram = ko.computed(function () {
-        return self.facetTermType() != 'Histogram';
+        return self.facetTermType() !== 'Histogram';
     });
-};
+
+    self.editChartjsConfig = function () {
+        editWithJson('Edit Chart Configuration', self.chartjsConfig);
+    };
+}
 
 function CustomBreadCrumbsViewModel(config) {
     var self = this;

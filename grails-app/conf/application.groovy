@@ -487,3 +487,8 @@ map.projectfinder.displays = [
 settings.surveyMethods="fielddata.survey.methods"
 
 geoServer.readTimeout = 600000
+settings.surveyMethods="fielddata.survey.methods"
+if (!app.file.script.path) {
+        app.file.script.path = "/data/biocollect/scripts"
+}
+script.read.extensions.list = ['js','min.js','png', 'json']

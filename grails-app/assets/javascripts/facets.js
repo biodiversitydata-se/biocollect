@@ -315,6 +315,11 @@ function FilterViewModel(config){
         })
     };
 
+    // provide access to just the promise that loads the full facet term list
+    self.getAllFacetTermItemsPromise = function(facetVM) {
+        return parent.getFacetTerms(facetVM.name());
+    };
+
     self.displayTitle = function (title) {
         if(self.showMoreFacet()){
             return title + ' ' + self.showMoreFacet().displayName();
@@ -435,6 +440,9 @@ function FacetViewModel(facet) {
     }
     self.state = ko.observable(state);
 
+    // stores the complete list of facet terms after is it loaded
+    self.allTermsList = ko.observableArray([]);
+
 
     self.showTermPanel = ko.computed(function () {
         var count = 0;
@@ -458,9 +466,9 @@ function FacetViewModel(facet) {
     self.ref = facet.ref;
 
     self.getTerms = function (facet) {
-        switch (facet.type){
+        switch (facet.type) {
             case 'terms':
-                // if it's surveyMonthFacet then sort the months in chronological order
+                // if it's surveyMonthFacet then sort the months in chronological order - change requested by SFT
                 if (facet.title == "Month"){
                     var months = ["January", "February", "March", "April", "May", "June",
                                 "July", "August", "September", "October", "November", "December"];
@@ -474,15 +482,14 @@ function FacetViewModel(facet) {
                     term.facet = self;
                     return new FacetTermViewModel(term);
                 });
-                return terms;
-                break;
             case 'range':
-                var ranges = $.map(facet.ranges || [], function (term, index) {
+                return (facet.ranges || []).map(function (term, index) {
                     term.facet = self;
                     return new FacetRangeViewModel(term);
                 });
-                return ranges;
-                break;
+            default:
+                console.error("Cannot get terms for facet type '" + facet.type + "'.");
+                return null;
         }
     };
 
@@ -531,6 +538,24 @@ function FacetViewModel(facet) {
      */
     self.loadMoreTerms = function () {
         self.ref.getFacetTerms(self);
+    };
+
+    /**
+     * Get the whole list of terms for this facet, and store it in allTermsList.
+     */
+    self.getAllFacetTerms = function () {
+        const promise = self.ref.getAllFacetTermItemsPromise(self);
+        promise.then(function (data) {
+            const facets = data.facets;
+            const facet = facets && $.grep(facets, function (facet) {
+                return facet.name === self.name();
+            });
+
+            if(facet && facet.length === 1){
+                const terms = self.getTerms(facet[0]);
+                self.allTermsList(terms);
+            }
+        });
     };
 
     self.showChooseMore = function () {
@@ -1016,6 +1041,9 @@ function decodeCamelCase(text) {
         // var result = text.replace( /([A-Z])/g, " $1" );
         var result = text
         return result.charAt(0).toUpperCase() + result.slice(1); // capitalize the first letter - as an example.
+    }
+    else{
+        return text
     }
 }
 

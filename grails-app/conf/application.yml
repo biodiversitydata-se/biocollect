@@ -16,9 +16,6 @@ environments:
         server:
            port: 8087
            serverURL: http://localhost:8087
-      #  security:
-      #    cas:
-      #       appServerName: 'http://canmove-dev.ekol.lu.se:8087'
         debugUI: true
         ecodata:
           baseURL: "https://canmove-dev.ekol.lu.se:8080/"

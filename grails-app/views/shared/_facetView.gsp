@@ -31,7 +31,7 @@
                     </div>
                 <!-- /ko -->
             <!-- /ko -->
-            <!-- ko if: $data instanceof DatePickerViewModel -->
+            <!-- ko if: $data instanceof DatePickerViewModel && $data.state() !== 'Hidden' -->
             <div class="row-fluid">
                 <button data-bind="click: toggleState" class="btn btn-block btn-text-left">
                     &nbsp;
