@@ -289,7 +289,6 @@ var constructQueryParams = function(){
         max: 50,
         offset: 0,
         query: searchTerm,
-        fq: $.map('', ''),
         sort: '_score'
         }
     return params;

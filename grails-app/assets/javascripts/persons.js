@@ -163,7 +163,6 @@ function PersonsListViewModel(){
             max: 50,
             offset: 0,
             query: self.searchTerm(),
-            fq: $.map('', ''),
             sort: '_score'
         }
         return params;
