@@ -185,6 +185,7 @@
 </div>
 <!-- /ko -->
 
+<%-- <asset:javascript src="chartjs/chart.min.js"/> --%>
 <asset:script type="text/javascript">
     var activitiesViewModel, alaMap, results;
     function initialiseData(view) {
@@ -195,10 +196,29 @@
             user = null;
         }
 
+        var facetConfig; 
+
+        if(view === 'allrecords') {
+            facetConfig = ${ hubConfig.getFacetConfigForPage('allRecords') };
+        } else if (view === 'myrecords') {
+            facetConfig = ${ hubConfig.getFacetConfigForPage('myRecords') };
+        } else if (view === 'project') {
+            facetConfig = ${ hubConfig.getFacetConfigForPage('project') };
+        } else if (view === 'projectrecords') {
+            facetConfig = ${ hubConfig.getFacetConfigForPage('projectrecords') };
+        } else if (view === 'myprojectrecords') {
+            facetConfig = ${ hubConfig.getFacetConfigForPage('myprojectrecords') };
+        } else if (view === 'userprojectactivityrecords') {
+            facetConfig = ${ hubConfig.getFacetConfigForPage('userprojectactivityrecords') };
+        } else {
+            console.warn("[Facets] Unrecognised view name '" + view + "', using allRecords facet config.");
+            facetConfig = ${ hubConfig.getFacetConfigForPage('allRecords') };
+        }
+
         var columnConfig =${hubConfig.getDataColumns(grailsApplication) as grails.converters.JSON},
         activityView = true,
         showSites = ${showSites ? true : false};
-        activitiesViewModel = new ActivitiesAndRecordsViewModel('activities-placeholder', view, user, showSites, false, ${doNotStoreFacetFilters?:false}, columnConfig, true, activityView);
+        activitiesViewModel = new ActivitiesAndRecordsViewModel('activities-placeholder', view, user, showSites, false, ${doNotStoreFacetFilters?:false}, columnConfig, true, facetConfig, activityView);
         ko.applyBindings(activitiesViewModel, document.getElementById('survey-all-activities-content'));
 
     }
