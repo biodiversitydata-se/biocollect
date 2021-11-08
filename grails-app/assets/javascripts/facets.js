@@ -468,13 +468,12 @@ function FacetViewModel(facet) {
     self.getTerms = function (facet) {
         switch (facet.type) {
             case 'terms':
-                // if it's surveyMonthFacet then sort the months in chronological order - change requested by SFT
-                if (facet.title == "Månad"){
+                // LUSM change - if it's surveyMonthFacet then sort the months in chronological order
+                if (facet.name == "surveyMonthFacet" && facet.terms && facet.terms.length > 1){
                     var months = ["January", "February", "March", "April", "May", "June",
-                                "July", "August", "September", "October", "November", "December"];
+                    "July", "August", "September", "October", "November", "December"];
                     facet.terms.sort(function(a, b){
-                        return months.indexOf(a.term)
-                                - months.indexOf(b.term);
+                        return months.indexOf(a.term)- months.indexOf(b.term);
                     });
                 }
 
