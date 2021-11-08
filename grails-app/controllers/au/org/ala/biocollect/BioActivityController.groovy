@@ -306,7 +306,7 @@ class BioActivityController {
         model
     }
 
-    def addActivityForAnotherPerson(String id, String personId, boolean mobile) {
+    private def addActivityForAnotherPerson(String id, String personId, boolean mobile) {
 
         // userId needed to retrieve only sites booked by this person 
         def person = personService.get(personId)
