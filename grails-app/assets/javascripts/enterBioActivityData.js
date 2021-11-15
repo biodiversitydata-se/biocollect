@@ -74,6 +74,7 @@ function Master(activityId, config) {
             }
         });
 
+        outputs[0].data.observations.sort((a, b) => a.swedishRank - b.swedishRank);
         if (activityData === undefined && outputs.length == 0) {
             return undefined;
         }
