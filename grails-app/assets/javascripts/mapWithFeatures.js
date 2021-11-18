@@ -69,7 +69,7 @@
         //spatial portal URL
         featureService: "http://fieldcapture.ala.org.au/proxy/feature",
         //WMS server for PID
-        wmsServer: "http://spatial-dev.ala.org.au/geoserver",
+        // wmsServer: "http://spatial-dev.ala.org.au/geoserver",
         // Default size (in km2) below which a marker will be added to a polygon to increase it's visibility
         polygonMarkerAreaKm2 : 0.01,
         // init map and load features

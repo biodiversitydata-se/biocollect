@@ -499,7 +499,7 @@ Biocollect.MapUtilities = {
      */
     getOverlayConfig: function(){
         return  {
-            'wmsLayerUrl': fcConfig.spatialWms + "/wms/reflect?",
+            // 'wmsLayerUrl': fcConfig.spatialWms + "/wms/reflect?",
             'wmsFeatureUrl': fcConfig.featureService + "?featureId=",
             'wmsFeaturesUrl': fcConfig.featuresService + '?layerId=',
             'intersectService': fcConfig.intersectService,

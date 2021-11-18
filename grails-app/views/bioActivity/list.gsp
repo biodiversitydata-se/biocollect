@@ -15,7 +15,7 @@
             intersectService: "${createLink(controller: 'proxy', action: 'intersect')}",
             featuresService: "${createLink(controller: 'proxy', action: 'features')}",
             featureService: "${createLink(controller: 'proxy', action: 'feature')}",
-            spatialWms: "${grailsApplication.config.spatial.geoserverUrl}",
+            <%-- spatialWms: "${grailsApplication.config.spatial.geoserverUrl}", --%>
             layersStyle: "${createLink(controller: 'regions', action: 'layersStyle')}",
             serverUrl: "${grailsApplication.config.grails.serverURL}",
             activityUpdateUrl: "${createLink(controller: 'activity', action: 'ajaxUpdate')}",
@@ -80,7 +80,7 @@
     <asset:javascript src="enterBioActivityData.js"/>
     <asset:javascript src="projectActivityInfo.js"/>
     <asset:javascript src="facets.js"/>
-    <asset:javascript src="chartjsManager.js"/>
+    <%-- <asset:javascript src="chartjsManager.js"/> --%>
     <asset:javascript src="projects.js"/>
     <script src="${grailsApplication.config.google.maps.url}" async defer></script>
 </head>
