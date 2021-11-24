@@ -45,16 +45,39 @@ th, th.required {
                     <fc:select data-bind="options:transients.verificationStatusOptions, value: verificationStatus"/>
             </g:if>
             <br>
-        <g:if test="${!isCreate}">
+            <g:if test="${!isCreate}">
+                <div class="control-group">
+                    <label class="control-label">ID: </label>
+                    <input type="text" disabled data-bind="value: personId" class="input-xxlarge pull-left">
+                    <button class="btn btn-primary" data-bind="click: transients.getSurveyorContactDetails"><g:message code="record.edit.getContactDetails"/></button>
+                </div>
+                </br>
+                <div><ul id="contactDetails"></ul></div>
+            </g:if>
+
             <div class="control-group">
-                <label class="control-label">ID: </label>
-                <input type="text" disabled data-bind="value: personId" class="input-xxlarge pull-left">
-                <button class="btn btn-primary" data-bind="click: transients.getSurveyorContactDetails"><g:message code="record.edit.getContactDetails"/></button>
+            <h4><g:message code="record.edit.helpersExtraInfo.header"/></h4>
+                <label class="control-label"><g:message code="record.edit.helpersExtraInfo.searchTermLbl"/></label>
+                <input type="text" id="searchTerm" data-bind="value: transients.searchTerm, event: {blur: transients.getHelpersContactDetails}" class="input-large">
+                </br>
+                <label class="control-label"><g:message code="record.edit.helpersExtraInfo.resultsDropdownLbl"/></label>
+                <select class="input-xxlarge" data-bind="options: transients.listOfMatchingPersons, optionsText: 'displayName', value: transients.helper"></select>
+                <button class="btn btn-primary" id="btnAddToHelpers" data-bind="click: transients.addHelperToActivity"><g:message code="project.admin.siteBooking.addBtnLbl"/></button>
+                <!-- ko if: helperIds().length > 0 -->
+                <p>Helper Ids:</p>
+                <p data-bind="text: helperIds"></p>
+                <!-- /ko -->
+                <ul>
+                <!-- ko foreach: transients.helpers -->
+                    <li data-bind="value: personId, text: displayName">
+                    <button class="btn btn-small btn-danger">
+                    <i class="icon icon-remove icon-white"></i>
+                    </button>
+                    </li>
+                <!-- /ko -->
+                </ul>
             </div>
-            </br>
-            <div><ul id="contactDetails"></ul></div>
-        </g:if>
-    </div>
+        </div>
     </div>
     </g:if>
 <!-- start model binding -->

@@ -58,7 +58,8 @@
         excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
         mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
         adminVerification: ${pActivity?.adminVerification || false},
-        getSurveyorContactDetailsUrl: "${createLink(controller: 'person', action: 'getContactDetails', id: activity.personId)}"
+        getSurveyorContactDetailsUrl: "${createLink(controller: 'person', action: 'getContactDetails', id: activity.personId)}",
+        personSearchUrl: "${createLink(controller: 'person', action: 'elasticsearch')}"
         },
         here = document.location.href;
     </asset:script>

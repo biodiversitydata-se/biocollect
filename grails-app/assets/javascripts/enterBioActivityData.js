@@ -324,6 +324,7 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     self.mainTheme = ko.observable(act.mainTheme);
     self.type = ko.observable(act.type);
     self.projectId = act.projectId;
+    self.helperIds = ko.observableArray(exists(act, 'helperIds'));
     self.transients = {};
     self.transients.pActivity = new pActivityInfo(pActivity);
     self.transients.pActivitySites = pActivity.sites;
@@ -332,6 +333,8 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     self.transients.outputs = [];
     self.transients.metaModel = metaModel || {};
     self.transients.verificationStatusOptions = ['not approved', 'not verified', 'under review' , 'approved'];
+    self.transients.listOfMatchingPersons = ko.observableArray();
+    self.transients.helpers = ko.observableArray();
     // check if project activity requires manual verification by admin 
     var verificationStatus = pActivity.adminVerification ? 'not verified' : 'not applicable';
     self.verificationStatus = ko.observable(act.verificationStatus || verificationStatus);
@@ -383,6 +386,43 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
         }
     });
     self.personId = ko.observable(act.personId);
+    self.transients.searchTerm = ko.observable("");
+    self.transients.helper = ko.observable("");
+    self.transients.addHelperToActivity = function(){
+        self.helperIds.push(self.transients.helper().personId);
+        self.transients.helpers.push(self.transients.helper());
+        self.transients.listOfMatchingPersons([]);
+    }
+
+    self.transients.getHelpersContactDetails = function(){
+        var constructQueryParams = function(){
+            var params = {
+                max: 50,
+                offset: 0,
+                query: self.transients.searchTerm(),
+                sort: '_score'
+                }
+            return params;
+        }
+    
+        $.ajax({
+            url: fcConfig.personSearchUrl, 
+            data: constructQueryParams(),
+            traditional:true,
+            success: function(data){
+                if (data.persons.length !== 0){
+                    data.persons.forEach(function(person) {
+                        var option = {"displayName": `${person.name}, ${person.town}, ${person.internalPersonId}`, "personId": person.personId}
+                        self.transients.listOfMatchingPersons.push(option);
+                    });
+                }
+            }, 
+            error: function(){
+                alert("error")
+            }
+        });
+
+    }
 
     self.transients.getSurveyorContactDetails = function(){
         $.ajax({
