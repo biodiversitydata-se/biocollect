@@ -153,9 +153,6 @@ speciesConfiguration:
 spatial:
    baseURL: "http://canmove-dev.ekol.lu.se:8081"
 
-# geoserver:
-#    baseURL: "http://ecodata.biodiversitydata.se"
-
 upload:
    images:
       path: "/data/${appName}/images/"
