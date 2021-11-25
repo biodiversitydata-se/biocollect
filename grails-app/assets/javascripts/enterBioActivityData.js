@@ -335,6 +335,9 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     self.transients.verificationStatusOptions = ['not approved', 'not verified', 'under review' , 'approved'];
     self.transients.listOfMatchingPersons = ko.observableArray();
     self.transients.helpers = ko.observableArray();
+    self.transients.showHelperPage = function(id){
+        window.open(fcConfig.personViewUrl + '/' + id)
+    }
     // check if project activity requires manual verification by admin 
     var verificationStatus = pActivity.adminVerification ? 'not verified' : 'not applicable';
     self.verificationStatus = ko.observable(act.verificationStatus || verificationStatus);
@@ -393,8 +396,13 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
         self.transients.helpers.push(self.transients.helper());
         self.transients.listOfMatchingPersons([]);
     }
+    self.transients.removeId = function(id){
+        self.helperIds.remove(id);
+        self.transients.helpers.remove(self.transients.helpers().filter(function(it){return it.personId == id})[0])
+    }
 
     self.transients.getHelpersContactDetails = function(){
+        self.transients.listOfMatchingPersons([]);
         var constructQueryParams = function(){
             var params = {
                 max: 50,

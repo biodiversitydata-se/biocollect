@@ -64,18 +64,28 @@ th, th.required {
                 <select class="input-xxlarge" data-bind="options: transients.listOfMatchingPersons, optionsText: 'displayName', value: transients.helper"></select>
                 <button class="btn btn-primary" id="btnAddToHelpers" data-bind="click: transients.addHelperToActivity"><g:message code="project.admin.siteBooking.addBtnLbl"/></button>
                 <!-- ko if: helperIds().length > 0 -->
-                <p>Helper Ids:</p>
-                <p data-bind="text: helperIds"></p>
+                    <p>Helper Ids:</p>
+                    <table>
+                    <tbody>
+                        <!-- ko foreach: helperIds -->
+                        <tr>
+                            <td><a href="#" data-bind="click: $parent.transients.showHelperPage, text: $data, value: $data"></a></td>
+                            <td><button class="btn btn-small" data-bind="click: $parent.transients.removeId, value: $data">x</button></td>
+                        </tr>
+                        <!-- /ko -->
+                    </tbody>
+                    </table>
                 <!-- /ko -->
-                <ul>
+
+                <table>
+                <tbody>
                 <!-- ko foreach: transients.helpers -->
-                    <li data-bind="value: personId, text: displayName">
-                    <button class="btn btn-small btn-danger">
-                    <i class="icon icon-remove icon-white"></i>
-                    </button>
-                    </li>
+                    <tr>
+                        <td data-bind="value: personId, text: displayName"></td>
+                    </tr>
                 <!-- /ko -->
-                </ul>
+                </tbody>
+                </table>
             </div>
         </div>
     </div>
