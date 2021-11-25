@@ -126,6 +126,7 @@
                                                 </span>
                                                 <g:if test="${userIsAdmin}">
                                                     <a data-bind="attr: {href: $parent.transients.editUrl }" title="Edit record" class="btn btn-small editBtn btn-default margin-top-5"><i class="fa fa-pencil"></i> Edit</a>
+                                                    <button class="btn btn-small btn-default" data-bind="click: $parent.delete" title="Delete record"><i class="fa fa-trash"></i>&nbsp;Delete</button>
                                                 </g:if>
                                             </div>
                                         </td>
