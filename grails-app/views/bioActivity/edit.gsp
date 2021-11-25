@@ -59,7 +59,8 @@
         mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
         adminVerification: ${pActivity?.adminVerification || false},
         getSurveyorContactDetailsUrl: "${createLink(controller: 'person', action: 'getContactDetails', id: activity.personId)}",
-        personSearchUrl: "${createLink(controller: 'person', action: 'elasticsearch')}"
+        personSearchUrl: "${createLink(controller: 'person', action: 'elasticsearch')}",
+        personViewUrl: "${createLink(controller: 'person', action: 'index')}"
         },
         here = document.location.href;
     </asset:script>
