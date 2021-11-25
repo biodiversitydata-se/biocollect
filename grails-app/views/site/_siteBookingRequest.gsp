@@ -7,7 +7,7 @@
             <label class="control-label" for="siteName"><g:message code="project.admin.siteBooking.siteName"/></label>
             <div class="controls">
                 <input class="input-xlarge" disabled id="siteName"/>
-                <input type="button" id="btnAddToRequest" onclick="addSiteToRequest()" value="${message(code:'project.admin.siteBooking.addBtnLbl')}" class="btn btn-primary"/></button>
+                <input type="button" id="btnAddToRequest" onclick="addSiteToRequest()" value="${message(code:'project.admin.siteBooking.addBtnLbl')}" class="btn btn-primary"/>
             </div>
         </div>
         <div class="control-group">
