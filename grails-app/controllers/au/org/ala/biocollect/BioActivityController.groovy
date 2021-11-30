@@ -360,8 +360,13 @@ class BioActivityController {
         } else if (projectService.canUserModerateProjects(userId, projectId) || activityService.isUserOwnerForActivity(userId, activity?.activityId)) {
             model = activityAndOutputModel(activity, projectId)
             def pActivity = projectActivityService.get(activity?.projectActivityId, "all", null, activity.personId) 
-            // don't allow editing sites, only the existing activity site is allowed in the dropdown - so it might as well be non-editable, not dropdown
-            // pActivity.sites = [model.site]
+            // LU needed to limit the number of sites in the survey dropdown - the site that is activity.siteId is here model.site
+            // However we need to have other sites book by the person who is adding a survey available too - they are contained in pActivity.sites
+            // pActivity.sites = the overlap between sites in person.bookedSites for the person who is adding the survey AND sites available for the survey stored in pActivity.sites
+            // If booking has been errased then the real activity.siteID has to be added here, otherwise the site shows "Location of sighting" instead of the real name
+            if  (!pActivity.sites.contains(model.site)) {
+                pActivity.sites.add(model.site)
+            }
             model.pActivity = pActivity
             model.projectActivityId = pActivity.projectActivityId
             model.id = id
