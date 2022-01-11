@@ -142,7 +142,7 @@ class PersonController {
         // get any project from this hub
         def project = projectService.getProjectByHubUrl(values.hub)
         // TODO - fix the source of email addresses
-        List emailAddresses = [project?.manager, "aleksandra.magdziarek@biol.lu.se"]
+        List emailAddresses = [project?.manager, "biocollect@biodiversitydata.se"]
         String projectId = project?.projectId
         def subject = "Från BioCollect: Volunteer requested membership"
         def emailBody = "${values.displayName} has requested to be a member of your projects. To confirm go " +
