@@ -62,7 +62,7 @@
 	
                         return '<div>' + 
                         '<a class="margin-left-10" href="#">' 
-                        date2.getFullYear() + "-" + (date2.getMonth()+1).toString().padStart(2,"0") + "-" + date2.getDate()
+                        + date2.getFullYear() + "-" + (date2.getMonth()+1).toString().padStart(2,"0") + "-" + date2.getDate().toString().padStart(2,"0")
                         '</a></div>';
                     }
                 },
