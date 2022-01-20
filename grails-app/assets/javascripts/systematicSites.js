@@ -65,7 +65,44 @@ var SystematicSiteViewModel = function (valuesForVM) {
         siteModel.projects(site.projects || []);
         siteModel.adminProperties(site.adminProperties || {});
         if (!site.adminProperties.internalSiteId){
+            // add the specific fields for each project
             site.adminProperties.internalSiteId = ko.observable();
+            site.adminProperties.lan = ko.observable();
+            
+            site.projects.forEach (function (eltProject) {
+
+                switch(eltProject) {
+                  case "b7eee643-d5fe-465e-af38-36b217440bd2": // PUNKTRUTTER
+                    site.adminProperties.kartaTx = ko.observable();
+                    site.adminProperties.sevin = ko.observable();
+                    site.adminProperties.start = ko.observable();
+                    break;
+                  case "89383d0f-9735-4fe7-8eb4-8b2e9e9b7b5c": // STD
+                    site.adminProperties.lsk = ko.observable();
+                    site.adminProperties.fjall104 = ko.observable();
+                    site.adminProperties.fjall142 = ko.observable();
+                    site.adminProperties.bookingComment = ko.observable();
+                    site.adminProperties.paperSurveySubmitted = ko.observable();
+                    break;
+                  case "d0b2f329-c394-464b-b5ab-e1e205585a7c": // NATT
+                    site.adminProperties.bookingComment = ko.observable();
+                    site.adminProperties.paperSurveySubmitted = ko.observable();
+                    break;
+                  case "49f55dc1-a63a-4ebf-962b-4d486db0ab16": // KUST
+                    site.adminProperties.bookingComment = ko.observable();
+                    site.adminProperties.summarySurveySubmitted = ko.observable();
+                    site.adminProperties.routetype = ko.observable();
+                    break;
+                  case "50b1cb29-cf33-4d43-a805-b07ae4de1750": // IWC
+                    site.adminProperties.bookingComment = ko.observable();
+                    site.adminProperties.summarySurveySubmitted = ko.observable();
+                    site.adminProperties.routetype = ko.observable();
+                    break;
+                } 
+
+
+            })
+
         }
 
         if (site.extent) {

@@ -5,15 +5,21 @@
 <g:if test="${userIsAlaOrFcAdmin}">
     <div class="well" style="border:solid red">
         <h3 style="color:red"><g:message code="site.details.adminOnly"/></h3>
-        <h4><g:message code="record.edit.verificationStatus"/>
-        <fc:select data-bind="options:verificationStatusOptions, value: site().verificationStatus"/></h4>
+
+        <div style="display: table-row">
+            <div style="display: table-cell; min-width:120px"><h4><g:message code="record.edit.verificationStatus"/></h4></div>
+            <div style="display: table-cell"><fc:select data-bind="options:verificationStatusOptions, value: site().verificationStatus"/></div>
+        </div>
+
         <div data-bind="foreach: {data: $data.site().adminProperties, as: '_data'}">
             <div data-bind="foreach: {data: Object.keys(_data), as: '_propkey'}">
-                <h4> <span data-bind="text: _propkey"></span>
-                <input type="text" data-bind="value: _data[_propkey]"/>
-                </h4>
+                <div style="display: table-row; width:100%"">
+                    <div style="display: table-cell"><h4><span data-bind="text: _propkey"></span></h4> </div>
+                    <div style="display: table-cell"><input type="text" data-bind="value: _data[_propkey]"/></div>
+                </div>
             </div>
         </div>
+
     </div>
 </g:if>
 
