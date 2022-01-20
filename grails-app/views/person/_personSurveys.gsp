@@ -57,9 +57,12 @@
                     data: 'surveyDate',
                     name: 'surveyDate',
                     render: function (data, type, row) {
+
+			date2 = new Date(new Date(data).toLocaleDateString());
+	
                         return '<div>' + 
                         '<a class="margin-left-10" href="#">' 
-                        + data.slice(0, data.search('T')) +
+                        + date2.getFullYear() + "-" + (date2.getMonth()+1).toString().padStart(2,"0") + "-" + date2.getDate().toString().padStart(2,"0")
                         '</a></div>';
                     }
                 },
