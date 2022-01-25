@@ -49,7 +49,7 @@
 <asset:javascript src="persons.js"/>
 <asset:script type="text/javascript">
 function addPerson(){
-    document.location.href = fcConfig.personCreateUrl + '&returnTo=' + fcConfig.returnTo; 
+    document.location.href = fcConfig.personCreateUrl; 
 }
 
 $(document).ready(function () {
