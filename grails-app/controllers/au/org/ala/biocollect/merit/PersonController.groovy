@@ -79,7 +79,24 @@ class PersonController {
      */
     def index(String id) {
         def person = personService.get(id)
-        render view: 'index', model: [person: person?.person, activityCount: person?.activityCount]
+
+        def userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
+        String userId = userService.currentUserId
+        Boolean userIsOwnerOfProfile = (person?.person?.userId == userId) ?: false
+
+        if (userIsAlaOrFcAdmin || userIsOwnerOfProfile) {
+	    if (person?.person?.userId){
+	        render view: 'index', model: [person: person?.person, activityCount: person?.activityCount]
+	    } else {
+                flash.message = "Error: this person does not exist"
+                response.status = 401
+                render view: 'error'
+	    }
+        } else {
+            flash.message = "Error: access denied: User does not have permission to view this person's profile."
+            response.status = 401
+	    render view: 'error'	
+        }
     }
     
     def create(){
@@ -93,20 +110,27 @@ class PersonController {
         String userId = userService.currentUserId
         Boolean userIsOwnerOfProfile = (person?.person?.userId == userId) ?: false
         if (userIsAlaOrFcAdmin || userIsOwnerOfProfile) {
-            Map model = [
-                create:false, 
-                person: person?.person, 
-                activityCount: person?.activityCount, 
-                returnTo: params?.returnTo, 
-                defaultTab: params?.defaultTab, 
-                requestedSitesList: params?.requestedSitesList,
-                userIsAlaOrFcAdmin: userIsAlaOrFcAdmin
-            ]
-            render view: 'edit', model: model
+	    if (person?.person?.userId){
+                Map model = [
+                    create:false, 
+                    person: person?.person, 
+                    activityCount: person?.activityCount, 
+                    returnTo: params?.returnTo, 
+                    defaultTab: params?.defaultTab, 
+                    requestedSitesList: params?.requestedSitesList,
+                    userIsAlaOrFcAdmin: userIsAlaOrFcAdmin
+                ]
+                render view: 'edit', model: model
+	    } else {
+                flash.message = "Error: this person does not exist"
+                response.status = 401
+                render view: 'error'
+            }
+
         } else {
             flash.message = "Error: access denied: User does not have <b>editor</b> permission to edit this person's profile."
             response.status = 401
-            result = [status:401, error: flash.message]
+            render view: 'error'
         }
     }
 
