@@ -596,9 +596,9 @@ class SiteController {
 
                         if (result?.status != 'error') {
                             pActivity.sites.add(siteId)
-
                             projectActivityService.update(postBody.pActivityId, pActivity)
                         }
+
                     }
                 }
             } else {
@@ -663,12 +663,21 @@ class SiteController {
                     }
 
                     if (postBody?.pActivityId) {
-                        def pActivity = projectActivityService.get(postBody.pActivityId);
+                        //def pActivity = projectActivityService.get(postBody.pActivityId);
+                        
+			// get all the projectActivity from projectId
+                        def pActivities = projectActivityService.getAllByProject(projectId)
 
                         if (result?.status != 'error') {
-                            pActivity.sites.add(siteId)
+			    // for systematicMonitoring sites, the sites are added 
+			    // to all the projectActivities of the same project
+                            for (pAct in pActivities) {
+				pAct.sites.add(siteId)
+				projectActivityService.update(pAct.projectActivityId, pAct)
+                            }
 
-                            projectActivityService.update(postBody.pActivityId, pActivity)
+                            //pActivity.sites.add(siteId)
+                            //projectActivityService.update(postBody.pActivityId, pActivity)
                         }
                     }
                 }
