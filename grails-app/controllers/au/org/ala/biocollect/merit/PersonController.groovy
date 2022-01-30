@@ -85,13 +85,13 @@ class PersonController {
         Boolean userIsOwnerOfProfile = (person?.person?.userId == userId) ?: false
 
         if (userIsAlaOrFcAdmin || userIsOwnerOfProfile) {
-	    if (person?.person?.userId){
-	        render view: 'index', model: [person: person?.person, activityCount: person?.activityCount]
-	    } else {
-                flash.message = "Error: this person does not exist"
-                response.status = 401
-                render view: 'error'
-	    }
+    	    if (person?.person?.personId){
+    	        render view: 'index', model: [person: person?.person, activityCount: person?.activityCount]
+    	    } else {
+                    flash.message = "Error: this person does not exist"
+                    response.status = 401
+                    render view: 'error'
+    	    }
         } else {
             flash.message = "Error: access denied: User does not have permission to view this person's profile."
             response.status = 401
@@ -110,21 +110,21 @@ class PersonController {
         String userId = userService.currentUserId
         Boolean userIsOwnerOfProfile = (person?.person?.userId == userId) ?: false
         if (userIsAlaOrFcAdmin || userIsOwnerOfProfile) {
-	    if (person?.person?.userId){
-                Map model = [
-                    create:false, 
-                    person: person?.person, 
-                    activityCount: person?.activityCount, 
-                    returnTo: params?.returnTo, 
-                    defaultTab: params?.defaultTab, 
-                    requestedSitesList: params?.requestedSitesList,
-                    userIsAlaOrFcAdmin: userIsAlaOrFcAdmin
-                ]
-                render view: 'edit', model: model
-	    } else {
-                flash.message = "Error: this person does not exist"
-                response.status = 401
-                render view: 'error'
+    	    if (person?.person?.personId){
+                    Map model = [
+                        create:false, 
+                        person: person?.person, 
+                        activityCount: person?.activityCount, 
+                        returnTo: params?.returnTo, 
+                        defaultTab: params?.defaultTab, 
+                        requestedSitesList: params?.requestedSitesList,
+                        userIsAlaOrFcAdmin: userIsAlaOrFcAdmin
+                    ]
+                    render view: 'edit', model: model
+    	    } else {
+                    flash.message = "Error: this person does not exist"
+                    response.status = 401
+                    render view: 'error'
             }
 
         } else {
