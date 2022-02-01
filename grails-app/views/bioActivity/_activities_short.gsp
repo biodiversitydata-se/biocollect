@@ -149,11 +149,16 @@
                                         <!-- /ko -->
                                         <!-- ko if:  type == 'property' -->
                                         <td>
-                                            <!-- ko if: dataType == 'date' -->
-                                            <div data-bind="text: $parent.dateCreated"></div>
+                                            <!-- ko if: propertyName == 'surveyDate' -->
+                                                <div data-bind="text: moment($parent.getPropertyValue($data)).format('YYYY-MM-DD')"></div>
                                             <!-- /ko -->
-                                            <!-- ko ifnot: dataType == 'date' -->
-                                            <div data-bind="text: $parent.getPropertyValue($data)"></div>
+                                            <!-- ko ifnot: propertyName == 'surveyDate' -->
+                                                <!-- ko if: dataType == 'date' -->
+                                                <div data-bind="text: $parent.dateCreated"></div>
+                                                <!-- /ko -->
+                                                <!-- ko ifnot: dataType == 'date' -->
+                                                <div data-bind="text: $parent.getPropertyValue($data)"></div>
+                                                <!-- /ko -->
                                             <!-- /ko -->
                                         </td>
                                         <!-- /ko -->
