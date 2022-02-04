@@ -235,7 +235,7 @@ class PersonController {
      */
     @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def elasticsearch() {
-        
+
     try {
         List query = ['className:au.org.ala.ecodata.Person']
         String userId = userService.getCurrentUserId()
@@ -252,19 +252,23 @@ class PersonController {
         queryParams.remove('hub')
         queryParams.remove('hubFq')
         Map searchResult = searchService.searchForSites(queryParams)
+
         List persons = searchResult?.hits?.hits
 
         persons = persons?.collect {
-            Map doc = it._source
-            [
-                name : doc?.firstName + " " + doc?.lastName,
-                town: doc?.town,
-                mobileNum: doc?.mobileNum,
-                email : doc?.email,
-                internalPersonId : doc?.internalPersonId,
-                personId : doc?.personId,
-                isBCUser: doc?.userId ?  "ja" : "nej"
-            ]
+	    // remove the null elements
+	    if (it._source.personId) {
+                Map doc = it._source
+                [
+                    name : doc?.firstName + " " + doc?.lastName,
+                    town: doc?.town,
+                    mobileNum: doc?.mobileNum,
+                    email : doc?.email,
+                    internalPersonId : doc?.internalPersonId,
+                    personId : doc?.personId,
+                    isBCUser: doc?.userId ?  "ja" : "nej"
+                ]
+	    }
         }
 
             render([persons: persons, total: searchResult.hits?.total ?: 0] as JSON)
