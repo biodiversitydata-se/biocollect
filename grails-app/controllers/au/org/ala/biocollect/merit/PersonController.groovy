@@ -236,38 +236,38 @@ class PersonController {
     @PreAuthorise(accessLevel = 'admin', projectIdParam = "projectId")
     def elasticsearch() {
 
-    try {
-        List query = ['className:au.org.ala.ecodata.Person']
-        String userId = userService.getCurrentUserId()
-        GrailsParameterMap queryParams = commonService.constructDefaultSearchParams(params, request, userId)
+        try {
+            List query = ['className:au.org.ala.ecodata.Person']
+            String userId = userService.getCurrentUserId()
+            GrailsParameterMap queryParams = commonService.constructDefaultSearchParams(params, request, userId)
 
-        if (queryParams.fq && (queryParams.fq instanceof String)) {
-            queryParams.fq = [queryParams.fq]
-        } else if (queryParams.fq instanceof String[]) {
-            queryParams.fq = queryParams.fq as List
-        } else if (!queryParams.fq) {
-            queryParams.fq = []
-        }
+            if (queryParams.fq && (queryParams.fq instanceof String)) {
+                queryParams.fq = [queryParams.fq]
+            } else if (queryParams.fq instanceof String[]) {
+                queryParams.fq = queryParams.fq as List
+            } else if (!queryParams.fq) {
+                queryParams.fq = []
+            }
 
-        queryParams.remove('hub')
-        queryParams.remove('hubFq')
-        Map searchResult = searchService.searchForSites(queryParams)
+            queryParams.remove('hub')
+            queryParams.remove('hubFq')
+            Map searchResult = searchService.searchForSites(queryParams)
 
-        List persons = searchResult?.hits?.hits
+            List persons = searchResult?.hits?.hits
 
-	// filter only on doctype = persons
-        persons = persons?.findAll{ it._source.docType=="person" }.collect {
-            Map doc = it._source
-            [
-                name : doc?.firstName + " " + doc?.lastName,
-		town: doc?.town,
-                mobileNum: doc?.mobileNum,
-                email : doc?.email,
-                internalPersonId : doc?.internalPersonId,
-                personId : doc?.personId,
-                isBCUser: doc?.userId ?  "ja" : "nej"
-            ]
-        }
+            // filter only on doctype = persons
+            persons = persons?.findAll{ it._source.docType=="person" }.collect {
+                Map doc = it._source
+                [
+                    name : doc?.firstName + " " + doc?.lastName,
+                    town: doc?.town,
+                    mobileNum: doc?.mobileNum,
+                    email : doc?.email,
+                    internalPersonId : doc?.internalPersonId,
+                    personId : doc?.personId,
+                    isBCUser: doc?.userId ?  "ja" : "nej"
+                ]
+            }
 
             render([persons: persons, total: persons.size() ?: 0] as JSON)
         } catch (SocketTimeoutException sTimeout) {
