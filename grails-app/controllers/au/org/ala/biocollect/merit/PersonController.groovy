@@ -255,23 +255,21 @@ class PersonController {
 
         List persons = searchResult?.hits?.hits
 
-        persons = persons?.collect {
-	    // remove the null elements
-	    if (it._source.personId) {
-                Map doc = it._source
-                [
-                    name : doc?.firstName + " " + doc?.lastName,
-                    town: doc?.town,
-                    mobileNum: doc?.mobileNum,
-                    email : doc?.email,
-                    internalPersonId : doc?.internalPersonId,
-                    personId : doc?.personId,
-                    isBCUser: doc?.userId ?  "ja" : "nej"
-                ]
-	    }
+	// filter only on doctype = persons
+        persons = persons?.findAll{ it._source.docType=="person" }.collect {
+            Map doc = it._source
+            [
+                name : doc?.firstName + " " + doc?.lastName,
+		town: doc?.town,
+                mobileNum: doc?.mobileNum,
+                email : doc?.email,
+                internalPersonId : doc?.internalPersonId,
+                personId : doc?.personId,
+                isBCUser: doc?.userId ?  "ja" : "nej"
+            ]
         }
 
-            render([persons: persons, total: searchResult.hits?.total ?: 0] as JSON)
+            render([persons: persons, total: persons.size() ?: 0] as JSON)
         } catch (SocketTimeoutException sTimeout) {
             render(text: sTimeout.message, status: HttpStatus.SC_REQUEST_TIMEOUT);
         } catch (Exception e) {
