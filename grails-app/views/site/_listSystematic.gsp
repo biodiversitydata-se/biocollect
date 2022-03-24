@@ -98,7 +98,13 @@ $('#sites-tab').click(
 
 function initialiseSites() {
     var facets = <fc:modelAsJavascript model="${facets}"/>;
-    RestoreTab('siteListResultTab', 'list-tab')
+
+    var defaultTab = 'list-tab';
+    if (${siteBookingRequired}){
+       defaultTab = 'booking-tab';
+    }
+    RestoreTab('siteListResultTab', defaultTab)
+
     var sites = new SitesListViewModel(params, facets);
     var params = {
         loadOnInit: false
