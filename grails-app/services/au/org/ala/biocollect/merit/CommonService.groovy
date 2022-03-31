@@ -84,7 +84,7 @@ class CommonService {
         queryParams.userId = userId
         queryParams.max = queryParams.max ?: 10
         queryParams.offset = queryParams.offset ?: 0
-        queryParams.flimit = queryParams.flimit ?: 20
+        queryParams.flimit = queryParams.flimit ?: 50
         queryParams.sort = queryParams.sort ?: 'lastUpdated'
         queryParams.order = queryParams.order ?: 'DESC'
         queryParams.fq = queryParams.fq ?: ''
