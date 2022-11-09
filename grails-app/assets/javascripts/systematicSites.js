@@ -68,6 +68,8 @@ var SystematicSiteViewModel = function (valuesForVM) {
             // add the specific fields for each project
             site.adminProperties.internalSiteId = ko.observable();
             site.adminProperties.lan = ko.observable();
+            site.adminProperties.StnRegOSId = ko.observable();
+            site.adminProperties.StnRegPPId = ko.observable();
             
             site.projects.forEach (function (eltProject) {
 
@@ -83,6 +85,7 @@ var SystematicSiteViewModel = function (valuesForVM) {
                     site.adminProperties.fjall142 = ko.observable();
                     site.adminProperties.bookingComment = ko.observable();
                     site.adminProperties.paperSurveySubmitted = ko.observable();
+                    site.adminProperties.anonymizedId = ko.observable();
                     break;
                   case "d0b2f329-c394-464b-b5ab-e1e205585a7c": // NATT
                     site.adminProperties.bookingComment = ko.observable();
@@ -92,11 +95,17 @@ var SystematicSiteViewModel = function (valuesForVM) {
                     site.adminProperties.bookingComment = ko.observable();
                     site.adminProperties.summarySurveySubmitted = ko.observable();
                     site.adminProperties.routetype = ko.observable();
+                    site.adminProperties.area_m2 = ko.observable();
+                    site.adminProperties.mitt_5x5_wgs84_lat = ko.observable();
+                    site.adminProperties.mitt_5x5_wgs84_lon = ko.observable();
                     break;
                   case "50b1cb29-cf33-4d43-a805-b07ae4de1750": // IWC
-                    site.adminProperties.bookingComment = ko.observable();
-                    site.adminProperties.summarySurveySubmitted = ko.observable();
-                    site.adminProperties.routetype = ko.observable();
+                    site.adminProperties.goose = ko.observable();
+                    site.adminProperties.helcom_sub = ko.observable();
+                    site.adminProperties.ln_karta = ko.observable();
+                    site.adminProperties.ki = ko.observable();
+                    site.adminProperties.ev = ko.observable();
+                    site.adminProperties.area = ko.observable();
                     break;
                 } 
 
