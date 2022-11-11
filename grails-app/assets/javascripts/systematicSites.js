@@ -64,55 +64,60 @@ var SystematicSiteViewModel = function (valuesForVM) {
         siteModel.owner(site.owner || ownerId);
         siteModel.projects(site.projects || []);
         siteModel.adminProperties(site.adminProperties || {});
-        if (!site.adminProperties.internalSiteId){
-            // add the specific fields for each project
+        
+        // add the specific fields for each project
+
+        if (!site.adminProperties.internalSiteId)
             site.adminProperties.internalSiteId = ko.observable();
+        if (!site.adminProperties.lan)
             site.adminProperties.lan = ko.observable();
+        if (!site.adminProperties.StnRegOSId)
             site.adminProperties.StnRegOSId = ko.observable();
+        if (!site.adminProperties.StnRegPPId)
             site.adminProperties.StnRegPPId = ko.observable();
-            
-            site.projects.forEach (function (eltProject) {
+        
+        site.projects.forEach (function (eltProject) {
 
-                switch(eltProject) {
-                  case "b7eee643-d5fe-465e-af38-36b217440bd2": // PUNKTRUTTER
-                    site.adminProperties.kartaTx = ko.observable();
-                    site.adminProperties.sevin = ko.observable();
-                    site.adminProperties.start = ko.observable();
-                    break;
-                  case "89383d0f-9735-4fe7-8eb4-8b2e9e9b7b5c": // STD
-                    site.adminProperties.lsk = ko.observable();
-                    site.adminProperties.fjall104 = ko.observable();
-                    site.adminProperties.fjall142 = ko.observable();
-                    site.adminProperties.bookingComment = ko.observable();
-                    site.adminProperties.paperSurveySubmitted = ko.observable();
-                    site.adminProperties.anonymizedId = ko.observable();
-                    break;
-                  case "d0b2f329-c394-464b-b5ab-e1e205585a7c": // NATT
-                    site.adminProperties.bookingComment = ko.observable();
-                    site.adminProperties.paperSurveySubmitted = ko.observable();
-                    break;
-                  case "49f55dc1-a63a-4ebf-962b-4d486db0ab16": // KUST
-                    site.adminProperties.bookingComment = ko.observable();
-                    site.adminProperties.summarySurveySubmitted = ko.observable();
-                    site.adminProperties.routetype = ko.observable();
-                    site.adminProperties.area_m2 = ko.observable();
-                    site.adminProperties.mitt_5x5_wgs84_lat = ko.observable();
-                    site.adminProperties.mitt_5x5_wgs84_lon = ko.observable();
-                    break;
-                  case "50b1cb29-cf33-4d43-a805-b07ae4de1750": // IWC
-                    site.adminProperties.goose = ko.observable();
-                    site.adminProperties.helcom_sub = ko.observable();
-                    site.adminProperties.ln_karta = ko.observable();
-                    site.adminProperties.ki = ko.observable();
-                    site.adminProperties.ev = ko.observable();
-                    site.adminProperties.area = ko.observable();
-                    break;
-                } 
+            switch(eltProject) {
+              case "b7eee643-d5fe-465e-af38-36b217440bd2": // PUNKTRUTTER
+                if (!site.adminProperties.kartaTx) site.adminProperties.kartaTx = ko.observable();
+                if (!site.adminProperties.sevin) site.adminProperties.sevin = ko.observable();
+                if (!site.adminProperties.start) site.adminProperties.start = ko.observable();
+                break;
+              case "89383d0f-9735-4fe7-8eb4-8b2e9e9b7b5c": // STD
+                if (!site.adminProperties.lsk) site.adminProperties.lsk = ko.observable();
+                if (!site.adminProperties.fjall104) site.adminProperties.fjall104 = ko.observable();
+                if (!site.adminProperties.fjall142) site.adminProperties.fjall142 = ko.observable();
+                if (!site.adminProperties.bookingComment) site.adminProperties.bookingComment = ko.observable();
+                if (!site.adminProperties.paperSurveySubmitted) site.adminProperties.paperSurveySubmitted = ko.observable();
+                if (!site.adminProperties.anonymizedId) site.adminProperties.anonymizedId = ko.observable();
+                break;
+              case "d0b2f329-c394-464b-b5ab-e1e205585a7c": // NATT
+                if (!site.adminProperties.bookingComment) site.adminProperties.bookingComment = ko.observable();
+                if (!site.adminProperties.paperSurveySubmitted) site.adminProperties.paperSurveySubmitted = ko.observable();
+                break;
+              case "49f55dc1-a63a-4ebf-962b-4d486db0ab16": // KUST
+                if (!site.adminProperties.bookingComment) site.adminProperties.bookingComment = ko.observable();
+                if (!site.adminProperties.summarySurveySubmitted) site.adminProperties.summarySurveySubmitted = ko.observable();
+                if (!site.adminProperties.routetype) site.adminProperties.routetype = ko.observable();
+                if (!site.adminProperties.area_m2) site.adminProperties.area_m2 = ko.observable();
+                if (!site.adminProperties.mitt_5x5_wgs84_lat) site.adminProperties.mitt_5x5_wgs84_lat = ko.observable();
+                if (!site.adminProperties.mitt_5x5_wgs84_lon) site.adminProperties.mitt_5x5_wgs84_lon = ko.observable();
+                break;
+              case "50b1cb29-cf33-4d43-a805-b07ae4de1750": // IWC
+                if (!site.adminProperties.goose) site.adminProperties.goose = ko.observable();
+                if (!site.adminProperties.helcom_sub) site.adminProperties.helcom_sub = ko.observable();
+                if (!site.adminProperties.ln_karta) site.adminProperties.ln_karta = ko.observable();
+                if (!site.adminProperties.ki) site.adminProperties.ki = ko.observable();
+                if (!site.adminProperties.ev) site.adminProperties.ev = ko.observable();
+                if (!site.adminProperties.area) site.adminProperties.area = ko.observable();
+                break;
+            } 
 
 
-            })
+        })
 
-        }
+        
 
         if (site.extent) {
             self.site().extent().source(exists(site.extent, "source"));

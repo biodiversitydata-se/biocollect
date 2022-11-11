@@ -60,6 +60,17 @@ var fcConfig = {
                                 </g:if>
                             </g:each>
                             <label>OBS. Vill du skapa en nattrutt, <a href="mailto:fageltaxering@biol.lu.se">kontakta oss</a> först</label>
+
+                            <g:if test="${userIsAlaOrFcAdmin}">
+                                <g:each in="${surveys}">
+                                    <g:if test="${it?.surveySiteOption != 'sitecreatesystematic' && it?.status == 'active'}">
+                                        <li>[ADMIN] <a href="${createLink(controller: 'site', action: 'createSystematic', 
+                                                params: [projectId:it?.projectId, pActivityId:it?.projectActivityId])}">
+                                                ${it?.name}
+                                        </li>
+                                    </g:if>
+                                </g:each>
+                            </g:if>
                         </ul>
                     </div>
                 </div>
