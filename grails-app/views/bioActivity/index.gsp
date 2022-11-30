@@ -66,6 +66,18 @@
 <body>
 <div class="container-fluid validationEngineContainer" id="validation-container">
 
+
+    <g:if test="${!mobile}">
+        <g:if test="${hubConfig?.isSystematicMonitoring}">
+            <div class="form-actions">
+                <g:if test="${userIsProjectMember}">
+                    <a class="btn btn-primary  btn-large" href="${createLink(controller: 'bioActivity', action: 'create')}/${pActivity.projectActivityId}"><span class="fa fa-plus"></span> Add new record</a>
+                </g:if>
+            </div>
+        </g:if>
+    </g:if>
+
+
     <div id="koActivityMainBlock">
         <bc:koLoading>
         <g:if test="${!mobile}">
