@@ -71,7 +71,7 @@
         <g:if test="${hubConfig?.isSystematicMonitoring}">
             <div class="form-actions">
                 <g:if test="${userIsProjectMember}">
-                    <a class="btn btn-primary  btn-large" href="${createLink(controller: 'bioActivity', action: 'create')}/${pActivity.projectActivityId}"><span class="fa fa-plus"></span> Add new record</a>
+                    <a class="btn btn-primary  btn-large" href="${createLink(controller: 'bioActivity', action: 'create')}/${pActivity.projectActivityId}"><span class="fa fa-plus"></span> <g:message code="record.view.addnew.btn"/></a>
                 </g:if>
             </div>
         </g:if>
