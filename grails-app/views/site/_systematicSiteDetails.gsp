@@ -60,5 +60,9 @@
     <label for="name"><g:message code="site.transect.step2"/></label>
     <g:render template="/site/systematicSiteDefinition"/>
 
+    <br><br>
+    <div class="row-fluid">
+        <h4><g:message code="site.transect.step4"/></h4>
+    </div>
 </div>
 <!-- /ko -->
