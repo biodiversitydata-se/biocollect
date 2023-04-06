@@ -29,7 +29,7 @@
 <div class="row">
     <span class="col-sm-3">
         <button class="btn btn-primary-dark btn-sm" data-bind="click:save${attributeName}"><i class="icon-white icon-hdd"></i> Save changes</button>
-        <button class="btn  btn-sm" data-bind="click:cancelEdit${attributeName}">Cancel</button>
+        <button class="btn  btn-sm" data-bind="click:cancelEdit${attributeName}"><g:message code='g.cancel'/></button>
 
     </span>
 </div>

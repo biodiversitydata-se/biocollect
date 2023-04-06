@@ -5,7 +5,7 @@
     <g:set var="title" value="${myFavourites? message(code: "site.myFavouriteSites.heading") : message(code: "site.allSites.heading")}"/>
     <title>${title}</title>
     <meta name="layout" content="bs4"/>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: 'g.home')}"/>
     <meta name="breadcrumb" content="${title}"/>
     <script>
     var fcConfig = {
@@ -18,6 +18,7 @@
             listSitesUrl: '${createLink(controller: 'site', action: 'elasticsearch')}',
             viewSiteUrl: '${createLink(controller: 'site', action: 'index')}',
             editSiteUrl: '${createLink(controller: 'site', action: 'edit')}',
+            editSystematicSiteUrl: '${createLink(controller: 'site', action: 'editSystematic')}',
             addStarSiteUrl: "${createLink(controller: 'site', action: 'ajaxAddToFavourites')}",
             removeStarSiteUrl: "${createLink(controller: 'site', action: 'ajaxRemoveFromFavourites')}",
             poiGalleryUrl: "${createLink(controller: 'site', action: 'getImages')}",
@@ -168,10 +169,12 @@
     var SITES_TAB_AMPLIFY_VAR = 'site-list-result-tab'
     $(document).ready(function () {
         RestoreTab('siteListResultTab', 'list-tab')
+
         var boundElementSelector = "#siteSearch"
         var sites = new SitesListViewModel({
             boundElementSelector: boundElementSelector
         });
+
         var params = {
             loadOnInit: false
         }

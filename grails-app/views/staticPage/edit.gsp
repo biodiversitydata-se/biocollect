@@ -51,8 +51,8 @@
                         <g:if test="${!ajax}">
                             <div class="row mt-2">
                                 <div class="col-12">
-                                    <button class="btn btn-primary-dark"><i class="fas fa-hdd"></i> Save</button>
-                                    <a class="btn btn-dark" href="${returnUrl}"><i class="far fa-times-circle"></i> Cancel</a>
+                                    <button class="btn btn-primary-dark"><i class="fas fa-hdd"></i> <g:message code='g.save'/></button>
+                                    <a class="btn btn-dark" href="${returnUrl}"><i class="far fa-times-circle"></i> <g:message code='g.cancel'/></a>
                                 </div>
                             </div>
                         </g:if>

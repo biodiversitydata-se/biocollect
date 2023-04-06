@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="bs4"/>
     <title>${project?.name?.encodeAsHTML()} | <g:message code="g.projects"/> | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: "g.home")}"/>
     <meta name="breadcrumbParent2" content="${createLink(controller: 'project', action: 'index')}/${project.projectId},${project.name?.encodeAsHTML()}"/>
     <meta name="breadcrumb" content="Edit"/>
 
@@ -36,6 +36,7 @@
         allBaseLayers: ${grailsApplication.config.map.baseLayers as grails.converters.JSON},
         allOverlays: ${grailsApplication.config.map.overlays as grails.converters.JSON},
         mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
+        allMapDisplays: ${grailsApplication.config.map.data.displays as grails.converters.JSON},
         leafletAssetURL: "${assetPath(src: 'webjars/leaflet/0.7.7/dist/images')}"
         </g:applyCodec>
         },

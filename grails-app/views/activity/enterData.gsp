@@ -4,10 +4,10 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta name="layout" content="bs4"/>
-    <title>Edit | ${activity.type} | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
+    <title>${message(code: 'g.edit')} | ${activity.type} | <g:message code="g.biocollect"/></title>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},,${message(code: 'g.home')}"/>
     <meta name="breadcrumbParent2"
-          content="${createLink(controller: 'project', action: 'index')}/${project.projectId},Project"/>
+          content="${createLink(controller: 'project', action: 'index')}/${project.projectId},${message(code: 'g.project')}"/>
     <meta name="breadcrumb" content="Enter data"/>
 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js"></script>
@@ -250,7 +250,7 @@
             <g:render template="/shared/termsOfUse"/>
             <div class="">
                 <button type="button" id="save" class="btn btn-primary-dark"><i class="fas fa-hdd"></i> Save changes</button>
-                <button type="button" id="cancel" class="btn btn-dark"><i class="far fa-times-circle"></i> Cancel</button>
+                <button type="button" id="cancel" class="btn btn-dark"><i class="far fa-times-circle"></i> <g:message code='g.cancel'/></button>
                 <label class="checkbox inline">
                     <input data-bind="checked:transients.markedAsFinished" type="checkbox"> Mark this activity as finished.
                 </label>

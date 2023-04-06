@@ -93,7 +93,7 @@
 
         <div class="col-12">
             <button class="btn-primary-dark btn btn-sm"
-                    data-bind="click: $parent.saveForm"><i class="fas fa-hdd"></i> Save</button>
+                    data-bind="click: $parent.saveForm"><i class="fas fa-hdd"></i> <g:message code='g.save'/></button>
             <button class="btn-dark btn btn-sm" data-bind="showTabOrRedirect: {url:'', tabId: '#survey-form-tab'}"><i
                     class="far fa-arrow-alt-circle-left"></i> Back</button>
             <button class="btn-dark btn btn-sm"

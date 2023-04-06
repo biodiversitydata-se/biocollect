@@ -32,6 +32,7 @@ if (Boolean.valueOf(enableClover)) {
     apply from: "${project.projectDir}/gradle/clover.gradle"
 }
 apply from: "${project.projectDir}/gradle/publish.gradle"
+// apply from: 'https://raw.githubusercontent.com/AtlasOfLivingAustralia/travis-build-configuration/master/travis_grails_publish.gradle'
 
 repositories {
     mavenLocal()
@@ -49,6 +50,14 @@ configurations {
         extendsFrom developmentOnly
     }
 }
+
+def metadataExtractorVersion = "2.6.2"
+def imgscalrVersion = "4.2"
+def httpmimeVersion = "4.2.1"
+def jtsVersion = "1.8"
+def geoToolsVersion = "11.2"
+boolean inplace = true // Set to true it needed only for development
+
 
 dependencies {
 //    implementation "org.grails:grails-plugin-rest"
@@ -116,6 +125,7 @@ dependencies {
         exclude group: 'commons-httpclient', module: 'commons-httpclient'
         exclude group: 'org.grails.plugins', module: 'ala-auth'
     }
+
 
     implementation 'org.apache.poi:ooxml-schemas:1.4'
     implementation 'org.apache.poi:poi:4.1.2'
@@ -220,6 +230,7 @@ compileGroovy.dependsOn(_Events)
 bootRun.dependsOn(_Events)
 
 
+
 tasks.withType(GroovyCompile) {
     configure(groovyOptions) {
         forkOptions.jvmArgs = ['-Xmx1024m']
@@ -259,3 +270,4 @@ assets {
     minifyCss = true
     maxThreads = 4
 }
+

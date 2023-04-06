@@ -3,6 +3,8 @@ package au.org.ala.biocollect.merit
 import au.org.ala.biocollect.swagger.model.SiteAjaxUpdate
 import au.org.ala.biocollect.swagger.model.SiteCreateUpdateResponse
 import au.org.ala.plugins.openapi.Path
+import au.org.ala.biocollect.EmailService
+import au.org.ala.biocollect.VocabService
 import au.org.ala.web.AuthService
 import au.org.ala.web.NoSSO
 import au.org.ala.web.SSO
@@ -30,6 +32,9 @@ class SiteController {
 
     AuthService authService
     CommonService commonService
+    EmailService emailService
+    PersonService personService
+    VocabService vocabService
 
     static defaultAction = "index"
 
@@ -66,6 +71,34 @@ class SiteController {
     def create() {
         render view: 'edit', model: [create: true, documents: []]
     }
+    def createSystematic(){
+        def project = projectService.getRich(params.projectId)
+        def pActivity = projectActivityService.get(params?.pActivityId, 'brief')
+        // permissions check
+        def projectMembers = projectService.getMembersForProjectId(params.projectId)
+        String userId = userService.getCurrentUserId()
+        String personId = personService.getPersonIdForUser(userId)
+        Boolean userCanCreateSite = projectMembers.find{it.userId == userId} ?: false
+        if (!userCanCreateSite) {
+            flash.message = "Access denied: User is not en editor or is not allowed to manage sites for projectId ${params.projectId}"
+            redirect(controller:'project', action:'index', id: params.projectId)
+        }
+        project.sites?.sort {it.name}
+        project.projectSite = project.sites?.find{it.siteId == project.projectSiteId}
+        Map model = [
+            create: true, 
+            project: project, 
+            documents: [], 
+            projectSite: project?.projectSite,
+            pActivityId: params?.pActivityId,
+            pActivity: pActivity, 
+            userIsAlaOrFcAdmin: userService.userIsAlaOrFcAdmin(), 
+            userCanEdit: userCanCreateSite,
+            personId: personId,
+            allowSegmentMetadata: pActivity?.allowSegmentMetadata
+            ]
+        render view: 'editSystematic', model: model
+    }
 
 
     def createForProject() {
@@ -89,30 +122,40 @@ class SiteController {
     def index(String id) {
 
         // Include activities only when biocollect starts supporting NRM based projects.
-        def site = siteService.get(id, [view: 'projects'])
+        def site = siteService.get(id)
         if (site && site.status != 'deleted') {
-            // inject the metadata model for each activity
-            site.activities = site.activities ?: []
-            site.activities?.each {
-                it.model = metadataService.getActivityModel(it.type)
-            }
-            //siteService.injectLocationMetadata(site)
+            Boolean userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
             def user = userService.getUser()
-            def mapFeatures = siteService.getMapFeatures(site)
-            println mapFeatures
+            String personId = personService.getPersonIdForUser(user.userId)
+            Boolean userIsSiteOwner = (site.owner == personId ? true: false)
+            Boolean userBookedSite = (site.bookedBy == personId ? true: false)
+            Boolean userCanViewSite = !site.isSensitive || userIsAlaOrFcAdmin || userIsSiteOwner || userBookedSite
+            if (userCanViewSite){
+                // inject the metadata model for each activity
+                site.activities = site.activities ?: []
+                site.activities?.each {
+                    it.model = metadataService.getActivityModel(it.type)
+                }
+                //siteService.injectLocationMetadata(site)
+                def mapFeatures = siteService.getMapFeatures(site)
+                println mapFeatures
 
-            def result = [site               : site,
-                          //activities: activityService.activitiesForProject(id),
-                          mapFeatures        : mapFeatures,
-                          isSiteStarredByUser: userService.isSiteStarredByUser(user?.userId ?: "0", site.siteId)?.isSiteStarredByUser,
-                          user               : user
-            ]
+                def result = [site               : site,
+                            //activities: activityService.activitiesForProject(id),
+                            mapFeatures        : mapFeatures,
+                            isSiteStarredByUser: userService.isSiteStarredByUser(user?.userId ?: "0", site.siteId)?.isSiteStarredByUser,
+                            user               : user,
+                            userIsAlaOrFcAdmin : userIsAlaOrFcAdmin
+                ]
 
-            if (params.format == 'json')
-                render result as JSON
-            else
-                result
-
+                if (params.format == 'json')
+                    render result as JSON
+                else
+                    result
+            } else {
+                flash.message = "You don't have sufficient permissions to see this site."
+                redirect(controller: 'site', action: 'list')
+            }
         } else {
             //forward(action: 'list', model: [error: 'no such id'])
             flash.message = "Site not found."
@@ -133,6 +176,31 @@ class SiteController {
             String projectIds = result.site.projects.toList().join(',')
             String userId = authService.getUserId()
             result.userCanEdit = projectService.isUserEditorForProjects(userId, projectIds)
+            result
+        }
+    }
+
+    def editSystematic(String id) {
+        def result = siteService.getRaw(id)
+        if (!result.site) {
+            render 'no such site'
+        } else if (!isUserMemberOfSiteProjects(result.site) && !userService.userIsAlaAdmin()) {
+            // check user has permissions to edit - user must have edit access to
+            // ALL linked projects to proceed.
+            flash.message = "Access denied: User does not have <b>editor</b> permission to edit site: ${id}"
+            redirect(controller:'home', action:'index')
+        } else {
+            // getting projectId to get pActivity to see setting for the site
+            String projectId = result.site.projects[0]
+            Map project = projectService.get(projectId)
+            def pActivity = projectActivityService.getAllByProject(projectId, 'brief')
+            String projectIds = result.site.projects.toList().join(',')
+            String userId = authService.getUserId()
+            result.userIsAlaOrFcAdmin = userService.userIsAlaOrFcAdmin()
+            // not ideal but getting the first projectId as for systematic we only have one anyway
+            result.pActivity = pActivity[0]
+            result.project = project
+            result.allowSegmentMetadata = pActivity[0]?.allowSegmentMetadata
             result
         }
     }
@@ -256,11 +324,11 @@ class SiteController {
             // permissions check
             // rule ala admin can only delete a site on condition,
             // 1. site is not assoicated with an acitivity(s)
-            if (!userService.userIsAlaAdmin()) {
+            if (!userService.userIsAlaOrFcAdmin()) {
                 render status: HttpStatus.SC_UNAUTHORIZED, text: "Access denied: User not authorised to delete"
                 return
-            } else if (siteService.isSiteAssociatedWithProject(id) || siteService.isSiteAssociatedWithActivity(id)) {
-                render status: HttpStatus.SC_BAD_REQUEST, text: "Site ${id} has projects or activities associated with it. The site cannot be deleted."
+            } else if (siteService.isSiteAssociatedWithActivity(id)) {
+                render status: HttpStatus.SC_BAD_REQUEST, text: "Site ${id} has activities associated with it. The site cannot be deleted."
                 return
             }
 
@@ -336,7 +404,7 @@ class SiteController {
                 values[k] = reMarshallRepeatingObjects(v);
             }
         }
-        //log.debug (values as JSON).toString()
+
         siteService.update(id, values)
         chain(action: 'index', id: id)
     }
@@ -585,9 +653,9 @@ class SiteController {
 
                         if (result?.status != 'error') {
                             pActivity.sites.add(siteId)
-
                             projectActivityService.update(postBody.pActivityId, pActivity)
                         }
+
                     }
                 }
             } else {
@@ -604,12 +672,120 @@ class SiteController {
         }
     }
 
+    @PreAuthorise(accessLevel = "editSite")
+    def ajaxUpdateSystematic(String id) {
+        def result = [:]
+        String userId = userService.getCurrentUserId(request)
+        String userName = userService.getCurrentUserDisplayName()
+
+        def postBody = request.JSON
+        // values sent in the body are for creating a site
+        def siteEditUrl = postBody?.siteEditUrl
+        def personId = postBody?.personId
+        def projectActivity = projectActivityService.get(postBody.pActivityId)
+        def emailAddresses = projectActivity?.alert?.emailAddresses ?: grailsApplication.config.biocollect.support.email.address
+
+        Boolean isCreateSiteRequest = !id
+        log.debug "Body: " + postBody
+        log.debug "Params:"
+        params.each { println it }
+        //todo: need to detect 'cleared' values which will be missing from the params - implement _destroy
+        def values = [:]
+        postBody.site?.each { k, v ->
+            if (!(k in ignore)) {
+                values[k] = v //reMarshallRepeatingObjects(v);
+            }
+        }
+
+        //Compatible with previous records without visibility field
+        boolean privateSite = values['visibility'] ? (values['visibility'] == 'private' ? true : false) : false
+
+
+        if (privateSite) {
+            //Do not check permission if site is private
+            //This design is specially for sightings
+            result = siteService.updateRaw(id, values, userId)
+            log.debug "private site ID " + id
+        } else {
+            result = siteService.updateRaw(id, values, userId)
+            String siteId = result.id
+            if (siteId) {
+                if (isCreateSiteRequest) {
+                    String projectId = postBody?.projectId
+                    Boolean isAdmin = projectService.isUserAdminForProject(userId, projectId)
+                    if (projectId && isAdmin) {
+                        siteService.addSitesToSiteWhiteListInWorksProjects([siteId], [projectId], true);
+                    } else {
+                        siteService.addSitesToSiteWhiteListInWorksProjects([siteId], values.projects)
+                    }
+
+                    if (postBody?.pActivityId) {
+                        //def pActivity = projectActivityService.get(postBody.pActivityId);
+                        
+            // get all the projectActivity from projectId
+                        def pActivities = projectActivityService.getAllByProject(projectId)
+
+                        if (result?.status != 'error') {
+                // for systematicMonitoring sites, the sites are added 
+                // to all the projectActivities of the same project
+                            for (pAct in pActivities) {
+                pAct.sites.add(siteId)
+                projectActivityService.update(pAct.projectActivityId, pAct)
+                            }
+
+                            //pActivity.sites.add(siteId)
+                            //projectActivityService.update(postBody.pActivityId, pActivity)
+                        }
+                    }
+                }
+            } else {
+                result.status = 'error';
+                result.message = 'Could not save site';
+            }
+        }
+
+        if (result.status == 'error') {
+            render status: HttpStatus.SC_INTERNAL_SERVER_ERROR, text: "${result.message}"
+        } else {
+            // if site is created send a notification to the addresses defined in survey alert configuration
+            // and assign an owner
+            if (isCreateSiteRequest){
+                personService.addOwnedSite(postBody.site?.owner, result.id)
+                def subject = "Från BioCollect: Ny ${projectActivity.name} skapad"
+                def emailBody = "${userName} har just skapat en ny rutt. Titta på den, ändra och godkänn den <a href='${grailsApplication.config.server.serverURL}${siteEditUrl}/${result.id}'>här</a>"
+                emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
+            }
+
+            render status: HttpStatus.SC_OK, text: result as JSON, contentType: "application/json"
+        }
+    }
+
+    // @PreAuthorise(accessLevel = "editSite")
+    def bookSites(){
+        def values = request.JSON
+        def result = siteService.bookSites(values)
+        render result as JSON 
+    }
+
+    def submitBookingRequest() {
+        def body = request.JSON
+        def result = siteService.submitBookingRequest(params, body);
+        render result as JSON
+    }
+
+
     @NoSSO
     def checkSiteName(String id) {
         log.debug "Name: ${params.name}"
         def result = siteService.isSiteNameUnique(id, params.entityType, params.name)
 
         response.sendError(result.value ? SC_NO_CONTENT : SC_CONFLICT)
+    }
+
+    def getSiteNames() {
+        def siteIds = (params.siteIds.getClass() == String)  ? [params.siteIds] : params.siteIds
+        def result = siteService.getSitesFromIdList(siteIds)
+        render result as JSON
     }
 
     def locationLookup(String id) {
@@ -776,6 +952,8 @@ class SiteController {
 
     @NoSSO
     def list() {
+        def facets = vocabService.getFacetsForSites()
+        render view: "list", model: [facets: facets]
     }
 
     def myFavourites() {
@@ -799,7 +977,6 @@ class SiteController {
             String userId = userService.getCurrentUserId()
             Boolean isAlaAdmin = userService.userIsAlaAdmin()
 
-
             GrailsParameterMap queryParams = commonService.constructDefaultSearchParams(params, request, userId)
 
             def favouriteSiteIds
@@ -812,7 +989,7 @@ class SiteController {
             }
 
             if (!queryParams.facets) {
-                queryParams.facets = "typeFacet,className,organisationFacet,stateFacet,lgaFacet,nrmFacet,siteSurveyNameFacet,siteProjectNameFacet,photoType"
+                queryParams.facets = "typeFacet,className,organisationFacet,stateFacet,lgaFacet,nrmFacet,siteSurveyNameFacet,siteProjectNameFacet,photoType,booked,kartaTxFacet,verificationStatusFacet,lskFacet,lanFacet"
             }
             if (queryParams.query) {
                 query.push(queryParams.query);
@@ -825,10 +1002,14 @@ class SiteController {
             } else if (!queryParams.fq) {
                 queryParams.fq = []
             }
-
-            queryParams.fq.addAll(searchService.allProjectsInHub(request)?.collect {
-                "projects:${it}"
-            })
+            // prefilter sites for sites tab on project page
+            if (params?.view != 'projectSites'){
+                queryParams.fq.addAll(searchService.allProjectsInHub(request)?.collect {
+                    "projects:${it}"
+                })
+            } else {
+                queryParams.fq.push("projects:${params?.projectId}")
+            }
             queryParams.query = query.join(' AND ')
             queryParams.remove('hub')
             queryParams.remove('hubFq')
@@ -866,14 +1047,18 @@ class SiteController {
                 }
 
                 [
-                        siteId              : doc.siteId,
-                        name                : doc.name,
-                        description         : doc.description,
-                        numberOfPoi         : doc.poi?.size(),
-                        numberOfProjects    : doc.projects?.size(),
-                        lastUpdated         : doc.lastUpdated,
-                        type                : doc.type,
-                        extent              : doc.extent,
+                        siteId           : doc.siteId,
+                        name             : doc.name,
+                        description      : doc.description,
+                        numberOfPoi      : doc.poi?.size(),
+                        projects         : doc.projects,
+                        numberOfProjects : doc.projects?.size(),
+                        lastUpdated      : doc.lastUpdated,
+                        type             : doc.type,
+                        extent           : doc.extent,
+                        bookedBy         : doc?.bookedBy,
+                        kartaTx          : doc?.kartaTx,
+                        verificationStatus : doc?.verificationStatus,
                         // does a logical OR reduce operation on permissions for each projects
                         canEdit             : canEdit,
                         // only sites with no projects can be deleted

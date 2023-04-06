@@ -48,31 +48,32 @@
                         </div>
 
                         <div class="project-details">
-                            <div class="status">
-                                <g:if test="${hubConfig?.content?.hideProjectStatusIndicator != true}">
+                            <g:if test="${hubConfig?.content?.hideProjectStatusIndicator != true}">
+                                <div class="status">
                                     <g:render template="dayscount" model="[classes: 'text-white']"/>
-                                </g:if>
-                            </div>
-
-                            <div class="date text-white">
-                                <div>
-                                    <!-- ko if: plannedStartDate -->
-                                    <span class="label">Start date:</span>
-                                    <!-- ko text: moment(plannedStartDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
-                                    <!-- /ko -->
                                 </div>
 
-                                <div>
-                                    <!-- ko if: plannedEndDate -->
-                                    <span class="label">End date:</span>
-                                    <!-- ko text: moment(plannedEndDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
-                                    <!-- /ko -->
-                                </div>
-                            </div>
+                                <div class="date text-white">
+                                    <div>
+                                        <!-- ko if: plannedStartDate -->
+                                        <span class="label">Start date:</span>
+                                        <!-- ko text: moment(plannedStartDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
+                                        <!-- /ko -->
+                                    </div>
 
-                            <div class="status">
-                                <g:render template="daysline"/>
-                            </div>
+                                    <div>
+                                        <!-- ko if: plannedEndDate -->
+                                        <span class="label">End date:</span>
+                                        <!-- ko text: moment(plannedEndDate()).format('DD MMMM, YYYY') --> <!-- /ko -->
+                                        <!-- /ko -->
+                                    </div>
+                                </div>
+
+                                <div class="status">
+                                    <g:render template="daysline"/>
+                                </div>
+                            </g:if>
+
                         </div>
                     </div>
                 </div>

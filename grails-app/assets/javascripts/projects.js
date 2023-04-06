@@ -378,6 +378,8 @@ function ProjectViewModel(project, isUserEditor) {
             return  org && org.collectoryInstitutionId ? org.collectoryInstitutionId: "";
     });
 
+    self.mapDisplays = ko.observableArray(project.mapDisplays || []);
+
     self.transients.truncatedOrganisationName = ko.computed(function () {
         return truncate(self.organisationName(), 50);
     });
@@ -436,6 +438,11 @@ function ProjectViewModel(project, isUserEditor) {
     self.mobileApp = ko.observable(project.mobileApp);
     self.isWorks = ko.observable(project.isWorks);
     self.isEcoScience = ko.observable(project.isEcoScience);
+    // LU project properties
+    self.isSystematicMonitoring = ko.observable(project.isSystematicMonitoring);
+    self.requiresVolManagement = ko.observable(project.requiresVolManagement);
+    self.alertConfig = new AlertConfigViewModel(project.alertConfig);
+
     self.isExternal = ko.observable(project.isExternal);
     self.isSciStarter = ko.observable(project.isSciStarter);
     self.isMERIT = ko.observable(project.isMERIT);
@@ -457,6 +464,7 @@ function ProjectViewModel(project, isUserEditor) {
     self.alaHarvest = ko.observable(project.alaHarvest ? true : false);
     self.industries = ko.observableArray(project.industries);
     self.bushfireCategories = ko.observableArray(project.bushfireCategories);
+    self.transients.emailAddress = ko.observable();
     self.transients.notification = new EmailViewModel(fcConfig);
     self.transients.yesNoOptions = ["Yes","No"];
     self.transients.alaHarvest = ko.computed({
@@ -925,7 +933,9 @@ function ProjectViewModel(project, isUserEditor) {
     var availableProjectTypes = [
         {name:'Citizen Science Project', display:'Citizen\nScience', value:'citizenScience'},
         {name:'Ecological or biological survey / assessment (not citizen science)', display:'Biological\nScience', value:'ecoScience'},
-        {name:'Natural resource management works project', display:'Works\nProject', value:'works'}
+        {name:'Natural resource management works project', display:'Works\nProject', value:'works'},
+        {name:'Systematic Monitoring', display:'Systematic\nMonitoring', value:'systematicMonitoring'}
+
     ];
     self.transients.availableProjectTypes = availableProjectTypes;
     self.transients.kindOfProjectDisplay = ko.pureComputed(function () {
@@ -945,8 +955,27 @@ function ProjectViewModel(project, isUserEditor) {
             if (self.isEcoScience()) {
                 return 'ecoScience';
             }
+            if (self.isSystematicMonitoring()) {
+                return 'systematicMonitoring';
+            }
             if (self.projectType()) {
-                return self.projectType() == 'survey' ? 'survey' : (self.projectType() == 'works' ? 'works' : 'ecoScience');
+                var projectType;
+                switch (self.projectType()){
+                case 'survey': 
+                    projectType = 'survey';
+                    break;
+                case 'works':
+                    projectType = 'works';
+                    break;
+                case 'ecoScience':
+                    projectType = 'ecoScience';
+                    break;
+                case 'systematicMonitoring':
+                    projectType = 'systematicMonitoring';
+                    break;
+                }
+                return projectType;
+                // return self.projectType() == 'survey' ? 'survey' : (self.projectType() == 'works' ? 'works' : 'ecoScience');
             }
         },
         write: function(value) {
@@ -970,6 +999,13 @@ function ProjectViewModel(project, isUserEditor) {
                     self.isCitizenScience(false);
                     self.projectType(value);
                     break;
+                case 'systematicMonitoring':
+                    self.isEcoScience(false);
+                    self.isWorks(false);
+                    self.isCitizenScience(false);
+                    self.isSystematicMonitoring(true);
+                    self.projectType(value);
+                    break;   
             }
         }
     });
@@ -1694,4 +1730,52 @@ var SiteViewModel = function (site, feature) {
         return result;
 
     });
+
+
 };
+var AlertConfigViewModel = function(alertConfig){
+    var self = this;
+    if (!alertConfig) alertConfig = {};
+    self.ctx = ko.observableArray(alertConfig.ctx || []);
+
+    self.transients = {};
+    self.transients.emailAddress = ko.observable();
+    self.transients.disableAddEmail  = ko.observable(true);
+    self.transients.emailAddress.subscribe(function(email) {
+        return email ? self.transients.disableAddEmail(false): self.transients.disableAddEmail(true);
+    });
+
+    self.emailAddresses = ko.observableArray();
+
+    self.addEmail = function () {
+        var emails = [];
+        emails = self.transients.emailAddress().split(",");
+        var invalidEmail = false;
+        var message = "";
+        $.each(emails, function (index, email) {
+            invalidEmail = true;
+            message = email;
+            return false;
+        });
+
+        $.each(emails, function (index, email) {
+            if (self.emailAddresses.indexOf(email) < 0) {
+                self.emailAddresses.push(email);
+            }
+        });
+        self.transients.emailAddress('');
+    };
+
+    self.deleteEmail = function (email) {
+        self.emailAddresses.remove(email);
+    };
+
+    self.loadAlert = function (alertConfig) {
+        self.emailAddresses($.map(alertConfig.emailAddresses ? alertConfig.emailAddresses : [], function (obj, i) {
+                return obj;
+            })
+        );
+};
+
+self.loadAlert(alertConfig);
+}

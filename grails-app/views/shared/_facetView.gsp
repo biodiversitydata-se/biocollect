@@ -20,13 +20,13 @@
     <!-- /ko -->
     <a href="#" role="button" class="moreFacets tooltips" data-toggle="modal" title="" data-target="#${modalName}"
        data-original-title="View full list of values" data-bind="click: loadMoreTerms, visible: showChooseMore()">
-        <i class="far fa-hand-point-right"></i> choose more...
+        <i class="far fa-hand-point-right"></i> <g:message code="facet.dialog.more.lbl"/>
     </a>
 </div>
 %{--<!-- /ko -->--}%
 <!-- /ko -->
 
-<!-- ko if: $data instanceof DatePickerViewModel -->
+<!-- ko if: $data instanceof DatePickerViewModel && $data.state() !== 'Hidden' -->
 <button class="accordion-header" type="button" data-toggle="collapse"
         data-bind="attr: { 'data-target': '#' + name()}, css: {collapsed: state() === 'Collapsed'}"
         aria-expanded="true" aria-controls="types">

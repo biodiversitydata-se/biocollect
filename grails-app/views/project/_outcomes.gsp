@@ -46,9 +46,8 @@
 <div class="row space-after no-gutters">
     <div class="col-sm-12">
         <div class="form-actions">
-
             <button type="button" data-bind="click: saveMeriPlan" id="project-details-save" class="btn btn-primary-dark"><i class="fas fa-hdd"></i> Save changes</button>
-            <button type="button" id="details-cancel" class="btn btn-dark" data-bind="click: cancelMeriPlanEdits"><i class="far fa-times-circle"></i> Cancel</button>
+            <button type="button" id="details-cancel" class="btn btn-dark" data-bind="click: cancelMeriPlanEdits"><i class="far fa-times-circle"></i> <g:message code='g.cancel'/></button>
         </div>
 
     </div>

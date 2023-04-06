@@ -19,6 +19,7 @@
 // projects
 //= require projects.js
 //= require sites.js
+//= require systematicSites.js
 //= require map-configuration.js
 //= require meriPlan.js
 //= require risks.js
@@ -27,6 +28,7 @@
 //= require output-targets.js
 //= require emitter/emitter.js
 //= require permissionTable.js
+//= require persons.js
 
 // attachDocuments
 //= require document.js

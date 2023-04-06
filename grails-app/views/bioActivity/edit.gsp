@@ -5,8 +5,8 @@
 <head>
     <meta name="layout" content="${mobile ? 'mobile' : 'bs4'}"/>
     <title>Edit | ${activity.type} | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
-    <meta name="breadcrumbParent2" content="${createLink(controller: 'project', action: 'index')}/${pActivity.projectId},Project"/>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: "g.home")}"/>
+    <meta name="breadcrumbParent2" content="${createLink(controller: 'project', action: 'index')}/${pActivity.projectId},${message(code: "g.project")}"/>
     <meta name="breadcrumb" content="${pActivity.name}"/>
     <asset:stylesheet src="common-bs4.css"/>
     <asset:stylesheet src="forms-manifest.css"/>
@@ -48,11 +48,16 @@
         getGuidForOutputSpeciesUrl : "${createLink(controller: 'record', action: 'getGuidForOutputSpeciesIdentifier')}",
         imageLeafletViewer: '${createLink(controller: 'resource', action: 'imageviewer', absolute: true)}',
         bioActivityView: "${createLink(controller: 'bioActivity', action: 'index')}/",
+        bioActivityEdit: "${createLink(controller: 'bioActivity', action: 'edit')}/",
         activityId: "${id}",
         returnTo: "${returnTo}",
         returnToMobile: "${createLink(controller: 'mobile', action: 'status')}#successfully-posted",
         excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
         mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
+        adminVerification: ${pActivity?.adminVerification || false},
+        getSurveyorContactDetailsUrl: "${createLink(controller: 'person', action: 'getContactDetails', id: activity.personId)}",
+        personSearchUrl: "${createLink(controller: 'person', action: 'elasticsearch')}",
+        personViewUrl: "${createLink(controller: 'person', action: 'index')}"
         </g:applyCodec>
         },
         here = document.location.href;
@@ -65,6 +70,7 @@
 
 
 <body>
+     <%-- TODO  Add a dropdown for validation --%>
     <g:render template="createEditActivityBody"></g:render>
 </body>
 </html>

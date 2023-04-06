@@ -113,23 +113,23 @@ class TemplateTagLib {
                 case 'allrecords':
                     if (bs4) {
                         out << "<li itemscope=\"itemscope\" itemtype=\"https://www.schema.org/SiteNavigationElement\" class=\"menu-item nav-item ${classes}\">";
-                        out << "<a class=\"nav-link\" title=\"${link.displayName?:'All Records'}\" href=\"${url}\">${link.displayName?:'All Records'}</a>";
+                        out << "<a class=\"nav-link\" title=\"${link.displayName?:message(code: 'g.allRecords')}\" href=\"${url}\">${link.displayName?:message(code: 'g.allRecords')}</a>";
                         out << "</li>";
 
                     } else {
                         out << "<li class=\"main-menu ${classes}\">";
-                        out << "<a href=\"${url}\">${link.displayName?:'All Records'}</a>";
+                        out << "<a href=\"${url}\">${link.displayName?:message(code: 'g.allRecords')}</a>";
                         out << "</li>";
                     }
                     break;
                 case 'home':
                     if (bs4) {
                         out << "<li itemscope=\"itemscope\" itemtype=\"https://www.schema.org/SiteNavigationElement\" class=\"menu-item nav-item ${classes}\">";
-                        out << "<a class=\"nav-link\" title=\"${link.displayName?:'Home'}\" href=\"${url}\">${link.displayName?:'Home'}</a>";
+                        out << "<a class=\"nav-link\" title=\"${link.displayName?:message(code: 'g.home')}\" href=\"${url}\">${link.displayName?:message(code: 'g.home')}</a>";
                         out << "</li>";
                     } else {
                         out << "<li class=\"main-menu ${classes}\">";
-                        out << "<a href=\"${url}\">${link.displayName?:'Home'}</a>";
+                        out << "<a href=\"${url}\">${link.displayName?:message(code: 'g.home')}</a>";
                         out << "</li>";
                     }
                     break;
@@ -157,22 +157,22 @@ class TemplateTagLib {
                 case 'newproject':
                     if (bs4) {
                         out << "<li itemscope=\"itemscope\" itemtype=\"https://www.schema.org/SiteNavigationElement\" class=\"menu-item nav-item ${classes}\">";
-                        out << "<a class=\"nav-link\" title=\"${link.displayName?:'New project'}\" href=\"${url}\">${link.displayName?:'New project'}</a>";
+                        out << "<a class=\"nav-link\" title=\"${link.displayName?:message(code:'g.newProject')}\" href=\"${url}\">${link.displayName?:message(code:'g.newProject')}</a>";
                         out << "</li>";
                     } else {
                         out << "<li class=\"main-menu ${classes}\">";
-                        out << "<a href=\"${url}\">${link.displayName?:'New project'}</a>";
+                        out << "<a href=\"${url}\">${link.displayName?:message(code:'g.newProject')}</a>";
                         out << "</li>";
                     }
                     break;
                 case 'sites':
                     if (bs4) {
                         out << "<li itemscope=\"itemscope\" itemtype=\"https://www.schema.org/SiteNavigationElement\" class=\"menu-item nav-item ${classes}\">";
-                        out << "<a class=\"nav-link\" title=\"${link.displayName?:'Sites'}\" href=\"${url}\">${link.displayName?:'Sites'}</a>";
+                        out << "<a class=\"nav-link\" title=\"${link.displayName?:message(code:'g.sites')}\" href=\"${url}\">${link.displayName?:message(code:'g.sites')}</a>";
                         out << "</li>";
                     } else {
                         out << "<li class=\"main-menu ${classes}\">";
-                        out << "<a href=\"${url}\">${link.displayName?:'Sites'}</a>";
+                        out << "<a href=\"${url}\">${link.displayName?:message(code:'g.sites')}</a>";
                         out << "</li>";
                     }
                     break;
@@ -190,11 +190,11 @@ class TemplateTagLib {
                 case 'biocacheexplorer':
                     if (bs4) {
                         out << "<li itemscope=\"itemscope\" itemtype=\"https://www.schema.org/SiteNavigationElement\" class=\"menu-item nav-item ${classes}\">";
-                        out << "<a class=\"nav-link\" title=\"${link.displayName?:'Occurrence explorer'}\" href=\"${url}\">${link.displayName?:'Occurrence explorer'}</a>";
+                        out << "<a class=\"nav-link\" title=\"${link.displayName?:message(code: 'g.occurrenceExplorer')}\" href=\"${url}\">${link.displayName?:message(code: 'g.occurrenceExplorer')}</a>";
                         out << "</li>";
                     } else {
                         out << "<li class=\"main-menu ${classes}\">";
-                        out << "<a href=\"${ url }\">${link.displayName?:'Occurrence explorer'}</a>";
+                        out << "<a href=\"${ url }\">${link.displayName?:message(code: 'g.occurrenceExplorer')}</a>";
                         out << "</li>";
                     }
                     break;
@@ -205,21 +205,21 @@ class TemplateTagLib {
                         out << "<li itemscope=\"itemscope\" itemtype=\"https://www.schema.org/SiteNavigationElement\" class=\"menu-item nav-item ${classes}\">";
                         out << "<button class=\"btn btn-primary\" style=\"font-size: 13px;\" title=\"Login required\" " +
                                 "${disabled} onclick=\"window.location = '${url}'\"><i class=\"fa fa-binoculars fa-inverse\">" +
-                                "</i>&nbsp;&nbsp;Record a sighting</button>"
+                                "</i>&nbsp;&nbsp;message(code: 'record.create.title')</button>"
                         out << "</li>";
                     } else {
                         out << "<li class=\"main-menu ${classes}\">"
                         out << "<button class=\"btn btn-primary-dark\" style=\"font-size: 13px;\" title=\"Login required\" " +
                                 "${disabled} onclick=\"window.location = '${url}'\"><i class=\"fa fa-binoculars fa-inverse\">" +
-                                "</i>&nbsp;&nbsp;Record a sighting</button>"
+                                "</i>&nbsp;&nbsp;message(code: 'record.create.title')</button>"
                         out << "</li>"
                     }
-                    break;
                     break;
                 case 'charts':
                     out << "<li itemscope=\"itemscope\" itemtype=\"https://www.schema.org/SiteNavigationElement\" class=\"menu-item nav-item ${classes}\">";
                     out << "<a class=\"nav-link\" title=\"${link.displayName?:messageSource.getMessage('hub.chart.title', null, '', Locale.default)}\" href=\"${url}\">${link.displayName?:messageSource.getMessage('hub.chart.title', null, '', Locale.default)}</a>";
                     out << "</li>";
+                    break;
             }
         }
     }

@@ -5,9 +5,9 @@
 <head>
     <meta name="layout" content="bs4"/>
     <title>View | ${activity.type} | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: 'g.home')}"/>
     <meta name="breadcrumbParent2"
-          content="${createLink(controller: 'project', action: 'index')}/${project.projectId},Project"/>
+          content="${createLink(controller: 'project', action: 'index')}/${project.projectId},${message(code: 'g.project')}"/>
     <meta name="breadcrumb" content="${activity.type}"/>
 
     <g:set var="commentUrl" value="${resource(dir: '/activity')}/${activity.activityId}/comment"></g:set>

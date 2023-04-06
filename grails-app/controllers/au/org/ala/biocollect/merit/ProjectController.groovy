@@ -27,8 +27,6 @@ import org.apache.http.HttpStatus
 import org.joda.time.DateTime
 import org.springframework.context.MessageSource
 
-import java.text.SimpleDateFormat
-
 import static org.apache.http.HttpStatus.*
 
 @SecurityScheme(name = "auth",
@@ -114,7 +112,7 @@ class ProjectController {
     def listSurveys(String id) {
         def projectActivities = []
         def project = projectService.get(id, ProjectService.PRIVATE_SITES_REMOVED, false, params?.version)
-        if (project && project.projectType in [ProjectService.PROJECT_TYPE_ECOSCIENCE, ProjectService.PROJECT_TYPE_CITIZEN_SCIENCE]) {
+        if (project && project.projectType in [ProjectService.PROJECT_TYPE_ECOSCIENCE, ProjectService.PROJECT_TYPE_CITIZEN_SCIENCE, ProjectService.PROJECT_TYPE_SYSTEMATIC_MONITORING]) {
             projectActivities = projectActivityService?.getAllByProject(project.projectId, "docs", params?.version)
         }
 
@@ -141,7 +139,7 @@ class ProjectController {
         end = System.currentTimeMillis()
         log.debug("Role fetch time (ms) = " + (end - start) )
         if (!project || project.error) {
-            flash.message = "Project not found with id: ${id}"
+            flash.message = message(code: 'project.warn.idNotFound') + ": ${id}"
             if (project?.error) {
                 flash.message += "<br/>${project.error}"
                 log.warn project.error.toString()
@@ -160,6 +158,7 @@ class ProjectController {
 
             if(project.sites?.find{it.siteId == project.projectSiteId}) {
                 project.projectSite = project.sites?.find{it.siteId == project.projectSiteId}
+                // project.projectSite = siteService.get(project.projectSiteId, [view:'brief'])
             } else if(project.projectSiteId) {
                 // Project site is missing, update site and sync project site info
                 start = System.currentTimeMillis()
@@ -208,14 +207,13 @@ class ProjectController {
             log.debug("Collectory fetch time (ms) = " + (end - start) )
             start = System.currentTimeMillis()
             def model = [project: project,
-                projectId: project.projectId,
-                mapFeatures: commonService.getMapFeatures(project),
+                projectId: project.projectId, //this has sites
+                mapFeatures: commonService.getMapFeatures(project), //this has sites too but only extent
                 isProjectStarredByUser: userService.isProjectStarredByUser(user?.userId?:"0", project.projectId)?.isProjectStarredByUser,
                 user: user,
                 roles: roles,
                 admins: admins,
-                activityTypes: projectService.activityTypesList(),
-                metrics: project.projectType == ProjectService.PROJECT_TYPE_WORKS ? projectService.summary(id): [],
+                activityTypes: [:], // projectService.activityTypesList(),
                 outputTargetMetadata:  metadataService.getOutputTargetScores(),
                 programs: programs,
                 today:DateUtils.format(new DateTime()),
@@ -232,6 +230,18 @@ class ProjectController {
             log.debug("model create time (ms) = " + (end - start) )
 
             start = System.currentTimeMillis()
+            if (project.projectType == ProjectService.PROJECT_TYPE_SYSTEMATIC_MONITORING){
+                Boolean siteBookingRequired = project?.alertConfig?.ctx.contains('siteBooking')
+                HubSettings hubConfig = SettingService.hubConfig
+                String hubUrl = hubConfig?.urlPath
+                def relatedProjectIds = projectService.getRelatedProjectIds(hubUrl)
+                model.relatedProjectIds = relatedProjectIds
+                model.facets = vocabService.getFacetsForSites()
+                model.siteBookingRequired = siteBookingRequired
+                model.emailNotificationAddresses = siteBookingRequired ? project?.alertConfig?.emailAddresses : null
+                model.pActivityForms = projectService.supportedActivityTypes(project).collect{[name: it.name, images: it.images]}
+            }
+
             if(project.projectType in [ProjectService.PROJECT_TYPE_ECOSCIENCE, ProjectService.PROJECT_TYPE_CITIZEN_SCIENCE]){
                 model.projectActivities = projectActivityService?.getAllByProject(project.projectId, "docs", params?.version, true)
                 end = System.currentTimeMillis()
@@ -248,6 +258,7 @@ class ProjectController {
                 log.debug("getVocabValues fetch time (ms) = " + (end - start) )
                 start = System.currentTimeMillis()
 
+                model.vocabList = vocabService.getVocabValues()
                 println model.pActivityForms
             }
             end = System.currentTimeMillis()
@@ -273,6 +284,9 @@ class ProjectController {
         } else if(projectService.isEcoScience(project)) {
             model = ecoSurveyProjectContent(project, user)
             view = 'csProjectTemplate'
+        } else if(projectService.isSystematicMonitoring(project)) { 
+            model = systematicProjectContent(project, user, params)
+            view = 'systematicProjectTemplate'
         } else {
             model = worksProjectContent(project, user)
             view = 'worksProjectTemplate'
@@ -290,17 +304,38 @@ class ProjectController {
         Boolean hasLegacyNewsAndEvents = project.newsAndEvents as Boolean
         Boolean hasLegacyProjectStories = project.projectStories as Boolean
 
-        def config = [about:[label:'About', template:'aboutCitizenScienceProject', visible: true, type:'tab', projectSite:project.projectSite, default: true],
-         news:[label:'Blog', template:'projectBlog', visible: true, type:'tab', blog:blog, hasNewsAndEvents: hasNewsAndEvents, hasProjectStories:hasProjectStories, hasLegacyNewsAndEvents: hasLegacyNewsAndEvents, hasLegacyProjectStories:hasLegacyProjectStories],
+        def config = [about:[label:message(code: 'project.tab.about'), template:'aboutCitizenScienceProject', visible: true, type:'tab', projectSite:project.projectSite, default: true],
+         news:[label:message(code: 'project.tab.blog'), template:'projectBlog', visible: true, type:'tab', blog:blog, hasNewsAndEvents: hasNewsAndEvents, hasProjectStories:hasProjectStories, hasLegacyNewsAndEvents: hasLegacyNewsAndEvents, hasLegacyProjectStories:hasLegacyProjectStories],
          documents:[label:SettingService.getHubConfig().getTextForResources(grailsApplication.config.content.defaultOverriddenLabels), template:'/shared/listAllDocuments', useExistingModel: true, editable:false, filterBy: 'all', visible: true, containerId:'overviewDocumentList', type:'tab'],
-         activities:[label:'Surveys', visible:!project.isExternal, template:'/projectActivity/list', showSites:true, site:project.sites, wordForActivity:'Survey', type:'tab'],
-         data:[label:'Data', visible:true, template:'/bioActivity/activities', showSites:true, site:project.sites, wordForActivity:'Data', type:'tab'],
-         admin:[label:'Admin', template:'CSAdmin', visible:(user?.isAdmin || user?.isCaseManager) && !params.version, type:'tab', hasLegacyNewsAndEvents: hasLegacyNewsAndEvents, hasLegacyProjectStories:hasLegacyProjectStories]]
+         activities:[label:message(code: 'project.tab.surveys'), visible:!project.isExternal, template:'/projectActivity/list', showSites:true, site:project.sites, wordForActivity:'Survey', type:'tab'],
+         data:[label:message(code: 'project.tab.data'), userIsAdmin:user?.isAdmin, visible:true, template:'/bioActivity/activities', showSites:true, site:project.sites, wordForActivity:'Data', type:'tab'],
+         admin:[label:message(code: 'project.tab.admin'), template:'CSAdmin', visible:(user?.isAdmin || user?.isCaseManager) && !params.version, type:'tab', hasLegacyNewsAndEvents: hasLegacyNewsAndEvents, hasLegacyProjectStories:hasLegacyProjectStories]]
 
         if(project.isExternal) {
             config.remove('data')
             config.remove('activites')
         }
+
+        HubSettings hubConfig = SettingService.hubConfig
+        if (hubConfig?.content?.hideProjectBlogTab == true) {
+            config.remove('news')
+        }
+
+        config
+    }
+    
+    protected Map systematicProjectContent(project, user, params) {
+        List blog = blogService.getProjectBlog(project)
+        Boolean hasNewsAndEvents = blog.find{it.type == 'News and Events'}
+        Boolean hasProjectStories = blog.find{it.type == 'Project Stories'}
+        Boolean siteBookingRequired = project?.alertConfig?.ctx.contains('siteBooking')
+
+        def config = [about:[label:message(code: 'project.tab.about'), template:'aboutSystematicMonitoringProject', visible: true, type:'tab', projectSite:project.projectSite],
+         news:[label:message(code: 'project.tab.blog'), template:'projectBlog', visible: true, type:'tab', blog:blog, hasNewsAndEvents: hasNewsAndEvents, hasProjectStories:hasProjectStories, hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false],
+         documents:[label:message(code: 'project.tab.resources'), template:'/shared/listDocuments', useExistingModel: true, editable:false, filterBy: 'all', visible: true, containerId:'overviewDocumentList', type:'tab'],
+         data:[label:message(code: 'project.tab.data'), visible:user?.isAdmin, userIsAdmin:user?.isAdmin, template:'/bioActivity/activities_short', showSites:false, wordForActivity:'Data', type:'tab'],
+         sites: [label:message(code: 'g.sites'), template:'/site/listSystematic', visible:true, editable:false, type:'tab', siteBookingRequired: siteBookingRequired],
+         admin:[label:message(code: 'project.tab.admin'), template:'CSAdmin', visible:(user?.isAdmin) && !params.version, type:'tab', hasLegacyNewsAndEvents: false, hasLegacyProjectStories:false]]
 
         HubSettings hubConfig = SettingService.hubConfig
         if (hubConfig?.content?.hideProjectBlogTab == true) {
@@ -318,12 +353,12 @@ class ProjectController {
         Boolean hasLegacyNewsAndEvents = project.newsAndEvents as Boolean
         Boolean hasLegacyProjectStories = project.projectStories as Boolean
 
-        def config = [about:[label:'About', template:'aboutCitizenScienceProject', visible: true, type:'tab', projectSite:project.projectSite, default: false],
-         news:[label:'Blog', template:'projectBlog', visible: true, type:'tab', blog:blog, hasNewsAndEvents: hasNewsAndEvents, hasProjectStories:hasProjectStories, hasLegacyNewsAndEvents: hasLegacyNewsAndEvents, hasLegacyProjectStories:hasLegacyProjectStories],
+        def config = [about:[label:message(code: 'project.tab.about'), template:'aboutCitizenScienceProject', visible: true, type:'tab', projectSite:project.projectSite, default: false],
+         news:[label:message(code: 'project.tab.blog'), template:'projectBlog', visible: true, type:'tab', blog:blog, hasNewsAndEvents: hasNewsAndEvents, hasProjectStories:hasProjectStories, hasLegacyNewsAndEvents: hasLegacyNewsAndEvents, hasLegacyProjectStories:hasLegacyProjectStories],
          documents:[label:SettingService.getHubConfig().getTextForResources(grailsApplication.config.content.defaultOverriddenLabels), template:'/shared/listAllDocuments', useExistingModel: true, editable:false, filterBy: 'all', visible: true, containerId:'overviewDocumentList', type:'tab', default: true],
-         activities:[label:'Surveys', visible:!project.isExternal, template:'/projectActivity/list', showSites:true, site:project.sites, wordForActivity:'Survey', type:'tab'],
-         data:[label:'Data', visible:true, template:'/bioActivity/activities', showSites:true, site:project.sites, wordForActivity:'Data', type:'tab'],
-         admin:[label:'Admin', template:'CSAdmin', visible:(user?.isAdmin || user?.isCaseManager) && !params.version, type:'tab', hasLegacyNewsAndEvents: hasLegacyNewsAndEvents, hasLegacyProjectStories:hasLegacyProjectStories]]
+         activities:[label:message(code: 'project.tab.surveys'), visible:!project.isExternal, template:'/projectActivity/list', showSites:true, site:project.sites, wordForActivity:'Survey', type:'tab'],
+         data:[label:message(code: 'project.tab.data'), userIsAdmin:user?.isAdmin, visible:true, template:'/bioActivity/activities', showSites:true, site:project.sites, wordForActivity:'Data', type:'tab'],
+         admin:[label:message(code: 'project.tab.admin'), template:'CSAdmin', visible:(user?.isAdmin || user?.isCaseManager) && !params.version, type:'tab', hasLegacyNewsAndEvents: hasLegacyNewsAndEvents, hasLegacyProjectStories:hasLegacyProjectStories]]
 
         if(project.isExternal) {
             config.remove('data')
@@ -361,15 +396,15 @@ class ProjectController {
         }
 
 
-        Map content = [overview:[label:'About', template:'aboutCitizenScienceProject', visible: true, default: true, type:'tab', projectSite:project.projectSite],
-                       news:[label:'Blog', template:'projectBlog', visible: true, type:'tab', blog:blog, hasNewsAndEvents: hasNewsAndEvents, hasProjectStories:hasProjectStories, hasLegacyNewsAndEvents: hasLegacyNewsAndEvents, hasLegacyProjectStories:hasLegacyProjectStories],
+        Map content = [overview:[label:message(code: 'project.tab.about'), template:'aboutCitizenScienceProject', visible: true, default: true, type:'tab', projectSite:project.projectSite],
+                       news:[label:message(code: 'project.tab.blog'), template:'projectBlog', visible: true, type:'tab', blog:blog, hasNewsAndEvents: hasNewsAndEvents, hasProjectStories:hasProjectStories, hasLegacyNewsAndEvents: hasLegacyNewsAndEvents, hasLegacyProjectStories:hasLegacyProjectStories],
                        documents:[label:SettingService.getHubConfig().getTextForResources(grailsApplication.config.content.defaultOverriddenLabels), template:'/shared/listAllDocuments', useExistingModel: true, editable:false, filterBy: 'all', visible: true, containerId:'overviewDocumentList', type:'tab', project:project],
                        activities:[label:'Work Schedule', template:'/shared/activitiesWorks', visible:!project.isExternal, disabled:!user?.hasViewAccess, wordForActivity:"Activity",type:'tab', activities:activities ?: [], sites:project.sites ?: [], showSites:false],
-                       site:[label:'Sites', template:'/site/worksSites', visible: !project.isExternal, disabled:!user?.hasViewAccess, wordForSite:'Site', canEditSites: canEditSites, type:'tab'],
+                       site:[label:message(code: 'project.tab.sites'), template:'/site/worksSites', visible: !project.isExternal, disabled:!user?.hasViewAccess, wordForSite:'Site', canEditSites: canEditSites, type:'tab'],
                        meriPlan:[label:'Project Plan', disable:false, visible:user?.isEditor, meriPlanVisibleToUser: user?.isEditor, canViewRisks: canViewRisks, type:'tab', template:'viewMeriPlan'],
                        outcomes:[label:'Outcomes', disable:false, visible:user?.isEditor, type:'tab', template:'outcomes'],
                        dashboard:[label:'Dashboard', visible: !project.isExternal, disabled:!user?.hasViewAccess, type:'tab', activities:activities],
-                       admin:[label:'Admin', template:'worksAdmin', visible:(user?.isAdmin || user?.isCaseManager) && !params.version, type:'tab', hasLegacyNewsAndEvents: hasLegacyNewsAndEvents, hasLegacyProjectStories:hasLegacyProjectStories],
+                       admin:[label:message(code: 'project.tab.admin'), template:'worksAdmin', visible:(user?.isAdmin || user?.isCaseManager) && !params.version, type:'tab', hasLegacyNewsAndEvents: hasLegacyNewsAndEvents, hasLegacyProjectStories:hasLegacyProjectStories],
                        ]
 
         HubSettings hubConfig = SettingService.hubConfig
@@ -434,7 +469,7 @@ class ProjectController {
     def create() {
         def user = userService.getUser()
         if (!user) {
-            flash.message = "You do not have permission to perform that operation"
+            flash.message = message(code:'project.permission')
             redirect controller: 'home', action: 'index'
             return
         }
@@ -460,6 +495,10 @@ class ProjectController {
 
         project.projLifecycleStatus = 'unpublished'
 
+        if (params.systematicMonitoring) {
+            project.isSystematicMonitoring = true
+            project.projectType = ProjectService.PROJECT_TYPE_SYSTEMATIC_MONITORING
+        }
         HubSettings hub = SettingService.getHubConfig()
         if (hub && hub.defaultProgram) {
             project.associatedProgram = hub.defaultProgram
@@ -521,6 +560,10 @@ class ProjectController {
 
         if(hubConfig.defaultFacetQuery.contains('isCitizenScience:true')) {
             result.isCitizenScience = true
+        }
+
+        if(hubConfig.defaultFacetQuery.contains('isSystematicMonitoring:true')) {
+            result.isSystematicMonitoring = true
         }
 
         result
@@ -685,7 +728,7 @@ class ProjectController {
         Map result
         if (!id) {
             result.status = 400
-            result.error = 'The project id must be supplied'
+            result.error = message(code: 'project.warn.supplyId')
         }
         else {
             Map plan = request.JSON
@@ -699,11 +742,11 @@ class ProjectController {
     def delete(String id) {
         def resp = projectService.delete(id)
         if(resp == HttpStatus.SC_OK){
-            flash.message = 'Successfully deleted'
+            flash.message = message(code:'g.deleteSuccess')
             render status:resp, text: flash.message
         } else {
             response.status = resp
-            flash.errorMessage = 'Error deleting the project, please try again later.'
+            flash.errorMessage = message(code: 'project.warn.cannotDelete')
             render status:resp, error: flash.errorMessage
         }
     }
@@ -902,7 +945,7 @@ class ProjectController {
     @NoSSO
     def search() {
 
-        GrailsParameterMap queryParams = buildProjectSearch(params)
+        GrailsParameterMap queryParams = projectService.buildProjectSearch(params, request)
         boolean skipDefaultFilters = params.getBoolean('skipDefaultFilters', false)
         Map searchResult = searchService.findProjects(queryParams, skipDefaultFilters);
         List projects = Builder.build(params, searchResult.hits?.hits, grailsApplication, messageSource)
@@ -985,7 +1028,7 @@ class ProjectController {
 
             String downloadUrl = "${grailsApplication.config.ecodata.service.url}/search/downloadAllData.xlsx"
             params.fq = params.getList('fq[]')
-            GrailsParameterMap downloadParams = buildProjectSearch(params)
+            GrailsParameterMap downloadParams = projectService.buildProjectSearch(params, request)
 
             downloadParams.reportType="works"
             downloadParams.max=1000
@@ -1007,7 +1050,7 @@ class ProjectController {
      * Uses same criteria as search to retreive the projects with site information suitable to render a shared/_sites.gsp map
      */
     def mapSearch() {
-        GrailsParameterMap queryParams = buildProjectSearch(params)
+        GrailsParameterMap queryParams = projectService.buildProjectSearch(params, request)
         render searchService.allProjectsWithSites(queryParams) as JSON
     }
 
@@ -1216,7 +1259,6 @@ class ProjectController {
     }
 
 
-
     def species(String id) {
         def project = projectService.get(id, ProjectService.PRIVATE_SITES_REMOVED)
         def activityTypes = metadataService.activityTypesList();
@@ -1255,14 +1297,14 @@ class ProjectController {
             if (projectService.isUserAdminForProject(adminUserId, projectId) || projectService.isUserCaseManagerForProject(adminUserId, projectId)) {
                 render projectService.getMembersForProjectId(projectId) as JSON
             } else {
-                render status:403, text: 'Permission denied'
+                render status:403, text: message(code: 'g.noPermission')
             }
         } else if (adminUserId) {
-            render status:400, text: 'Required params not provided: id'
+            render status:400, text: message(code: 'project.warn.missingParamsId')
         } else if (projectId) {
-            render status:403, text: 'User not logged-in or does not have permission'
+            render status:403, text:  message(code:'project.warn.notLoggedIn')
         } else {
-            render status:500, text: 'Unexpected error'
+            render status:500, text: message(code:'g.unexpectedError')
         }
     }
 
@@ -1276,14 +1318,14 @@ class ProjectController {
                 asJson results
 
             } else {
-                response.sendError(SC_FORBIDDEN, 'Permission denied')
+                response.sendError(SC_FORBIDDEN, message(code: 'g.noPermission'))
             }
         } else if (adminUserId) {
-            response.sendError(SC_BAD_REQUEST, 'Required params not provided: id')
+            response.sendError(SC_BAD_REQUEST, message(code: 'project.warn.missingParamsId'))
         } else if (projectId) {
-            response.sendError(SC_FORBIDDEN, 'User not logged-in or does not have permission')
+            response.sendError(SC_FORBIDDEN, message(code:'project.warn.notLoggedIn'))
         } else {
-            response.sendError(SC_INTERNAL_SERVER_ERROR, 'Unexpected error')
+            response.sendError(SC_INTERNAL_SERVER_ERROR, message(code:'g.unexpectedError'))
         }
     }
 
@@ -1317,7 +1359,7 @@ class ProjectController {
             skin = SettingService.getHubConfig().skin
             render view: '/admin/auditMessageDetails', model: [message: results?.message, compare: compare?.message, userDetails: userDetails.user, layoutContent: skin, backToProject: true]
         } else {
-            response.sendError(SC_FORBIDDEN, 'You are not authorized to view this page')
+            response.sendError(SC_FORBIDDEN, message(code: 'project.warn.notAuthorized'))
         }
     }
 
@@ -1345,7 +1387,7 @@ class ProjectController {
             results.data = data
             asJson results;
         } else {
-            response.sendError(SC_FORBIDDEN, 'You are not authorized to view this page')
+            response.sendError(SC_FORBIDDEN, message(code: 'project.warn.notAuthorized'))
         }
     }
 

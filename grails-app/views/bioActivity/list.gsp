@@ -7,7 +7,7 @@
     <meta name="layout" content="bs4"/>
     <g:set var="title" value="${utilService.getHeaderLinkForContentTypeOrURI(view, contentURI)?.displayName?:title}"/>
     <title>${title} | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/' + hubConfig.urlPath)},Home"/>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/' + hubConfig.urlPath)},${message(code: "g.home")}"/>
     <meta name="breadcrumb" content="${title}"/>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js"></script>
     <g:set var="wsParameters" value="${[version: params.version, spotterId: "${spotterId}", projectActivityId: "${projectActivityId}"]}"/>
@@ -18,7 +18,7 @@
                 intersectService: "${createLink(controller: 'proxy', action: 'intersect')}",
             featuresService: "${createLink(controller: 'proxy', action: 'features')}",
             featureService: "${createLink(controller: 'proxy', action: 'feature')}",
-            spatialWms: "${grailsApplication.config.spatial.geoserverUrl}",
+            <%-- spatialWms: "${grailsApplication.config.spatial.geoserverUrl}", --%>
             layersStyle: "${createLink(controller: 'regions', action: 'layersStyle')}",
             serverUrl: "${grailsApplication.config.grails.serverURL}",
             activityUpdateUrl: "${createLink(controller: 'activity', action: 'ajaxUpdate')}",
@@ -35,11 +35,16 @@
             worksActivityViewUrl: "${createLink(controller: 'activity', action: 'index')}",
             downloadProjectDataUrl: "${createLink(controller: 'bioActivity', action: 'downloadProjectData')}",
             getRecordsForMapping: "${raw(createLink(controller: 'bioActivity', action: 'getProjectActivitiesRecordsForMapping', params: wsParameters))}",
+            dateRangeURL: "${createLink(controller: 'bioActivity', action: 'getMinMaxYearForQuery', params: [projectId: projectId])}",
             projectIndexUrl: "${createLink(controller: 'project', action: 'index')}",
             siteViewUrl: "${createLink(controller: 'site', action: 'index')}",
             bieUrl: "${grailsApplication.config.bie.baseURL}",
             bieWsUrl: "${grailsApplication.config.bieWs.baseURL}",
             speciesPage: "${grailsApplication.config.bie.baseURL}/species/",
+            wmsActivityURL: "${createLink(controller: 'geoServer', action: 'wms', params: [projectId: projectId, maxFeatures: grailsApplication.config.map.wms.maxFeatures, tiled: true])}",
+            createStyleURL: "${createLink(controller: 'geoServer', action: 'createStyle')}",
+            getLayerNameURL: "${createLink(controller: 'geoServer', action: 'getLayerName')}",
+            heatmapURL: "${createLink(controller: 'geoServer', action: 'getHeatmap', params: [projectId: projectId])}",
             view: "${view}",
             returnTo: "${returnTo}",
             projectLinkPrefix: "${createLink(controller: 'project')}/",
@@ -56,8 +61,24 @@
             spatialUrl: "${spatialUrl}",
             mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
             excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
-            absenceIconUrl:"${asset.assetPath(src: 'triangle.png')}"
+            absenceIconUrl:"${asset.assetPath(src: 'triangle.png')}",
+            timeSeriesOnIndex: "${hubConfig.timeSeriesOnIndex}",
+            mapDisplays: ${mapService.getMapDisplays() as JSON},
+            mapDisplayHelpText: "<g:message code="map.style.help"/>",
+            mapDisplayColourByHelpText: "<g:message code="map.colour.by.help"/>",
+            mapDisplayFilterByHelpText: "<g:message code="map.filter.by.help"/>",
+            clusterLegendTitle: "<g:message code="map.cluster.legend.title"/>",
+            heatmapLegendTitle: "<g:message code="map.heatmap.legend.title"/>",
+            pointLegendTitle: "<g:message code="map.point.legend.title"/>",
+            polygonLegendTitle: "<g:message code="map.polygon.legend.title"/>",
+            lineLegendTitle: "<g:message code="map.line.legend.title"/>",
+            heatmapHelpText: "<g:message code="map.heatmap.help.text"/>",
+            clusterHelpText: "<g:message code="map.cluster.help.text"/>",
+            lineHelpText: "<g:message code="map.line.help.text"/>",
+            pointHelpText: "<g:message code="map.point.help.text"/>",
+            polygonHelpText: "<g:message code="map.polygon.help.text"/>"
             </g:applyCodec>
+
         },
         here = document.location.href;
     </asset:script>
@@ -66,7 +87,7 @@
     <asset:javascript src="enterBioActivityData.js"/>
     <asset:javascript src="projectActivityInfo.js"/>
     <asset:javascript src="facets.js"/>
-    <asset:javascript src="chartjsManager.js"/>
+    <%-- <asset:javascript src="chartjsManager.js"/> --%>
     <asset:javascript src="projects.js"/>
     <script src="${grailsApplication.config.google.maps.url}" async defer></script>
 </head>
@@ -87,10 +108,15 @@
 </div>
 </g:if>
 <div class="main-content">
-    <g:render template="/bioActivity/activities"/>
+    <g:if test='${hubConfig?.isSystematicMonitoring}'>
+        <g:render template="/bioActivity/activities_short"/>
+    </g:if>
+    <g:else>
+        <g:render template="/bioActivity/activities"/>
+    </g:else>
 </div>
 <div class="loading-message">
-    <span class="fa fa-spin fa-spinner"></span>&nbsp;Loading...
+    <span class="fa fa-spin fa-spinner"></span>&nbsp;<g:message code='g.loading'/>...
 </div>
 
 <asset:script type="text/javascript">

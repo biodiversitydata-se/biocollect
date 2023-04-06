@@ -3,17 +3,17 @@ aekosMintedDoi.url= "http://shared-uat.aekos.org.au:8080/AEKOS.AekosSearchPortal
 
 acsaUrl= 'http://csna.gaiaresources.com.au/wordpress/'
 
-bie.baseURL= "https://bie.ala.org.au"
-bieWs.baseURL= "https://bie-ws.ala.org.au"
+bie.baseURL= "https://species.biodiversitydata.se"
+bieWs.baseURL= "https://species.biodiversitydata.se"
 
-biocache.baseURL= "https://biocache.ala.org.au"
+biocache.baseURL= "https://records.biodiversitydata.se"
 
-biocollect.support.email.address= "biocollect-support@ala.org.au"
+biocollect.support.email.address= "biocollect@biodiversitydata.se"
 
-collectory.service.url= "https://collections.ala.org.au"
+collectory.service.url= "https://collections.biodiversitydata.se"
 
 
-ecodata.baseURL= "https://ecodata.ala.org.au/"
+ecodata.baseURL= "https://ecodata.biodiversitydata.se"
 
 
 google {
@@ -27,9 +27,9 @@ environments {
                 temp.dir = "/data/biocollect/temp"
 //              system level config
                 server.port = 8087
-                serverURL = "http://devt.ala.org.au:8087"
-                biocollect.system.email.replyTo = "biocollect-dev<no-reply>@ala.org.au"
-                sender = "biocollect-dev@ala.org.au"
+                serverURL = "https://devt.biodiveristydata.se:8080/"
+                biocollect.system.email.replyTo = "biocollect@biodiversitydata.se"
+                sender = "biocollect@biodiversitydata.se"
                 debugUI = true
                 loggerLevel = "DEBUG"
         }
@@ -38,7 +38,7 @@ environments {
                 debugUI: false
                 loggerLevel: "DEBUG"
                 server.port = "8087"
-                grails.host = "http://devt.ala.org.au"
+                grails.host = "localhost"
                 serverName = "${grails.host}:${server.port}"
                 grails.serverURL = serverName
                 server.serverURL = serverName
@@ -82,8 +82,8 @@ environments {
 
         production {
                 grails.config.locations = ["file:///data/biocollect/config/biocollect-config.properties"]
-                biocollect.system.email.replyTo = "biocollect<no-reply>@ala.org.au"
-                sender = "biocollect-local@ala.org.au"
+                biocollect.system.email.replyTo = "biocollect@biodiversitydata.se"
+                sender = "biocollect@biodiversitydata.se"
                 debugUI = false
                 loggerLevel = "INFO"
         }
@@ -168,6 +168,12 @@ datapage.allColumns = datapage.defaultColumns + [
                 type: "property",
                 propertyName: "surveyYearFacet",
                 displayName: "Survey Year"
+        ]
+        ,
+        [
+                type: "property",
+                propertyName: "surveyDate",
+                displayName: "Survey Date"
         ]
         ,
         [
@@ -387,22 +393,22 @@ if (!map.baseLayers) {
         map.baseLayers = [
                 [
                         'code': 'minimal',
-                        'displayText': 'Road map',
+                        'displayText': 'Vägkarta',
                         'isSelected': false
                 ],
                 [
                         'code': 'worldimagery',
-                        'displayText': 'Satellite',
+                        'displayText': 'Satellit',
                         'isSelected': false
                 ],
                 [
                         'code': 'detailed',
-                        'displayText': 'Detailed',
+                        'displayText': 'Detaljerad',
                         'isSelected': false
                 ],
                 [
                         'code': 'topographic',
-                        'displayText': 'ESRI Topographic',
+                        'displayText': 'Topografisk',
                         'isSelected': true
                 ],
                 [
@@ -419,6 +425,16 @@ if (!map.baseLayers) {
                         'code': 'googleterrain',
                         'displayText': 'Google terrain',
                         'isSelected': false
+                ],
+                [
+                        'code': 'landscape',
+                        'displayText': 'Thunderforest landskap',
+                        'isSelected': false
+                ],
+                [
+                        'code': 'lantmateriettopo',
+                        'displayText': 'Lantmateriet topografisk',
+                        'isSelected': false
                 ]
         ]
 }
@@ -426,208 +442,161 @@ if (!map.baseLayers) {
 if(!map.overlays) {
         map.overlays = [
                 [
-                        alaId       : 'cl22',
-                        alaName     : 'aus1',
-                        layerName   : 'aust_states_territories',
-                        title         : 'States and territories',
+                        alaId       : 'Indexrutor_25',
+                        alaName     : 'Indexrutor_25',
+                        layerName   : 'Indexrutor_25',
+                        title         : 'Rikets nät (25x25km, RT90)',
                         defaultSelected: false,
-                        boundaryColour  : '#fdb863',
-                        showPropertyName: false,
+                        boundaryColour  : '#f73c27',
+                        showPropertyName: true,
                         fillColour      : '',
                         textColour      : '',
                         userAccessRestriction: 'anyUser',
                         inLayerShapeList     : true,
                         opacity: 0.5,
-
                         display     : [
                                 cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'NAME_1'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
+                                propertyName  : 'BLAD'
+                        ]
                 ],
                 [
-                        alaId       : 'cl10923',
-                        alaName     : 'psma_lga_2018',
-                        layerName   : 'aust_local_govt_areas',
-                        title         : 'Local government',
+                        alaId       : 'inland_polygons',
+                        alaName     : 'inland_polygons',
+                        layerName   : 'inland_polygons',
+                        title         : 'Inlandssektorer – sjöfåglar i januari/september',
                         defaultSelected: false,
-                        boundaryColour  : '#b2abd2',
-                        showPropertyName: false,
+                        userAccessRestriction: 'anyUser',
+                        inLayerShapeList     : true,
+                        opacity: 0
+                ],
+                [
+                        alaId       : 'coast_polygons',
+                        alaName     : 'coast_polygons',
+                        layerName   : 'coast_polygons',
+                        title         : 'Kustsektorer – sjöfåglar i januari/september',
+                        defaultSelected: false,
+                        boundaryColour  : '#f73c27',
+                        showPropertyName: true,
                         fillColour      : '',
                         textColour      : '',
                         userAccessRestriction: 'anyUser',
                         inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
+                        opacity: 0,
                         display     : [
                                 cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'LGA_NAME'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
+                                propertyName  : 'site'
+                        ]
                 ],
                 [
-                        alaId       : 'cl1048',
-                        alaName     : 'ibra7_regions',
-                        layerName   : '',
-                        title         : 'Biogeographic regions',
+                        alaId       : 'archipelago_sq',
+                        alaName     : 'archipelago_sq',
+                        layerName   : 'archipelago_sq',
+                        title         : 'Kustrutor – kustfåglar i häckningstid',
                         defaultSelected: false,
-                        boundaryColour  : '#b2abd2',
-                        showPropertyName: false,
+                        boundaryColour  : '#f73c27',
+                        showPropertyName: true,
                         fillColour      : '',
-                        textColour      : '',
+                        textColour      : '#000000',
                         userAccessRestriction: 'anyUser',
                         inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
+                        opacity: 0,
+                        
                         display     : [
                                 cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'REG_NAME_7'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
-                        alaId       : 'cl21',
-                        alaName     : 'imcra4_pb',
-                        layerName   : '',
-                        title         : 'Marine regions',
-                        defaultSelected: false,
-                        boundaryColour  : '#b2abd2',
-                        showPropertyName: false,
-                        fillColour      : '',
-                        textColour      : '',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'PB_NAME'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
-                        alaId       : 'cl10930',
-                        alaName     : 'nrm_regions_2017',
-                        layerName   : '',
-                        title         : 'NRM Regions',
-                        defaultSelected: false,
-                        boundaryColour  : '#b2abd2',
-                        showPropertyName: false,
-                        fillColour      : '',
-                        textColour      : '',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'NRM_REGION'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
-                        alaId       : 'cl1059',
-                        alaName     : 'drainage_divisions_level2',
-                        layerName   : '',
-                        title         : 'Major drainage divisions',
-                        defaultSelected: false,
-                        boundaryColour  : '#b2abd2',
-                        showPropertyName: false,
-                        fillColour      : '',
-                        textColour      : '',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'Level2Name'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
-                        alaId       : 'cl901',
-                        alaName     : 'diwa_type_criteria',
-                        layerName   : '',
-                        title         : 'Directory of important wetlands',
-                        defaultSelected: false,
-                        boundaryColour  : '#b2abd2',
-                        showPropertyName: false,
-                        fillColour      : '',
-                        textColour      : '',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'WNAME'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
-                        alaId       : 'cl935',
-                        alaName     : 'ramsar',
-                        layerName   : '',
-                        title         : 'RAMSAR wetland regions',
-                        defaultSelected: false,
-                        boundaryColour  : '#005ce6',
-                        showPropertyName: false,
-                        fillColour      : '#bef7cf',
-                        textColour      : '#FFF',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'RAMSAR_NAM'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
-                ],
-                [
-                        alaId       : 'cl2015',
-                        alaName     : 'ipa_7aug13',
-                        layerName   : '',
-                        title         : 'Indigenous protected areas',
-                        defaultSelected: false,
-                        boundaryColour  : '#5e3c99',
-                        showPropertyName: false,
-                        fillColour      : '',
-                        textColour      : '',
-                        userAccessRestriction: 'anyUser',
-                        inLayerShapeList     : true,
-                        opacity: 0.5,
-                        changeLayerColour: false,
-                        display     : [
-                                cqlFilter     : defaultCqlFilter,
-                                propertyName  : 'NAME'
-                        ],
-                        style       : [:],
-                        bounds      : bounds,
-                        restrictions: [:]
+                                propertyName  : 'BLAD'
+                        ]
                 ]
         ]
 }
 
+if (!map.wms.maxFeatures) {
+        map.wms.maxFeatures = 100000
+}
+
+map.data.displays = [
+        [
+                value: "Point",
+                key: "point_circle",
+                showLoggedOut: true,
+                showLoggedIn: true,
+                showProjectMembers: true,
+                isDefault: "heatmap",
+                size: 4
+        ],
+        [
+                value: "Polygon",
+                key: "polygon_sites",
+                showLoggedOut: true,
+                showLoggedIn: true,
+                showProjectMembers: true,
+                isDefault: "heatmap",
+                size: 1
+        ],
+        [
+                value: "Line",
+                key: "line_sites",
+                showLoggedOut: true,
+                showLoggedIn: true,
+                showProjectMembers: true,
+                isDefault: "heatmap",
+                size: 1
+        ],
+        [
+                value: "Heatmap",
+                key: "heatmap",
+                showLoggedOut: true,
+                showLoggedIn: true,
+                showProjectMembers: true,
+                isDefault: "heatmap"
+        ]
+]
+
+map.projectfinder.displays = [
+        [
+                value: "Point",
+                key: "point_circle_project",
+                showLoggedOut: true,
+                showLoggedIn: true,
+                showProjectMembers: true,
+                isDefault: "point_circle_project",
+                size: 9
+        ],
+        [
+                value: "Polygon",
+                key: "polygon_sites_project",
+                showLoggedOut: true,
+                showLoggedIn: true,
+                showProjectMembers: true,
+                isDefault: "point_circle_project",
+                size: 1
+        ],
+        [
+                value: "Heatmap",
+                key: "heatmap",
+                showLoggedOut: true,
+                showLoggedIn: true,
+                showProjectMembers: true,
+                isDefault: "point_circle_project"
+        ]
+//        Cluster view is not working in GeoServer. Disabling it for the moment.
+//        TODO: fix clustering of projects on GeoServer.
+//        ,
+//        [
+//                value: "Cluster",
+//                key: "cluster_project",
+//                showLoggedOut: true,
+//                showLoggedIn: true,
+//                showProjectMembers: true,
+//                isDefault: "polygon_sites_project"
+//        ]
+]
+
+settings.surveyMethods="fielddata.survey.methods"
+
+geoServer.readTimeout = 600000
 settings.surveyMethods="fielddata.survey.methods"
 if (!app.file.script.path) {
         app.file.script.path = "/data/biocollect/scripts"
 }
 script.read.extensions.list = ['js','min.js','png', 'json', 'jpg', 'jpeg']
+

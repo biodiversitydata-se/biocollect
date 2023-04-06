@@ -98,7 +98,7 @@
                                                 </table>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="far fa-times-circle"></i> Close</button>
+                                                <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="far fa-times-circle"></i> <g:message code='g.close'/></button>
                                             </div>
                                         </div>
                                     </div>

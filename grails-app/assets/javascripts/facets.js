@@ -341,6 +341,60 @@ function FilterViewModel(config){
         self.mergeTempToRefine();
     };
 
+    self.getColourByFields = function () {
+        var facets = self.facets(),
+            result = [];
+        
+        facets  && facets.forEach(function (facet) {
+            if (facet instanceof FacetViewModel) {
+                var terms = facet.terms();
+                if (terms && terms.length > 1) {
+                    var resp = facet.getColourByField();
+                    result.push(resp);
+                }
+            }
+        });
+
+        return result
+    };
+
+    self.getTermsForFacet = function (facetName) {
+        var facets = self.facets(),
+            result = {};
+
+        facets && facets.forEach( function (facet) {
+            if (facet.name() == facetName) {
+                result = facet.toJS();
+            }
+        });
+
+        return result;
+    };
+
+    self.setStyleName = function (facetName, value) {
+        var facets = self.facets();
+
+        facets && facets.forEach( function (facet) {
+            if (facet.name() == facetName) {
+                facet.setStyleName(value)
+            }
+        });
+    };
+
+    self.getStyleName = function (facetName) {
+        var facets = self.facets(),
+            result;
+
+        facets && facets.forEach( function (facet) {
+            if (facet.name() == facetName) {
+                 result = facet.getStyleName()
+            }
+        });
+
+        return result;
+    };
+
+
     /**
      * search for a token and show terms matching the token.
      */
@@ -378,6 +432,7 @@ function FacetViewModel(facet) {
         return self.title || cleanName(self.name()) || 'Unknown';
     });
     self.type = facet.type;
+    //self.styleName; // ??
     self.adminOnly = ko.observable(facet.adminOnly || false);
 
     if(facet.ref.isFacetSelected(self)){
@@ -413,6 +468,15 @@ function FacetViewModel(facet) {
     self.getTerms = function (facet) {
         switch (facet.type) {
             case 'terms':
+                // LUSM change - if it's surveyMonthFacet then sort the months in chronological order
+                if (facet.name == "surveyMonthFacet" && facet.terms && facet.terms.length > 1){
+                    var months = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"];
+                    facet.terms.sort(function(a, b){
+                        return months.indexOf(a.term)- months.indexOf(b.term);
+                    });
+                }
+
                 return (facet.terms || []).map(function (term, index) {
                     term.facet = self;
                     return new FacetTermViewModel(term);
@@ -429,6 +493,29 @@ function FacetViewModel(facet) {
     };
 
     self.terms(self.getTerms(facet));
+
+    self.getColourByField = function (){
+        return  {key: self.name(), value: self.displayName()}
+    };
+
+    self.getStyleName = function () {
+        return self.styleName;
+    };
+
+    self.setStyleName = function (value) {
+        self.styleName = value;
+    };
+
+    self.toJS = function(){
+        var result = {};
+        result.field = self.name();
+        result.type = self.type;
+        result.terms = $.map(self.terms(), function(term){
+            return term.toJS();
+        });
+
+        return result;
+    };
 
     /**
      * Set a flag on a term to indicate that it is selected. 
@@ -522,6 +609,13 @@ function FacetTermViewModel(term) {
     self.term = ko.observable(term.term);
     self.title = term.title;
     self.displayName = ko.computed(function(){
+        if (self.facet.title == 'Månad' || self.facet.title == 'Month') {
+            // translate months for facets into Swedish:
+            var dictionary = {"January": "januari","February": "februari",
+                "March": "mars","April": "april","May": "maj","June": "juni","July": "juli",
+                "August": "augusti","September": "september","October": "oktober","November": "november","December": "december"};
+            self.title = dictionary[self.term()];
+        } 
         var label = self.title || decodeCamelCase(self.term()) || 'Unknown';
         if(self.count()){
             label += " (" + self.count() + ")";
@@ -583,7 +677,15 @@ function FacetTermViewModel(term) {
      */
     self.addToRefine = function () {
         self.facet.ref.addToRefineList(self);
-    }
+    };
+
+    /**
+     * Collect term details in an Object.
+     * @returns {{displayName: string, count: number, term: string, type: string, title: string}}
+     */
+    self.toJS = function () {
+        return {term: self.term(), displayName: self.displayName(), type: self.type, title: self.title, count: self.count()};
+    };
 
     /**
      * when refine result is clicked, add t
@@ -703,18 +805,26 @@ function FacetRangeViewModel(term) {
      * toggle checked status
      */
     self.filterNow = function () {
-        self.silent(true)
-        self.checked(true)
-        self.silent(false)
+        self.silent(true);
+        self.checked(true);
+        self.silent(false);
         self.facet.ref.addToRefineList(self);
-    }
+    };
 
     /**
      * add to refine list
      */
     self.addToRefine = function () {
         self.facet.ref.addToRefineList(self);
-    }
+    };
+
+    /**
+     * Collect term details in an Object.
+     * @returns {{displayName: string, count: number, term: string, type: string, title: string}}
+     */
+    self.toJS = function () {
+        return {term: self.term(), displayName: self.displayName(), type: self.type, title: self.title, count: self.count(), to: self.to(), from: self.from()};
+    };
 
     /**
      * when refine result is clicked, add t
@@ -933,7 +1043,10 @@ function generateTermIdForFacetTerm(facetTerm) {
  */
 function decodeCamelCase(text) {
     if(typeof text == 'string'){
-        var result = text.replace( /([A-Z])/g, " $1" );
+        // TODO
+        // replacing should be limited to whatever these roles are - otherwise it breaks site names for systematic monitoring
+        // var result = text.replace( /([A-Z])/g, " $1" );
+        var result = text
         return result.charAt(0).toUpperCase() + result.slice(1); // capitalize the first letter - as an example.
     }
     else{

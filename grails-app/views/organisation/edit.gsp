@@ -3,8 +3,9 @@
 <html>
 <head>
     <meta name="layout" content="bs4"/>
-    <title>Edit | ${organisation.name.encodeAsHTML()} | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
+    <title><g:message code='g.edit'/> | ${organisation.name.encodeAsHTML()} | <g:message code="g.biocollect"/></title>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: "g.home")}"/>
+
     <meta name="breadcrumbParent2"
           content="${createLink(controller: 'organisation', action: 'list')},Organisations"/>
     <meta name="breadcrumb" content="${organisation.name}"/>
@@ -42,6 +43,7 @@
      data-bind="style:{'backgroundImage':asBackgroundImage(bannerUrl())}">
     <g:render template="organisationDetails"/>
 
+<<<<<<< HEAD
     <div class="row mt-3">
         <div class="col-12">
             <div class="form-actions">
@@ -49,6 +51,11 @@
                 <button type="button" id="cancel" class="btn btn-dark"><i class="far fa-times-circle"></i> Cancel</button>
             </div>
         </div>
+=======
+    <div class="form-actions">
+        <button type="button" id="save" data-bind="click:save" class="btn btn-primary"><g:message code='g.save'/></button>
+        <button type="button" id="cancel" class="btn"><g:message code='g.cancel'/></button>
+>>>>>>> lusm-main-test
     </div>
 
 </div>

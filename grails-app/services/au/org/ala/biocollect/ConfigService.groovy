@@ -64,8 +64,8 @@ class ConfigService {
             log.debug(spatial)
             grailsApplication.config.spatial.layersUrl = spatial+"/layers-service"
             grailsApplication.config.spatial.geoserverUrl = spatial+"/geoserver"
-            grailsApplication.config.spatial.wms.url = spatial+"/geoserver/ALA/wms?"
-            grailsApplication.config.spatial.wms.cache.url =spatial+"/geoserver/gwc/service/wms?"
+            // grailsApplication.config.spatial.wms.url = spatial+"/geoserver/ALA/wms?"
+            // grailsApplication.config.spatial.wms.cache.url =spatial+"/geoserver/gwc/service/wms?"
         }else
             throw new Exception('You need to define spatial portal URL')
 

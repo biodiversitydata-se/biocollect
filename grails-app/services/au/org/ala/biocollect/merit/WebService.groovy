@@ -104,7 +104,7 @@ class WebService {
      * Proxies a request URL but doesn't assume the response is text based. (Used for proxying requests to
      * ecodata for excel-based reports)
      */
-    def proxyGetRequest(HttpServletResponse response, String url, boolean includeUserId = true, boolean includeApiKey = false, Integer timeout = null) {
+    def proxyGetRequest(HttpServletResponse response, String url, boolean includeUserId = true, boolean includeApiKey = false, Integer timeout = null, List headers = [HttpHeaders.CONTENT_DISPOSITION]) {
 
         HttpURLConnection conn = configureConnection(url, includeUserId)
         def readTimeout = timeout?:defaultTimeout()

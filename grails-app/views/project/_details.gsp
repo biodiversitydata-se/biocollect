@@ -3,7 +3,7 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">
-                Project metadata
+                <g:message code="project.details.metadata.header"/>
                 <span class="float-right">
                     <g:if test="${project.projLifecycleStatus == 'published'}">
                         <span class="badge badge-success">Published</span>
@@ -67,7 +67,7 @@
                     <div class="col-md-4"></div>
 
                     <div class="col-md-8">
-                        <div><b>Organisation Search Results</b> (Click an organisation to select it)</div>
+                        <div><b><g:message code="project.details.organisationResults"/></b> (<g:message code="project.details.organisationResults.subtitle"/>)</div>
 
                         <div class="organisation-list">
                             <ul class="list-unstyled ml-2">
@@ -109,6 +109,76 @@
                 </div>
             </div>
         </div>
+        </div>
+    </div>
+
+    <div class="well">
+        <div data-bind="visible:isSystematicMonitoring()" class="row-fluid">
+            <h4 class="block-header"><g:message code="project.details.systematic.header"/></h4>
+
+            <div class="clearfix control-group">
+                <%-- Should personal data be stored on ecodata --%>
+                <label class="control-label span3" for="requiresVolManagement">
+                    <g:message code="project.details.systematic.storePersonData"/>
+                    <fc:iconHelp><g:message code="project.details.systematic.storePersonData.help"/></fc:iconHelp>
+                </label>
+                <div class="controls span4">
+                    <select id="requiresVolManagement" data-bind="booleanValue:requiresVolManagement, options:[{label:'Yes', value:'true'}, {label:'No', value:'false'}], optionsText:'label', optionsValue:'value', optionsCaption:'Select...'" data-validation-engine="validate[required]">
+                    </select>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="clearfix control-group">
+                    <label class="control-label span3">
+                        <g:message code="project.details.systematic.notificationType"/>
+                    </label>
+                    <div class="span6">
+                        <label class="checkbox">
+                        <input type="checkbox" value="siteBooking" data-bind="checked: alertConfig.ctx"/>
+                                <g:message code="project.details.systematic.siteBooking"/>
+                        </label>
+                    </div>
+                    <div class="span6">
+                        <label class="checkbox">
+                        <input type="checkbox" value="surveySubmitted" data-bind="checked: alertConfig.ctx"/>
+                                <g:message code="project.details.systematic.surveySubmitted"/>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-fluid">
+                <div class="clearfix control-group">
+                   <label class="control-label span3">
+                        <g:message code="project.details.systematic.notificationEmails.header"/>
+                    </label>
+                    <div class="controls span8">
+                        <input id="alertEmailAddress" class="input-xlarge" type="text" data-bind="value: alertConfig.transients.emailAddress, valueUpdate:'afterkeyup'" 
+                        placeholder="${message(code:'project.details.systematic.email.inputPlaceholder')}"/>
+                        <div class="margin-bottom-5"></div>
+                        <button class="btn-default btn block btn-small" data-toggle="tooltip" title="Enter valid email address"
+                                data-bind="click: alertConfig.addEmail, disable: alertConfig.disableAddEmail"><i class="icon-plus" ></i>  Add</button>
+                    </div>
+                </div>
+            </div>
+            <!-- ko if: alertConfig.emailAddresses().length > 0 -->
+            <div class="row-fluid">
+                <div class="clearfix control-group">
+                    <label class="control-label span3"><g:message code="project.details.systematic.notificationEmails"/>:</label>
+                        <!-- ko foreach: alertConfig.emailAddresses -->
+                        <div class="controls span8">
+                            <div class="span4 text-left">
+                                <span data-bind="text: $index()+1">. </span>
+                                <span data-bind="text: $data"></span>
+                            </div>
+                            <div class="span2 text-left">
+                                <a href="#" data-bind="click: $parent.alertConfig.deleteEmail"><span class="fa fa-close"></span></a>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                </div>
+            </div>
+            <!-- /ko -->
         </div>
     </div>
 
@@ -290,7 +360,6 @@
                             <div data-bind="slideVisible: !$parent.transients.associatedOrgNotInList()">
                                 <div class="row form-group">
                                     <div class="col-md-4"></div>
-
                                     <div class="col-md-8">
                                         <p>
                                             <b>Organisation Search Results</b> (Click an organisation to select it)
@@ -1028,6 +1097,13 @@
             <h4 class="card-title"><g:message code="project.details.configuration"/></h4>
             <map-config-selector
                     params="allBaseLayers: fcConfig.allBaseLayers, allOverlays: fcConfig.allOverlays, mapLayersConfig: mapLayersConfig"></map-config-selector>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="well">
+            <h4 class="block-header"><g:message code="project.details.map.display.configuration"/></h4>
+            <biocollect-data-map-selector params="mapDisplays: mapDisplays, allMapDisplays: fcConfig.allMapDisplays, showProjectMemberColumn: true"></biocollect-data-map-selector>
         </div>
     </div>
 

@@ -9,7 +9,7 @@
         <nav aria-label="breadcrumb">
             <ul class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <g:link controller="home">Home</g:link>
+                    <g:link controller="home"><g:message code='g.home'/></g:link>
                 </li>
                 <li class="breadcrumb-item"><g:link class="discreet" action="index">Administration</g:link></li>
                 <li class="breadcrumb-item active"><g:pageProperty name="page.pageTitle"/></li>

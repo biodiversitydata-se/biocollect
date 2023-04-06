@@ -1,8 +1,9 @@
 var PaginationViewModel = function (o, caller) {
+    var defaultRpp = (caller.view == "project" || caller.view == "allrecords") ? 20 : 1000;
     var self = this;
     if (!o) o = {};
     if (!caller) caller = self;
-    self.rppOptions = [10, 20, 30, 50, 100];
+    self.rppOptions = [10, 20, 30, 50, 100, 500, 1000];
     self.resultsPerPage = ko.observable(o.numberPerPage  || self.rppOptions[0]);
     self.totalResults = ko.observable();
     self.currentPage = ko.observable();

@@ -8,7 +8,13 @@
                 <li class="nav-item text-left"><a class="nav-link" href="#edit-documents" id="edit-documents-tab" data-toggle="tab"><i class="fas fa-chevron-right"></i> ${hubConfig.getTextForResources(grailsApplication.config.content.defaultOverriddenLabels)}</a></li>
 
                 <g:if test="${!project.isExternal}">
-                    <li class="nav-item text-left"><a class="nav-link" href="#project-activity" id="project-activity-tab" data-toggle="tab"><i class="fas fa-chevron-right"></i> <g:message code="project.admin.settings"/></a></li>
+                    <g:if test="${!project.isSystematicMonitoring}"> 
+                        <li class="nav-item text-left"><a class="nav-link" href="#project-activity" id="project-activity-tab" data-toggle="tab"><i class="fas fa-chevron-right"></i> <g:message code="project.admin.settings"/></a></li>
+                    </g:if>
+                    <g:else>
+                        <li class="nav-item text-left"><a class="nav-link" href="#systematic-project-activity" id="systematic-project-activity-tab" data-toggle="tab"><i class="fas fa-chevron-right"></i> <g:message code="project.admin.settings"/></a></li>
+                    </g:else>
+
                     <g:if test="${hasLegacyNewsAndEvents}">
                         <li class="nav-item text-left"><a class="nav-link" href="#edit-news-and-events" id="editnewsandevents-tab" data-toggle="tab"><i class="fas fa-chevron-right"></i> <g:message code="project.admin.news"/></a></li>
                     </g:if>
@@ -64,9 +70,16 @@
                         <g:render template="editProjectContent" model="${[attributeName:'projectStories', header: message(code:'project.admin.stories')]}"/>
                     </div>
 
-                    <div id="project-activity" class="tab-pane" role="tabpanel">
-                        <g:render template="/projectActivity/settings" model="[projectActivities:projectActivities]" />
-                    </div>
+                    <g:if test="${!project.isSystematicMonitoring}"> 
+                        <div id="project-activity" class="tab-pane" role="tabpanel">
+                            <g:render template="/projectActivity/settings" model="[projectActivities:projectActivities]" />
+                        </div>
+                    </g:if>
+                    <g:else>
+                        <div id="systematic-project-activity" class="tab-pane" role="tabpanel">
+                            <g:render template="/projectActivity/systematicSettings" model="[projectActivities:projectActivities]" />
+                        </div>
+                    </g:else>
                 </g:if>
 
                 <div id="permissions" class="tab-pane" role="tabpanel">
@@ -74,7 +87,6 @@
                     <g:render template="/admin/addPermissions" model="[addUserUrl:g.createLink(controller:'user', action:'addUserAsRoleToProject'), entityId:project.projectId]"/>
                     <g:render template="/admin/permissionTablePaginated"/>
                 </div>
-
                 <!--AUDIT-->
                 <g:if test="${fc.userInRole(role: grailsApplication.config.security.cas.alaAdminRole) || fc.userInRole(role: grailsApplication.config.security.cas.adminRole) || user.isAdmin}">
                     <div id="project-audit" class="tab-pane" role="tabpanel">
@@ -95,7 +107,22 @@
 <g:render template="/shared/attachDocument"/>
 
 <asset:script type="text/javascript">
-    function initialiseInternalCSAdmin() {
-        new RestoreTab('ul-cs-internal-project-admin', 'project-settings-tab');
+    // for systematic monitoring project activites are obtained through an ajax call only when needed
+    if (${project.isSystematicMonitoring}) {
+        function initialiseInternalSystematicCSAdmin() {
+            $('#permissions-tab').trigger('click');
+            if (${params.subTab == 'persons'}){
+                $('#persons-tab').tab('show');
+            } else {
+                $('#user-permissions-tab').tab('show');
+            }
+        }
+        // other types of projects get all project activities on default when opening the project page
+    } else {
+       function initialiseInternalCSAdmin() {
+            new RestoreTab('ul-cs-internal-project-admin', 'project-settings-tab');
+            new RestoreTab('members-tab', 'user-permissions-tab');
+        }
     }
+
 </asset:script>

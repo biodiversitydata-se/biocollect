@@ -5,8 +5,8 @@
 <head>
     <meta name="layout" content="${mobile ? 'mobile' : 'bs4'}"/>
     <title>View | ${activity.type} | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
-    <meta name="breadcrumbParent2" content="${createLink(controller: 'project', action: 'index')}/${pActivity.projectId},Project"/>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: 'g.home')}"/>
+    <meta name="breadcrumbParent2" content="${createLink(controller: 'project', action: 'index')}/${pActivity.projectId},${message(code: 'g.project')}"/>
     <meta name="breadcrumb" content="${pActivity.name}"/>
     <asset:stylesheet src="forms-manifest.css"/>
     <g:if test="${mobile}">
@@ -66,6 +66,18 @@
         <g:message code="record.view.title"></g:message>
     </content>
 
+
+    <g:if test="${!mobile}">
+        <g:if test="${hubConfig?.isSystematicMonitoring}">
+            <div class="form-actions">
+                <g:if test="${userIsProjectMember}">
+                    <a class="btn btn-primary  btn-large" href="${createLink(controller: 'bioActivity', action: 'create')}/${pActivity.projectActivityId}"><span class="fa fa-plus"></span> <g:message code="record.view.addnew.btn"/></a>
+                </g:if>
+            </div>
+        </g:if>
+    </g:if>
+
+
     <div id="koActivityMainBlock">
         <bc:koLoading>
         <g:if test="${pActivity?.adminVerification && pActivity?.showVerificationStatus}">
@@ -85,6 +97,20 @@
         <g:if test="${!mobile}">
             <div class="row">
                 %{-- quick links --}%
+                <g:if test="${pActivity?.adminVerification && pActivity?.showVerificationStatus}">
+                    <div class="row-fluid">
+                        <div class="span12 text-right">
+                        <g:if test="${activity.verificationStatus == 'approved'}">
+                            <span class="badge badge-success"><g:message code="record.view.verificationStatus"></g:message>: 
+                            ${activity.verificationStatus}</span>
+                        </g:if>
+                        <g:else >
+                            <span class="badge badge-important"><g:message code="record.view.verificationStatus"></g:message>: 
+                            ${activity.verificationStatus}</span>
+                        </g:else>
+                        </div>
+                    </div>
+                </g:if>
                 <div class="col-12">
                     <g:render template="/shared/quickLinks" model="${[cssClasses: 'float-right']}"></g:render>
                 </div>
@@ -171,14 +197,16 @@
     </g:if>
 
     <g:if test="${!mobile}">
-        <div class="form-actions">
-            <g:if test="${hasEditRights}">
-                <a class="btn btn-primary-dark btn-lg" href="${createLink(controller: 'bioActivity', action: 'edit')}/${activity.activityId}"><span class="fas fa-pencil-alt"></span> Edit</a>
-            </g:if>
-            <g:if test="${userIsProjectMember}">
-                <a class="btn btn-primary-dark  btn-lg" href="${createLink(controller: 'bioActivity', action: 'create')}/${pActivity.projectActivityId}"><span class="fas fa-plus"></span> Add new record</a>
-            </g:if>
-        </div>
+        <g:if test="${!hubConfig?.isSystematicMonitoring}">
+            <div class="form-actions">
+                <g:if test="${hasEditRights}">
+                    <a class="btn btn-primary-dark btn-lg" href="${createLink(controller: 'bioActivity', action: 'edit')}/${activity.activityId}"><span class="fas fa-pencil-alt"></span> Edit</a>
+                </g:if>
+                <g:if test="${userIsProjectMember}">
+                    <a class="btn btn-primary-dark  btn-lg" href="${createLink(controller: 'bioActivity', action: 'create')}/${pActivity.projectActivityId}"><span class="fas fa-plus"></span> Add new record</a>
+                </g:if>
+            </div>
+        </g:if>
     </g:if>
 </div>
 <!-- templates -->
@@ -307,7 +335,7 @@
                     }
 
                     viewModel.siteMap = new ALA.Map("activitySiteMap", mapOptions);
-
+                    console.log("mapFeatures in index", mapFeatures)
                     if (mapFeatures.features[0].pid) {
                         viewModel.siteMap.addWmsLayer(mapFeatures.features[0].pid);
                     } else {

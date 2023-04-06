@@ -1,5 +1,6 @@
 <%@ page import="grails.converters.JSON" %>
 <g:set var="noImageUrl" value="${asset.assetPath(src: "font-awesome/5.15.4/svgs/regular/image.svg")}"/>
+<asset:stylesheet src="map-activity.css"/>
 <!-- ko stopBinding: true -->
 <div id="projectData" class="my-4 my-md-5">
     <div id="survey-all-activities-and-records-content">
@@ -580,6 +581,9 @@
         }
 
         var columnConfig =${ hubConfig.getDataColumns(grailsApplication) as grails.converters.JSON}
+       <%-- TODO - can these two lines be removed??? --%>
+        var activityView = false;
+        activitiesAndRecordsViewModel = new ActivitiesAndRecordsViewModel('data-result-placeholder', view, user, false, false, ${doNotStoreFacetFilters?:false}, columnConfig, activityView);
 
         var facetConfig;
 
@@ -667,3 +671,4 @@
     </g:applyCodec>
 </asset:script>
 <g:render template="/shared/resizeFilter" model="[dependentDiv: '.data-expander.data-container', target: '#survey-all-activities-and-records-content #filters', listenTo: '#survey-all-activities-and-records-content']" />
+

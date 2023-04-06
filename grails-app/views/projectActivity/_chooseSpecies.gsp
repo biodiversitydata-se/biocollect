@@ -16,8 +16,8 @@
                                                     guid: allSpeciesLists.searchGuid
                                                 }">
                         <div class="input-group-append">
-                            <button id="search" class="btn btn-dark" data-bind="click: allSpeciesLists.refreshPage(0)"><i class="fas fa-search"></i> Search</button>
-                            <button id="clear" class="btn btn-danger" data-bind="click: allSpeciesLists.clearSearch"><i class="far fa-trash-alt"></i> Clear</button>
+                            <button id="search" class="btn btn-dark" data-bind="click: allSpeciesLists.refreshPage(0)"><i class="fas fa-search"></i> <g:message code='g.search'/></button>
+                            <button id="clear" class="btn btn-danger" data-bind="click: allSpeciesLists.clearSearch"><i class="far fa-trash-alt"></i> <g:message code='g.clear'/></button>
                         </div>
                     </div>
 

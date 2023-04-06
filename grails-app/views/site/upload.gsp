@@ -3,10 +3,10 @@
 <html>
 <head>
     <meta name="layout" content="bs4"/>
-    <title>Upload | Sites | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
+    <title><g:message code='g.upload'/> | <g:message code='g.sites'/> | <g:message code="g.biocollect"/></title>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: 'g.home')}"/>
     <meta name="breadcrumbParent2"
-          content="${createLink(controller: 'site', action: 'list')},Sites"/>
+          content="${createLink(controller: 'site', action: 'list')},${message(code: 'g.sites')}"/>
     <meta name="breadcrumb" content="Upload Sites"/>
 
     <asset:script type="text/javascript">
@@ -54,19 +54,18 @@
             <div class="mb-5"></div>
             <input id="shapefile" type="file" accept="application/zip" name="shapefile"/>
             <button class="btn btn-primary-dark" id="uploadShapeFile" type="button"
-                    onclick="$(this).parent().submit();"><i class="fas fa-file-upload"></i> Upload Shapefile</button>
-            <button class="btn btn-dark" id="cancel" type="button"><i class="far fa-times-circle"></i> Cancel</button>
+                    onclick="$(this).parent().submit();"><i class="fas fa-file-upload"></i> <g:message code="g.upload"/> Shapefile</button>
+            <button class="btn btn-dark" id="cancel" type="button"><i class="far fa-times-circle"></i> <g:message code="g.cancel"/></button>
         </g:uploadForm>
     </div>
     </g:if>
     <g:else>
-    <h3>Create project sites from the shape file</h3>
+    <h3><g:message code="site.shapefile.heading"/></h3>
 
     <div class="row">
         <div class="col-12">
             <div class="alert alert-info" role="alert">
-                You can select attributes from the uploaded shape file to be used for the name, description and ID for the sites to upload.
-                De-select any sites you do not want to upload.
+                <g:message code="site.shapefile.selectAttributesHeading"/>
             </div>
         </div>
     </div>
@@ -97,9 +96,9 @@
         <div class="row mt-2 mb-3">
             <span class="col-3">
                 <button class="btn btn-primary-dark"
-                                        data-bind="click:save,disable:selectedCount()<=0">Create sites</button>
+                                        data-bind="click:save,disable:selectedCount()<=0"><g:message code="site.shapefile.createSites"/></button>
                 <button
-                    class="btn btn-dark" data-bind="click:cancel">Cancel</button>
+                    class="btn btn-dark" data-bind="click:cancel"><g:message code="g.cancel"/></button>
             </span>
         </div>
     </form>
@@ -111,15 +110,15 @@
                     <thead>
                     <tr>
                         <th colspan="1"></th>
-                        <th colspan="3">Properties to include in uploaded sites</th>
-                        <th data-bind="attr:{colspan:attributeNames().length}">Attributes in uploaded shapefile</th>
+                        <th colspan="3"><g:message code='site.shapefile.includeProps'/></th>
+                        <th data-bind="attr:{colspan:attributeNames().length}"><g:message code='site.shapefile.attributeList'/></th>
                     </tr>
                     <tr>
 
                         <th><input type="checkbox" name="selectAll" data-bind="checked:selectAll"></th>
-                        <th>Site name</th>
-                        <th>Site description</th>
-                        <th>Site ID</th>
+                        <th><g:message code='site.details.siteName'/></th>
+                        <th><g:message code='site.details.siteDescription'/></th>
+                        <th><g:message code='g.site'/> ID</th>
 
                         <!-- ko foreach: attributeNames -->
                         <th data-bind="text:$data"></th>

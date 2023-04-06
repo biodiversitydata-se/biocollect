@@ -28,6 +28,7 @@ import org.apache.http.HttpStatus
 import org.grails.web.json.JSONArray
 import org.springframework.context.MessageSource
 import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST
 import static org.apache.http.HttpStatus.SC_OK
@@ -53,10 +54,14 @@ class BioActivityController {
     SettingService settingService
     AuthService authService
     UtilService utilService
+    EmailService emailService
+    PersonService personService
     ActivityFormService activityFormService
 
     static int MAX_FLIMIT = 500
     static allowedMethods = ['bulkDelete': 'POST', bulkRelease: 'POST', bulkEmbargo: 'POST']
+
+    def locale = RCU.getLocale(request)
 
     /**
      * Update Activity by activityId or
@@ -129,11 +134,13 @@ class BioActivityController {
         def activity = null
         def pActivity = null
         String projectId = null
+        boolean projectEditor
 
         id = id ?: ''
 
         if (id) {
             activity = activityService.get(id)
+            postBody.personId = activity.personId
             projectId = activity?.projectId
             pActivity = projectActivityService.get(activity?.projectActivityId)
         } else if (pActivityId) {
@@ -166,7 +173,7 @@ class BioActivityController {
             response.status = 401
             result = [status: 401, error: flash.message]
         } else {
-            boolean projectEditor = projectService.canUserEditProject(userId, projectId, false)
+            projectEditor = projectService.canUserEditProject(userId, projectId, false)
             Map userAlreadyInRole = userService.isUserInRoleForProject(userId, projectId, "projectParticipant")
 
             if (!userAlreadyInRole.statusCode || userAlreadyInRole.statusCode == SC_OK) {
@@ -176,7 +183,7 @@ class BioActivityController {
 
                 def photoPoints = postBody.remove('photoPoints')
                 postBody.projectActivityId = pActivity.projectActivityId
-                postBody.userId = userId
+                postBody.userId = postBody.userId != "" ? postBody?.userId : userId
                 pActivity?.visibility?.alaAdminEnforcedEmbargo ? postBody.embargoed = true : null
 
                 result = activityService.update(id, postBody)
@@ -219,6 +226,23 @@ class BioActivityController {
                 result = userAlreadyInRole
             }
         }
+
+        // START OF SYSTEMATIC MONITORING CHANGES 
+        if (postBody?.verificationStatus == "not verified"){
+            def project = projectService.get(projectId)
+            boolean isSystematicMonitoring = projectService.isSystematicMonitoring(project)
+            if (isSystematicMonitoring){
+                def projectActivity = projectActivityService.get(pActivityId)
+                def emailAddresses = projectActivity.alert.emailAddresses ? projectActivity.alert.emailAddresses : grailsApplication.config.biocollect.support.email.address
+                String userName = userService.getCurrentUserDisplayName()
+                String bioActivityEditUrl = g.createLink(controller: 'bioActivity', action: 'edit')
+                String bioActivityId = result.resp.activityId
+                def subject =  "En inventering av en ${projectActivity?.name} har rapporterats av ${userName} via BioCollect"
+                def emailBody = "<a href='${grailsApplication.config.server.serverURL}/person/index/${postBody.personId}'>${userName}</a> har just skickat in ett protokoll. Du kan kontrollera och eventuellt ändra i protokollet: <a href='${grailsApplication.config.server.serverURL}${bioActivityEditUrl}/${bioActivityId}'>här</a>"
+                emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
+            } 
+        }
+        // END OF SYSTEMATIC MONITORING CHANGES 
         result.error = flash.message
         render result as JSON
     }
@@ -236,8 +260,15 @@ class BioActivityController {
      */
     @SSO
     def create(String id) {
-        Map model = addActivity(id)
-        model?.title = messageSource.getMessage('record.create.title', [].toArray(), '', Locale.default)
+        Map model
+        if (params?.personId){  
+            model = addActivityForAnotherPerson(id, params.personId, false)
+        } else { 
+            model = addActivity(id)
+        }
+        model?.title = messageSource.getMessage('record.create.title', [].toArray(), '', locale)
+        model.isUserAdmin = userService.userIsAlaOrFcAdmin()
+        model.isCreate = true
 
         model
     }
@@ -280,7 +311,7 @@ class BioActivityController {
     @SSO
     def edit(String id) {
         Map model = editActivity(id)
-        model?.title = messageSource.getMessage('record.edit.title', [].toArray(), '', Locale.default)
+        model?.title = messageSource.getMessage('record.edit.title', [].toArray(), '', locale)
         //May relates to the known grails.converter.JSON issue
         //Remove this seem-useless statement may causes issue
         model.toString()
@@ -317,8 +348,14 @@ class BioActivityController {
 
 
     private def addActivity(String id, boolean mobile = false) {
+        // userId needed to retrieve only sites booked by this person 
         String userId = userService.getCurrentUserId(request)
-        Map pActivity = projectActivityService.get(id, "all")
+        // personId to save in activity 
+        String personId = personService.getPersonIdForUser(userId)
+        // the pActivity has pre-filtered sites - only ones that were booked/ created by the user
+        // this is where the dropdown is populated from and it has the details of transect parts to be displayed on the map
+        // we don't want sites in any other objects inside the model because they don't count
+        Map pActivity = projectActivityService.get(id, "all", null, personId)
         String projectId = pActivity?.projectId
         String type = pActivity?.pActivityFormName
         Map model = [:]
@@ -333,8 +370,8 @@ class BioActivityController {
             flash.message = "Access denied: This survey is closed."
             if (!mobile) redirect(controller: 'project', action: 'index', id: projectId)
         } else {
-            Map activity = [activityId: '', siteId: '', projectId: projectId, type: type]
-            Map project = projectService.get(projectId)
+            Map activity = [activityId: '', siteId: '', projectId: projectId, type: type, personId: personId]
+            Map project = projectService.get(projectId, 'brief') 
             model = activityModel(activity, projectId)
             model.pActivity = pActivity
             model.speciesConfig = [surveyConfig: [speciesFields: pActivity?.speciesFields]]
@@ -342,14 +379,52 @@ class BioActivityController {
             model.returnTo = params.returnTo ? params.returnTo : g.createLink(controller: 'project', id: projectId)
             model.autocompleteUrl = "${request.contextPath}/search/searchSpecies/${pActivity.projectActivityId}?limit=10"
             model.isUserAdminModeratorOrEditor = projectService.isUserAdminForProject(userId, projectId) || projectService.isUserModeratorForProject(userId, projectId) || projectService.isUserEditorForProject(userId, projectId)
-            addOutputModel(model)
+            addOutputModel(model) // this is where more stuff is added! 
             addDefaultSpecies(activity)
         }
 
         if (mobile && flash.message) {
             model?.error = flash.message
         }
+        model
+    }
 
+    private def addActivityForAnotherPerson(String id, String personId, boolean mobile) {
+
+        // userId needed to retrieve only sites booked by this person 
+        def person = personService.get(personId)
+        String userId = person?.person?.userId
+        String adminUserId = userService.getCurrentUserId(request)
+        Map pActivity = projectActivityService.get(id, "all", null, personId)
+        String projectId = pActivity?.projectId
+        String type = pActivity?.pActivityFormName
+        Map model = [:]
+
+        if (!pActivity.publicAccess && !projectService.canUserEditProject(adminUserId, projectId, false)) {
+            flash.message = "Only members associated to this project can submit record. For more information, please contact ${grailsApplication.config.biocollect.support.email.address}"
+            if (!mobile) redirect(controller: 'project', action: 'index', id: projectId)
+        } else if (!type) {
+            flash.message = "Invalid activity type"
+            if (!mobile) redirect(controller: 'project', action: 'index', id: projectId)
+        } else if (isProjectActivityClosed(pActivity)) {
+            flash.message = "Access denied: This survey is closed."
+            if (!mobile) redirect(controller: 'project', action: 'index', id: projectId)
+        } else {
+            Map activity = [activityId: '', siteId: '', projectId: projectId, type: type, personId: personId, userId: userId]
+            Map project = projectService.get(projectId, 'brief') 
+            model = activityModel(activity, projectId)
+            model.pActivity = pActivity
+            model.speciesConfig = [surveyConfig: [speciesFields: pActivity?.speciesFields]]
+            model.projectName = project.name
+            model.returnTo = params.returnTo ? params.returnTo : g.createLink(controller: 'project', id: projectId)
+            model.autocompleteUrl = "${request.contextPath}/search/searchSpecies/${pActivity.projectActivityId}?limit=10"
+            addOutputModel(model) // this is where more stuff is added! 
+            addDefaultSpecies(activity)
+        }
+
+        if (mobile && flash.message) {
+            model?.error = flash.message
+        }
         model
     }
 
@@ -366,13 +441,21 @@ class BioActivityController {
             flash.message = "Invalid activity - ${id}"
             if(!mobile)  redirect(controller: 'project', action: 'index', id: projectId)
         } else if (projectService.canUserModerateProjects(userId, projectId) || activityService.isUserOwnerForActivity(userId, activity?.activityId)) {
-            def pActivity = projectActivityService.get(activity?.projectActivityId, "all")
-            model = activityAndOutputModel(activity, activity.projectId)
+            model = activityAndOutputModel(activity, projectId)
+            def pActivity = projectActivityService.get(activity?.projectActivityId, "all", null, activity.personId) 
+            // LU needed to limit the number of sites in the survey dropdown - the site that is activity.siteId is here model.site
+            // However we need to have other sites book by the person who is adding a survey available too - they are contained in pActivity.sites
+            // pActivity.sites = the overlap between sites in person.bookedSites for the person who is adding the survey AND sites available for the survey stored in pActivity.sites
+            // If booking has been errased then the real activity.siteID has to be added here, otherwise the site shows "Location of sighting" instead of the real name
+            if  (!pActivity.sites.contains(model.site)) {
+                pActivity.sites.add(model.site)
+            }
             model.pActivity = pActivity
             model.projectActivityId = pActivity.projectActivityId
             model.id = id
             model.speciesConfig = [surveyConfig: [speciesFields: pActivity?.speciesFields]]
             model.isUserAdminModeratorOrEditor = projectService.isUserAdminForProject(userId, projectId) || projectService.isUserModeratorForProject(userId, projectId) || projectService.isUserEditorForProject(userId, projectId)
+            model.isUserAdmin = userService.userIsAlaOrFcAdmin()
             model.returnTo = params.returnTo ? params.returnTo : g.createLink(controller: 'bioActivity', action: 'index') + "/" + id
         } else {
             flash.message = "Access denied: User is not an owner of this activity ${activity?.activityId}"
@@ -510,8 +593,10 @@ class BioActivityController {
             redirect(controller: "error", action:'response404', params: [status: 404, errMsg: activity.error])
             return
         }
-        def pActivity = projectActivityService.get(activity?.projectActivityId, "all", params?.version)
-
+        // levelOfDetail has to be ALL, otherwise the activity won't display at all
+        def pActivity = projectActivityService.get(activity?.projectActivityId, "all", null, userId) 
+        HubSettings hubSettings = SettingService.hubConfig
+        boolean hubIsSft = hubSettings.urlPath == "sft" ? true : false
         boolean embargoed = (activity.embargoed == true) || projectActivityService.isEmbargoed(pActivity)
         boolean userIsOwner = userId && activityService.isUserOwnerForActivity(userId, id)
         boolean userIsModerator = userId && projectService.canUserModerateProjects(userId, pActivity?.projectId)
@@ -526,10 +611,13 @@ class BioActivityController {
             } else {
                 Map model = activityAndOutputModel(activity, activity.projectId, 'view', params?.version)
                 model.speciesConfig = [surveyConfig: [speciesFields: pActivity?.speciesFields]]
+            // don't allow editing sites, only the existing activity site is allowed in the dropdown - so it might as well be non-editable, not dropdown
+                pActivity.sites = [model.site]
                 model.pActivity = pActivity
                 model.id = pActivity.projectActivityId
                 model.userIsProjectMember = userIsProjectMember
                 model.hasEditRights = userIsOwner || userIsModerator
+                model.hubIsSft = hubIsSft
                 model.returnTo = params.returnTo ? params.returnTo : g.createLink(controller: 'project', action: 'index', id: pActivity?.projectId)
                 params.mobile ? model.mobile = true : ''
 
@@ -596,7 +684,7 @@ class BioActivityController {
                         contentURI: '/bioActivity/projectRecords',
                         projectId: id,
                         project: project,
-                        title: messageSource.getMessage('project.records.title', [].toArray(), '', Locale.default),
+                        title: messageSource.getMessage('project.records.title', [].toArray(), '', locale),
                         occurrenceUrl: occurrenceUrl,
                         spatialUrl: spatialUrl,
                         isProjectContributingDataToALA: isProjectContributingDataToALA,
@@ -625,7 +713,7 @@ class BioActivityController {
                             user:  userService.user,
                             projectId: id,
                             project: project,
-                            title: messageSource.getMessage('project.myrecords.title', [].toArray(), '', Locale.default),
+                            title: messageSource.getMessage('project.myrecords.title', [].toArray(), '', locale),
                             occurrenceUrl: occurrenceUrl,
                             spatialUrl: spatialUrl,
                             isProjectContributingDataToALA: isProjectContributingDataToALA,
@@ -663,7 +751,7 @@ class BioActivityController {
                                 projectActivityId: params.projectActivityId,
                                 pActivity: projectActivity,
                                 project: project,
-                                title: "${messageSource.getMessage('project.userrecords.title', [].toArray(), '', Locale.default)} ${user.getDisplayName()}",
+                                title: "${messageSource.getMessage('project.userrecords.title', [].toArray(), '', locale)} ${user.getDisplayName()}",
                                 occurrenceUrl: occurrenceUrl,
                                 spatialUrl: spatialUrl,
                                 isProjectContributingDataToALA: isProjectContributingDataToALA,
@@ -725,7 +813,9 @@ class BioActivityController {
     private GrailsParameterMap constructDefaultSearchParams(Map params) {
         GrailsParameterMap queryParams = new GrailsParameterMap([:], request)
         Map parsed = commonService.parseParams(params)
-        parsed.userId = userService.getCurrentUserId(parsed.mobile ? request : null)
+        String userId = userService.getCurrentUserId(parsed.mobile ? request : null)
+        parsed.userId = userId
+        parsed.personId = personService.getPersonIdForUser(userId) ?: null
 
         parsed.each { key, value ->
             if (value != null && value) {
@@ -920,6 +1010,7 @@ class BioActivityController {
                     type             : doc.type,
                     status           : doc.status,
                     lastUpdated      : doc.lastUpdated,
+                    dateCreated      : doc.dateCreated,
                     userId           : doc.userId,
                     siteId           : doc.siteId,
                     name             : doc.projectActivity?.name,
@@ -1122,7 +1213,7 @@ class BioActivityController {
                     type             : doc.type,
                     name             : doc.projectActivity?.name,
                     activityOwnerName: doc.projectActivity?.activityOwnerName,
-                    records          : doc.projectActivity?.records,
+                    // records          : doc.projectActivity?.records,
                     projectName      : doc.projectActivity?.projectName,
                     projectId        : doc.projectActivity?.projectId,
                     sites            : doc.sites,
@@ -1158,6 +1249,17 @@ class BioActivityController {
         model.total = results?.total
 
         render model as JSON
+    }
+
+    def getMinMaxYearForQuery () {
+        String dateFields = params.dateFields
+        params.remove('dateFields')
+        if (dateFields) {
+            Map result = searchService.getMinMaxYearForQuery(dateFields , params) ?: [:]
+            render text: result as JSON, contentType: "application/json"
+        } else {
+            render text: [error: "Parameter dateFields must be provided."] as JSON, status: HttpStatus.SC_BAD_REQUEST
+        }
     }
 
     private def listUserActivities(params) {
@@ -1204,8 +1306,9 @@ class BioActivityController {
 
     private Map activityModel(activity, projectId, mode = '', version = null) {
         Map model = [activity: activity, returnTo: params.returnTo, mode: mode]
-        model.site = model.activity?.siteId ? siteService.get(model.activity.siteId, [view: 'brief', version: version]) : null
-        model.project = projectId ? projectService.get(model.activity.projectId, null, false, version) : null
+        model.site = model.activity?.siteId ? siteService.get(model.activity.siteId, [view: 'transects', version: version]) : null
+        // model.project is minimal - don't fiddle with it
+        model.project = projectId ? projectService.get(model.activity.projectId, 'brief', false, version) : null
         model.projectSite = model.project?.sites?.find { it.siteId == model.project.projectSiteId }
 
         // Add the species lists that are relevant to this activity.
@@ -1216,7 +1319,7 @@ class BioActivityController {
                     model.speciesLists.add(list)
                 }
             }
-            model.themes = metadataService.getThemesForProject(model.project)
+            // model.themes = metadataService.getThemesForProject(model.project)
         }
 
         model.user = userService.getUser()

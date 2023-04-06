@@ -12,9 +12,9 @@
                     <div class="row">
                         <div class="col-12 mb-3">
                             <a class="btn btn-sm btn-primary-dark" href="#" data-bind="click:$parent.editBlogEntry">
-                                <i class="fas fa-pencil-alt"></i> Edit</a>
+                                <i class="fas fa-pencil-alt"></i> <g:message code='g.edit'/></a>
                             <a class="btn btn-sm btn-danger" href="#" data-bind="click:$parent.deleteBlogEntry">
-                                <i class="far fa-trash-alt"></i> Delete</a>
+                                <i class="far fa-trash-alt"></i> <g:message code='g.delete'/></a>
                         </div>
                     </div>
                 </div>
@@ -23,12 +23,12 @@
         <!-- /ko -->
     </g:if>
     <g:else>
-        No blog entries.
+        <g:message code='project.blog.noEntries'/>.
     </g:else>
 
     <div class="row mt-2">
         <div class="col-12">
-            <button data-bind="click:newBlogEntry" type="button" id="new" class="btn btn-sm btn-primary-dark "><i class="fas fa-plus"></i> New Entry</button>
+            <button data-bind="click:newBlogEntry" type="button" id="new" class="btn btn-sm btn-primary-dark "><i class="fas fa-plus"></i> <g:message code='project.blog.newEntry'/></button>
         </div>
     </div>
 </div>

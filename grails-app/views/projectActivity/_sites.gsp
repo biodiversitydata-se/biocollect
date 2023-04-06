@@ -18,6 +18,58 @@
     </div>
 
     <div class="px-3" id="site-accordion">
+
+
+
+        %{-- LU layout brojken after merge --}%
+        <div class="">
+            <div class="bg-light p-3">
+                <div class="form-check form-group m-0">
+                    <label class="radio">
+                        <input type="radio" name="siteType"
+                               data-bind="checked: surveySiteOption, click: transients.toggleSiteOptionPanel.bind({accordionLinkId:'#site-create-systematic-link'}), 
+                               clickBubble: false" value="sitecreatesystematic"/>
+                        <a id="site-create-systematic-link" data-toggle="collapse" data-parent="#site-accordion" href="#site-create-systematic"
+                           data-bind="click: transients.setSurveySiteOption.bind({value: 'sitecreatesystematic'})">
+                            <h4><g:message code="mapConfiguration.sites.createSystematic.title"/></h4>
+                        </a>
+                    </label>
+                </div>
+            </div>
+            <div id="site-create-systematic" class="accordion-body collapse" data-bind="css: { 'in': transients.surveySiteOption == 'sitecreatesystematic' }">
+                <div class="accordion-inner" data-bind="css: {'bg-selected-color':  surveySiteOption() === 'sitecreatesystematic' }">
+                This option allows user who are registered for the scheme to create their own sites before adding a record
+                
+                <div class="margin-left-30" data-bind="if: surveySiteOption() === 'sitecreatesystematic', slideVisible: surveySiteOption() === 'sitecreatesystematic'">
+                    
+                        <h5><strong><g:message code="mapConfiguration.user.pick.site.title"/></strong></h5>
+                        <h5><small><span class="req-field"></span> <g:message code="mapConfiguration.site.mandatory.title"/></small></h5>
+                        <!-- ko template: {name: 'template-sites-pick-one'} -->
+                        <!-- /ko -->
+
+                        <hr/>
+
+                        <h5><strong><g:message
+                                code="mapConfiguration.user.created.site.title"/></strong></h5>
+                        <h5><small><span class="req-field"></span> <g:message code="mapConfiguration.site.mandatory.title"/></small></h5>
+                        <!-- ko template: {name: 'template-site-create'} -->
+                        <!-- /ko -->
+
+                        <hr>
+
+                        <h5><strong><g:message
+                                code="mapConfiguration.transect.allowSegmentMetadata"/></strong></h5>
+                        <!-- ko template: {name: 'template-allow-segment-metadata'} -->
+                        <!-- /ko -->
+                    </div></div>
+            </div>
+        </div>
+
+
+
+
+
+
         <div class="">
             <div class="bg-light p-3">
                 <div class="form-check form-group m-0">
@@ -217,7 +269,14 @@
                     <label class="btn-space">
                         <g:message code="mapConfiguration.site.create.choose.title"></g:message>
                         <button class="btn-dark btn btn-sm" data-bind="click: $parent.redirectToSelect, disable: transients.warning()"><i class="fas fa-list-ol"></i> <g:message code="mapConfiguration.site.existing.selection"></g:message> </button>
-                        <button class="btn-dark btn btn-sm" data-bind="click: $parent.redirectToCreate, disable: transients.warning()"><i class="fas fa-plus"></i> <g:message code="mapConfiguration.site.create"></g:message> </button>
+
+                        <g:if test="${hubConfig?.isSystematic}">
+                            <button class="btn-dark btn btn-sm" data-bind="click: $parent.redirectToCreateSystematic, disable: transients.warning()"><i class="fas fa-plus"></i> <g:message code="mapConfiguration.site.createSystematic"/> </button>
+                        </g:if>
+                        <g:else>
+                            <button class="btn-dark btn btn-sm" data-bind="click: $parent.redirectToCreate, disable: transients.warning()"><i class="fas fa-plus"></i> <g:message code="mapConfiguration.site.create"></g:message> </button>
+                        </g:else>
+
                         <button class="btn-dark btn btn-sm" data-bind="click: $parent.redirectToUpload, disable: transients.warning()"><i class="fas fa-file-upload"></i> <g:message code="mapConfiguration.site.upload"></g:message> </button>
                     </label>
                 </div>
@@ -273,6 +332,16 @@
 
         <span class="form-text"><g:message
                 code="mapConfiguration.addCreatedSiteToListOfSelectedSites.help.text"/></span>
+    </div>
+</div>
+</script>
+<script id="template-allow-segment-metadata" type="text/html">
+<div class="row-fluid">
+    <div class="span6">
+        <label class="checkbox">
+            <input type="checkbox" data-bind="checked: allowSegmentMetadata"/>
+            <g:message code="mapConfiguration.transect.allowSegmentMetadata.help"/>
+        </label>
     </div>
 </div>
 </script>

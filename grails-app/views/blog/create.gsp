@@ -3,10 +3,10 @@
 <html>
 <head>
     <meta name="layout" content="bs4"/>
-    <title>Create | Blog Entry | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
+    <title><g:message code='g.create'/> | <g:message code='project.blog.title'/> | <g:message code="g.biocollect"/></title>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: "g.home")}"/>
     <meta name="breadcrumbParent2"
-          content="${createLink(controller: 'project', action: 'index')}/${blogEntry.projectId},Project"/>
+          content="${createLink(controller: 'project', action: 'index')}/${blogEntry.projectId},${message(code: 'g.project')}"/>
     <meta name="breadcrumb" content="New blog entry"/>
     <asset:stylesheet src="blog-manifest.css"/>
 %{--    <script type="text/javascript" src="${grailsApplication.config.google.maps.url}" async defer></script>--}%
@@ -35,7 +35,7 @@
     <div class="row">
         <div class="col-12 btn-space">
             <button type="button" id="save" data-bind="click:save" class="btn btn-primary-dark"><i class="fas fa-plus"></i> Create</button>
-            <button type="button" id="cancel" data-bind="click:cancel" class="btn btn-dark"><i class="far fa-times-circle"></i> Cancel</button>
+            <button type="button" id="cancel" data-bind="click:cancel" class="btn btn-dark"><i class="far fa-times-circle"></i> <g:message code='g.cancel'/></button>
         </div>
     </div>
 </div>

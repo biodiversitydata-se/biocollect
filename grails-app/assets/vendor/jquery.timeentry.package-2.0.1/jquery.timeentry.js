@@ -134,7 +134,7 @@
 						The popup texts for the spinner image areas. */
 		regionalOptions: { // Available regional settings, indexed by language/country code
 			'': { // Default regional settings - English/US
-				show24Hours: false,
+				show24Hours: true,
 				separator: ':',
 				ampmPrefix: '',
 				ampmNames: ['AM', 'PM'],

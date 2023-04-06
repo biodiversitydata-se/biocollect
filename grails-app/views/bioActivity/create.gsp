@@ -5,8 +5,8 @@
 <head>
     <meta name="layout" content="${mobile ? 'mobile' : 'bs4'}"/>
     <title>Create | ${activity.type} | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
-    <meta name="breadcrumbParent2" content="${createLink(controller: 'project', action: 'index')}/${pActivity.projectId},Project"/>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: "g.home")}"/>
+    <meta name="breadcrumbParent2" content="${createLink(controller: 'project', action: 'index')}/${pActivity.projectId},${message(code: 'g.project')}"/>
     <meta name="breadcrumb" content="${pActivity.name}"/>
     <asset:stylesheet src="forms-manifest.css"/>
     <g:if test="${mobile}">
@@ -42,6 +42,7 @@
         bioActivityUpdate: "${raw(createLink(controller: 'bioActivity', action: 'ajaxUpdate', params: [pActivityId: pActivity.projectActivityId]))}",
         bioActivityView: "${createLink(controller: 'bioActivity', action: 'index')}/",
         excelDataUploadUrl: "${raw(createLink(controller:'bioActivity', action:'extractDataFromExcelTemplate', params:[pActivityId:pActivity.projectActivityId]))}",
+        bioActivityEdit: "${createLink(controller: 'bioActivity', action: 'edit')}/",
         getOutputSpeciesIdUrl : "${createLink(controller: 'output', action: 'getOutputSpeciesIdentifier')}",
         getGuidForOutputSpeciesUrl : "${createLink(controller: 'record', action: 'getGuidForOutputSpeciesIdentifier')}",
         imageLeafletViewer: '${createLink(controller: 'resource', action: 'imageviewer', absolute: true)}',
@@ -49,6 +50,9 @@
         excelOutputTemplateUrl: "${createLink(controller: 'proxy', action:'excelOutputTemplate')}",
         uploadImagesUrl: "${createLink(controller: 'image', action: 'upload')}",
         returnTo: "${returnTo ?: (createLink(controller: 'project', action: 'index')+ "/" + pActivity.projectId)}"
+        personId: "${activity.personId}",
+        userId: "${activity.userId}", 
+        adminVerification: ${pActivity?.adminVerification || false}
         </g:applyCodec>
         },
         here = document.location.href;

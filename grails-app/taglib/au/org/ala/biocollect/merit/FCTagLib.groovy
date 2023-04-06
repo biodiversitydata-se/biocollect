@@ -454,7 +454,7 @@ class FCTagLib {
             output = "<a id='logout-btn' href='${logoutUrl}" +
                     "?casUrl=${casLogoutUrl}" +
                     "&appUrl=${logoutReturnToUrl}' " +
-                    "class='${cssClass}'><i class='${iconLogout}'></i> Logout</a>"
+                    "class='${cssClass}'><i class='${iconLogout}'></i> ${message(code: 'g.logout')}</a>"
         } else {
             // currently logged out
             output =  "<a href='${casLoginUrl}?service=${loginReturnToUrl}' class='${cssClass}'><span><i class='${iconLogin}'></i> Log in</span></a>"
@@ -825,6 +825,8 @@ class FCTagLib {
                 out << createLink(controller: 'project', action:'create', params: [ecoScience:true])
             } else if(hubConfig.defaultFacetQuery.contains('isWorks:true')){
                 out << createLink(controller: 'project', action:'create', params: [works:true])
+            } else if(hubConfig.defaultFacetQuery.contains('isSystematicMonitoring:true')){
+                out << createLink(controller: 'project', action:'create', params: [systematicMonitoring:true])
             } else {
                 out << createLink(controller: 'project', action:'create', params: [citizenScience:true])
             }

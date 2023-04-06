@@ -7,7 +7,7 @@
 <head>
     <meta name="layout" content="bs4"/>
     <title>${project?.name.encodeAsHTML()} | Project | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: "g.home")}"/>
     <meta name="breadcrumb" content="${project?.name}"/>
     <meta name="bannerURL" content="${utilService.getMainImageURL(project.documents)}"/>
     <meta name="bannerClass" content="project-banner"/>
@@ -52,6 +52,11 @@
         featureService: "${createLink(controller: 'proxy', action: 'feature')}",
         spatialWms: "${grailsApplication.config.spatial.geoserverUrl}",
         layersStyle: "${createLink(controller: 'regions', action: 'layersStyle')}",
+        wmsActivityURL: "${createLink(controller: 'geoServer', action: 'wms', params: [projectId: project.projectId, maxFeatures: grailsApplication.config.map.wms.maxFeatures, tiled: true])}",
+        createStyleURL: "${createLink(controller: 'geoServer', action: 'createStyle')}",
+        dateRangeURL: "${createLink(controller: 'bioActivity', action: 'getMinMaxYearForQuery', params: [projectId: projectId])}",
+        getLayerNameURL: "${createLink(controller: 'geoServer', action: 'getLayerName')}",
+        heatmapURL: "${createLink(controller: 'geoServer', action: 'getHeatmap', params: [projectId: project.projectId])}",
         sldPolgonDefaultUrl: "${grailsApplication.config.sld.polgon.default.url}",
         sldPolgonHighlightUrl: "${grailsApplication.config.sld.polgon.highlight.url}",
         organisationLinkBaseUrl: "${createLink(controller: 'organisation', action: 'index')}",
@@ -119,8 +124,17 @@
         layersStyle: "${createLink(controller: 'regions', action: 'layersStyle')}",
         allBaseLayers: ${grailsApplication.config.map.baseLayers as grails.converters.JSON},
         allOverlays: ${grailsApplication.config.map.overlays as grails.converters.JSON},
+        allMapDisplays: ${grailsApplication.config.map.data.displays as grails.converters.JSON},
         mapLayersConfig: ${mapService.getMapLayersConfig(project, pActivity) as JSON},
-        sitesWithDataForProject: "${createLink(controller: 'bioActivity', action: 'getSitesWithDataForProject')}"
+        sitesWithDataForProject: "${createLink(controller: 'bioActivity', action: 'getSitesWithDataForProject')}",
+        mapDisplayHelpText: "<g:message code="map.style.help"/>",
+        mapDisplayColourByHelpText: "<g:message code="map.colour.by.help"/>",
+        mapDisplayFilterByHelpText: "<g:message code="map.filter.by.help"/>",
+        clusterLegendTitle: "<g:message code="map.cluster.legend.title"/>",
+        heatmapLegendTitle: "<g:message code="map.heatmap.legend.title"/>",
+        pointLegendTitle: "<g:message code="map.point.legend.title"/>",
+        polygonLegendTitle: "<g:message code="map.polygon.legend.title"/>",
+        lineLegendTitle: "<g:message code="map.line.legend.title"/>"
         </g:applyCodec>
         },
         here = window.location.href;
@@ -307,7 +321,7 @@
 
                     $('#site-photo-points a').on('click',function(e) {
                         e.preventDefault();
-                        $('#site-photo-points').html('<span class="search-spinner spinner margin-left-1"> <i class="fa fa-spin fa-spinner"></i> Loading...</span>');
+                        $('#site-photo-points').html('<span class="search-spinner spinner margin-left-1"> <i class="fa fa-spin fa-spinner"></i> <g:message code='g.loading'/>...</span>');
                         $.get(fcConfig.sitesPhotoPointsUrl).done(function(data) {
 
                             $('#site-photo-points').html($(data));

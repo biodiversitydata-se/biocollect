@@ -4,10 +4,10 @@
 <html>
 <head>
   <meta name="layout" content="bs4"/>
-  <title> ${create ? 'New' : ('Edit | ' + site?.name?.encodeAsHTML())} | Sites | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
+  <title> ${create ? 'New' : ('Edit | ' + site?.name?.encodeAsHTML())} | ${message(code: 'g.sites')} | <g:message code="g.biocollect"/></title>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: 'g.home')}"/>
     <meta name="breadcrumbParent2"
-          content="${createLink(controller: 'site', action: 'list')},Sites"/>
+          content="${createLink(controller: 'site', action: 'list')},${message(code: 'g.sites')}"/>
     <g:if test="${project}">
         <meta name="breadcrumb" content="Create new site for ${project?.name?.encodeAsHTML()}"/>
     </g:if>
@@ -68,8 +68,8 @@
             <g:render template="siteDetails" model="${[showLine: true]}"/>
             <div class="row mt-3">
                 <div class="form-actions col-12">
-                    <button type="button" id="save" class="btn btn-primary-dark"><i class="fas fa-hdd"></i> Save changes</button>
-                    <button type="button" id="cancel" class="btn btn-dark"><i class="far fa-times-circle"></i> Cancel</button>
+                    <button type="button" id="save" class="btn btn-primary-dark"><i class="fas fa-hdd"></i> <g:message code="g.save"/></button>
+                    <button type="button" id="cancel" class="btn btn-dark"><i class="far fa-times-circle"></i> <g:message code="g.cancel" /></button>
                 </div>
             </div>
         </bs:form>

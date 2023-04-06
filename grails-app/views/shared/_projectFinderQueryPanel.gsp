@@ -9,7 +9,7 @@
         <h3><g:message code="label.filters"/></h3>
         <button type="button" class="btn btn-sm btn-dark refine"
                 data-bind="click: mergeTempToRefine"
-                aria-label="Refine Projects"><i class="fas fa-filter"></i> Refine</button>
+                aria-label="Refine Projects"><i class="fas fa-filter"></i> <g:message code='g.refine'/></button>
     </div>
 
     <div id="filters-group">

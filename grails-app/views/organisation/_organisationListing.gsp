@@ -21,7 +21,7 @@
                        placeholder="Search organisations..." aria-label="Search organisations..." aria-describedby="org-search-button"/>
 
                 <div class="input-group-append">
-                    <button class="btn btn-primary btn-sm" id="org-search-button"><i class="fa fa-search"></i> Search</button>
+                    <button class="btn btn-primary btn-sm" id="org-search-button"><i class="fa fa-search"></i> <g:message code='g.search'/></button>
                 </div>
             </div>
         </div>

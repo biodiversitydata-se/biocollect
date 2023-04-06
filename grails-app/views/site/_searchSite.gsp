@@ -3,7 +3,7 @@
            aria-describedby="button-addon2" data-bind="value: searchTerm">
     <div class="input-group-append">
         <button class="btn btn-primary-dark" title="Only show projects which contain the search term" type="button">
-            <i class="fas fa-search"></i> Search
+            <i class="fas fa-search"></i> <g:message code='g.search'/>
         </button>
     </div>
 </div>

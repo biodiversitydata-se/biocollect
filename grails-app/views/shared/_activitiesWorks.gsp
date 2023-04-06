@@ -307,10 +307,9 @@
             <div class="modal-footer control-group">
                 <div class="controls">
                     <button type="button" class="btn btn-success"
-                            data-bind="enable:name() && !error(), click:save, visible:!complete()"><i class="fas fa-hdd"></i> Save</button>
-                    <button class="btn" data-bind="click:cancel, visible:!complete()"><i class="far fa-times-circle"></i> Cancel</button>
-                    <button class="btn" data-bind="click:close, visible:complete()"><i class="fas fa-times"></i> Close</button>
-
+                            data-bind="enable:name() && !error(), click:save, visible:!complete()"><i class="fas fa-hdd"></i> <g:message code='g.save'/></button>
+                    <button class="btn" data-bind="click:cancel, visible:!complete()"><i class="far fa-times-circle"></i> <g:message code='g.cancel'/></button>
+                    <button class="btn" data-bind="click:close, visible:complete()"><i class="fas fa-times"></i> <g:message code='g.close'/></button>
                 </div>
             </div>
 

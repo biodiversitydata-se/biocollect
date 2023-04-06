@@ -20,6 +20,7 @@
             defaultOverriddenLabelsURL: "${createLink(controller: 'hub', action: 'defaultOverriddenLabels')}",
             allBaseLayers: ${grailsApplication.config.map.baseLayers as grails.converters.JSON},
             allOverlays: ${grailsApplication.config.map.overlays as grails.converters.JSON},
+            allMapDisplays: ${grailsApplication.config.map.data.displays as grails.converters.JSON},
             leafletAssetURL: "${assetPath(src: 'webjars/leaflet/0.7.7/dist/images')}"
             </g:applyCodec>
         };
@@ -59,7 +60,7 @@
         </div>
     </div>
     <div class="col-md-6 btn-space">
-        <button class="btn btn-info" data-bind="click:editHub"><i class="fas fa-pencil-alt"></i> Edit <span data-bind="text:selectedHubUrlPath"></span></button>
+        <button class="btn btn-info" data-bind="click:editHub"><i class="fas fa-pencil-alt"></i> <g:message code='g.edit'/> <span data-bind="text:selectedHubUrlPath"></span></button>
         <button class="btn btn-info" data-bind="click:newHub"><i class="fas fa-plus"></i> New Hub</button>
     </div>
 
@@ -121,6 +122,14 @@
                 <div class="col-md-8">
                     <select class="form-control" id="default-program" data-bind="value:defaultProgram, options:supportedPrograms"></select>
                 </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="supported-programs">Systematic Monitoring (projects in the hub use systematic monitoring methods)</label>
+            <div class="controls">
+                <ul id="isSystematicMonitoring" data-bind="value:isSystematicMonitoring" class="unstyled">
+                    <li><label><input type="checkbox" data-bind="checked:isSystematicMonitoring"></label></li>
+                </ul>
             </div>
         </div>
 
@@ -675,6 +684,19 @@
                 <div class="overflow-x">
                     <map-config-selector params="allBaseLayers: fcConfig.allBaseLayers, allOverlays: fcConfig.allOverlays, mapLayersConfig: mapLayersConfig"></map-config-selector>
                 </div>
+                <h4><strong>Configure map display style</strong></h4>
+                <div class="overflow-x">
+                    <biocollect-data-map-selector params="mapDisplays: mapDisplays, allMapDisplays: fcConfig.allMapDisplays, showProjectMemberColumn: false "></biocollect-data-map-selector>
+                </div>
+                <h4><strong>Configure index for time series animation</strong></h4>
+                <div class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label" for="time-series-index">Pick a date field for time series animation</label>
+                        <div class="controls">
+                            <select id="time-series-index" data-bind="options: hubConfigs.availableIndexForTimeSeries, value: timeSeriesOnIndex"></select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="tab-pane" id="hubHomepage">
@@ -710,8 +732,8 @@
         </div>
     </div>
     <div class="form-actions mt-2">
-        <button type="button" id="save" data-bind="click:save" class="btn btn-primary-dark"><i class="fas fa-hdd"></i> Save</button>
-        <button type="button" id="cancel" class="btn btn-dark"><i class="far fa-times-circle"></i> Cancel</button>
+        <button type="button" id="save" data-bind="click:save" class="btn btn-primary-dark"><i class="fas fa-hdd"></i> <g:message code='g.save'/></button>
+        <button type="button" id="cancel" class="btn btn-dark"><i class="far fa-times-circle"></i> <g:message code='g.cancel'/></button>
     </div>
 </div>
 
@@ -727,16 +749,16 @@
                 <option value="external">External link</option>
                 <option value="nolink">No link - text only</option>
                 <option value="">---------</option>
-                <option value="admin">Admin</option>
-                <option value="allrecords">All Records</option>
-                <option value="home">Home</option>
+                <option value="admin"><g:message code='g.admin'/></option>
+                <option value="allrecords"><g:message code='g.allRecords'/></option>
+                <option value="home"><g:message code='g.home'/></option>
                 <option value="charts">Charts</option>
                 <option value="resources">Resources</option>
                 <option value="login">Login / Logout</option>
-                <option value="newproject">New Project</option>
-                <option value="sites">Sites</option>
+                <option value="newproject"><g:message code='g.newProject'/></option>
+                <option value="sites"><g:message code='g.sites'/></option>
                 <option value="biocacheexplorer">Biocache Explorer</option>
-                <option value="recordSighting">Record a Sighting</option>
+                <option value="recordSighting"><g:message code='record.create.title'/></option>
             </select>
         </td>
         <td>
@@ -1181,9 +1203,9 @@
         <div class="row previewHeader" data-bind="style:{'background-color': menuBackgroundColor}">
             <div class="col-12">
                 <ul class="list-inline float-right">Choose between the following header option
-                    <li class="list-inline-item"><a href="#" data-bind="style:{color: menuTextColor}">Home</a> <span class="divider" data-bind="style:{color: menuTextColor}">|</span></li>
-                    <li class="list-inline-item"><a href="#" data-bind="style:{color: menuTextColor}">Data</a> <span class="divider" data-bind="style:{color: menuTextColor}">|</span></li>
-                    <li class="list-inline-item"><a href="#" data-bind="style:{color: menuTextColor}">Help</a></li>
+                    <li class="list-inline-item"><a href="#" data-bind="style:{color: menuTextColor}"><g:message code='g.home'/></a> <span class="divider" data-bind="style:{color: menuTextColor}">|</span></li>
+                    <li class="list-inline-item"><a href="#" data-bind="style:{color: menuTextColor}"><g:message code='project.tab.data'/></a> <span class="divider" data-bind="style:{color: menuTextColor}">|</span></li>
+                    <li class="list-inline-item"><a href="#" data-bind="style:{color: menuTextColor}"><g:message code='project.works.workschedule.button.help'/></a></li>
                 </ul>
             </div>
         </div>
@@ -1284,6 +1306,7 @@
         <th>Display interval</th>
         <th>Chart type</th>
         <th>Help text</th>
+        <th>Admin only</th>
         <th>Action</th>
     </tr>
     </thead>
@@ -1330,6 +1353,9 @@
         <td>
             <textarea class="form-control" rows="2" data-bind="value:helpText"
                       placeholder="Add custom help text"></textarea>
+        </td>
+        <td>
+            <input type="checkbox" data-bind="checked: adminOnly" placeholder="Add restrictions on displaying this facet"/>
         </td>
         <td>
             <button class="btn btn-sm btn-danger" style="width:85px;" data-bind="click: $parent.remove">

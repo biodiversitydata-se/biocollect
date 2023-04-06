@@ -1,5 +1,6 @@
 package au.org.ala.biocollect.merit
 
+import au.org.ala.biocollect.EmailService
 import au.org.ala.biocollect.GeometryUtils
 import au.org.ala.biocollect.ProjectActivityService
 import com.vividsolutions.jts.geom.Geometry
@@ -23,6 +24,8 @@ class SiteService {
     ReportService reportService
     ProjectActivityService projectActivityService
     SiteService siteService
+    EmailService emailService
+    PersonService personService
 
     def list() {
         webService.getJson(grailsApplication.config.ecodata.service.url + '/site/').list
@@ -308,7 +311,7 @@ class SiteService {
      * @param site
      */
     def getMapFeatures(site) {
-        def featuresMap = [zoomToBounds: true, zoomLimit: 15, highlightOnHover: true, features: []]
+        def featuresMap = [zoomToBounds: true, zoomLimit: 15, highlightOnHover: true, features: [],transectParts: []]
         switch (site.extent?.source?.toLowerCase()) {
             case 'point':
                 featuresMap.features << site.extent.geometry
@@ -322,6 +325,19 @@ class SiteService {
             default:
                 featuresMap = [:]
         }
+        
+        // if site not sensitive show details
+        // if (!site?.isSensitive){
+            if (site?.transectParts){
+                def transectPartsArr = site.transectParts
+                transectPartsArr.each {
+                    def part = [:]
+                    part.name = it?.name
+                    part.geometry = it?.geometry
+                    featuresMap.transectParts.push(part)
+                }
+            }
+        // }
 
         featuresMap
     }
@@ -606,6 +622,34 @@ class SiteService {
         }
 
         return response.value
+    }
+
+    def bookSites(body) {
+        def response = webService.doPost(grailsApplication.config.ecodata.service.url + '/site/bookSites/', body)
+        return response
+    }
+
+    def submitBookingRequest(params, body){
+        def user = userService.getUser()
+        String userName = user.displayName
+        String personId = personService.getPersonIdForUser(user.userId)
+        List emailAddresses = body?.emailAddresses ?: grailsApplication.config.biocollect.support.email.address
+
+        def subject = "BioCollect uppdatering: bokningsönskan för ${params?.projectName}"
+        def emailBody = userName + " vill boka rutterna: ${body?.requestedSitesList} for ${params?.projectName}. De är ännu inte bokade av någon. <br>" + 
+            // "You can view the site <a href='${grailsApplication.config.server.serverURL}${body?.viewSiteUrl}/${body?.siteId}'>here</a><br>" +
+            "Vill du godkänna bokningen, klicka <a href='${grailsApplication.config.server.serverURL}${body?.personEditUrl}/${personId}?defaultTab=sites&requestedSitesList=${body?.requestedSitesList}'>här</a>"
+        if (body?.message){
+             emailBody += "<br>The user attached a message: ${body?.message}<br>"
+        }
+        emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
+        def result = [message: "Din önskan att boka ${body?.requestedSitesList} är nu skickad. Du kommer få en bekräftelse via mail på ifall din bokning blev godkänd och kommer då att få tillgång till rutten på din personliga sida"]
+        result
+    }
+
+    def getSitesForPerson(String id){
+        def result = webService.getJson(grailsApplication.config.ecodata.service.url + "/site/getSitesForPerson/${id}")
+        return result
     }
 
     def enc(String value) {

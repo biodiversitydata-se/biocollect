@@ -4,10 +4,10 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta name="layout" content="bs4"/>
-    <title>Edit | ${activity.type} | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
+    <title><g:message code="g.edit"/> | ${activity.type} | <g:message code="g.biocollect"/></title>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: 'g.home')}"/>
     <meta name="breadcrumbParent2"
-          content="${createLink(controller: 'project', action: 'index')}/${project.projectId},Project"/>
+          content="${createLink(controller: 'project', action: 'index')}/${project.projectId},${message(code: 'g.project')}"/>
     <meta name="breadcrumb" content="${activity.type}"/>
     <asset:stylesheet src="forms-manifest.css"/>
     <asset:javascript src="common-bs4.js"/>
@@ -107,7 +107,7 @@
     <g:if test="${!printView}">
         <div class="col-sm-12 form-actions mt-3">
             <button type="button" id="save" class="btn btn-primary-dark"><i class="fas fa-hdd"></i> Save changes</button>
-            <button type="button" id="cancel" class="btn btn-dark"><i class="far fa-times-circle"></i> Cancel</button>
+            <button type="button" id="cancel" class="btn btn-dark"><i class="far fa-times-circle"></i> <g:message code='g.cancel'/></button>
         </div>
     </g:if>
 

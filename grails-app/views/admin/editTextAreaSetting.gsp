@@ -30,7 +30,7 @@
                     <a href="${returnUrl}" class="btn btn-dark"><i class="far fa-arrow-alt-circle-left"></i> back to ${returnLabel}</a>
                     <g:if test="${params.editMode?.toBoolean()}">
                         <g:if test="${!ajax}">
-                            <h3>Edit &quot;${settingTitle}&quot; content</h3>
+                            <h3><g:message code='g.edit'/> &quot;${settingTitle}&quot; content</h3>
                         </g:if>
                         <g:form id="saveSettingContent" controller="admin" action="saveTextAreaSetting">
                             <g:set var="spanN" value="${ajax ? 'col-12' : 'col-10'}"/>
@@ -60,8 +60,8 @@
                             <g:if test="${!ajax}">
                                 <div class="row mt-2">
                                     <div class="col-12">
-                                        <a class="btn btn-dark" href="${returnUrl}"><i class="far fa-times-circle"></i> Cancel</a> &nbsp;
-                                        <button class="btn btn-primary-dark"><i class="fas fa-hdd"></i> Save</button>
+                                        <a class="btn btn-dark" href="${returnUrl}"><i class="far fa-times-circle"></i> <g:message code='g.cancel'/></a> &nbsp;
+                                        <button class="btn btn-primary-dark"><i class="fas fa-hdd"></i> <g:message code='g.save'/></button>
                                     </div>
                                 </div>
                             </g:if>
@@ -71,7 +71,7 @@
                     </g:if>
                     <g:else>
                         <h1>${settingTitle}<span>&nbsp;&nbsp;<a href="?editMode=true" class="btn btn-sm btn-dark">
-                            <i class="fas fa-pencil-alt"></i>&nbsp;Edit
+                            <i class="fas fa-pencil-alt"></i>&nbsp;<g:message code='g.edit'/>
                         </a></span></h1>
                         <div class="bg-light">
                             <div>${textValue?:''.trim()}</div>

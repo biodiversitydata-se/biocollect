@@ -2,6 +2,7 @@ var hubConfigs = {
     availableProjectFacets: [],
     availableDataFacets: [],
     availableDataColumns: [],
+    availableIndexForTimeSeries: ['dateCreated'],
     defaultOverriddenLabels: undefined
 };
 
@@ -97,6 +98,7 @@ var HubSettings = function (settings, config) {
     self.skin = ko.observable();
     self.title = ko.observable();
     self.supportedPrograms = ko.observableArray();
+    self.isSystematicMonitoring = ko.observableArray();
     self.defaultFacetQuery = ko.observableArray();
     self.homePagePath = ko.observable();
     self.bannerUrl = ko.observable();
@@ -117,6 +119,8 @@ var HubSettings = function (settings, config) {
         projectFinder: new FacetConfigurationViewModel(settings.pages.projectFinder, hubConfigs.availableProjectFacets)
     };
     self.dataColumns = ko.observableArray();
+    self.mapDisplays = ko.observableArray();
+    self.timeSeriesOnIndex = ko.observable();
     /**
      * Set home page only if the configurable template is chosen. Otherwise, do nothing. If user had previously chosen
      * configurable template but not anymore, then do not change homepage.
@@ -225,7 +229,8 @@ var HubSettings = function (settings, config) {
         selectedDataFacet: ko.observable(),
         selectedDataColumn: ko.observable(),
         defaultDataColumns: ko.observableArray(),
-        sortColumn: ko.observable()
+        sortColumn: ko.observable(),
+        isDefaultMapDisplay: ko.observable()
     };
 
     self.transients.sortColumn.subscribe(self.setSortColumn, self);
@@ -236,6 +241,7 @@ var HubSettings = function (settings, config) {
         self.skin(settings.skin);
         self.title(settings.title);
         self.supportedPrograms(self.orEmptyArray(settings.supportedPrograms));
+        self.isSystematicMonitoring(settings.isSystematicMonitoring);
         self.defaultProgram(settings.defaultProgram);
         self.bannerUrl(self.orBlank(settings.bannerUrl));
         self.logoUrl(self.orBlank(settings.logoUrl));
@@ -245,6 +251,9 @@ var HubSettings = function (settings, config) {
         self.mapLayersConfig = settings.mapLayersConfig || {};
         self.quickLinks(mapLinks(settings.quickLinks));
         self.templateConfiguration(new TemplateConfigurationViewModel(settings.templateConfiguration || {}));
+        self.timeSeriesOnIndex(settings.timeSeriesOnIndex || 'dateCreated');
+        self.mapDisplays(settings.mapDisplays);
+
         if (settings.defaultFacetQuery && settings.defaultFacetQuery instanceof Array) {
             $.each(settings.defaultFacetQuery, function (i, obj) {
                 self.defaultFacetQuery.push({query: ko.observable(obj)});
@@ -265,6 +274,7 @@ var HubSettings = function (settings, config) {
             self.customBreadCrumbs.push(new CustomBreadCrumbsViewModel(breadcrumb));
         });
         self.loadDefaultDataColumns(hubConfigs.availableDataColumns);
+        self.loadAvailableIndexForTimeSeries(hubConfigs.availableDataColumns);
         self.loadDataColumns(settings.dataColumns || []);
         self.loadSortColumn();
     };
@@ -378,6 +388,15 @@ HubSettings.prototype.loadDefaultDataColumns = function (columns) {
         self.transients.defaultDataColumns.push(new ColumnViewModel(column));
     });
 };
+
+HubSettings.prototype.loadAvailableIndexForTimeSeries = function (indices) {
+    var self = this;
+    indices.forEach (function (index) {
+        if (index.dataType === 'date') {
+            hubConfigs.availableIndexForTimeSeries.push(index.propertyName);
+        }
+    })
+}
 
 HubSettings.prototype.loadDataColumns = function (columns) {
     var self = this;
@@ -796,6 +815,7 @@ function FacetConfigurationViewModel(config, availableFacets) {
             facetVM.facetTermType(facet.facetTermType || facetVM.facetTermType());
             facetVM.helpText(facet.helpText || facetVM.helpText());
             facetVM.interval(facet.interval || facetVM.interval());
+            facetVM.adminOnly(facet.adminOnly || facetVM.adminOnly());
             facetVM.chartjsType(facet.chartjsType);
             facetVM.chartjsConfig(facet.chartjsConfig);
             facetVM.adminOnly(facet.adminOnly || facetVM.adminOnly());
@@ -821,6 +841,7 @@ function FacetViewModel(config){
     self.helpText = ko.observable(config.helpText||'');
     self.facetTermType = ko.observable(config.facetTermType||'Default');
     self.interval = ko.observable(config.interval || 10);
+    self.adminOnly = ko.observable(config.adminOnly || false);
     self.chartjsType = ko.observable(config.chartjsType || 'none');
     self.chartjsConfig = ko.observable(config.chartjsConfig || '');
     self.adminOnly = ko.observable(config.adminOnly || false);
@@ -908,6 +929,18 @@ ColumnViewModel.prototype.load = function (data) {
     this.sort(data.sort || this.sort());
     this.order(data.order || this.order());
 };
+
+function MapDisplayViewModel(config) {
+    var self = this;
+    config = config || {};
+
+    self.value = ko.observable(config.value || "");
+    self.key = ko.observable(config.key || "");
+    self.showLoggedOut = ko.observable(!!config.showLoggedOut);
+    self.showLoggedIn = ko.observable(!!config.showLoggedIn);
+    self.isDefault = ko.observable(config.isDefault || "");
+    self.size = config.size;
+}
 
 var colorScheme = {
     menuBackgroundColor: "#009080",

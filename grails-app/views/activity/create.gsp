@@ -4,11 +4,11 @@
 <html>
 <head>
     <meta name="layout" content="bs4"/>
-    <title>Create | Activity | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
+    <title><g:message code='g.create'/> | Activity | <g:message code="g.biocollect"/></title>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: 'g.home')}"/>
     <g:if test="${project}">
         <meta name="breadcrumbParent2"
-              content="${createLink(controller: 'project', action: 'index')}/${project?.projectId},Project"/>
+              content="${createLink(controller: 'project', action: 'index')}/${project?.projectId},${message(code: 'g.project')}"/>
     </g:if>
     <g:elseif test="${site}">
         <meta name="breadcrumbParent2"
@@ -62,8 +62,13 @@
         </div>
 
         <div class="form-actions">
+<<<<<<< HEAD
             <button type="button" data-bind="click: next" class="btn btn-primary-dark"><i class="fas fa-hdd"></i> Next</button>
             <button type="button" id="cancel" class="btn btn-dark"><i class="far fa-times-circle"></i> Cancel</button>
+=======
+            <button type="button" data-bind="click: next" class="btn btn-primary">Next</button>
+            <button type="button" id="cancel" class="btn"><g:message code='g.cancel'/></button>
+>>>>>>> lusm-main-test
         </div>
     </div>
 

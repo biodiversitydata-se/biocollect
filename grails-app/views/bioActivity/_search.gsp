@@ -8,7 +8,7 @@
 
             <div class="input-group-append">
                 <button class="btn btn-primary-dark" type="button" id="record-search-button" data-bind="click: search">
-                    <i class="fas fa-search"></i> Search
+                    <i class="fas fa-search"></i> <g:message code='g.search'/>
                 </button>
             </div>
         </div>

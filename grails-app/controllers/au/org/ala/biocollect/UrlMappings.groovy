@@ -35,8 +35,16 @@ class UrlMappings {
                         action = [GET: "get", POST: "upload", PUT: "upload", DELETE: "delete"]
                 }
 
+                "/geoServer/wms"(controller: "geoServer", action: "wms")
                 "/project/getAuditMessagesForProject/$id"(controller: "project", action: 'getAuditMessagesForProject')
 
+                "/person/searchPerson/" (controller: "person", action: 'searchPerson')
+                "/person/getDataForPersonHomepage/$id"(controller: "person", action: "getDataForPersonHomepage")
+                "/person/addOwnedSite/$id"(controller: "person"){action = [POST: "addOwnedSite"]}
+                "/site/getSitesForPerson"(controller: "site", action: "getSitesForPerson")
+                "/site/submitBookingRequest"(controller: "site", action: "submitBookingRequest")
+
+                "/activity/getActivitiesForPersonByType"(controller: "activity", action: "getActivitiesForPersonByType")
                 "/activity/$entityId/comment"(controller: "comment"){
                         action = [GET: 'list', POST: 'create']
                         entityType = 'au.org.ala.ecodata.Activity'
@@ -45,7 +53,6 @@ class UrlMappings {
                         entityType = 'au.org.ala.ecodata.Activity'
                         action = [GET: 'get', POST: 'update', PUT: 'update', DELETE: 'delete']
                 }
-
 
                 "/bioActivity/$entityId/comment"(controller: "comment"){
                         action = [GET: 'list', POST: 'create']
@@ -105,9 +112,18 @@ class UrlMappings {
                                 hub validator: {val, obj -> isHubValid( val)}
                         }
                 }
+
+                "/$hub/i18n"(controller: "home", action: "i18n") {
+                        constraints {
+                                hub validator: {val, obj -> isHubValid( val)}
+                        }
+                }
+
                 "/admin/user/$id"(controller: "user", action: "show") {
 
                 }
+
+                "/site/bookSites"(controller: "site", action: "bookSites")
                 "/download/file"(controller: "download", action: [GET: "file"])
                 "/download/$id"(controller: "download", action: [GET: "downloadProjectDataFile"])
                 "/download/getScriptFile"(controller: "download", action: [GET: "getScriptFile"])
@@ -136,7 +152,6 @@ class UrlMappings {
                 "/ws/bioactivity/site"(controller:  "site", action: 'ajaxUpdate')
                 "/ws/bioactivity/delete/$id"(controller:  "bioActivity", action: 'delete')
                 "/ws/bioactivity/search"(controller:  "bioActivity", action: 'searchProjectActivities')
-                "/ws/bioactivity/map"(controller:  "bioActivity", action: 'getProjectActivitiesRecordsForMapping')
         }
 }
 

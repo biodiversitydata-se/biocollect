@@ -52,17 +52,18 @@
                     <!-- ko if: loading -->
                     <div class="col-12 col-md-5 order-1 order-md-0 mt-2 mt-md-0">
                         <div>
-                            <span class="fa fa-spin fa-spinner"></span>&nbsp;Loading...
+                            <span class="fa fa-spin fa-spinner"></span>&nbsp;<g:message code='g.loading'/>...
                         </div>
                     </div>
                     <!-- /ko -->
+
                     <div class="col-12 col-md-7 order-0 order-md-1 mt-2 mt-md-0">
                         <form class="text-md-right" data-bind="submit: searchSites">
                             <div class="input-group">
                                 <input class="form-control" type="text" data-bind="value: currentSearch"
                                        placeholder="Search by keyword" aria-label="Search by keyword" aria-describedby="search-site-button"/>
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary-dark" id="search-site-button" type="submit">Search</button>
+                                    <button class="btn btn-primary-dark" id="search-site-button" type="submit"><g:message code='g.search'/></button>
                                 </div>
                             </div>
                         </form>
@@ -119,7 +120,7 @@
                             <div class="row">
                                 <div class="col-12 text-right">
                                     <button class="btn btn-primary-dark mt-2" data-bind="click: useSelectedSites">Add selected sites</button>
-                                    <button class="btn btn-dark mt-2" data-bind="click: cancelUpdate">Cancel</button>
+                                    <button class="btn btn-dark mt-2" data-bind="click: cancelUpdate"><g:message code='g.cancel'/></button>
                                 </div>
                             </div>
                         </td>

@@ -54,8 +54,8 @@
         <!-- /ko -->
         <!-- ko if: sites().length == 0 -->
         <div class="col-12 col-lg-6 d-flex mt-3">
-            <h4 data-bind="visible: sitesLoaded()">No sites found</h4>
+            <h4 data-bind="visible: sitesLoaded()"><g:message code='site.list.noneFound'/></h4>
         </div>
         <!-- /ko -->
-    </div>
+    </div> 
 </bc:koLoading>

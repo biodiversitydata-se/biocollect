@@ -22,6 +22,9 @@
             </div>
         </div>
     </g:elseif>
+    <g:elseif test="${relatedProjectIds}">
+        <input type='hidden' id='relatedProjectIds' value='${relatedProjectIds}'>
+    </g:elseif>
     <g:else><div class="alert alert-danger"><g:message code="project.admin.permissions.missingmodel"/></div></g:else>
     <div class="row form-group">
         <div class="col-md-9 offset-md-3">
@@ -49,6 +52,11 @@
         // combobox plugin enhanced select
         // $(".combobox").combobox();
 
+        // if user requested access via website the input will be pre-filled
+        if ("${params?.email}" != ""){
+            $("#emailAddress").val("${params?.email}");
+        }
+
         // Click event on "add" button to add new user to project
         $('#addUserRoleBtn').on('click',function(e) {
             e.preventDefault();
@@ -56,7 +64,11 @@
             var role = $('#addUserRole').val();
             var entityId = $('#entityId').val();
             entityId = entityId ||  $('#projectId').val();
-
+            var relatedProjectIdsJSON = $('#relatedProjectIds').val(),
+             relatedProjectIds = JSON.parse(relatedProjectIdsJSON);
+            if (relatedProjectIds == undefined) {
+                relatedProjectIds = [entityId]
+            }
             if ($('#userAccessForm').validationEngine('validate')) {
                 $("#spinner1").show();
 
@@ -64,7 +76,12 @@
                     // first check email address is a valid user
                     $.get("${g.createLink(controller:'user',action:'checkEmailExists')}?email=" + email, function(data) {
                         if (data && /^\d+$/.test(data)) {
-                            addUserWithRole( data, role, entityId);
+                            //add permissions for user for all related project within a hub
+                            relatedProjectIds.forEach(function(entityId){ 
+                                console.log(entityId)   
+                                addUserWithRole( data, role, entityId);
+                            });
+                            displayUserId(data);
                         } else {
                             var $clone = $('.bbAlert1').clone();
                             bootbox.alert($clone.show());
@@ -98,6 +115,18 @@
             alert("Required fields are: userId and role.");
             $('.spinner').hide();
         }
+    }
+
+    /**
+     * Get user id to link to person id
+     *
+     * @param userId
+     */
+    function displayUserId(userId) {
+        $('#linkingPersonId').val();
+        $('#linkingUserId').val(userId);
+        $('#linkingUserId').html(userId);
+
     }
 
     function updateStatusMessage(msg) {

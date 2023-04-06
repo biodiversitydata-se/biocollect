@@ -1,21 +1,22 @@
 /**
  * Render project members and their roles, support pagination.
  */
+
+var table;
 function initialise(roles, currentUserId, projectId) {
-    var table = $('#member-list').DataTable({
-        "bFilter": false,
-        "processing": true,
-        "serverSide": true,
+    table = $('#member-list').DataTable({
+        "searchable": true,
         "ajax": fcConfig.getMembersForProjectIdPaginatedUrl + "/" + projectId,
         "columns": [{
-            data: 'userId',
-            name: 'userId',
-            bSortable: false
-        },
+                data: 'userId',
+                name: 'userId',
+                bSortable: false
+            },
             {
                 data: 'displayName',
                 name: 'displayName',
-                bSortable: false
+                searchable: true,
+                bSortable: true
             },
             {
                 data: 'role',
@@ -46,10 +47,10 @@ function initialise(roles, currentUserId, projectId) {
                         return '';
                     } else {
                         return '<a class="btn btn-sm btn-danger tooltips href="" title="remove this user and role combination"><i class="far fa-trash-alt"></i></a>';
-                    }
-                },
-                bSortable: false
-            }]
+                }
+            },
+            bSortable: false
+        }]
     });
 
     $('#member-list').on("change", "tbody td:nth-child(3) select", function (e) {

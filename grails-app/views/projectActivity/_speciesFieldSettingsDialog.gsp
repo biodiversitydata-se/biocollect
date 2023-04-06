@@ -138,7 +138,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary-dark" data-bind="click:accept"><i
                         class="fas fa-check"></i> Apply</button>
-                <button class="btn btn-dark" data-bind="click:cancel"><i class="far fa-times-circle"></i> Cancel
+                <button class="btn btn-dark" data-bind="click:cancel"><i class="far fa-times-circle"></i> <g:message code='g.cancel'/>
                 </button>
             </div>
         </div>

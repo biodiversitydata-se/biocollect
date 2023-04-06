@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="bs4"/>
     <title>Create | Organisation | <g:message code="g.biocollect"/></title>
-    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},Home"/>
+    <meta name="breadcrumbParent1" content="${createLink(uri: '/'+ hubConfig.urlPath)},${message(code: "g.home")}"/>
     <meta name="breadcrumbParent2"
           content="${createLink(controller: 'organisation', action: 'list')},Organisations"/>
     <meta name="breadcrumb" content="New Organisation"/>
@@ -38,7 +38,7 @@
         <div class="col-12">
             <div class="form-actions">
                 <button  class="btn btn-primary-dark" id="save"  type="button" data-bind="click:save">Create</button>
-                <button  class="btn btn-dark" id="cancel" type="button">Cancel</button>
+                <button  class="btn btn-dark" id="cancel" type="button"><g:message code='g.cancel'/></button>
             </div>
         </div>
     </div>

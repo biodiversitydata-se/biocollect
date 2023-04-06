@@ -14,22 +14,14 @@
  *
  * Created by Temi on 1/02/16.
  */
-var availableFacets = [
-    {name: 'siteProjectNameFacet', displayName: 'Project'},
-    {name: 'siteSurveyNameFacet', displayName: 'Survey'},
-    {name: 'photoType', displayName: 'Photo Type'},
-    {name: 'typeFacet', displayName: 'Type'},
-    {name: 'stateFacet', displayName: 'State / Territory'},
-    {name: 'lgaFacet', displayName: 'Local Government Area'},
-    {name: 'nrmFacet', displayName: 'Natural Resource Management'}
-];
 
 /**
  * view model for sites used to display gallery
  * @param params
  * @constructor
  */
-function SitesListViewModel(params) {
+function SitesListViewModel(params, facets) {
+    var availableFacets = facets.navTree.nodes;
     var self = this,
         config = $.extend({
             // can turn off initial load if set to false
@@ -156,6 +148,8 @@ function SitesListViewModel(params) {
             max: self.pagination.resultsPerPage(),
             offset: offset,
             query: self.searchTerm(),
+            sort: "name",
+            order: "ASC",
             fq: $.map(self.selectedFacets(), function(fq){
                 return fq.getQueryText();
             }),
@@ -258,6 +252,7 @@ function SiteListViewModel(prop) {
     self.description = ko.observable(prop.description);
     self.numberOfProjects = ko.observable(prop.numberOfProjects);
     self.numberOfPoi = ko.observable(prop.numberOfPoi);
+    self.bookedBy = ko.observable(prop.bookedBy);
     self.type = ko.observable(prop.type);
     self.canEdit = ko.observable(prop.canEdit);
     self.canDelete = ko.observable(prop.canDelete);
@@ -265,6 +260,7 @@ function SiteListViewModel(prop) {
     self.showRemoveFromFavourites = ko.observable(prop.removeFromFavourites);
     self.extent = prop.extent;
     self.sites = prop.sites
+    self.isBooked = (self.bookedBy() != undefined && self.bookedBy() != '' && self.bookedBy() != null) ? true : false;
 
     /**
      * constructs url to site
@@ -322,8 +318,9 @@ function SiteListViewModel(prop) {
      * constructs url to edit site
      * @returns {string}
      */
-    self.getSiteEditUrl = function () {
-        return fcConfig.editSiteUrl + '/' + self.siteId();
+    self.getSiteEditUrl = function (isSystematic) {
+        var url = isSystematic ? fcConfig.editSystematicSiteUrl : fcConfig.editSiteUrl;
+        return url + '/' + self.siteId();
     }
 
     self.deleteSite = function () {

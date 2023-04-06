@@ -127,6 +127,12 @@
                         <g:message code="project.survey.addRecord"/>
                     </button>
                     <!-- /ko -->
+                    <g:if test="${project?.projectType=='systematicMonitoring'}">
+                        <div class="margin-top-1">
+                            <button class="btn btn-success btn-sm btn-addarecord" data-bind="click: redirectToCreateSystematic" title="Click to add a new site to this survey">
+                            <g:message code="project.survey.addNewSite" /></button>
+                        </div>
+                    </g:if>
                     <button class="btn btn-sm btn-dark" data-bind="click: listActivityRecords"
                             title="<g:message code='project.survey.viewRecords'/>">
                         <i class="far fa-eye mr-1"></i>
@@ -627,7 +633,6 @@
 <!-- /ko -->
 
 <asset:script type="text/javascript">
-
     function initialiseProjectActivitiesList(pActivitiesVM){
         var pActivitiesListVM = new ProjectActivitiesListViewModel(pActivitiesVM);
         ko.applyBindings(pActivitiesListVM, document.getElementById('pActivitiesList'));

@@ -159,6 +159,7 @@ Biocollect.MapUtilities = {
      * @returns {L.tileLayer | L.Google}
      */
     getBaseLayer: function (code) {
+        var token = "8e55e105-71ff-3816-98eb-86f7979c3650";
         var option, layer;
         switch (code) {
             case 'minimal':
@@ -166,6 +167,7 @@ Biocollect.MapUtilities = {
                     // See https://cartodb.com/location-data-services/basemaps/
                     url: 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
                     options: {
+                        uniqueName: 'minimal',
                         subdomains: "abcd",
                         attribution: 'Map data &copy; <a target="_blank" rel="noopener noreferrer" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, imagery &copy; <a target="_blank" rel="noopener noreferrer" href="http://cartodb.com/attributions">CartoDB</a>',
                         maxZoom: 21,
@@ -179,6 +181,7 @@ Biocollect.MapUtilities = {
                     // see https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9
                     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
                     options: {
+                        uniqueName: 'worldimagery',
                         attribution: '<a target="_blank" rel="noopener noreferrer" href="https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9">Tiles from Esri</a> &mdash; Sources: Esri, DigitalGlobe, Earthstar Geographics, CNES/Airbus DS, GeoEye, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User Community',
                         maxZoom: 21,
                         maxNativeZoom: 17
@@ -191,8 +194,22 @@ Biocollect.MapUtilities = {
                     // see https://wiki.openstreetmap.org/wiki/Standard_tile_layer
                     url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                     options: {
+                        uniqueName: 'detailed',
                         subdomains: "abc",
                         attribution: '&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+                        maxZoom: 21,
+                        maxNativeZoom: 18
+                    }
+                };
+                layer = L.tileLayer(option.url, option.options);
+                break;
+            case 'landscape':
+                option = {
+                    // see https://www.thunderforest.com/terms/
+                    url: 'https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=c67bd96e5ce94995a4b34d4831d30ac3',
+                    options: {
+                        uniqueName: 'landscape',
+                        attribution: 'Map &copy; <a target="_blank" rel="noopener noreferrer" href="www.thunderforest.com">Thunderforest</a> and Data &copy;<a target="_blank" rel="noopener noreferrer" href="https://www.openstreetmap.org/copyright"> OpenStreetMap contributors</a>',
                         maxZoom: 21,
                         maxNativeZoom: 18
                     }
@@ -204,6 +221,7 @@ Biocollect.MapUtilities = {
                     // see https://www.arcgis.com/home/item.html?id=30e5fe3149c34df1ba922e6f5bbf808f
                     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
                     options: {
+                        uniqueName: 'topographic',
                         attribution: '<a target="_blank" rel="noopener noreferrer" href="https://www.arcgis.com/home/item.html?id=30e5fe3149c34df1ba922e6f5bbf808f">Tiles from Esri</a> &mdash; Sources: Esri, HERE, Garmin, Intermap, INCREMENT P, GEBCO, USGS, FAO, NPS, NRCAN, GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), &copy; OpenStreetMap contributors, GIS User Community',
                         maxZoom: 21,
                         maxNativeZoom: 17
@@ -212,13 +230,23 @@ Biocollect.MapUtilities = {
                 layer = L.tileLayer(option.url, option.options);
                 break;
             case 'googlehybrid':
-                layer = new L.Google('HYBRID', {maxZoom: 21, nativeMaxZoom: 21});
+                layer = new L.Google('HYBRID', {uniqueName: 'googlehybrid', maxZoom: 21, nativeMaxZoom: 21});
                 break;
             case 'googleroadmap':
-                layer = new L.Google('ROADMAP', {maxZoom: 21, nativeMaxZoom: 21});
+                layer = new L.Google('ROADMAP', {uniqueName: 'googleroadmap', maxZoom: 21, nativeMaxZoom: 21});
                 break;
             case 'googleterrain':
-                layer = new L.Google('TERRAIN', {maxZoom: 21, nativeMaxZoom: 21});
+                layer = new L.Google('TERRAIN', {uniqueName: 'googleterrain', maxZoom: 21, nativeMaxZoom: 21});
+                break;
+            case 'lantmateriettopo':
+                option = {
+                    // see https://opendata.lantmateriet.se/#apis?api=OpenDataWMTS&version=v1
+                    url: 'https://api.lantmateriet.se/open/topowebb-ccby/v1/wmts/token/'+ token +'/?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=topowebb&STYLE=default&TILEMATRIXSET=3857&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fpng',
+                    options: {
+                        attribution: '&copy; <a href="https://www.lantmateriet.se/en/">Lantmäteriet</a> Topografisk Webbkarta Visning, CCB'
+                    }
+                };
+                layer = L.tileLayer(option.url, option.options);
                 break;
         }
 
@@ -229,7 +257,7 @@ Biocollect.MapUtilities = {
      * Intersect mouse click position with overlays and show on a popup.
      * @param {ALA.Map} map The map to contain the control
      */
-    intersectOverlaysAndShowOnPopup: function (map) {
+    intersectOverlaysAndShowOnPopup: function (map, callback) {
         // create the layers control
         // set baseLayers to null so it will use the defaults specified when the pfMap was created.
         var config = Biocollect.MapUtilities.getOverlayConfig();
@@ -248,17 +276,20 @@ Biocollect.MapUtilities = {
                  */
                 clickTimeoutID = window.setTimeout(
                     function () {
+                        var customLayerId = [];
                         console.log('[Map] Behaviour: Single click detected.');
 
                         console.log('[Map] Detected click on map at [' + e.latlng.lat + ',' + e.latlng.lng + ']. Loading details for location and zooming to bounds.');
-                        map.startLoading();
 
                         // layer ids is comma separated
-                        var layerIds = map.getOverlayLayers('selected').map(function (value) {
-                            return value.customLayerId;
-                        }).join(',');
+                        map.getOverlayLayers('selected').forEach(function (value) {
+                            value.customLayerId && customLayerId.push(value.customLayerId);
+                        });
+
+                        var layerIds = customLayerId.join(',');
 
                         if (layerIds) {
+                            map.startLoading();
                             var intersectQs = 'layerId=' + layerIds + '&lat=' + e.latlng.lat + '&lng=' + e.latlng.lng;
                             var intersectUrl = config.intersectService + '?' + intersectQs;
 
@@ -283,11 +314,11 @@ Biocollect.MapUtilities = {
 
                                     var popupContentItem = '';
                                     if (item.pid) {
-                                        popupContentItem = '<li>' + overlayTitle + ': ' + item.value + '</li>';
+                                        popupContentItem = overlayTitle + ': ' + item.value;
                                     } else if (item.units) {
-                                        popupContentItem = '<li>' + overlayTitle + ': ' + item.value + item.units + '</li>';
+                                        popupContentItem = overlayTitle + ': ' + item.value + item.units;
                                     } else {
-                                        popupContentItem = '<li>' + overlayTitle + ': (none)</li>';
+                                        popupContentItem = overlayTitle + ': (none)';
                                     }
                                     popupContentItems.push(popupContentItem);
 
@@ -304,11 +335,18 @@ Biocollect.MapUtilities = {
 
                                 });
 
-                                L.popup()
-                                    .setLatLng(e.latlng)
-                                    .setContent('<p>At this location:</p><ul>' + popupContentItems.join('') + '</ul>')
-                                    .openOn(map.getMapImpl());
+                                if (!callback) {
+                                    L.popup()
+                                        .setLatLng(e.latlng)
+                                        .setContent('<p>At this location:</p><ul><li>' + popupContentItems.join('</li><li>') + '</li></ul>')
+                                        .openOn(map.getMapImpl());
+                                }
+                                else {
+                                    callback(popupContentItems, data, e);
+                                }
 
+                                map.finishLoading();
+                            }, function () {
                                 map.finishLoading();
                             });
                         }
@@ -363,6 +401,7 @@ Biocollect.MapUtilities = {
 
         var newLayerOptions = {
             layers: alaName,
+            uniqueName: alaName,
             format: 'image/png',
             transparent: true,
             styles: ''
@@ -490,5 +529,24 @@ Biocollect.MapUtilities = {
         }
 
         return false;
+    },
+
+    /**
+     *
+     */
+    getLegendURL: function (layer, style) {
+        if (layer.wmsParams) {
+            var params = {
+                request: 'GetLegendGraphic',
+                version: layer.wmsParams.version,
+                format: 'image/png',
+                layer: layer.wmsParams.layers,
+                style: style,
+                legend_options:"dpi:90;forceLabels:on;bgColor:#f2f9fc;fontAntiAliasing:true;countMatched:true;fontSize:12;fontName:Arial;",
+                rule: ''
+            };
+
+            return  layer._wmsUrl + L.Util.getParamString(params, layer._wmsUrl, true);
+        }
     }
 };

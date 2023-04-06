@@ -73,7 +73,7 @@ function Master(activityId, config) {
                 }
             }
         });
-
+        outputs[0].data.observations.sort((a, b) => a.swedishRank - b.swedishRank);
         if (activityData === undefined && outputs.length == 0) {
             return undefined;
         }
@@ -81,7 +81,8 @@ function Master(activityId, config) {
             activityData = {};
         }
         activityData.outputs = outputs;
-
+        activityData.personId = config.personId;
+        activityData.userId = config.userId ? config.userId : "";
         return activityData;
     };
 
@@ -115,6 +116,90 @@ function Master(activityId, config) {
 
     }
 
+    /**
+     * LU ONLY - > Makes an ajax call to save a draft of the form. This includes the activity
+     * itself and each output. Works the same as self.save except it saves with verificationStatus set to draft
+     * and doesn't validate mandatory fields
+     *
+     */
+
+    self.saveDraft = function(){
+        
+        if ($('#validation-container').validationEngine('validate')) {
+            var toSave = this.modelAsJS();
+            toSave.verificationStatus = 'draft';
+            toSave = JSON.stringify(toSave);
+            // Don't allow another save to be initiated.
+            blockUIWithMessage("Saving draft...");
+
+            amplify.store('activity-' + config.activityId, toSave);
+            var unblock = true;
+            var url = config.isMobile ? config.bioActivityMobileUpdate : config.bioActivityUpdate;
+            var ajaxRequestParams = {
+                url: url,
+                type: 'POST',
+                data: toSave,
+
+                contentType: 'application/json',
+                success: function success(data) {
+                    var errorText = "";
+                    var activityId;
+                    if (data.errors) {
+                        errorText = "<span class='label label-important'>Important</span><h4>There was an error while trying to save your changes.</h4>";
+                        $.each(data.errors, function (i, error) {
+                            errorText += "<p>Saving <b>" +
+                                (error.name === 'activity' ? 'the activity context' : error.name) +
+                                "</b> threw the following error:<br><blockquote>" + error.error + "</blockquote></p>";
+                        });
+                        errorText += "<p>Any other changes should have been saved.</p>";
+                        bootbox.alert(errorText);
+                    } else if (data.error) {
+                        bootbox.alert(data.error);
+                    } else {
+                        unblock = false; // We will be transitioning off this page.
+                        activityId = config.activityId || data.resp.activityId;
+                        config.returnTo = config.bioActivityEdit + activityId;
+                        blockUIWithMessage("Ditt utkast är sparat.");
+                        self.reset();
+                        self.saved();
+                    }
+                    amplify.store('activity-' + config.activityId, null);
+                },
+                error: function (jqXHR, status, error) {
+
+                    // This is to detect a redirect to CAS response due to session timeout, which is not
+                    // 100% reliable using ajax (e.g. no network will give the same response).
+                    if (jqXHR.readyState == 0) {
+                        bootbox.alert($('#timeoutMessage').html());
+                    }
+                    else {
+                        alert('An unhandled error occurred: ' + error);
+                    }
+                },
+                complete: function () {
+                    if (unblock) {
+                        $.unblockUI();
+                    }
+                }
+            };
+
+            if (config.isMobile) {
+                $.extend(ajaxRequestParams, {
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('userName', config.userName);
+                        xhr.setRequestHeader('authKey', config.authKey);
+                    }
+                });
+            }
+
+            $.ajax(ajaxRequestParams);
+        } else {
+            bootbox.alert("För att spara ditt utkast måste du först ha fyllt i alla de obligatoriska fälten.");
+        }
+    }
 
     /**
      * Makes an ajax call to save any sections that have been modified. This includes the activity
@@ -160,7 +245,7 @@ function Master(activityId, config) {
                         bootbox.alert(data.error);
                     } else {
                         unblock = false; // We will be transitioning off this page.
-                        activityId = config.activityId || data.resp.activityId;
+                        activityId = data.resp.activityId || config.activityId;
                         config.returnTo = config.bioActivityView + activityId;
                         blockUIWithMessage("Successfully submitted the record.");
                         self.reset();
@@ -239,6 +324,7 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     self.mainTheme = ko.observable(act.mainTheme);
     self.type = ko.observable(act.type);
     self.projectId = act.projectId;
+    self.helperIds = ko.observableArray(exists(act, 'helperIds'));
 
     // check if project activity requires manual verification by admin 
     var verificationStatus = pActivity.adminVerification ? 'not verified' : 'not applicable';
@@ -252,6 +338,12 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     self.transients.project = project;
     self.transients.outputs = [];
     self.transients.metaModel = metaModel || {};
+    self.transients.verificationStatusOptions = ['not approved', 'not verified', 'under review' , 'approved'];
+    self.transients.listOfMatchingPersons = ko.observableArray();
+    self.transients.helpers = ko.observableArray();
+    self.transients.showHelperPage = function(id){
+        window.open(fcConfig.personViewUrl + '/' + id)
+    }
 
     self.confirmSiteChange = function () {
         if (self.transients.photoPointModel && self.transients.photoPointModel().isDirty()) {
@@ -264,18 +356,33 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
     self.siteId = ko.vetoableObservable(act.siteId, self.confirmSiteChange);
 
     self.siteId.subscribe(function (siteId) {
-
         var matchingSite = $.grep(self.transients.pActivitySites, function (site) {
             return siteId == site.siteId
         })[0];
-
+      
         if (matchingSite && matchingSite.extent && matchingSite.extent.geometry) {
-            var geometry = matchingSite.extent.geometry;
-            if (geometry.pid) {
-                activityLevelData.siteMap.addWmsLayer(geometry.pid);
+            var transectParts = matchingSite.transectParts;
+            if (transectParts == undefined || transectParts.length < 1){
+                var geometry = matchingSite.extent.geometry;
+                if (geometry.pid) {
+                    activityLevelData.siteMap.addWmsLayer(geometry.pid);
+                } else {
+                    var geoJson = ALA.MapUtils.wrapGeometryInGeoJSONFeatureCol(geometry);
+                    activityLevelData.siteMap.setGeoJSON(geoJson);
+                }
             } else {
-                var geoJson = ALA.MapUtils.wrapGeometryInGeoJSONFeatureCol(geometry);
-                activityLevelData.siteMap.setGeoJSON(geoJson);
+                var transect = {"type": "FeatureCollection", "features": []}
+                transectParts.forEach(function(part){
+                    transect.features.push({
+                        "type": "Feature", 
+                        "geometry": part.geometry, 
+                        "properties": {
+                            "popupContent": part.name
+                        }
+                        })
+                });
+                var layerOptions = {"singleDraw": true, "markerOrShapeNotBoth": false}
+                activityLevelData.siteMap.setTransectFromGeoJSON(JSON.stringify(transect), layerOptions, true);
             }
         }
         self.transients.site(matchingSite);
@@ -284,6 +391,66 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
             self.updatePhotoPointModel(matchingSite);
         }
     });
+    self.personId = ko.observable(act.personId);
+    self.transients.searchTerm = ko.observable("");
+    self.transients.helper = ko.observable("");
+    self.transients.addHelperToActivity = function(){
+        self.helperIds.push(self.transients.helper().personId);
+        self.transients.helpers.push(self.transients.helper());
+        self.transients.listOfMatchingPersons([]);
+    }
+    self.transients.removeId = function(id){
+        self.helperIds.remove(id);
+        self.transients.helpers.remove(self.transients.helpers().filter(function(it){return it.personId == id})[0])
+    }
+
+    self.transients.getHelpersContactDetails = function(){
+        self.transients.listOfMatchingPersons([]);
+        var constructQueryParams = function(){
+            var params = {
+                max: 50,
+                offset: 0,
+                query: self.transients.searchTerm(),
+                sort: '_score'
+                }
+            return params;
+        }
+    
+        $.ajax({
+            url: fcConfig.personSearchUrl, 
+            data: constructQueryParams(),
+            traditional:true,
+            success: function(data){
+                if (data.persons.length !== 0){
+                    data.persons.forEach(function(person) {
+                        var option = {"displayName": `${person.name}, ${person.town}, ${person.internalPersonId}`, "personId": person.personId}
+                        self.transients.listOfMatchingPersons.push(option);
+                    });
+                }
+            }, 
+            error: function(){
+                alert("error")
+            }
+        });
+
+    }
+
+    self.transients.getSurveyorContactDetails = function(){
+        $.ajax({
+            url: config.getSurveyorContactDetailsUrl, 
+            success: function(data){                
+                var person = data.person;
+                var contactDetails = "<li>Name: " + person.firstName + " " + person.lastName + "</li>"+
+                    "<li>Email address: " + person.email + "</li>" +
+                    "<li>Phone number: " + person.phoneNum + "</li>" +
+                    "<li>Mobile number: " + person.mobileNum + "</li>";
+                $("#contactDetails").html(contactDetails);
+            }, 
+            error: function(){
+                alert("Error getting contact details")
+            }
+        });
+    };
 
     self.goToProject = function () {
         if (self.projectId) {
@@ -324,6 +491,28 @@ function ActivityHeaderViewModel (act, site, project, metaModel, pActivity, conf
         return jsData;
     };
 
+    self.saveFromDraft = function(){
+        bootbox.confirm({
+            message: "När du väl har skickat dina data kan du själv inte längre göra några ändringar. Säkert att du vill skicka?",
+            buttons: {
+                confirm: {
+                    label: 'Ja',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'Nej',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result){
+                    self.verificationStatus("not verified");
+                    self.deleteDraftAndSaveNewActivity = true;
+                    master.save();
+                }
+            }
+        });
+    }
     self.modelAsJSON = function () {
         return JSON.stringify(self.modelForSaving());
     };
