@@ -20,7 +20,6 @@ var fcConfig = {
 <h2>Välkommen ${userName}!</h2>
 
 <!-- temporary maintenance message -->
-<h3 style="color:red"><b>På grund av underhållsarbete kommer BioCollect att vara otillgängligt måndagen den 24 april, från klockan 10. Vi ber om ursäkt för eventuella olägenheter.</b></h3>
 
 <g:if test="${personStatus == 'registeredVolunteer'}">
 <div class="well">
