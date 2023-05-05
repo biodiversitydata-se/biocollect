@@ -20,6 +20,9 @@ var fcConfig = {
 <h2>Välkommen ${userName}!</h2>
 
 <!-- temporary maintenance message -->
+<g:if test="${grailsApplication.config.maintenanceMsg!=''}">
+    <h3 style="color:red"><b>${grailsApplication.config.maintenanceMsg}</b></h3>
+</g:if>
 
 <g:if test="${personStatus == 'registeredVolunteer'}">
 <div class="well">
