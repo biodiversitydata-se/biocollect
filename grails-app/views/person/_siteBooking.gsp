@@ -1,7 +1,10 @@
 <div class="container-fluid">
     <h2><g:message code="g.sites"/></h2>
     <hr>
+
+    <g:if test="${fc.userIsAlaOrFcAdmin()}">
         <div class="well span12">
+            <p>Admin only</p>
             <div id="messageSuccess" class="hide alert alert-success">
                 <button class="close" onclick="$('#messageSuccess').fadeOut();" href="#">×</button>
                 <span></span>
@@ -16,7 +19,8 @@
                 <button class="btn btn-primary form-control" data-bind="click: bookSite"><g:message code="btn.book"/></button>
             </div>
         </div>
-    
+    </g:if>
+
     <div class="well span12">
         <g:if test="${person?.bookedSites}">
             <h4><a href="#" onclick="return loadBookedSites()"><g:message code="person.siteBooking.showBooked"/></a></h4>
@@ -37,24 +41,27 @@
         </div>
     </div>
 
-    <div class="well span12">
-        <g:if test="${person?.ownedSites}">
-            <h4><a href="#" onclick="return loadOwnedSites()"><g:message code="person.siteBooking.showCreated"/></a></h4>
-        </g:if>
-        <g:else>
-            <h4><g:message code="person.siteBooking.noSites"/></h4>
-        </g:else>
+    <g:if test="${fc.userIsAlaOrFcAdmin()}">
+        <div class="well span12">
+            <p>Admin only</p>
+            <g:if test="${person?.ownedSites}">
+                <h4><a href="#" onclick="return loadOwnedSites()"><g:message code="person.siteBooking.showCreated"/></a></h4>
+            </g:if>
+            <g:else>
+                <h4><g:message code="person.siteBooking.noSites"/></h4>
+            </g:else>
 
-        <div id="owned-sites-div" hidden>
-            <table style="width: 95%;margin:30px" class="table table-striped table-bordered table-hover" id="owned-sites-table">
-                <thead>
-                    <th><g:message code="site.details.siteName"/></th>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+            <div id="owned-sites-div" hidden>
+                <table style="width: 95%;margin:30px" class="table table-striped table-bordered table-hover" id="owned-sites-table">
+                    <thead>
+                        <th><g:message code="site.details.siteName"/></th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+    </g:if>
 </div>
 
 <asset:script>
