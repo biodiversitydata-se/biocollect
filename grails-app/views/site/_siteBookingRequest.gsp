@@ -34,6 +34,13 @@
         <button class="close" onclick="$('#messageSuccessfulRequest').fadeOut();" href="#">×</button>
         <span></span>
     </div>
+
+    <g:if test="${project.alertConfig?.ctx?.contains('siteUnbooking')}">
+      <p><i><g:message code='project.admin.siteBooking.unbookInfoLbl'/></i></p>                                
+    </g:if>
+    <g:else>
+        <p>-</p>
+    </g:else>
 </div>   
  <%-- End of site booking form --%>
 

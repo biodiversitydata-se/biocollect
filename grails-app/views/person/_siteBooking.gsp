@@ -81,10 +81,10 @@
             data: JSON.stringify(params)
         })
         .done(function(result){
-            alert("Booking cancelled successfully."); 
+            alert("Lokalen har nu avbokats och ett meddelande har skickats till Svensk Fågeltaxering."); 
         })
         .fail(function(jqXHR, textStatus, errorThrown){
-            alert("Unfortunately, the booking could not be cancelled.")
+            alert("Dessvärre kunde lokalen inte avbokas. Prova igen eller kontakta fageltaxering@biol.lu.se")
         })
         .always(function(result){
             reloadSites();
@@ -143,7 +143,7 @@
         }
         var params = {siteId: siteId, personId: "${person?.personId}", bookedSites: bookedSites};
 
-        var message = "<span class='label label-important'>Important</span><p><b>If you proceed the booking will be removed.</b></p><p>Are you sure you want to remove it?</p>";
+        var message = "<span class='label label-important'>Important</span><p><b>Om du fortsätter kommer lokalen att avbokas.</b></p><p>Är du säker på att du vill avboka?</p>";
         
         bootbox.confirm(message, function (result) {
             if (result){

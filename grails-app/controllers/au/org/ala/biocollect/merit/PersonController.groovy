@@ -220,6 +220,25 @@ class PersonController {
         if (resultSites.error || resultPerson.error){
             log.debug "error"
         } else {
+
+            // send email
+            List emailAddresses = [grailsApplication.config.biocollect.support.email.address]
+
+            def user = userService.getUser()
+            String userName = user.displayName
+
+            def person = personService.get(values?.personId)
+            String personInternalId = person.person.internalPersonId
+            
+            def site = siteService.get(values.siteId)
+            String siteInternalId = site.adminProperties.internalSiteId
+
+            def subject = "Avbokning av IWC-lokal"
+            def emailBody = "Site/internal site ID " + siteInternalId + " har avbokats av " + userName + " / " +personInternalId 
+
+            emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
+            def result = [message: "Ett meddelande har skickats till Svensk Fågeltaxering"]
+
             [status: 200] as JSON
         }
     }

@@ -174,7 +174,7 @@ var fcConfig = {
         <div class="accordion-group">
             <div class="accordion-heading">
                 <a class="accordion-toggle" href="${createLink(action:'edit', id: person?.personId)}?returnTo=${createLink(controller:'person', action:'home')}">
-                    Uppdatera min profil
+                    Min profil, mina undersökningar och bokningar
                 </a>
             </div>
         </div>
