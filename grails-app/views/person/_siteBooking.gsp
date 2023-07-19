@@ -23,7 +23,12 @@
 
     <div class="well span12">
         <g:if test="${person?.bookedSites}">
-            <h4><a href="#" onclick="return loadBookedSites()"><g:message code="person.siteBooking.showBooked"/></a></h4>
+            <g:if test="${fc.userIsAlaOrFcAdmin()}">
+                <h4><a href="#" onclick="return loadBookedSites('admin')"><g:message code="person.siteBooking.showBooked"/></a></h4>
+            </g:if>
+            <g:else>
+                <h4><a href="#" onclick="return loadBookedSites('')"><g:message code="person.siteBooking.showBooked"/></a></h4>
+            </g:else>
         </g:if>
         <g:else>
             <h4><g:message code="person.siteBooking.noSites"/></h4>
@@ -33,6 +38,7 @@
             <table style="width: 95%;margin:30px" class="table table-striped table-bordered table-hover" id="booked-sites-table">
                 <thead>
                 <th><g:message code="site.details.siteName"/></th>
+                <th><g:message code="site.details.projectName"/></th>
                 <th width="10%"><g:message code="person.siteBooking.cancelBooking"/></th>
                 </thead>
                 <tbody>
@@ -91,7 +97,7 @@
         })
     }
 
-    function loadBookedSites(){
+    function loadBookedSites(isAdmin){
         $('#booked-sites-div').attr("hidden", false); 
 
         if (! $.fn.DataTable.isDataTable( '#booked-sites-table' )){
@@ -114,11 +120,19 @@
                     }
                 },
                 {
+                    data: 'projects[0].name',
+                    name: 'projects[0].name',
+                    render: function (data, type, row) {
+                        return data;
+                    }
+                },
+                {
                     data: 'siteId',
                     name: 'siteId',
                     render: function (data, type, row) {
-
-                        return '<a class="btn btn-small tooltips" href="" title="Remove booking"><i class="icon-remove"></i></a>';
+                        if (isAdmin || row.projects[0].bookingConfig.includes("siteUnbooking"))
+                            return '<a class="btn btn-small tooltips" href="" title="Remove booking"><i class="icon-remove"></i></a>';
+                        else return ""
                     },
                     bSortable: false
                 }
@@ -130,7 +144,7 @@
     }
 
     // remove site booking from person's profile and from site     
-    $('#booked-sites-table').on("click", "tbody td:nth-child(2) a", function (e) {
+    $('#booked-sites-table').on("click", "tbody td:nth-child(3) a", function (e) {
         e.preventDefault();
         var bookedSites = ${(person?.bookedSites) ? person?.bookedSites : false };
 

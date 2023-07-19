@@ -13,6 +13,7 @@
         deletePersonUrl: "${createLink(action:'delete', id:person?.personId)}",
         bookSiteUrl: "${createLink(controller: 'site', action:'bookSites')}",
         removeBookingUrl: "${createLink(controller: 'person', action:'removeBooking')}",
+        sendUnbookingNotification: "${createLink(controller: 'site', action:'sendUnbookingNotification')}",
         viewSiteUrl: "${createLink(controller: 'site', action:'index')}",
         viewActivityUrl: "${createLink(controller: 'bioActivity', action: 'index')}",
         getBookedSiteNamesUrl: "${createLink(controller: 'site', action:'getSiteNames', params: [siteIds: person?.bookedSites])}",

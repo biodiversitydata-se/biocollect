@@ -234,7 +234,7 @@ class PersonController {
             String siteInternalId = site.adminProperties.internalSiteId
 
             def subject = "Avbokning av IWC-lokal"
-            def emailBody = "Site/internal site ID " + siteInternalId + " har avbokats av " + userName + " / " +personInternalId 
+            def emailBody = siteInternalId + " har avbokats av " + userName + " / " +personInternalId 
 
             emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
             def result = [message: "Ett meddelande har skickats till Svensk Fågeltaxering"]
