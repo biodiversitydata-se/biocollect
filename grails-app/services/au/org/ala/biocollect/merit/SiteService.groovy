@@ -634,7 +634,7 @@ class SiteService {
         def user = userService.getUser()
         String userName = user.displayName
         String personId = personService.getPersonIdForUser(user.userId)
-        List emailAddresses = body?.emailAddresses ?: grailsApplication.config.biocollect.support.email.address
+        List emailAddresses = body?.emailAddresses ?: grailsApplication.config.biocollect.admin.email.address
 
         def subject = "BioCollect uppdatering: bokningsönskan för ${params?.projectName}"
         def emailBody = userName + " vill boka rutterna: ${body?.requestedSitesList} for ${params?.projectName}. De är ännu inte bokade av någon. <br>" + 

@@ -224,7 +224,7 @@ class PersonController {
         } else {
 
             // send email
-            List emailAddresses = [grailsApplication.config.biocollect.support.email.address]
+            List emailAddresses = [grailsApplication.config.biocollect.admin.email.address, grailsApplication.config.biocollect.support.email.address]
 
             def user = userService.getUser()
             String userName = user.displayName
@@ -240,7 +240,8 @@ class PersonController {
             def subject = "Avbokning av '" + projectName + "' - lokal/ruta"
             def emailBody = siteInternalId + " (" + projectName + ") har avbokats av " + userName + " / " +personInternalId 
 
-            emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.admin.email.address}")
+            // subject, body, recipient, cc, replytTo
+            emailService.sendEmail(subject, emailBody, emailAddresses, [grailsApplication.config.biocollect.support.email.address])
             def result = [message: "Ett meddelande har skickats till Svensk Fågeltaxering"]
 
             [status: 200] as JSON
