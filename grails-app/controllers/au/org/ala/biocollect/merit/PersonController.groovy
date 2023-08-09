@@ -214,6 +214,8 @@ class PersonController {
     }
 
     def removeBooking(){
+
+
         def values = request.JSON
         def resultSites = siteService.update(values.siteId, [bookedBy: ""])
         def resultPerson = personService.update(values?.personId, [bookedSites: values?.bookedSites])
@@ -233,10 +235,12 @@ class PersonController {
             def site = siteService.get(values.siteId)
             String siteInternalId = site.adminProperties.internalSiteId
 
-            def subject = "Avbokning av IWC-lokal"
-            def emailBody = siteInternalId + " har avbokats av " + userName + " / " +personInternalId 
+            String projectName = site.projects[0].name
 
-            emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.support.email.address}")
+            def subject = "Avbokning av '" + projectName + "' - lokal/ruta"
+            def emailBody = siteInternalId + " (" + projectName + ") har avbokats av " + userName + " / " +personInternalId 
+
+            emailService.sendEmail(subject, emailBody, emailAddresses, [], "${grailsApplication.config.biocollect.admin.email.address}")
             def result = [message: "Ett meddelande har skickats till Svensk Fågeltaxering"]
 
             [status: 200] as JSON
