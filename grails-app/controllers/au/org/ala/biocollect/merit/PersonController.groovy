@@ -241,7 +241,7 @@ class PersonController {
             def emailBody = siteInternalId + " (" + projectName + ") har avbokats av " + userName + " / " +personInternalId 
 
             // subject, body, recipient, cc, replytTo
-            emailService.sendEmail(subject, emailBody, emailAddresses, [grailsApplication.config.biocollect.support.email.address])
+            emailService.sendEmail(subject, emailBody, emailAddresses, [])
             def result = [message: "Ett meddelande har skickats till Svensk Fågeltaxering"]
 
             [status: 200] as JSON

@@ -37,8 +37,8 @@
         <div id="booked-sites-div" hidden>
             <table style="width: 95%;margin:30px" class="table table-striped table-bordered table-hover" id="booked-sites-table">
                 <thead>
-                <th><g:message code="site.details.siteName"/></th>
-                <th><g:message code="site.details.projectName"/></th>
+                <th><a href="#"><g:message code="site.details.siteName"/></a></th>
+                <th><a href="#"><g:message code="site.details.projectName"/></a></th>
                 <th width="10%"><g:message code="person.siteBooking.cancelBooking"/></th>
                 </thead>
                 <tbody>
@@ -104,16 +104,18 @@
          tableBookedSites = $('#booked-sites-table').DataTable({ 
             "ajax": {"url": url, "dataSrc": ""},
             "bFilter": false,
+            "bSort": true,
             "info": "",
             "infoEmpty": "",
             "infoFiltered": "",
             "processing": true,
-            "serverSide": true,
+            "serverSide": false,
             "paging": false,
             "columns": [
                 {
                     data: 'name',
                     name: 'name',
+                    bSortable: true,
                     render: function (data, type, row) {
                         return '<a class="margin-left-10" href="#" title="See site details">' 
                         + data + '</a>';
@@ -122,6 +124,7 @@
                 {
                     data: 'projects[0].name',
                     name: 'projects[0].name',
+                    bSortable: true,
                     render: function (data, type, row) {
                         return data;
                     }
@@ -204,7 +207,7 @@
         document.location.href = fcConfig.viewSiteUrl + '/' + data.siteId; 
     });
 
-        $('#owned-sites-table').on("click", "tbody td:nth-child(1) a", function (e) {
+    $('#owned-sites-table').on("click", "tbody td:nth-child(1) a", function (e) {
         e.preventDefault();
         var row = this.parentElement.parentElement,
             data = tableOwnedSites.row(row).data();
