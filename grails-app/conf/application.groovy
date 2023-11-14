@@ -27,7 +27,7 @@ environments {
                 temp.dir = "/data/biocollect/temp"
 //              system level config
                 server.port = 8087
-                serverURL = "https://devt.biodiveristydata.se:8080/"
+                serverURL = "https://devt.biodiveristydata.se:8087/"
                 biocollect.system.email.replyTo = "biocollect@biodiversitydata.se"
                 sender = "biocollect@biodiversitydata.se"
                 debugUI = true

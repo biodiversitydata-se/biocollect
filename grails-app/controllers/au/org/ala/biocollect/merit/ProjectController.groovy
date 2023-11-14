@@ -27,6 +27,8 @@ import org.apache.http.HttpStatus
 import org.joda.time.DateTime
 import org.springframework.context.MessageSource
 
+import java.text.SimpleDateFormat
+
 import static org.apache.http.HttpStatus.*
 
 @SecurityScheme(name = "auth",
