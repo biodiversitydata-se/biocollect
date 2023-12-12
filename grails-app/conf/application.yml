@@ -11,7 +11,7 @@ environments:
         grails:
            config:
               locations:
-                 - file:///data/biocollect/config/biocollect-config-grails3.properties
+                 - file:///data/biocollect/config/biocollect-config.properties
         #system level config
         server:
            port: 8087
@@ -150,7 +150,7 @@ speciesConfiguration:
            ]
 
 spatial:
-   baseURL: "http://canmove-dev.ekol.lu.se:8081"
+   baseURL: "https://ecodata.biodiversitydata.se"
 
 upload:
    images:
