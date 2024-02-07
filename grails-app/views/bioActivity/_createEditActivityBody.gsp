@@ -5,12 +5,18 @@
 .overflow-table {
     overflow-x: visible;
 }
+
 table .observations {
     position: relative;
     height:400px;
     overflow-x: visible;
     width:99%;
 }
+
+.observations tr:hover td{
+    border: 2px solid #ffa;
+}
+
 table tr td:nth-child(odd), thead th:nth-child(odd) {
     background:#f5f5f5;
 }
