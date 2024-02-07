@@ -13,7 +13,7 @@ table .observations {
     width:99%;
 }
 
-.observations tr:hover td{
+.observations tbody tr:hover td{
     border: 2px solid #ffa;
 }
 
