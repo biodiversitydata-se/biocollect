@@ -18,7 +18,8 @@ environments:
            serverURL: http://localhost:8087
         debugUI: true
         ecodata:
-          baseURL: "https://canmove-dev.ekol.lu.se:8080/"
+          #baseURL: "https://canmove-dev.ekol.lu.se:8080/"
+          baseURL: https://ecodata.biodiversitydata.se
     test:
         grails:
           config:

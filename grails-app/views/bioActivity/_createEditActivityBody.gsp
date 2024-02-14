@@ -13,7 +13,7 @@ table .observations {
     width:99%;
 }
 
-.observations tbody tr:hover td{
+.observations tbody tr:hover td, .youngOwlObservations tbody tr:hover td, .mammalObservations tbody tr:hover td, .mammalObservationsOnRoad tbody tr:hover td, .amphibianObservations tbody tr:hover td{
     border: 2px solid #ffa;
 }
 
