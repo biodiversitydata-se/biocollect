@@ -83,7 +83,6 @@
                     <i class="icon-edit"></i> <g:message code="site.details.editSite"/> 
                 </g:link>
             </g:elseif>
-            %{-- TODO - delete button could be for volunteers too but maybe have an alert before delete happens --}%
             <g:if test="${userIsAlaOrFcAdmin}">
                 <div class="btn btn-small btn-danger" onclick="deleteSite()"><i
                         class="fa fa-remove"></i> <g:message code="site.details.deleteSite"/> 
@@ -588,15 +587,22 @@
     ko.applyBindings(msg, document.getElementById('message'))
 
     function deleteSite(){
-        var url = fcConfig.siteDeleteUrl + '/' + "${site.siteId}"
-        $.ajax({
-            url: url,
-            success: function(){
-                msg.message('Successfully deleted site. Redirecting in 3 seconds.');
-                setTimeout(function(){ window.location = fcConfig.siteListUrl}, 3000);
-            },
-            error: function(xhr){
-                msg.message(xhr.responseText);
+        var message = "<span class='label label-important'>Important</span><p><b>Om du fortsätter kommer lokalen att raderas.</b></p><p>Är du säker på att du vill radera lokalen?</p>";
+        
+        bootbox.confirm(message, function (result) {
+            if (result){
+
+                var url = fcConfig.siteDeleteUrl + '/' + "${site.siteId}"
+                $.ajax({
+                    url: url,
+                    success: function(){
+                        msg.message('Successfully deleted site. Redirecting in 3 seconds.');
+                        setTimeout(function(){ window.location = fcConfig.siteListUrl}, 3000);
+                    },
+                    error: function(xhr){
+                        msg.message(xhr.responseText);
+                    }
+                })
             }
         })
     }
