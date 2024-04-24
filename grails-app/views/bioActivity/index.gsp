@@ -331,6 +331,20 @@
 
     var versionMsg = $('#versionMsg')
     if (versionMsg.length > 0) versionMsg[0].innerHTML = moment(fcConfig.version, 'x').format('YYYY-MM-DD HH:mm:ss')
+
+<%-- LU mathieu : copy-paste part of the _createEditActivityBody.gsp code to execute this reloadGeodata function that loads the point on the map --%>
+<g:each in="${metaModel?.outputs}" var="outputName">
+    <g:if test="${outputName != 'Photo Points'}">
+        <g:set var="blockId" value="${fc.toSingleWord([name: outputName])}"/>
+
+        setTimeout(function(){
+            // Forcing map refresh because of tricky race condition that resets the map
+            // to the project area. This refresh needs to happen after everything else has run.
+            ecodata.forms["${blockId}ViewModelInstance"].reloadGeodata();
+        }, 0);
+    </g:if>
+</g:each>
+
 </asset:script>
 </body>
 </html>
