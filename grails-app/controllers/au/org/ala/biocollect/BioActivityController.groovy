@@ -477,6 +477,15 @@ class BioActivityController {
         boolean userIsProjectMember = members.find{it.userId == userId} || userIsAlaAdmin
 
         if (activity && pActivity) {
+
+            // MATHIEU LU : crazy bug in displaying the map for index BioActivity.
+            // when the locationLongitude has more than 6 decimals, the observable longitude is not triggered/success
+            // and in the end the map is resetted....
+            // this little trick fixes it
+            if (activity.outputs[0]?.data?.locationLongitude && activity.outputs[0].data.locationLongitude instanceof Number) {
+                activity.outputs[0].data.locationLongitude=activity.outputs[0].data.locationLongitude.round(6)
+            }
+
             if (embargoed && !userIsModerator && !userIsOwner && !userIsAlaAdmin) {
                 flash.message = "Access denied: You do not have permission to access the requested resource."
                 redirect(controller: 'project', action: 'index', id: activity.projectId)
