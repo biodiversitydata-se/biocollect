@@ -1,5 +1,5 @@
 var PaginationViewModel = function (o, caller) {
-    var defaultRpp = (caller.view == "project" || caller.view == "allrecords") ? 20 : 500;
+    var defaultRpp = (caller.view == "project" || caller.view == "allrecords") ? 20 : 1000;
     var self = this;
     if (!o) o = {};
     if (!caller) caller = self;
