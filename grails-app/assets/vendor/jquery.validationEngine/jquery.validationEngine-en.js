@@ -60,6 +60,10 @@
                     "regex": "none",
                     "alertText": "* Fält överensstämmer inte"
                 },
+                "checkDiffNext2Fields": {
+                    "regex": "none",
+                    "alertText": "* Fält överensstämmer inte (ö + vatten = total)"
+                },
                 "creditCard": {
                     "regex": "none",
                     "alertText": "* Ogiltigt kreditkortsnummer"

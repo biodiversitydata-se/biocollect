@@ -647,6 +647,9 @@
 					case "equals":
 						errorMsg = methods._getErrorMessage(form, field, rules[i], rules, i, options, methods._equals);
 						break;
+					case "checkDiffNext2Fields":
+						errorMsg = methods._getErrorMessage(form, field, rules[i], rules, i, options, methods._checkDiffNext2Fields);
+						break;
 					case "funcCall":
 						errorMsg = methods._getErrorMessage(form, field, rules[i], rules, i, options, methods._funcCall);
 						break;
@@ -875,6 +878,7 @@
 			 "maxCheckbox": "range-overflow",
 			 "minCheckbox": "range-underflow",
 			 "equals": "pattern-mismatch",
+			 "checkDiffNext2Fields": "pattern-mismatch",
 			 "funcCall": "custom-error",
 			 "creditCard": "pattern-mismatch",
 			 "condRequired": "value-missing"
@@ -1040,11 +1044,39 @@
 		* @return an error string if validation failed
 		*/
 		_equals: function(field, rules, i, options) {
+
 			var equalsField = rules[i + 1];
 
 			if (field.val() != $("#" + equalsField).val())
 				return options.allrules.equals.alertText;
 		},
+
+		/**
+		* Field match
+		*
+		* @param {jqObject} field
+		* @param {Array[String]} rules
+		* @param {int} i rules index
+		* @param {Map}
+		*            user options
+		* @return an error string if validation failed
+		*/
+		// LU Custom : check if the value is equal to the difference of 2 next fields
+		// rule can be "AequalsTminusB" or "BequalsTminusA"
+		_checkDiffNext2Fields: function(field, rules, i, options) {
+
+			var valA, valB, valT;
+			valA = valB = valT =0;
+
+			valT=field.parent().next().next().children().val();
+			valB=field.parent().next().children().val();
+			valA=field.val();
+
+			if (parseInt(valA)+parseInt(valB) != parseInt(valT))
+				return options.allrules.checkDiffNext2Fields.alertText;
+
+			
+		},		
 		/**
 		* Check the maximum size (in characters)
 		*
