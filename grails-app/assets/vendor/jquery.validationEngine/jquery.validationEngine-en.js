@@ -62,7 +62,7 @@
                 },
                 "checkDiffNext2Fields": {
                     "regex": "none",
-                    "alertText": "* Fält överensstämmer inte (ö + vatten = total)"
+                    "alertText": "* Fälten överensstämmer inte (ö+vatten SKA vara lika med total)"
                 },
                 "creditCard": {
                     "regex": "none",
