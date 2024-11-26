@@ -46,7 +46,7 @@
         </div>
         <div class="row-fluid controls-row">
             <fc:textField data-bind="value:name" outerClass="span10" label="${message(code:'site.poi.name')}"
-                          data-validation-engine="validate[required]"/>
+                          data-validation-engine="validate[required]" disabled=""/>
         </div>
         <g:if test="${allowSegmentMetadata}">     
             <div class="row-fluid controls-row">

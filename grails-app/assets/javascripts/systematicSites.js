@@ -367,7 +367,7 @@ var SystematicSiteViewModel = function (valuesForVM) {
                 var geoType = mapFeatures[index].geometry.type,
                  coordinates = extractCoordinates(mapFeatures[index].geometry.coordinates, geoType),
                  name = self.transectParts().length + 1,
-                 dictionary = {"Point": "Punkt ", "Line": "Linje ", "Area": "Sektor "};
+                 dictionary = {"Point": "P", "Line": "Linje ", "Area": "Sektor "};
 
                 createTransectPart({
                     name: dictionary[determineGeoType(geoType)] + String(name),
