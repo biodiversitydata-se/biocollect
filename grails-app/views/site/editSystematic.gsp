@@ -136,7 +136,14 @@
         });
 
         $('#save').click(function () {
+
             if ($('#validation-container').validationEngine('validate')) {
+
+                // disable the button to avoid a double validation
+                var saveButtonTxt = $("#save").html();
+                $("#save").attr("disabled","disabled");
+                $("#save").html("...");
+
                 var json = systematicSiteViewModel.toJS();
                 var data = {
                     site: json,
@@ -162,6 +169,7 @@
                     data: JSON.stringify(data),
                     contentType: 'application/json',
                     success: function (data) {
+
                         if(data.status == 'created'){
                             bootbox.alert('Site created successfully!');
                             document.location.href = fcConfig.siteIndexUrl + '/' + data.id;
@@ -173,6 +181,9 @@
                         }
                     },
                     error: function (data) {
+                        // re-enable the button and rewrite its label
+                        $("#save").attr("disabled","");
+                        $("#save").html(saveButtonTxt);
                         var errorMessage = data.responseText || 'There was a problem saving this site'
                         bootbox.alert(errorMessage);
                     }
