@@ -92,6 +92,7 @@
                 </g:else>
                     <button type="button" id="cancel" class="btn"><g:message code="g.cancel" /></button>
                 </div>
+                <div id="tempMessageAfterValidation"></div>
             </div>
         </bs:form>
     </div>
@@ -143,6 +144,7 @@
                 var saveButtonTxt = $("#save").html();
                 $("#save").attr("disabled","disabled");
                 $("#save").html("...");
+                $("#tempMessageAfterValidation").html("Din rutt skapas nu i systemet, det kan ta några minuter. När det är klart hittar du den bland dina rutter på din personliga sida.");
 
                 var json = systematicSiteViewModel.toJS();
                 var data = {
@@ -184,6 +186,7 @@
                         // re-enable the button and rewrite its label
                         $("#save").attr("disabled","");
                         $("#save").html(saveButtonTxt);
+                        $("#tempMessageAfterValidation").html("");
                         var errorMessage = data.responseText || 'There was a problem saving this site'
                         bootbox.alert(errorMessage);
                     }
