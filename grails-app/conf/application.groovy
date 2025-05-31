@@ -291,7 +291,7 @@ if (!map.baseLayers) {
                 [
                         'code': 'worldimagery',
                         'displayText': 'Satellit',
-                        'isSelected': false
+                        'isSelected': true
                 ],
                 [
                         'code': 'detailed',
@@ -301,7 +301,7 @@ if (!map.baseLayers) {
                 [
                         'code': 'topographic',
                         'displayText': 'Topografisk',
-                        'isSelected': true
+                        'isSelected': false
                 ],
                 [
                         'code': 'googlehybrid',
