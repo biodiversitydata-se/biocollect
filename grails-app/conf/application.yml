@@ -151,7 +151,7 @@ speciesConfiguration:
            ]
 
 spatial:
-   baseURL: "https://ecodata.biodiversitydata.se"
+   baseURL: "https://spatial.biodiversitydata.se"
 
 upload:
    images:
@@ -292,8 +292,8 @@ endpoints:
         enabled: true
 
 webservice:
-    connectTimeout: 6000000
-    readTimeout: 6000000
+    connectTimeout: 9000000
+    readTimeout: 9000000
 
 
 
