@@ -151,7 +151,7 @@ speciesConfiguration:
            ]
 
 spatial:
-   baseURL: "https://spatial.biodiversitydata.se"
+   baseURL: "https://ecodata.biodiversitydata.se"
 
 upload:
    images:
