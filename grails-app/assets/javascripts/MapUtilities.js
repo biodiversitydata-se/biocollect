@@ -238,14 +238,10 @@ Biocollect.MapUtilities = {
                 layer = new L.Google('TERRAIN', {uniqueName: 'googleterrain', maxZoom: 21, nativeMaxZoom: 21});
                 break;
             case 'lantmateriettopo':
-                //var token = "8e55e105-71ff-3816-98eb-86f7979c3650";
-                var LMusername = "lunu0009";
-                var LMpassword = "Gi2R2I3jBl51wx8hZAFW";
                     
                 option = {
                     // see https://opendata.lantmateriet.se/#apis?api=OpenDataWMTS&version=v1
                     //url: 'https://api.lantmateriet.se/open/topowebb-ccby/v1/wmts/token/'+ token +'/?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=topowebb&STYLE=default&TILEMATRIXSET=3857&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fpng',
-                    //url: 'https://' + LMusername + ':' + LMpassword + '@maps.lantmateriet.se/open/topowebb-ccby/v1/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=topowebb&STYLE=default&TILEMATRIXSET=3857&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fpng',
                     url: 'https://biocollect.biodiversitydata.se/biocollect-proxy-LM/tiles/{z}/{y}/{x}.png',
                     options: {
                         attribution: '&copy; <a href="https://www.lantmateriet.se/en/">Lantmäteriet</a> Topografisk Webbkarta Visning, CCB'
