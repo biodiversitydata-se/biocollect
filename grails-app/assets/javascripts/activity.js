@@ -316,6 +316,29 @@ var ActivitiesAndRecordsViewModel = function (placeHolder, view, user, ignoreMap
         $loading.hide();
     };
 
+    // LU specific download records
+    self.downloadLURecords = function(data, event) {
+        var elem = event.target ? event.target : event.srcElement;
+        var asyncDownloadThreshold = DEFAULT_EMAIL_DOWNLOAD_THRESHOLD;
+        if (elem) {
+                asyncDownloadThreshold = $(elem).attr("dataemailthreshold");
+        }
+
+        var url = constructQueryUrl(fcConfig.downloadLURecordsUrl, 0, false);
+
+        if (self.total() > asyncDownloadThreshold) {
+            self.transients.showEmailDownloadPrompt(!self.transients.showEmailDownloadPrompt());
+        } else {
+            $('#downloadStartedMsg').removeClass('hide');
+            window.setTimeout(function(){
+                $('#downloadStartedMsg').addClass('hide');
+            }, 10000);
+            window.location.href = url;
+        }
+    };
+
+
+
     self.download = function(data, event) {
         var elem = event.target ? event.target : event.srcElement;
         var asyncDownloadThreshold = DEFAULT_EMAIL_DOWNLOAD_THRESHOLD;

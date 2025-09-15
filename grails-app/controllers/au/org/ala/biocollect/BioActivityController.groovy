@@ -685,6 +685,15 @@ class BioActivityController {
         return null
     }
 
+    def downloadLURecords() {
+        response.setContentType("application/zip")
+        response.setHeader('Content-Disposition', 'Attachment;Filename="data.zip"')
+        Map queryParams = constructDefaultSearchParams(params)
+        queryParams.isMerit = false
+        searchService.downloadLURecords(response, queryParams)
+        return null
+    }
+
     private GrailsParameterMap constructDefaultSearchParams(Map params) {
         GrailsParameterMap queryParams = new GrailsParameterMap([:], request)
         Map parsed = commonService.parseParams(params)

@@ -105,6 +105,137 @@ class SearchService {
         webService.proxyGetRequest(response, "${grailsApplication.config.ecodata.service.url}/search/downloadAllData${commonService.buildUrlParamsFromMap(params)}", true, true)
     }
 
+    def downloadLURecords(HttpServletResponse response, Map params) {
+        log.info "downloadLURecords called"
+log.info(params.toString())
+        String EXTRACT_APP_URL = "http://localhost:8080/ExtractDataUser/generateExcel"
+        String AUTH_TOKEN = "gHQWql1sKoeM0UFyxlOcDkyFd"
+
+
+        String view = params.view ?: "allrecords" 
+        String userId = params.userId ?: "unknown"
+        String format = params.formatExpected ?: "xlsx"
+        String[] facets = params.fq ?: ""
+        boolean download = true
+
+        URL url = new URL(EXTRACT_APP_URL)
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection()
+        conn.setRequestMethod("POST")
+        conn.setRequestProperty("X-Auth-Token", AUTH_TOKEN)
+        conn.setDoOutput(true)
+
+        String delivery = download ? "download" : "email"
+        String parameters = "userId=${userId}&formatExpected=${format}&delivery=${delivery}&view=${view}"
+        // building the url with all the facets, flattened
+        facets.each { facet ->
+            def parts = facet.split(":", 2)   // split into 2 pieces max
+            def key = parts[0]
+            def value = parts.length > 1 ? parts[1] : ""
+            parameters += "&${key}=${value}"
+        }
+log.info(parameters)
+        conn.outputStream.withWriter("UTF-8") { it << parameters }
+
+        int responseCode = conn.getResponseCode()
+        if (responseCode == 200) {
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            response.setHeader("Content-Disposition", "attachment; filename=\"data_${userId}_yo.xlsx\"")
+            response.status = 200
+
+            conn.inputStream.withStream { inp ->
+                response.outputStream << inp
+            }
+            response.outputStream.flush()
+        } else {
+            String errMsg = conn.errorStream?.getText("UTF-8") ?: "Unexpected HTTP error: ${responseCode}"
+            log.error("Error from ExtractDataUser: ${errMsg}")
+            response.sendError(responseCode, errMsg)
+        }
+
+
+
+/*
+        log.info "downloadlurecordssearchservice"
+        //webService.proxyGetRequest(response, "${grailsApplication.config.ecodata.service.url}/search/downloadAllData${commonService.buildUrlParamsFromMap(params)}", true, true)
+
+
+        String EXTRACT_APP_URL = "http://localhost:8080/ExtractDataUser/generateExcel";
+        String AUTH_TOKEN = "SuperSecretToken123";
+        String param_user_id="";
+        String param_format="";
+        String param_download=true;
+
+//    public static File requestExcel(String userId, String format, boolean download) throws Exception {
+        URL url = new URL(EXTRACT_APP_URL);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("X-Auth-Token", AUTH_TOKEN);
+        conn.setDoOutput(true);
+
+        String delivery = param_download ? "download" : "email";
+        String parameters = "userId=" + param_user_id + "&formatExpected=" + param_format + "&delivery=" + delivery;
+        conn.getOutputStream().write(parameters.getBytes("UTF-8"));
+
+        int responseCode = conn.getResponseCode();
+        def resp = [status:responseCode]
+        if (responseCode == 200) {
+            if (param_download) {
+                // Save file temporarily
+                File file = File.createTempFile("user_" + param_user_id + "_", ".xlsx");
+                InputStream inp = null;
+                FileOutputStream fos = null;
+                try {
+                    inp = conn.getInputStream();
+                    fos = new FileOutputStream(file);
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    while ((bytesRead = inp.read(buffer)) != -1) {
+                        fos.write(buffer, 0, bytesRead);
+                    }
+                    log.info "fin du write"
+
+                    response.setContentType(conn.getContentType())
+                    response.setContentLength(conn.getContentLength())
+                    response.status = conn.getResponseCode()
+                    response.outputStream << file
+
+                } finally {
+                    if (fos != null) try { fos.close(); } catch (IOException ignore) {}
+                    if (inp != null) try { inp.close(); } catch (IOException ignore) {}
+                }
+
+                //return file;
+            } else {
+                // Read confirmation
+                InputStream inp = null;
+                try {
+                    inp = conn.getInputStream();
+                    System.out.println("Server says: " + new String(inp.readAllBytes()));
+                } finally {
+                    if (inp != null) try { inp.close(); } catch (IOException ignore) {}
+                }
+                //return null;
+            }
+        } else {
+            InputStream err =null;
+            try {
+                err = conn.getErrorStream();
+                if (err != null) {
+                    throw new RuntimeException("Error: " + new String(err.readAllBytes()));
+                }
+            } finally {
+                if (err != null) try { err.close(); } catch (IOException ignore) {}
+            }
+            throw new RuntimeException("Unexpected HTTP error: " + responseCode);
+
+            resp.error = conn.inputStream?.text ?: "Unexpected HTTP error: " + responseCode
+        }
+        log.info "on arrive au return"
+
+        return resp*/
+
+    }
+
     Map searchProjectActivity(GrailsParameterMap params, String q = null){
        // String url = grailsApplication.config.ecodata.service.url + '/search/elasticProjectActivity' + commonService.buildUrlParamsFromMap(params)
         String url = "${elasticSearchBaseUrl}/elasticProjectActivity" + commonService.buildUrlParamsFromMap(params)
