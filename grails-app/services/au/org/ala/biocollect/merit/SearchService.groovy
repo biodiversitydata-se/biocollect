@@ -108,7 +108,8 @@ class SearchService {
     def downloadLURecords(HttpServletResponse response, Map params) {
         log.info "downloadLURecords called"
 log.info(params.toString())
-        String EXTRACT_APP_URL = "http://localhost:8080/ExtractDataUser/generateExcel"
+        //String EXTRACT_APP_URL = "http://localhost:8080/ExtractDataUser/generateExcel"
+        String EXTRACT_APP_URL = "http://ecodata.biodiversitydata.se:8082/ExtractDataUser/generateExcel"
         String AUTH_TOKEN = "gHQWql1sKoeM0UFyxlOcDkyFd"
 
 
