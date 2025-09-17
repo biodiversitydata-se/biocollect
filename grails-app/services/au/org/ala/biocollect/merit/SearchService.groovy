@@ -109,7 +109,7 @@ class SearchService {
         log.info "downloadLURecords called"
 log.info(params.toString())
         //String EXTRACT_APP_URL = "http://localhost:8080/ExtractDataUser/generateExcel"
-        String EXTRACT_APP_URL = "http://ecodata.biodiversitydata.se:8082/ExtractDataUser/generateExcel"
+        String EXTRACT_APP_URL = "http://192.121.208.80:8082/ExtractDataUser/generateExcel"
         String AUTH_TOKEN = "gHQWql1sKoeM0UFyxlOcDkyFd"
 
 
