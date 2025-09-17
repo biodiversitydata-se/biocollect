@@ -5,6 +5,8 @@ import groovy.json.JsonSlurper
 import org.apache.commons.lang.StringUtils
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.servlet.http.HttpServletResponse
 
@@ -109,7 +111,7 @@ class SearchService {
         log.info "downloadLURecords called"
 log.info(params.toString())
         //String EXTRACT_APP_URL = "http://localhost:8080/ExtractDataUser/generateExcel"
-        String EXTRACT_APP_URL = "http://192.121.208.80:8082/ExtractDataUser/generateExcel"
+        String EXTRACT_APP_URL = "https://ecodata.biodiversitydata.se/ExtractDataUser/generateExcel"
         String AUTH_TOKEN = "gHQWql1sKoeM0UFyxlOcDkyFd"
 
 
@@ -139,8 +141,14 @@ log.info(parameters)
 
         int responseCode = conn.getResponseCode()
         if (responseCode == 200) {
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+            String timestamp = LocalDateTime.now().format(formatter);
+
+            String filename = String.format("data_%s_%s.xlsx", userId, timestamp);
+
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-            response.setHeader("Content-Disposition", "attachment; filename=\"data_${userId}_yo.xlsx\"")
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"")
             response.status = 200
 
             conn.inputStream.withStream { inp ->
