@@ -59,6 +59,7 @@
                                     <h3 class="text-left margin-bottom-2"><g:message code="g.found"/> <span data-bind="text: total()"></span> <g:message code="g.surveys"/></h3>
                                     <div class="pull-right margin-bottom-2 margin-top-1">
                                         <!-- ko if:  transients.isBulkActionsEnabled -->
+                                        <%--
                                         <span>Bulk actions -
                                             <div class="btn-group">
                                                 <button data-bind="disable: !transients.activitiesToDelete().length, click: bulkDelete" class="btn btn-default"><span class="fa fa-trash">&nbsp;</span> <g:message code="project.bulkactions.delete"/></button>
@@ -66,12 +67,13 @@
                                                 <button data-bind="disable: !transients.activitiesToDelete().length, click: bulkRelease" class="btn btn-default"><span class="fa fa-unlock">&nbsp;</span> <g:message code="project.bulkactions.release"/></button>
                                             </div>
                                         </span>
+                                        --%>
                                         <!-- /ko -->
                                         <%-- The download doesn't work properly (only downloads sites) so disable it temporarily --%>
                                         <%-- <button data-bind="click: download, disable: transients.loading" data-email-threshold="${grailsApplication.config.download.email.threshold ?: 200}" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span>Download</button> --%>
-                                        <%-- <g:if test="${userIsAlaOrFcAdmin}">
+                                        <g:if test="${userIsAdmin}">
                                             <button data-bind="click: downloadLURecords, disable: transients.loading" data-email-threshold="${grailsApplication.config.download.email.threshold ?: 200}" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span>Download-LURecords</button>
-                                        </g:if> --%>
+                                        </g:if>
                                     </div>
 
                                 </div>

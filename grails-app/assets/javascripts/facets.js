@@ -22,6 +22,7 @@ var BIOCOLLECT_ALA_FACET_MAPPING = {
     'organisationNameFacet':undefined,
     'projectActivityNameFacet':undefined,
     'embargoedFacet':undefined,
+    'geographicAreaFacet':undefined,
     'verificationStatusFacet':undefined,
     'surveyMonthFacet': {
         'name': 'month',

@@ -84,8 +84,9 @@ class WebService {
      * ecodata for excel-based reports)
      */
     def proxyGetRequest(HttpServletResponse response, String url, boolean includeUserId = true, boolean includeApiKey = false, Integer timeout = null, List headers = [HttpHeaders.CONTENT_DISPOSITION]) {
-
+        log.info "proxyGetRequestwebservice"
         HttpURLConnection conn = configureConnection(url, includeUserId)
+        log.info (url)
         def readTimeout = timeout?:defaultTimeout()
         conn.setConnectTimeout(grailsApplication.config.webservice.connectTimeout as int)
         conn.setReadTimeout(readTimeout)
@@ -93,7 +94,7 @@ class WebService {
         if (includeApiKey) {
             conn.setRequestProperty("Authorization", grailsApplication.config.api_key);
         }
-
+        log.info grailsApplication.config.api_key
         def resp = [status:conn.responseCode]
         if (conn.responseCode == 200) {
             response.setContentType(conn.getContentType())
@@ -104,7 +105,10 @@ class WebService {
             }
             response.status = conn.responseCode
 
+            //log.info conn.inputStream.toString()
             response.outputStream << conn.inputStream
+
+            log.info "finresponse"
         }
         else {
             resp.error = conn.inputStream?.text ?: 'An error occurred'
