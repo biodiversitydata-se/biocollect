@@ -71,7 +71,7 @@
                                         <%-- <button data-bind="click: download, disable: transients.loading" data-email-threshold="${grailsApplication.config.download.email.threshold ?: 200}" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span>Download</button> --%>
                                         <%-- <g:if test="${userIsAlaOrFcAdmin}">
                                             <button data-bind="click: downloadLURecords, disable: transients.loading" data-email-threshold="${grailsApplication.config.download.email.threshold ?: 200}" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span>Download-LURecords</button>
-                                        </g:if> -->
+                                        </g:if> --%>
                                     </div>
 
                                 </div>
