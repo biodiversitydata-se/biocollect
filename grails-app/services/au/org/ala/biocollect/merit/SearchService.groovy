@@ -108,15 +108,16 @@ class SearchService {
     }
 
     def downloadLURecords(HttpServletResponse response, Map params) {
-        log.info "downloadLURecords called"
-log.info(params.toString())
-        //String EXTRACT_APP_URL = "http://localhost:8082/ExtractDataUser/generateExcel"
+        log.info "downloadLURecords called searchservice"
+        log.info(params.toString())
+        String EXTRACT_APP_URL = "http://localhost:8082/ExtractDataUser/generateExcel"
         String EXTRACT_APP_URL = "https://ecodata.biodiversitydata.se/ExtractDataUser/generateExcel"
         String AUTH_TOKEN = "gHQWql1sKoeM0UFyxlOcDkyFd"
 
 
         String view = params.view ?: "allrecords" 
         String userId = params.userId ?: "unknown"
+        String personId = params.personId ?: "unknown"
         String format = params.formatExpected ?: "xlsx"
         String[] facets = params.fq ?: ""
         boolean download = true
@@ -128,7 +129,7 @@ log.info(params.toString())
         conn.setDoOutput(true)
 
         String delivery = download ? "download" : "email"
-        String parameters = "userId=${userId}&formatExpected=${format}&delivery=${delivery}&view=${view}"
+        String parameters = "userId=${userId}&personId=${personId}&formatExpected=${format}&delivery=${delivery}&view=${view}"
         // building the url with all the facets, flattened
         facets.each { facet ->
             def parts = facet.split(":", 2)   // split into 2 pieces max
@@ -136,7 +137,7 @@ log.info(params.toString())
             def value = parts.length > 1 ? parts[1] : ""
             parameters += "&${key}=${value}"
         }
-log.info(parameters)
+        log.info("parameters to send :" +parameters)
         conn.outputStream.withWriter("UTF-8") { it << parameters }
 
         int responseCode = conn.getResponseCode()
