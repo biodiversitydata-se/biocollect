@@ -131,7 +131,7 @@ class SearchService {
         conn.setDoOutput(true)
 
         String delivery = download ? "download" : "email"
-        String parameters = "userId=${userId}&personId=${personId}&projectId=${personId}&formatExpected=${format}&delivery=${delivery}&view=${view}"
+        String parameters = "userId=${userId}&personId=${personId}&projectId=${projectId}&formatExpected=${format}&delivery=${delivery}&view=${view}"
         // building the url with all the facets, flattened
         facets.each { facet ->
             def parts = facet.split(":", 2)   // split into 2 pieces max
