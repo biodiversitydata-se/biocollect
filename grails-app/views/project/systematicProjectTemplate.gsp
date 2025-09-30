@@ -47,6 +47,7 @@
         speciesPage: "${grailsApplication.config.bie.baseURL}/species/",
         searchProjectActivitiesUrl: "${createLink(controller: 'bioActivity', action: 'searchProjectActivities',params: [projectId:project.projectId, version: params.version])}",
         downloadProjectDataUrl: "${createLink(controller: 'bioActivity', action: 'downloadProjectData',params: [projectId:project.projectId])}",
+        downloadLURecordsUrl: "${createLink(controller: 'bioActivity', action: 'downloadLURecords',params: [projectId:project.projectId])}",
         siteCreateUrl: "${createLink(controller: 'site', action: 'createForProject', params: [projectId:project.projectId])}",
         siteCreateSystematicUrl: "${createLink(controller: 'site', action: 'createSystematic', params: [projectId:project.projectId])}",
         siteSelectUrl: "${createLink(controller: 'site', action: 'select', params:[projectId:project.projectId])}&returnTo=${createLink(controller: 'project', action: 'index', id: project.projectId)}",

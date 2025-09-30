@@ -119,6 +119,9 @@ class SearchService {
         String personId = params.personId ?: "unknown"
         String format = params.formatExpected ?: "xlsx"
         String[] facets = params.list("fq") ?: ""
+        // when coming from the view "project", it can contain a projectId
+        String projectId = params.projectId ?: ""
+
         boolean download = true
 
         URL url = new URL(EXTRACT_APP_URL)
@@ -128,7 +131,7 @@ class SearchService {
         conn.setDoOutput(true)
 
         String delivery = download ? "download" : "email"
-        String parameters = "userId=${userId}&personId=${personId}&formatExpected=${format}&delivery=${delivery}&view=${view}"
+        String parameters = "userId=${userId}&personId=${personId}&projectId=${personId}&formatExpected=${format}&delivery=${delivery}&view=${view}"
         // building the url with all the facets, flattened
         facets.each { facet ->
             def parts = facet.split(":", 2)   // split into 2 pieces max
@@ -145,7 +148,7 @@ class SearchService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
             String timestamp = LocalDateTime.now().format(formatter);
 
-            String filename = String.format("BioCollect_userdata_%s_%s.xlsx", userId, timestamp);
+            String filename = String.format("BioCollect_extractdata_%s_%s.xlsx", userId, timestamp);
 
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"")
