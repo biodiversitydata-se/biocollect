@@ -110,16 +110,15 @@ class SearchService {
     def downloadLURecords(HttpServletResponse response, Map params) {
         log.info "downloadLURecords called searchservice"
         log.info(params.toString())
-        String EXTRACT_APP_URL = "http://localhost:8082/ExtractDataUser/generateExcel"
+        //String EXTRACT_APP_URL = "http://localhost:8082/ExtractDataUser/generateExcel"
         String EXTRACT_APP_URL = "https://ecodata.biodiversitydata.se/ExtractDataUser/generateExcel"
         String AUTH_TOKEN = "gHQWql1sKoeM0UFyxlOcDkyFd"
-
 
         String view = params.view ?: "allrecords" 
         String userId = params.userId ?: "unknown"
         String personId = params.personId ?: "unknown"
         String format = params.formatExpected ?: "xlsx"
-        String[] facets = params.fq ?: ""
+        String[] facets = params.list("fq") ?: ""
         boolean download = true
 
         URL url = new URL(EXTRACT_APP_URL)
@@ -146,7 +145,7 @@ class SearchService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
             String timestamp = LocalDateTime.now().format(formatter);
 
-            String filename = String.format("data_%s_%s.xlsx", userId, timestamp);
+            String filename = String.format("BioCollect_userdata_%s_%s.xlsx", userId, timestamp);
 
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"")
