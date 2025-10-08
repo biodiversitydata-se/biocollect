@@ -52,7 +52,7 @@
 
                             <!-- ko if: activities().length > 0 -->
 
-                            <div class="alert alert-info hide" id="downloadStartedMsg"><i class="fa fa-spin fa-spinner">&nbsp;&nbsp;</i>Preparing download, please wait...</div>
+                            <div class="alert alert-info hide" id="downloadStartedMsg"><i class="fa fa-spin fa-spinner">&nbsp;&nbsp;</i>Nedladdning pågår, vänligen vänta...</div>
 
                             <div class="row-fluid" data-bind="visible: version().length == 0">
                                 <div class="span12">
@@ -72,7 +72,7 @@
                                         <%-- The download doesn't work properly (only downloads sites) so disable it temporarily --%>
                                         <%-- <button data-bind="click: download, disable: transients.loading" data-email-threshold="${grailsApplication.config.download.email.threshold ?: 200}" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span>Download</button> --%>
                                         <g:if test="${userIsAdmin}">
-                                            <button data-bind="click: downloadLURecords, disable: transients.loading" data-email-threshold="${grailsApplication.config.download.email.threshold ?: 200}" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span>Download-LURecords</button>
+                                            <button data-bind="click: downloadLURecords, disable: transients.loading" data-email-threshold="${grailsApplication.config.download.email.threshold ?: 200}" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span>Spara som Excel</button>
                                         </g:if>
                                     </div>
 

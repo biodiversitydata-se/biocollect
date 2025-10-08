@@ -56,7 +56,7 @@
 
                             <!-- ko if: activities().length > 0 -->
 
-                            <div class="alert alert-info hide" id="downloadStartedMsg"><i class="fa fa-spin fa-spinner">&nbsp;&nbsp;</i>Preparing download, please wait...</div>
+                            <div class="alert alert-info hide" id="downloadStartedMsg"><i class="fa fa-spin fa-spinner">&nbsp;&nbsp;</i>Nedladdning pågår, vänligen vänta...</div>
 
                             <div class="row-fluid" data-bind="visible: version().length == 0">
                                 <div class="span12">
