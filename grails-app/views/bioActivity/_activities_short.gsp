@@ -71,9 +71,9 @@
                                         <!-- /ko -->
                                         <%-- The download doesn't work properly (only downloads sites) so disable it temporarily --%>
                                         <%-- <button data-bind="click: download, disable: transients.loading" data-email-threshold="${grailsApplication.config.download.email.threshold ?: 200}" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span>Download</button> --%>
-                                        <g:if test="${userIsAdmin}">
-                                            <button data-bind="click: downloadLURecords, disable: transients.loading" data-email-threshold="${grailsApplication.config.download.email.threshold ?: 200}" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span>Spara som Excel</button>
-                                        </g:if>
+                                        <%-- <g:if test="${userIsAdmin}"> --%>
+                                            <button data-bind="click: downloadLURecords, disable: transients.loading" data-email-threshold="${grailsApplication.config.download.email.threshold ?: 200}" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span><g:message code="g.downloadLURecords"/></button>
+                                        <%-- </g:if> --%>
                                     </div>
 
                                 </div>
