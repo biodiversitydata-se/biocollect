@@ -145,6 +145,18 @@ function PersonViewModel(savedPerson, create) {
         return JSON.stringify(self.toJS());
     };
 
+    // LU specific download records
+    self.downloadLURecords = function(data, event) {
+
+        var url = fcConfig.downloadLURecordsUrl + "&view=personRecords";
+
+        $('#downloadStartedMsg').removeClass('hide');
+        window.setTimeout(function(){
+            $('#downloadStartedMsg').addClass('hide');
+        }, 10000);
+        window.location.href = url;
+    };
+
 }
 
 function PersonsListViewModel(){

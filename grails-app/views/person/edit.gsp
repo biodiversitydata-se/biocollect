@@ -14,6 +14,7 @@
         bookSiteUrl: "${createLink(controller: 'site', action:'bookSites')}",
         removeBookingUrl: "${createLink(controller: 'person', action:'removeBooking')}",
         sendUnbookingNotification: "${createLink(controller: 'site', action:'sendUnbookingNotification')}",
+        downloadLURecordsUrl: "${createLink(controller: 'bioActivity', action: 'downloadLURecords', params: [personIdFromAdmin:person?.personId])}",
         viewSiteUrl: "${createLink(controller: 'site', action:'index')}",
         viewActivityUrl: "${createLink(controller: 'bioActivity', action: 'index')}",
         getBookedSiteNamesUrl: "${createLink(controller: 'site', action:'getSiteNames', params: [siteIds: person?.bookedSites])}",

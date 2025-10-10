@@ -116,7 +116,8 @@ class SearchService {
 
         String view = params.view ?: "allrecords" 
         String userId = params.userId ?: "unknown"
-        String personId = params.personId ?: "unknown"
+        // if coming from the view "personRecords", the personId will be stored in the personIdFromAdmin field
+        String personId = params.personIdFromAdmin ?: (params.personId ?: "unknown")
         String format = params.formatExpected ?: "xlsx"
         String[] facets = params.list("fq") ?: ""
         // when coming from the view "project", it can contain a projectId

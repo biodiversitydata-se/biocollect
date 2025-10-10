@@ -14,6 +14,10 @@
         <g:render template="siteBooking"></g:render>
     </div>
 </div>
+<div>
+    <div class="alert alert-info hide" id="downloadStartedMsg"><i class="fa fa-spin fa-spinner">&nbsp;&nbsp;</i>Nedladdning pågår, vänligen vänta...</div>
+    <button data-bind="click: downloadLURecords, disable: transients.loading" data-email-threshold="${grailsApplication.config.download.email.threshold ?: 200}" class="btn btn-primary padding-top-1"><span class="fa fa-download">&nbsp;</span><g:message code="g.downloadLURecords"/></button>
+</div>
 <asset:script type="text/javascript">
 
     new RestoreTab('personDetailsTab', 'personal-tab');
