@@ -149,7 +149,7 @@ class SearchService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
             String timestamp = LocalDateTime.now().format(formatter);
 
-            String filename = String.format("BioCollect_extractdata_%s_%s.xlsx", userId, timestamp);
+            String filename = String.format("BioCollect_extractdata_%s_%s_%s.xlsx", view, userId, timestamp);
 
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"")
