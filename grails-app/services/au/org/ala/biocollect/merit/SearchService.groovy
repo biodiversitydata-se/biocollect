@@ -110,9 +110,8 @@ class SearchService {
     def downloadLURecords(HttpServletResponse response, Map params) {
         log.info "downloadLURecords called searchservice"
         log.info(params.toString())
-        //String EXTRACT_APP_URL = "https://ecodata.biodiversitydata.se/ExtractDataUser/generateExcel"
+
         String EXTRACT_APP_URL = grailsApplication.config.extractdataapp.url
-        //String AUTH_TOKEN = "gHQWql1sKoeM0UFyxlOcDkyFd"
         String AUTH_TOKEN = grailsApplication.config.extractdataapp.securedtoken 
 
         String view = params.view ?: "allrecords" 

@@ -84,3 +84,8 @@
 .input-prepend.input-append .select2-container--default .select2-selection--single .select2-selection__rendered {
     border-radius: 0;
 }
+
+/** specific LU to reduce the size of the table **/
+td[data-th="Art"] span.input-prepend.input-append {
+  margin-bottom: 0 !important;
+}
