@@ -89,10 +89,10 @@
     <g:layoutHead/>
     <link rel="stylesheet" type="text/css"
           href="${createLink(controller: 'hub', action: 'getStyleSheet')}?ver=${hubConfig.lastUpdated}">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://static.biodiversitydata.se/favicon-16x16.png">
+    <link rel="icon" href="https://bioatlas.biodiversitydata.se/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" href="https://bioatlas.biodiversitydata.se/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="https://bioatlas.biodiversitydata.se/favicon-180x180.png" />
 
-
-    
 
     <!-- Matomo -->
     <script type="text/javascript">

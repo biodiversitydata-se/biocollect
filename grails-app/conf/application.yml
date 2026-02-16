@@ -122,7 +122,7 @@ google:
     url: "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&latlng="
 
 headerAndFooter:
-  baseURL: "https://static.biodiversitydata.se/"
+  baseURL: "https://bioatlas.biodiversitydata.se/"
 images:
   baseURL: "https://images.biodiversitydata.se"
 
