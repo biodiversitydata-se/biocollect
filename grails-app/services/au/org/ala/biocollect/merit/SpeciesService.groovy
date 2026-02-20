@@ -68,7 +68,7 @@ class SpeciesService {
             searchResult.scientificNameMatches = searchResult.scientificName ? [ searchResult.scientificName ] : []
             searchResult.commonName = result[fields.commonNameField]?: result.kvpValues?.find { it.key ==  fields.commonNameField } ?.value
             searchResult.commonNameMatches = searchResult.commonName ? [ searchResult.commonName ] : []
-            searchResult.swedishRank = result.kvpValues?.find { it.key == "rank" }.value            
+            searchResult.swedishRank = result.kvpValues?.find { it.key == "rank" }?.value            
             searchResult
         }
 
