@@ -650,6 +650,9 @@
 					case "checkDiffNext2Fields":
 						errorMsg = methods._getErrorMessage(form, field, rules[i], rules, i, options, methods._checkDiffNext2Fields);
 						break;
+					case "checkAllColumnsNattNotZero":
+						errorMsg = methods._getErrorMessage(form, field, rules[i], rules, i, options, methods._checkAllColumnsNattNotZero);
+						break;
 					case "funcCall":
 						errorMsg = methods._getErrorMessage(form, field, rules[i], rules, i, options, methods._funcCall);
 						break;
@@ -809,7 +812,7 @@
 			 var element_classes_array = element_classes.split(" ");
 
 			 // Call the original validation method. If we are dealing with dates or checkboxes, also pass the form
-			 var errorMsg;
+			 var errorMsg;		 
 			 if (rule == "future" || rule == "past"  || rule == "maxCheckbox" || rule == "minCheckbox") {
 				 errorMsg = originalValidationMethod(form, field, rules, i, options);
 			 } else {
@@ -879,6 +882,7 @@
 			 "minCheckbox": "range-underflow",
 			 "equals": "pattern-mismatch",
 			 "checkDiffNext2Fields": "pattern-mismatch",
+			 "checkAllColumnsNattNotZero": "pattern-mismatch",
 			 "funcCall": "custom-error",
 			 "creditCard": "pattern-mismatch",
 			 "condRequired": "value-missing"
@@ -1052,7 +1056,7 @@
 		},
 
 		/**
-		* Field match
+		* Check kustfåglarscheme with 2 columns and sum
 		*
 		* @param {jqObject} field
 		* @param {Array[String]} rules
@@ -1064,7 +1068,6 @@
 		// LU Custom : check if the value is equal to the difference of 2 next fields
 		// rule can be "AequalsTminusB" or "BequalsTminusA"
 		_checkDiffNext2Fields: function(field, rules, i, options) {
-
 			var valA, valB, valT;
 			valA = valB = valT =0;
 
@@ -1073,10 +1076,49 @@
 			valA=field.val();
 
 			if (parseInt(valA)+parseInt(valB) != parseInt(valT))
-				return options.allrules.checkDiffNext2Fields.alertText;
+				return options.allrules.checkDiffNext2Fields.alertText;		
+		},	
 
-			
-		},		
+		/**
+		* Check at least 1 column with value > 0
+		*
+		* @param {jqObject} field
+		* @param {Array[String]} rules
+		* @param {int} i rules index
+		* @param {Map}
+		*            user options
+		* @return an error string if validation failed
+		*/
+		// LU Custom : check if one of the column is > 0
+		_checkAllColumnsNattNotZero: function(field, rules, i, options) {
+
+			var allZero = true;
+		    var currentCell = field.parent();
+
+		    // Check current field + next 19 columns
+		    for (var x = 0; x < 19; x++) {
+
+		        var value;
+
+		        if (x === 0) {
+		            value = field.val();
+		        } else {
+		            currentCell = currentCell.next();
+		            value = currentCell.children().val();
+		        }
+
+		        if (parseInt(value, 10) !== 0) {
+		            allZero = false;
+		            break;
+		        }
+		    }
+
+		    if (allZero) {
+		        return options.allrules.checkAllColumnsNattNotZero.alertText;
+		    }
+
+		},	
+
 		/**
 		* Check the maximum size (in characters)
 		*

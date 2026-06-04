@@ -60,9 +60,15 @@
                     "regex": "none",
                     "alertText": "* Fält överensstämmer inte"
                 },
+                // specific for coast scheme
                 "checkDiffNext2Fields": {
                     "regex": "none",
                     "alertText": "* Fälten överensstämmer inte (ö+vatten SKA vara lika med total)"
+                },
+                // specific for natt scheme
+                "checkAllColumnsNattNotZero": {
+                    "regex": "none",
+                    "alertText": "* Minst en kolumn måste vara större än 0"
                 },
                 "creditCard": {
                     "regex": "none",
