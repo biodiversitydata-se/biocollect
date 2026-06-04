@@ -70,6 +70,11 @@
                     "regex": "none",
                     "alertText": "* Minst en kolumn måste vara större än 0"
                 },
+                // specific for std scheme
+                "checkAllColumnsStdNotZero": {
+                    "regex": "none",
+                    "alertText": "* Minst en kolumn måste vara större än 0"
+                },
                 "creditCard": {
                     "regex": "none",
                     "alertText": "* Ogiltigt kreditkortsnummer"

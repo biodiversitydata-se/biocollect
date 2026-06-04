@@ -653,6 +653,9 @@
 					case "checkAllColumnsNattNotZero":
 						errorMsg = methods._getErrorMessage(form, field, rules[i], rules, i, options, methods._checkAllColumnsNattNotZero);
 						break;
+					case "checkAllColumnsStdNotZero":
+						errorMsg = methods._getErrorMessage(form, field, rules[i], rules, i, options, methods._checkAllColumnsStdNotZero);
+						break;
 					case "funcCall":
 						errorMsg = methods._getErrorMessage(form, field, rules[i], rules, i, options, methods._funcCall);
 						break;
@@ -883,6 +886,7 @@
 			 "equals": "pattern-mismatch",
 			 "checkDiffNext2Fields": "pattern-mismatch",
 			 "checkAllColumnsNattNotZero": "pattern-mismatch",
+			 "checkAllColumnsStdNotZero": "pattern-mismatch",
 			 "funcCall": "custom-error",
 			 "creditCard": "pattern-mismatch",
 			 "condRequired": "value-missing"
@@ -1080,7 +1084,7 @@
 		},	
 
 		/**
-		* Check at least 1 column with value > 0
+		* Check at least 1 column with value > 0 for NATT
 		*
 		* @param {jqObject} field
 		* @param {Array[String]} rules
@@ -1096,7 +1100,7 @@
 		    var currentCell = field.parent();
 
 		    // Check current field + next 19 columns
-		    for (var x = 0; x < 19; x++) {
+		    for (var x = 0; x < 20; x++) {
 
 		        var value;
 
@@ -1115,6 +1119,45 @@
 
 		    if (allZero) {
 		        return options.allrules.checkAllColumnsNattNotZero.alertText;
+		    }
+
+		},	
+
+		/**
+		* Check at least 1 column with value > 0 for STD
+		*
+		* @param {jqObject} field
+		* @param {Array[String]} rules
+		* @param {int} i rules index
+		* @param {Map}
+		*            user options
+		* @return an error string if validation failed
+		*/
+		// LU Custom : check if one of the column is > 0
+		_checkAllColumnsStdNotZero: function(field, rules, i, options) {
+			var allZero = true;
+		    var currentCell = field.parent();
+
+		    // Check current field + next 15 columns
+		    for (var x = 0; x < 16; x++) {
+
+		        var value;
+
+		        if (x === 0) {
+		            value = field.val();
+		        } else {
+		            currentCell = currentCell.next();
+		            value = currentCell.children().val();
+		        }
+
+		        if (parseInt(value, 10) !== 0) {
+		            allZero = false;
+		            break;
+		        }
+		    }
+
+		    if (allZero) {
+		        return options.allrules.checkAllColumnsStdNotZero.alertText;
 		    }
 
 		},	
