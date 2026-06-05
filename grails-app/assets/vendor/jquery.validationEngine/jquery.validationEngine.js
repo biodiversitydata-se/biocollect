@@ -650,8 +650,8 @@
 					case "checkDiffNext2Fields":
 						errorMsg = methods._getErrorMessage(form, field, rules[i], rules, i, options, methods._checkDiffNext2Fields);
 						break;
-					case "checkAllColumnsNattNotZero":
-						errorMsg = methods._getErrorMessage(form, field, rules[i], rules, i, options, methods._checkAllColumnsNattNotZero);
+					case "checkAllColumnsNattPunktNotZero":
+						errorMsg = methods._getErrorMessage(form, field, rules[i], rules, i, options, methods._checkAllColumnsNattPunktNotZero);
 						break;
 					case "checkAllColumnsStdNotZero":
 						errorMsg = methods._getErrorMessage(form, field, rules[i], rules, i, options, methods._checkAllColumnsStdNotZero);
@@ -885,7 +885,7 @@
 			 "minCheckbox": "range-underflow",
 			 "equals": "pattern-mismatch",
 			 "checkDiffNext2Fields": "pattern-mismatch",
-			 "checkAllColumnsNattNotZero": "pattern-mismatch",
+			 "checkAllColumnsNattPunktNotZero": "pattern-mismatch",
 			 "checkAllColumnsStdNotZero": "pattern-mismatch",
 			 "funcCall": "custom-error",
 			 "creditCard": "pattern-mismatch",
@@ -1094,7 +1094,7 @@
 		* @return an error string if validation failed
 		*/
 		// LU Custom : check if one of the column is > 0
-		_checkAllColumnsNattNotZero: function(field, rules, i, options) {
+		_checkAllColumnsNattPunktNotZero: function(field, rules, i, options) {
 
 			var allZero = true;
 		    var currentCell = field.parent();
@@ -1118,7 +1118,7 @@
 		    }
 
 		    if (allZero) {
-		        return options.allrules.checkAllColumnsNattNotZero.alertText;
+		        return options.allrules.checkAllColumnsNattPunktNotZero.alertText;
 		    }
 
 		},	

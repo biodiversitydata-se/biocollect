@@ -65,8 +65,8 @@
                     "regex": "none",
                     "alertText": "* Fälten överensstämmer inte (ö+vatten SKA vara lika med total)"
                 },
-                // specific for natt scheme
-                "checkAllColumnsNattNotZero": {
+                // specific for natt/punkt scheme
+                "checkAllColumnsNattPunktNotZero": {
                     "regex": "none",
                     "alertText": "* Minst en kolumn måste vara större än 0"
                 },
