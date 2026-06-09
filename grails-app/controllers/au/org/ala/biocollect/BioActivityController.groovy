@@ -357,7 +357,9 @@ class BioActivityController {
         } else if (!activity || activity.error) {
             flash.message = "Invalid activity - ${id}"
             if(!mobile)  redirect(controller: 'project', action: 'index', id: projectId)
-        } else if (projectService.canUserModerateProjects(userId, projectId) || activityService.isUserOwnerForActivity(userId, activity?.activityId)) {
+        // LU only admin can moderate, not owners
+        //} else if (projectService.canUserModerateProjects(userId, projectId) || activityService.isUserOwnerForActivity(userId, activity?.activityId)) {
+        } else if (projectService.canUserModerateProjects(userId, projectId)) {
             model = activityAndOutputModel(activity, projectId)
             def pActivity = projectActivityService.get(activity?.projectActivityId, "all", null, activity.personId) 
             // LU needed to limit the number of sites in the survey dropdown - the site that is activity.siteId is here model.site
@@ -374,7 +376,9 @@ class BioActivityController {
             model.isUserAdmin = userService.userIsAlaOrFcAdmin()
             model.returnTo = params.returnTo ? params.returnTo : g.createLink(controller: 'bioActivity', action: 'index') + "/" + id
         } else {
-            flash.message = "Access denied: User is not an owner of this activity ${activity?.activityId}"
+            // LU only admin can moderate, not owners
+            //flash.message = "Access denied: User is not an owner of this activity ${activity?.activityId}"
+            flash.message = "Access denied: Only admin can edit an activity ${activity?.activityId}"
             if(!mobile)  redirect(controller: 'project', action: 'index', id: projectId)
         }
 
@@ -756,6 +760,8 @@ class BioActivityController {
     def searchProjectActivities() {
         GrailsParameterMap queryParams = constructDefaultSearchParams(params)
 
+        //log.debug "avant searchProjectActivity"
+        //log.debug "Sending params: ${params}"
         Map searchResult = searchService.searchProjectActivity(queryParams)
 
         List activities = searchResult?.hits?.hits
