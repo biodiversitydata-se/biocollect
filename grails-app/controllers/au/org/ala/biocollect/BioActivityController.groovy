@@ -357,8 +357,12 @@ class BioActivityController {
         } else if (!activity || activity.error) {
             flash.message = "Invalid activity - ${id}"
             if(!mobile)  redirect(controller: 'project', action: 'index', id: projectId)
-        // LU only admin can moderate, not owners
-        } else if (projectService.canUserModerateProjects(userId, projectId) || activityService.isUserOwnerForActivity(userId, activity?.activityId)) {
+        // LU only admin can moderate, not owners (except for drafts !)
+        } else if (
+            projectService.canUserModerateProjects(userId, projectId) 
+            || 
+            (activity.verificationStatus == "draft" && activityService.isUserOwnerForActivity(userId, activity?.activityId)
+        ) {
         //} else if (projectService.canUserModerateProjects(userId, projectId)) {
             model = activityAndOutputModel(activity, projectId)
             def pActivity = projectActivityService.get(activity?.projectActivityId, "all", null, activity.personId) 
@@ -377,7 +381,6 @@ class BioActivityController {
             model.returnTo = params.returnTo ? params.returnTo : g.createLink(controller: 'bioActivity', action: 'index') + "/" + id
         } else {
             // LU only admin can moderate, not owners
-            //flash.message = "Access denied: User is not an owner of this activity ${activity?.activityId}"
             flash.message = "Endast administratörer kan granska och ändra inskickade resultat ${activity?.activityId}"
             if(!mobile)  redirect(controller: 'project', action: 'index', id: projectId)
         }
