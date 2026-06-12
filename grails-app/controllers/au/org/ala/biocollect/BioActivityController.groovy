@@ -362,7 +362,7 @@ class BioActivityController {
             projectService.canUserModerateProjects(userId, projectId) 
             || 
             (activity.verificationStatus == "draft" && activityService.isUserOwnerForActivity(userId, activity?.activityId)
-        ) {
+        )) {
         //} else if (projectService.canUserModerateProjects(userId, projectId)) {
             model = activityAndOutputModel(activity, projectId)
             def pActivity = projectActivityService.get(activity?.projectActivityId, "all", null, activity.personId) 
