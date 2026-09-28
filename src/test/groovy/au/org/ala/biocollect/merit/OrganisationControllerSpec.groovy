@@ -7,15 +7,16 @@ import au.org.ala.biocollect.merit.RoleService
 import au.org.ala.biocollect.merit.SearchService
 import au.org.ala.biocollect.merit.UserService
 import grails.converters.JSON
-import grails.test.mixin.TestFor
+// import grails.test.mixin.TestFor // remove for grails 5
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
 /**
  * Tests the OrganisationController class.
  */
-@TestFor(OrganisationController)
-class OrganisationControllerSpec extends Specification {
-
+/* @TestFor(OrganisationController) // remove for grails 5
+class OrganisationControllerSpec extends Specification {*/
+class OrganisationControllerSpec extends Specification implements ControllerUnitTest<OrganisationController> {
     def organisationService = Mock(OrganisationService)
     def searchService = Mock(SearchService)
     def documentService = Mock(DocumentService)

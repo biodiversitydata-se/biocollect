@@ -1,13 +1,15 @@
 package au.org.ala.biocollect
 
-import grails.test.mixin.TestFor
+// import grails.test.mixin.TestFor // remove for grails 5
+import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 import au.org.ala.biocollect.merit.ProjectService
 import au.org.ala.biocollect.merit.WebService
 import au.org.ala.biocollect.merit.MetadataService
 
-@TestFor(ProjectActivityService)
-class ProjectActivityServiceSpec extends Specification {
+/* @TestFor(ProjectActivityService) // remove for grials 5
+class ProjectActivityServiceSpec extends Specification { */
+class ProjectActivityServiceSpec extends Specification implements ServiceUnitTest<ProjectActivityService> {
     def projectActivity
 
     def setup() {

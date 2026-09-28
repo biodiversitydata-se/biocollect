@@ -929,7 +929,8 @@ class SiteController {
                 queryParams.facets = "typeFacet,className,organisationFacet,stateFacet,lgaFacet,nrmFacet,siteSurveyNameFacet,siteProjectNameFacet,photoType,booked,kartaTxFacet,verificationStatusFacet,lskFacet,lanFacet"
             }
             if (queryParams.query) {
-                query.push(queryParams.query);
+                // query.push(queryParams.query); // change for grails 5
+                query.add(queryParams.query);
             }
 
             if (queryParams.fq && (queryParams.fq instanceof String)) {
@@ -945,7 +946,8 @@ class SiteController {
                     "projects:${it}"
                 })
             } else {
-                queryParams.fq.push("projects:${params?.projectId}")
+                //queryParams.fq.push("projects:${params?.projectId}") // change for grails 5
+                queryParams.fq.add("projects:${params?.projectId}") // grails 5
             }
             queryParams.query = query.join(' AND ')
             queryParams.remove('hub')
@@ -956,7 +958,8 @@ class SiteController {
             List projectIds = []
             sites?.each {
                 if (it._source?.projects?.size()) {
-                    projectIds.push(StringUtils.join(it._source?.projects, ','))
+                    //projectIds.push(StringUtils.join(it._source?.projects, ',')) // change for grails 5
+                    projectIds.add(StringUtils.join(it._source?.projects, ',')) // grails 5
                 }
             }
             // JSON Array join is inserting quotes around each array element. Hence using StringUtil.join method.

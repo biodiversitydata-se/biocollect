@@ -18,6 +18,9 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST
 import static org.apache.http.HttpStatus.SC_OK
 
+import java.time.Instant // for grails 5
+import java.time.LocalDate // for grails 5
+
 class BioActivityController {
     ProjectService projectService
     MetadataService metadataService
@@ -1089,8 +1092,23 @@ class BioActivityController {
         render resultJson.toString()
     }
 
+    /* remove for grails 5
     private static boolean isProjectActivityClosed(Map projectActivity) {
         projectActivity?.endDate && Date.parse("yyyy-MM-dd", projectActivity?.endDate)?.before(new Date())
+    }*/
+
+    private static boolean isProjectActivityClosed(Map projectActivity) { // for grails 5
+        def endDate = projectActivity?.endDate?.toString()
+
+        if (!endDate) {
+            return false
+        }
+
+        if (endDate.contains('T')) {
+            return Instant.parse(endDate).isBefore(Instant.now())
+        }
+
+        return LocalDate.parse(endDate).isBefore(LocalDate.now())
     }
 
     /**

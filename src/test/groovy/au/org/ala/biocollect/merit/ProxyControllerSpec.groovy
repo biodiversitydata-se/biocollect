@@ -1,6 +1,7 @@
 package au.org.ala.biocollect.merit
 
-import grails.test.mixin.TestFor
+// import grails.test.mixin.TestFor // remove for grails 5
+import grails.testing.web.controllers.ControllerUnitTest
 import org.apache.http.HttpStatus
 import spock.lang.Specification
 
@@ -9,8 +10,9 @@ import javax.servlet.http.HttpServletResponse
 /**
  * Tests the ProxyController class.
  */
-@TestFor(ProxyController)
-class ProxyControllerSpec extends Specification {
+/*@TestFor(ProxyController) // remove for grails 5
+class ProxyControllerSpec extends Specification {*/
+class ProxyControllerSpec extends Specification implements ControllerUnitTest<ProxyController> {
 
     def webServiceStub = Mock(WebService)
 

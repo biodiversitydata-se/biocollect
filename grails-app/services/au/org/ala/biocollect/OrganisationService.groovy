@@ -156,7 +156,7 @@ class OrganisationService {
                 params.fq = []
             }
 
-            params.fq.push("users:${user}")
+            params.fq.add("users:${user}") // change push to add for grails 5
         }
 
         if (sort) {

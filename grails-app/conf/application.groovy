@@ -492,3 +492,46 @@ if (!app.file.script.path) {
         app.file.script.path = "/data/biocollect/scripts"
 }
 script.read.extensions.list = ['js','min.js','png', 'json']
+
+// from application.yml to here, for grails 5
+security {
+        cas {
+                enabled = true
+                //appServerName = 'http://localhost:8087'
+                appServerName = 'https://biocollect.biodiversitydata.se'
+                casProperties = [
+                            'casServerLoginUrl',
+                            'serverName',
+                            'centralServer',
+                            'casServerName',
+                            'uriFilterPattern',
+                            'uriExclusionFilter',
+                            'uriExclusionFilterPattern',
+                            'casServerLoginUrlPrefix',
+                            'gateway',
+                            'casServerUrlPrefix',
+                            'contextPath',
+                            'gatewayStorageClass'
+                        ]
+                casServerUrlPrefix = 'https://auth.biodiversitydata.se/cas'
+                casServerLoginUrl = "https://auth.biodiversitydata.se/cas/login"
+                loginUrl = 'https://auth.biodiversitydata.se/cas/login'
+                logoutUrl = 'https://auth.biodiversitydata.se/cas/logout'
+                casServerName = 'https://auth.biodiversitydata.se'
+                uriFilterPattern = ['/*']
+                authenticateOnlyIfLoggedInPattern = '/*'
+                uriExclusionFilterPattern = [
+                            '/assets/.*',
+                            '/images.*',
+                            '/css.*',
+                            '/js.*',
+                            '/less.*',
+                            '/ajax/(bulkLookupQuestions|saveBookmarkLocation|getBookmarkLocations)',
+                            '/uploads/.*'
+                        ]
+                readOnlyOfficerRole = 'ROLE_FC_READ_ONLY'
+                alaAdminRole = 'ROLE_ADMIN'
+                officerRole = 'ROLE_FC_OFFICER'
+                adminRole = 'ROLE_FC_ADMIN'
+        }
+}

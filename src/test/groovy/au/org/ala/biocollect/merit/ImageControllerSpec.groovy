@@ -1,13 +1,14 @@
 package au.org.ala.biocollect.merit
 
-import grails.test.mixin.TestFor
+// import grails.test.mixin.TestFor // remove for grails 5
+import grails.testing.web.controllers.ControllerUnitTest
 import org.apache.commons.io.IOUtils
 import org.apache.http.HttpStatus
 import spock.lang.Specification
 
-@TestFor(ImageController)
-class ImageControllerSpec extends Specification {
-
+/*@TestFor(ImageController) // remove for grials 5
+class ImageControllerSpec extends Specification {*/
+class ImageControllerSpec extends Specification implements ControllerUnitTest<ImageController> {
     File uploadPath
     File temp
 

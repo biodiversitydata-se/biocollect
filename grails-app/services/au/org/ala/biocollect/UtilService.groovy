@@ -96,12 +96,25 @@ class UtilService {
             switch (facet.name) {
                 case 'userId':
                     List userIds = facet.terms.collect { it.term }
+
+                    // Remove empty user IDs before calling the Auth service.
+                    // The Auth service throws NumberFormatException for an empty ID.
+                    List emptyUserIds = userIds.findAll { !it }
+                    if (emptyUserIds) {
+                        log.warn("Found ${emptyUserIds.size()} empty userId facet term(s). Ignoring them when retrieving user details.")
+                    }
+                    
+                    userIds = userIds.findAll { it }
+                    
+                    //log.warn("DEBUG FACET USER IDS = ${userIds}")
                     Map users = authService.getUserDetailsById(userIds, false)?.users
+                    //log.warn("DEBUG FACET USERS = ${users}")
                     if(users) {
                         facet.terms.each { term ->
                             term.title = users[term.term]?.displayName
                         }
                     }
+                    //log.warn("DEBUG FACET TERMS AFTER USERS = ${facet.terms}")
                     break;
                 default:
                     facet.terms?.each { term ->

@@ -318,7 +318,8 @@ class ProjectActivityService {
     }
 
     boolean isEmbargoed(Map projectActivity) {
-        projectActivity?.visibility?.embargoUntil && Date.parse("yyyy-MM-dd", projectActivity.visibility.embargoUntil).after(new Date())
+        // projectActivity?.visibility?.embargoUntil && Date.parse("yyyy-MM-dd", projectActivity.visibility.embargoUntil).after(new Date())
+        projectActivity?.visibility?.embargoUntil && LocalDate.parse(projectActivity.visibility.embargoUntil.toString()).isAfter(LocalDate.now())
     }
 
     /**

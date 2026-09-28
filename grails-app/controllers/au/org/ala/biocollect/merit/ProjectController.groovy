@@ -111,7 +111,8 @@ class ProjectController {
                 roles: roles,
                 admins: admins,
                 activityTypes: [:], // projectService.activityTypesList(),
-                metrics: project.projectType == projectService.PROJECT_TYPE_WORKS ? projectService.summary(id): [],
+                // metrics: project.projectType == projectService.PROJECT_TYPE_WORKS ? projectService.summary(id): [], // remove for grials
+                metrics: project.projectType == ProjectService.PROJECT_TYPE_WORKS ? projectService.summary(id): [],
                 outputTargetMetadata:  metadataService.getOutputTargetScores(),
                 programs: programs,
                 today:DateUtils.format(new DateTime()),
@@ -631,6 +632,7 @@ class ProjectController {
         GrailsParameterMap queryParams = projectService.buildProjectSearch(params, request)
         boolean skipDefaultFilters = params.getBoolean('skipDefaultFilters', false)
         Map searchResult = searchService.findProjects(queryParams, skipDefaultFilters);
+        //log.error("SEARCH RESULT USERID FACET = " + searchResult?.facets?.userId); // to be removed !! (debugging facets userid)
         List projects = Builder.build(params, searchResult.hits?.hits, grailsApplication, messageSource)
         List facets
 
@@ -863,7 +865,8 @@ class ProjectController {
             payload.order = payload.order ?: 'DESC';
             payload.sort = payload.sort ?: 'lastUpdated';
             payload.fq = payload.fq ?: []
-            payload.fq.push('surveyImage:true');
+            //payload.fq.push('surveyImage:true'); // change for grails 5
+            payload.fq.add('surveyImage:true'); // grails 5
             payload.hub = params.hub
 
             Map result = projectService.listImages(payload, params?.version) ?: [:];

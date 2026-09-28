@@ -49,7 +49,7 @@ class SearchService {
         params.flimit = 999
         String url = "${elasticSearchBaseUrl}/elastic" + commonService.buildUrlParamsFromMap(params)
        // def url = elasticBaseUrl + commonService.buildUrlParamsFromMap(params)
-        log.debug "url = $url"
+        log.debug "url (fulltextSearch) = $url"
         webService.getJson(url)
     }
 
@@ -83,7 +83,7 @@ class SearchService {
         //def url = elasticBaseUrl + commonService.buildUrlParamsFromMap(params)
         String url = "${elasticSearchBaseUrl}/elasticHome" + commonService.buildUrlParamsFromMap(params)
       //  def url = grailsApplication.config.ecodata.service.url + '/search/elasticHome' + commonService.buildUrlParamsFromMap(params)
-        log.debug "url = $url"
+        log.debug "url (allProjects) = $url"
         webService.getJson(url)
     }
 
@@ -99,8 +99,12 @@ class SearchService {
         }
         String url = "${elasticSearchBaseUrl}/elasticHome" + commonService.buildUrlParamsFromMap(params)
         //String url = grailsApplication.config.ecodata.service.url + '/search/elasticHome' + commonService.buildUrlParamsFromMap(params)
-        log.debug "url = $url"
-        webService.getJson(url)
+        log.debug "url (findProjects) = $url"
+        def result = webService.getJson(url)
+
+        //log.error("DEBUG FIND PROJECTS RESULT USERID = " + result?.facets?.userId)
+
+        return result
     }
 
     def downloadProjectData(HttpServletResponse response, Map params) {
@@ -109,7 +113,7 @@ class SearchService {
 
     def downloadLURecords(HttpServletResponse response, Map params) {
         log.info "downloadLURecords called searchservice"
-        log.info(params.toString())
+        //log.info(params.toString())
 
         String EXTRACT_APP_URL = grailsApplication.config.extractdataapp.url
         String AUTH_TOKEN = grailsApplication.config.extractdataapp.securedtoken 
@@ -140,7 +144,7 @@ class SearchService {
             def value = parts.length > 1 ? parts[1] : ""
             parameters += "&${key}=${value}"
         }
-        log.info("parameters to send :" +parameters)
+        //log.info("parameters to send :" +parameters)
         conn.outputStream.withWriter("UTF-8") { it << parameters }
 
         int responseCode = conn.getResponseCode()
@@ -250,11 +254,20 @@ class SearchService {
     }
 
     Map searchProjectActivity(GrailsParameterMap params, String q = null){
-       // String url = grailsApplication.config.ecodata.service.url + '/search/elasticProjectActivity' + commonService.buildUrlParamsFromMap(params)
+        // String url = grailsApplication.config.ecodata.service.url + '/search/elasticProjectActivity' + commonService.buildUrlParamsFromMap(params)
         String url = "${elasticSearchBaseUrl}/elasticProjectActivity" + commonService.buildUrlParamsFromMap(params)
-        log.debug "url = $url"
-        webService.getJson(url, null, true)
+        //log.error "DEBUG BEFORE GETJSON"
+        //log.error "url (searchProjectActivity) = ${url}"
+
+        def result = webService.getJson(url, null, true)
+
+        //log.error "DEBUG AFTER GETJSON"
+        //log.error "DEBUG RESULT = ${result}"
+        //log.error "DEBUG USERID FACET = ${result?.facets?.userId}"
+
+        return result
     }
+
 
     Map getMinMaxYearForQuery(String fields, GrailsParameterMap params) {
         if (fields) {
@@ -288,7 +301,7 @@ class SearchService {
     Map searchForSites(GrailsParameterMap params) throws SocketTimeoutException, Exception{
         //String url = grailsApplication.config.ecodata.service.url + '/search/elasticPost'
         String url = "${elasticSearchBaseUrl}/elasticPost"
-        log.debug "url = $url"
+        log.debug "url (searchForSites) = $url"
         Map response = webService.doPost(url, params)
         if(response.error){
             if(response.error.contains('Timed out')){
@@ -333,7 +346,7 @@ class SearchService {
         }
 
         def url = "${elasticSearchBaseUrl}/elasticGeo" + commonService.buildUrlParamsFromMap(params)
-        log.debug "url = $url"
+        log.debug "url (allProjectsWithSites) = $url"
         webService.getJson(url)
     }
 
@@ -347,7 +360,7 @@ class SearchService {
         params.fq = "docType:site"
         //def url = elasticBaseUrl + commonService.buildUrlParamsFromMap(params)
         def url = "${elasticSearchBaseUrl}/elasticHome" + commonService.buildUrlParamsFromMap(params)
-        log.debug "url = $url"
+        log.debug "url (allSites) = $url"
         webService.getJson(url)
     }
 
@@ -363,7 +376,7 @@ class SearchService {
         addDefaultFacetQuery(params)
 
         def url = "${elasticSearchBaseUrl}/elasticHome" + commonService.buildUrlParamsFromMap(params)
-        log.debug "url = $url"
+        log.debug "url (HomePageDacets) = $url"
         def jsonstring = webService.get(url)
         try {
             def jsonObj = new JsonSlurper().parseText(jsonstring)

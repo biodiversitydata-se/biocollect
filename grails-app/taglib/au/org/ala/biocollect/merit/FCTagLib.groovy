@@ -10,6 +10,8 @@ import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import grails.web.servlet.mvc.GrailsParameterMap
 
+import java.text.SimpleDateFormat // for grails 5
+
 @Slf4j
 class FCTagLib {
 
@@ -315,9 +317,14 @@ class FCTagLib {
     def formatDateString = { attrs, body ->
         if (attrs.date){
             def inputFormat = attrs.inputFormat?:"yyyy-MM-dd'T'HH:mm:ss'Z'"
+            /* remove for grails 5
             def formattedDate = g.formatDate(
                     date: Date.parse(inputFormat, attrs.date),
                     format: attrs.format?:"yyyy-MM-dd"
+            )*/
+            def formattedDate = g.formatDate(
+                    date: new SimpleDateFormat(inputFormat).parse(attrs.date.toString()),
+                    format: attrs.format ?: "yyyy-MM-dd"
             )
             out << formattedDate
         }else {

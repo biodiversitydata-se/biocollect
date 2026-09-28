@@ -334,7 +334,8 @@ class SiteService {
                     def part = [:]
                     part.name = it?.name
                     part.geometry = it?.geometry
-                    featuresMap.transectParts.push(part)
+                    //featuresMap.transectParts.push(part) // change for grails 5
+                    featuresMap.transectParts.add(part) // grails 5
                 }
             }
         // }

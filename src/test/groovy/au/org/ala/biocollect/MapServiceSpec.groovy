@@ -3,12 +3,14 @@ package au.org.ala.biocollect
 import au.org.ala.biocollect.merit.SettingService
 import au.org.ala.biocollect.merit.UserService
 import au.org.ala.biocollect.merit.hub.HubSettings
-import grails.test.mixin.TestFor
+// import grails.test.mixin.TestFor // remove for grails 5
+import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-@TestFor(MapService)
-class MapServiceSpec extends Specification {
-    def grailsApplication
+/* @TestFor(MapService) // remove for grails 5
+class MapServiceSpec extends Specification { */
+class MapServiceSpec extends Specification implements ServiceUnitTest<MapService> {
+    // def grailsApplication // remove for grails 5
     def projectActivity
     def project
     def userService = Stub(UserService)

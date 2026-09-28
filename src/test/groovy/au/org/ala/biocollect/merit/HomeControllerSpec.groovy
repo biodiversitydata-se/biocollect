@@ -2,13 +2,15 @@ package au.org.ala.biocollect.merit
 
 
 import au.org.ala.biocollect.merit.hub.HubSettings
-import grails.test.mixin.TestFor
+// import grails.test.mixin.TestFor // remove for grails 5
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 /**
  * Tests the HomeController class.
  */
-@TestFor(HomeController)
-class HomeControllerSpec extends Specification {
+/* @TestFor(HomeController) // remove for grials 5
+class HomeControllerSpec extends Specification { */
+class HomeControllerSpec extends Specification implements ControllerUnitTest<HomeController> {
 
     def userService = Stub(UserService)
     def searchService = Stub(SearchService)

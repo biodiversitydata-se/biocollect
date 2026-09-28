@@ -4,9 +4,10 @@ import au.org.ala.biocollect.merit.CommonService
 import au.org.ala.biocollect.merit.SiteController
 import au.org.ala.biocollect.merit.SiteService
 import au.org.ala.web.AuthService
-import grails.test.mixin.TestFor
-import grails.test.mixin.TestMixin
-import grails.test.mixin.support.GrailsUnitTestMixin
+// import grails.test.mixin.TestFor // remove for grails 5
+//import grails.test.mixin.TestMixin // remove for grails 5
+//import grails.test.mixin.support.GrailsUnitTestMixin // remove for grails 5
+import grails.testing.web.controllers.ControllerUnitTest
 import org.apache.http.HttpStatus
 import grails.web.servlet.mvc.GrailsParameterMap
 import spock.lang.Specification
@@ -14,10 +15,10 @@ import spock.lang.Specification
 /**
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions
  */
-@TestMixin(GrailsUnitTestMixin)
+/*@TestMixin(GrailsUnitTestMixin) // remove for grails 5
 @TestFor(SiteController)
-class SiteControllerSpec extends Specification {
-
+class SiteControllerSpec extends Specification {*/
+class SiteControllerSpec extends Specification implements ControllerUnitTest<SiteController> {
     SiteService siteService = Stub(SiteService)
     AuthService authService = Stub(AuthService)
     CommonService commonService = Stub(CommonService)

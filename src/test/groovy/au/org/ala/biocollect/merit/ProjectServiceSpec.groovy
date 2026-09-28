@@ -3,14 +3,16 @@ package au.org.ala.biocollect.merit
 import au.org.ala.biocollect.merit.MetadataService
 import au.org.ala.biocollect.merit.ProjectService
 import au.org.ala.biocollect.merit.WebService
-import grails.test.mixin.TestFor
+// import grails.test.mixin.TestFor // remove for grails 5
+import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
 /**
  * Specification for the ProjectService
  */
-@TestFor(ProjectService)
-class ProjectServiceSpec extends Specification {
+/*@TestFor(ProjectService) // remove for grials 5
+class ProjectServiceSpec extends Specification {*/
+class ProjectServiceSpec extends Specification implements ServiceUnitTest<ProjectService> {
     def metadataServiceStub = Mock(MetadataService)
     def webServiceStub = Mock(WebService)
 

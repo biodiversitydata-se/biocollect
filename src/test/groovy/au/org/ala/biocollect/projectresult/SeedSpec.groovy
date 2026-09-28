@@ -50,11 +50,11 @@ class SeedSpec extends Specification {
                                    organisationName : 'org1',
                                    scienceType      : ['a'],
                                    ecoScienceType   : ['b'],
-                                   plannedStartDate : new Date().minus(1),
+                                   plannedStartDate : new Date(System.currentTimeMillis() - 24L * 60L * 60L * 1000L), // change for groovy3 grials5
                                    imageUrl         : 'a',
                                    urlWeb           : "http://abc.com",
-                                   plannedStartDate : new Date().minus(1),
-                                   plannedEndDate   : new Date(),
+                                   //plannedStartDate : new Date().minus(1), // duplicate?
+                                   //plannedEndDate   : new Date(), // duplicate?
                                    projectType      : 'g',
                                    isMERIT          : false,
                                    tags             : ['n'],

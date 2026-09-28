@@ -6,13 +6,12 @@ import static org.apache.http.HttpStatus.SC_OK
 
 class BaseController {
 
-
-    def sendError = {int status, String msg = null ->
+    private final Closure sendError = { int status, String msg = null ->
         response.status = status
         response.sendError(status, msg)
     }
 
-    def handle (resp) {
+    def handle(resp) {
         if (resp.statusCode != SC_OK) {
             log.debug "Response status ${resp.statusCode} returned from operation"
             response.status = resp.statusCode
@@ -22,6 +21,4 @@ class BaseController {
             render resp.resp as JSON
         }
     }
-
-
 }

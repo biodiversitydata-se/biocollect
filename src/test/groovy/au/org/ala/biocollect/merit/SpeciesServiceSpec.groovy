@@ -1,8 +1,9 @@
 package au.org.ala.biocollect.merit
 
-import grails.test.mixin.TestFor
-import grails.test.mixin.TestMixin
-import grails.test.mixin.services.ServiceUnitTestMixin
+// import grails.test.mixin.TestFor // remove for grails 5
+//import grails.test.mixin.TestMixin // remove for grails 5
+//import grails.test.mixin.services.ServiceUnitTestMixin // remove for grails 5
+import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
 /*
@@ -22,9 +23,10 @@ import spock.lang.Specification
  * Created by Temi on 3/8/21.
  */
 
-@TestFor(SpeciesService)
+/*@TestFor(SpeciesService) // remove for grails 5
 @TestMixin(ServiceUnitTestMixin)
-class SpeciesServiceSpec extends Specification {
+class SpeciesServiceSpec extends Specification {*/
+class SpeciesServiceSpec extends Specification implements ServiceUnitTest<SpeciesService> {
     def setup() {
         service.grailsApplication = [
                 "config": [

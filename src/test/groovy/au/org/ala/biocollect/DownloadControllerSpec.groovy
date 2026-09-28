@@ -1,6 +1,7 @@
 package au.org.ala.biocollect
 
-import grails.test.mixin.TestFor
+//import grails.test.mixin.TestFor // remove for grails 5
+import grails.testing.web.controllers.ControllerUnitTest // grails 5
 import org.apache.http.HttpStatus
 import spock.lang.Specification
 
@@ -9,8 +10,8 @@ import java.nio.charset.StandardCharsets
 /***
  * This is to test the DownloadController
  */
-@TestFor(DownloadController)
-class DownloadControllerSpec extends Specification {
+// grails 5
+class DownloadControllerSpec extends Specification implements ControllerUnitTest<DownloadController> { 
 
     File scriptsPath
     File temp
@@ -58,7 +59,8 @@ class DownloadControllerSpec extends Specification {
         controller.getScriptFile()
 
         then:
-        response.contentType == "text/javascript"
+        //response.contentType == "text/javascript" // romove for grails5
+        response.contentType == "text/javascript;charset=UTF-8"
         response.status == HttpStatus.SC_OK
     }
 
@@ -117,7 +119,8 @@ class DownloadControllerSpec extends Specification {
         controller.getScriptFile()
 
         then:
-        response.contentType == "text/javascript"
+        //response.contentType == "text/javascript" // romove for grails5
+        response.contentType == "text/javascript;charset=UTF-8"
         response.characterEncoding == StandardCharsets.UTF_8.toString()
         response.status == HttpStatus.SC_OK
     }

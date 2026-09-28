@@ -22,9 +22,21 @@ class CacheService {
      */
     def get(String key, Closure source, int maxAgeInDays = 1) {
         def cached = cache[key]
-        if (cached && cached.resp && !(new Date().after(cached.time + maxAgeInDays))) {
-            return cached.resp
+
+        if (cached && cached.resp) {
+            def expiryTime = new Date(
+                    cached.time.time + maxAgeInDays * 24L * 60L * 60L * 1000L
+            )
+
+            if (!new Date().after(expiryTime)) {
+                return cached.resp
+            }
         }
+
+        /*if (cached && cached.resp && !(new Date().after(cached.time + maxAgeInDays))) {
+            return cached.resp
+        } change for grails 5*/
+        
         //log.debug "retrieving " + key
         def results
         try {

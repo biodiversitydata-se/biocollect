@@ -29,6 +29,9 @@ class ConfigService {
         log.debug("Register to CAS: " + grailsApplication.config.getProperty("security.cas.appServerName"))
 
         def googleMapApiKey = grailsApplication.config.getProperty("google.maps.apiKey")
+        //log.debug("google.maps.apiKey present: ${googleMapApiKey != null}")
+        //log.debug("google config keys: ${grailsApplication.config.flatten().findAll { k, v -> k.toString().startsWith('google.') }.keySet()}")
+
         if (googleMapApiKey){
             grailsApplication.config.google.maps.url =  grailsApplication.config["google.maps.base"] + googleMapApiKey
             log.debug('Google Map URL:' + grailsApplication.config.google.maps.url)

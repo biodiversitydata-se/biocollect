@@ -9,22 +9,24 @@ loggerLevel: "DEBUG"
 environments:
     development:
         grails:
-           config:
-              locations:
-                 - file:///data/biocollect/config/biocollect-config.properties
+           #config:
+              #locations:
+                 #- file:///data/biocollect/config/biocollect-config.properties
         #system level config
         server:
            port: 8087
            serverURL: http://localhost:8087
         debugUI: true
         ecodata:
-          baseURL: "https://canmove-dev.ekol.lu.se:8080/"
-          #baseURL: https://ecodata.biodiversitydata.se
+          #baseURL: "https://canmove-dev.ekol.lu.se:8080/"
+          baseURL: https://ecodata.biodiversitydata.se
+          #baseURL: https://130.235.36.21:8080/
+          #baseURL: https://localhost:8086/
     test:
         grails:
-          config:
-             locations:
-                - file:///data/biocollect/config/biocollect-config.properties
+          #config:
+             #locations:
+                #- file:///data/biocollect/config/biocollect-config.properties
         server:
              serverURL: https://localhost:8087
         security:
@@ -33,9 +35,9 @@ environments:
         debugUI: false
     production:
         grails:
-            config:
-               locations:
-                  - file:///data/biocollect/config/biocollect-config.properties
+            #config:
+               #locations:
+                  #- file:///data/biocollect/config/biocollect-config.properties
             #system level config
         server:
            #port: 80
@@ -62,21 +64,23 @@ app:
     header:
       userId: "X-ALA-userId"
 
+# not needed anymore for grials 5 => application.groovy instead
+#security:
+#   cas:
+#      casProperties: "casServerLoginUrl,serverName,centralServer,casServerName,uriFilterPattern,uriExclusionFilter,uriExclusionFilterPattern,casServerLoginUrlPrefix,gateway,casServerUrlPrefix,contextPath,gatewayStorageClass"
+#      uriExclusionFilterPattern: "/assets/.*,/images.*,/css.*,/js.*,/less.*,/ajax/(bulkLookupQuestions|saveBookmarkLocation|getBookmarkLocations),/uploads/.*"
+#      authenticateOnlyIfLoggedInPattern: "/*"
+#      uriFilterPattern: "/*"
+#      readOnlyOfficerRole: "ROLE_FC_READ_ONLY"
+#      alaAdminRole : "ROLE_ADMIN"
+#      officerRole : "ROLE_FC_OFFICER"
+#      adminRole : "ROLE_FC_ADMIN"
+#      casServerName: "https://auth.biodiversitydata.se"
+#      casServerLoginUrl: "https://auth.biodiversitydata.se/cas/login"
+#      casServerUrlPrefix: "https://auth.biodiversitydata.se/cas"
+#      logoutUrl: "https://auth.biodiversitydata.se/cas/logout"
 
-security:
-   cas:
-      casProperties: "casServerLoginUrl,serverName,centralServer,casServerName,uriFilterPattern,uriExclusionFilter,uriExclusionFilterPattern,casServerLoginUrlPrefix,gateway,casServerUrlPrefix,contextPath,gatewayStorageClass"
-      uriExclusionFilterPattern: "/assets/.*,/images.*,/css.*,/js.*,/less.*,/ajax/(bulkLookupQuestions|saveBookmarkLocation|getBookmarkLocations),/uploads/.*"
-      authenticateOnlyIfLoggedInPattern: ".*"
-      uriFilterPattern: ".*"
-      readOnlyOfficerRole: "ROLE_FC_READ_ONLY"
-      alaAdminRole : "ROLE_ADMIN"
-      officerRole : "ROLE_FC_OFFICER"
-      adminRole : "ROLE_FC_ADMIN"
-      casServerName: "https://auth.biodiversitydata.se"
-      casServerLoginUrl: "https://auth.biodiversitydata.se/cas/login"
-      casServerUrlPrefix: "https://auth.biodiversitydata.se/cas"
-      logoutUrl: "https://auth.biodiversitydata.se/cas/logout"
+
 
 #External URL
 aekosEnabled: false
@@ -161,12 +165,14 @@ upload:
       blacklist : ['exe','js','php','asp','aspx','com','bat']
 
 
-
 grails:
     project:
       groupId: "au.org.ala"
 
     profile: web
+    config:
+        locations:
+            - file:///data/biocollect/config/biocollect-config.properties
     codegen:
         defaultPackage: au.org.ala.biocollect
     cache:
@@ -179,6 +185,10 @@ grails:
        ehcache:
             cacheManagerName : "${appName}-ehcache"
             reloadable : false
+    mail: # for grails5
+        default:
+            from: biocollect@biodiversitydata.se
+        poolSize: 1
     mime:
         file:
           extensions: true
@@ -326,3 +336,4 @@ userDetails:
 
 userDetailsById:
   path: "getUserDetails"
+

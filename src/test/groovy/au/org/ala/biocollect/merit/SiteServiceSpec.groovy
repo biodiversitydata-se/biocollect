@@ -1,8 +1,13 @@
 package au.org.ala.biocollect.merit
 
-import grails.test.mixin.TestFor
-import grails.test.mixin.TestMixin
-import grails.test.mixin.web.ControllerUnitTestMixin
+import grails.converters.JSON // add for grails 5
+import org.grails.web.converters.marshaller.json.CollectionMarshaller // add for grails 5
+import org.grails.web.converters.marshaller.json.MapMarshaller // add for grails 5
+
+//import grails.test.mixin.TestFor // remove for grails 5
+//import grails.test.mixin.TestMixin // remove for grails 5
+//import grails.test.mixin.web.ControllerUnitTestMixin // remove for grails 5
+import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
 /*
@@ -21,13 +26,17 @@ import spock.lang.Specification
  * 
  * Created by Temi on 24/6/20.
  */
-@TestFor(SiteService)
+/*@TestFor(SiteService) // remove for grails 5
 // adding the below Mixin to enable JSON conversion
 @TestMixin(ControllerUnitTestMixin)
-class SiteServiceSpec extends Specification {
+class SiteServiceSpec extends Specification {*/
+class SiteServiceSpec extends Specification implements ServiceUnitTest<SiteService> {
     def projectSite, projectSiteWithPid
 
     def setup() {
+        JSON.registerObjectMarshaller(new MapMarshaller())
+        JSON.registerObjectMarshaller(new CollectionMarshaller())
+
         service.grailsApplication = [
                 "config": [
                         spatial : [

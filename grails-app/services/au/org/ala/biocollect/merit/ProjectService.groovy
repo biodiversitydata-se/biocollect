@@ -774,31 +774,31 @@ class ProjectService {
         project.tags = project.tags?:[]
 
         if (project.hasParticipantCost) {
-            project.tags.push('hasParticipantCost')
+            project.tags.add('hasParticipantCost') // change push to add for grails 5
         } else {
-            project.tags.push('noCost')
+            project.tags.add('noCost') // change push to add for grails 5
         }
 
         project.remove('hasParticipantCost')
 
         if (project.isSuitableForChildren) {
-            project.tags.push('isSuitableForChildren')
+            project.tags.add('isSuitableForChildren') // change push to add for grails 5
         }
 
         if (project.isDIY) {
-            project.tags.push('isDIY')
+            project.tags.add('isDIY') // change push to add for grails 5
         }
 
         project.remove('isDIY')
 
         if (project.isHome) {
-            project.tags.push('isHome')
+            project.tags.add('isHome') // change push to add for grails 5
         }
 
         project.remove('isHome')
 
         if (project.hasTeachingMaterials) {
-            project.tags.push('hasTeachingMaterials')
+            project.tags.add('hasTeachingMaterials') // change push to add for grails 5
         }
 
         project.remove('hasTeachingMaterials')
@@ -806,7 +806,7 @@ class ProjectService {
 
         Boolean isMobile = isMobileAppForProject(project)
         if(isMobile){
-            project.tags.push('mobileApp')
+            project.tags.add('mobileApp') // change push to add for grails 5
         }
 
         project
@@ -1151,15 +1151,15 @@ class ProjectService {
         List immutableFq = params.list('fq')
         immutableFq.each {
             if(it?.startsWith('status:')){
-                trimmedParams.status?.push ( it.replace('status:',''))
+                trimmedParams.status?.add ( it.replace('status:','')) // change push to add for grails 5
             } else {
-                it? fq.push(it):null;
+                it? fq.add(it):null; // change push to add for grails 5
             }
         }
 
         if(params.status) {
             trimmedParams.status = []
-            trimmedParams.status.push(params.status);
+            trimmedParams.status.add(params.status); // change push to add for grails 5
         }
 
         trimmedParams.fq = fq;
@@ -1202,7 +1202,7 @@ class ProjectService {
         }
 
         if(trimmedParams.isCitizenScience){
-            projectType.push('isCitizenScience:true')
+            projectType.add('isCitizenScience:true') // change push to add for grails 5
             trimmedParams.isCitizenScience = null
         }
 
@@ -1212,23 +1212,23 @@ class ProjectService {
         }
 
         if(trimmedParams.isWorks){
-            projectType.push('(projectType:works AND isMERIT:false)')
+            projectType.add('(projectType:works AND isMERIT:false)') // change push to add for grails 5
             trimmedParams.isWorks = null
         }
 
         if(trimmedParams.isEcoScience){
-            projectType.push('(projectType:ecoScience)')
+            projectType.add('(projectType:ecoScience)') // change push to add for grails 5
             trimmedParams.isEcoScience = null
         }
 
         if (trimmedParams.isMERIT) {
-            projectType.push('isMERIT:true')
+            projectType.add('isMERIT:true') // change push to add for grails 5
             trimmedParams.isMERIT = null
         }
 
         if(trimmedParams.difficulty){
             trimmedParams.difficulty.each{
-                difficulty.push("difficulty:${it}")
+                difficulty.add("difficulty:${it}") // change push to add for grails 5
             }
             trimmedParams.query += " AND (${difficulty.join(' OR ')})"
             trimmedParams.difficulty = null
@@ -1263,10 +1263,10 @@ class ProjectService {
                 trimmedParams.status.each{
                     switch (it){
                         case 'active':
-                            status.push("-(plannedEndDate:[* TO *] AND -plannedEndDate:>=${sdf.format( new Date())})");
+                            status.add("-(plannedEndDate:[* TO *] AND -plannedEndDate:>=${sdf.format( new Date())})"); // change push to add for grails 5
                             break;
                         case 'completed':
-                            status.push("(plannedEndDate:<${sdf.format( new Date())})");
+                            status.add("(plannedEndDate:<${sdf.format( new Date())})"); // change push to add for grails 5
                             break;
                     }
                 }
@@ -1279,15 +1279,15 @@ class ProjectService {
             if (trimmedParams.mobile) {
                 String username = request.getHeader(UserService.USER_NAME_HEADER_FIELD)
                 String key = request.getHeader(UserService.AUTH_KEY_HEADER_FIELD)
-                fq.push('allParticipants:' + (username && key ? userInfoService.getUserFromAuthKey(username, key)?.userId : ''))
+                fq.add('allParticipants:' + (username && key ? userInfoService.getUserFromAuthKey(username, key)?.userId : '')) // change push to add for grails 5
             } else {
-                fq.push('allParticipants:' + userService.getUser()?.userId);
+                fq.add('allParticipants:' + userService.getUser()?.userId); // change push to add for grails 5
             }
             trimmedParams.isUserPage = null
         }
 
         if(trimmedParams.organisationName){
-            fq.push('organisationFacet:'+trimmedParams.organisationName);
+            fq.add('organisationFacet:'+trimmedParams.organisationName); // change push to add for grails 5
             trimmedParams.organisationName = null
         }
 

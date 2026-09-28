@@ -209,7 +209,7 @@ class WebService {
         def contentType = urlConnection.getContentType()
         if (contentType) {
             def mediaType = MediaType.parseMediaType(contentType)
-            charset = (mediaType.charSet)?mediaType.charSet.toString():'UTF-8'
+            charset = (mediaType.charset)?mediaType.charset.toString():'UTF-8' // .charset instead of charSet (grails 5)
         }
         return urlConnection.content.getText(charset)
     }
