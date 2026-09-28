@@ -43,7 +43,11 @@ class HubController {
             header 'Cache-Control', 'no-cache, no-store, must-revalidate'
         } else {
             header 'Cache-Control', 'public, max-age=31536000'
-            response.setDateHeader('Expires', (new Date() + 365).time)
+            // response.setDateHeader('Expires', (new Date() + 365).time) // change for groovy3 grials5
+            response.setDateHeader(
+                'Expires',
+                System.currentTimeMillis() + 365L * 24L * 60L * 60L * 1000L
+            ) // for groovy 3
             // override grails pragma header
             header 'Pragma', 'cache'
         }
