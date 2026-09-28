@@ -1,5 +1,5 @@
 // leaflet
-// require leaflet-0.7.7/leaflet.js
+//= require webjars/leaflet/0.7.7/dist/leaflet.js
 
 // from image-client-plugin
 //= require leaflet/leaflet.measure.js
