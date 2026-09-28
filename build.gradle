@@ -114,7 +114,8 @@ dependencies { // grails 5 : change vocabulary (compile=>implementation, etc)
 
     implementation 'org.grails.plugins:grails-markdown:3.0.0'
     implementation 'org.grails.plugins:grails-cookie:2.0.3'
-    implementation 'org.grails.plugins:cache:5.0.0.RC1'
+    // implementation 'org.grails.plugins:cache:5.0.0.RC1' // remove for grails5 and tomcat
+    implementation 'org.grails.plugins:cache:6.0.0'
 
     //ALA plugins
     implementation("au.org.ala.plugins.grails:images-client-plugin:1.2") {
