@@ -1,6 +1,12 @@
 Biocollect 
 ==========
 
+# LU-SYstematic Monitoring version
+
+2026-01-10. Own upgrade to java11 and grails 5. Can't merge anymore with ALA's version.
+Rest of readme is the original ALA's version
+
+
 ## Build status
 
 ### Master branch
