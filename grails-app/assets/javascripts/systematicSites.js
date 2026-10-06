@@ -369,11 +369,14 @@ var SystematicSiteViewModel = function (valuesForVM) {
                  name = self.transectParts().length + 1,
                  dictionary = {"Point": "P", "Line": "Linje ", "Area": "Sektor "};
 
+                // fix to add the decimalLatitude and longitude to the point
                 createTransectPart({
                     name: dictionary[determineGeoType(geoType)] + String(name),
                     geometry: {
                         type: geoType,
-                        coordinates: coordinates
+                        coordinates: coordinates,
+                        decimalLongitude: geoType === "Point" ? coordinates[0] : '', // fix add long
+                        decimalLatitude: geoType === "Point" ? coordinates[1] : '' // fix add lat
                     }
                 });
             }
