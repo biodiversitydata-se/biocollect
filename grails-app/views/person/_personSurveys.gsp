@@ -76,7 +76,17 @@
                     data: 'verificationStatus',
                     name: 'verificationStatus',
                     bSortable: false,
-                    defaultContent: ''
+                    defaultContent: '',
+                    render: function (data, type, row) {
+                        var verificationStatus = row.verificationStatus || '';
+                        var status = row.status || '';
+
+                        if (verificationStatus && status) {
+                            return verificationStatus + ' - ' + status;
+                        }
+
+                        return verificationStatus || status;
+                    }
                 }
                 ]
             });
