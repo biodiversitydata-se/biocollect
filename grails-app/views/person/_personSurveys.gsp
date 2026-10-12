@@ -26,6 +26,7 @@
             <thead>
             <th><g:message code="g.date"/></th>
             <th><g:message code="site.details.siteName"/></th>
+            <th>Status</th>
             </thead>
         </table>
     </div>
@@ -41,7 +42,7 @@
     var table;
     var loadOutputs = function(personId, type){
         var url = fcConfig.getActivitiesForPersonByTypeUrl + "&personId=" + personId + '&type=' + encodeURI(type);
-
+alert(url);
         if (! $.fn.DataTable.isDataTable( '#survey-list-table' )){
 
             $('#survey-list').attr("hidden", false); 
@@ -58,11 +59,11 @@
                     name: 'surveyDate',
                     render: function (data, type, row) {
 
-			date2 = new Date(new Date(data).toLocaleDateString());
+	                    date2 = new Date(new Date(data).toLocaleDateString());
 	
                         return '<div>' + 
                         '<a class="margin-left-10" href="#">' 
-                        + date2.getFullYear() + "-" + (date2.getMonth()+1).toString().padStart(2,"0") + "-" + date2.getDate().toString().padStart(2,"0")
+                        + date2.getFullYear() + "-" + (date2.getMonth()+1).toString().padStart(2,"0") + "-" + date2.getDate().toString().padStart(2,"0") +
                         '</a></div>';
                     }
                 },
@@ -70,6 +71,12 @@
                     data: 'siteName',
                     name: 'siteName',
                     bSortable: false
+                },
+                {
+                    data: 'verificationStatus',
+                    name: 'verificationStatus',
+                    bSortable: false,
+                    defaultContent: ''
                 }
                 ]
             });
