@@ -42,7 +42,7 @@
     var table;
     var loadOutputs = function(personId, type){
         var url = fcConfig.getActivitiesForPersonByTypeUrl + "&personId=" + personId + '&type=' + encodeURI(type);
-alert(url);
+
         if (! $.fn.DataTable.isDataTable( '#survey-list-table' )){
 
             $('#survey-list').attr("hidden", false); 
