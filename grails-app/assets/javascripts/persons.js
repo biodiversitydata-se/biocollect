@@ -17,7 +17,8 @@ function PersonViewModel(savedPerson, create) {
         birthDate : ko.observable(),
         extra : ko.observable(),
         bookedSites: ko.observableArray(),
-        sitesToBook: ko.observable()
+        sitesToBook: ko.observable(),
+        isBCUser: ko.observable()
     });
     self.transients = {};
     self.transients.genderOptions = ["annat", "kvinna", "man"];
@@ -41,6 +42,7 @@ function PersonViewModel(savedPerson, create) {
         personModel.extra(exists(person, "extra"));
         personModel.bookedSites(exists(person, "bookedSites"));
         personModel.sitesToBook(exists(person, "sitesToBook"));
+        personModel.isBCUser(exists(person, "isBCUser"));
     }
 
     if (!create){

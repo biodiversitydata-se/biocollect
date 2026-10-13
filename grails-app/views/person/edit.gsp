@@ -63,7 +63,8 @@
             birthDate: "${person?.birthDate}",
             extra: "${person?.extra}",
             bookedSites: ${person?.bookedSites ?: []},
-            sitesToBook: "${requestedSitesList}"
+            sitesToBook: "${requestedSitesList}",
+            isBCUser: "${person?.userId ? 'ja' : 'nej'}",
         }
 
         var personViewModel = new PersonViewModel(savedPersonDetails, ${create});

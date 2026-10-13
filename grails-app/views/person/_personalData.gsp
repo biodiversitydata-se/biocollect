@@ -11,6 +11,8 @@
                     <input data-bind="value: person().internalPersonId" id="internalPersonId" type="text" class="span10"/>
                     <label><g:message code="person.personalInfo.adminComment"/></label>
                     <input data-bind="value: person().adminComment" type="text" class="span10"/>
+                    <label><g:message code="person.personalInfo.registeredUser"/></label>
+                    <input disabled data-bind="value: person().isBCUser" type="text" class="span10"/>
                 </div>
             </div>
             </g:if>
