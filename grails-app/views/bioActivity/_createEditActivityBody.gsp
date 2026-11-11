@@ -105,7 +105,7 @@ th, th.required {
         <g:set var="model" value="${outputModels[outputName]}"/>
         <g:set var="output" value="${activity.outputs.find { it.name == outputName }}"/>
         <g:render template="/output/outputJSModelWithGeodata" plugin="ecodata-client-plugin"
-                  model="${[edit:true, readonly: false, model:model, outputName:outputName]}"></g:render>
+                  model="${[edit:true, readonly: false, model:model, outputName:outputName, recordedBy:recordedBy]}"></g:render>
         <g:if test="${!output}">
             <g:set var="output" value="[name: outputName]"/>
         </g:if>

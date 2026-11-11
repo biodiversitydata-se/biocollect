@@ -333,6 +333,10 @@ class BioActivityController {
             Map activity = [activityId: '', siteId: '', projectId: projectId, type: type, personId: personId, userId: userId]
             Map project = projectService.get(projectId, 'brief') 
             model = activityModel(activity, projectId)
+
+            // add recordedBy when the personId is set in the url (when admin is reporting for a specific person)  (20261111)
+            model.recordedBy = "${person?.person?.firstName ?: ''} ${person?.person?.lastName ?: ''}".trim()
+
             model.pActivity = pActivity
             model.speciesConfig = [surveyConfig: [speciesFields: pActivity?.speciesFields]]
             model.projectName = project.name
